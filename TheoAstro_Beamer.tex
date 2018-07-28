@@ -1,0 +1,1565 @@
+\documentclass{beamer}
+
+\usetheme{Warsaw}  %% Themenwahl
+\beamertemplatenavigationsymbolsempty
+\setbeamertemplate{headline}{}
+
+\usepackage[english,ngerman]{babel}
+\usepackage[utf8]{inputenc}
+
+\usepackage{wasysym} %% Astronomische Symbole
+\usepackage{ulem} %% Unterstreichen
+ 
+\title{Theoretische Astrophysik}
+\author{Philipp Scharpf}
+\institute{Universität Konstanz}
+\date{\today}
+% \logo{\includegraphics[scale=0.31]{Bilder/Ukn-Logo.png}}
+ 
+\begin{document}
+
+{
+\makeatletter % to change template
+    \setbeamertemplate{headline}[default]
+    \def\beamer@entrycode{\vspace*{-\headheight}}
+\makeatother
+
+}
+
+\renewcommand{\thesection}{\Roman{section}} 
+
+\frame{\titlepage}
+
+\frame{\tiny\tableofcontents[hideallsubsections]}
+
+\section{Himmelsmechanik}
+
+\begin{frame}\frametitle{Zweikörperproblem}
+
+\begin{columns}
+
+\begin{column}{.48\textwidth}
+
+\includegraphics[width=\textwidth, height=.5\textheight]{Bilder/Zweikoerperproblem.png}
+
+\end{column}
+
+\hfill
+
+\begin{column}{.48\textwidth}
+
+\begin{align*}\label{eq:Zweikoerperproblem}
+\vec{r} = \vec{r_1} - \vec{r_2}\\
+\vec{F_1} = m_1 \ddot{\vec{r_1}} = - G m_1 m_2 \frac{\vec{r}}{|\vec{r}|^3}\\
+\vec{F_2} = m_1 \ddot{\vec{r_2}} = + G m_1 m_2 \frac{\vec{r}}{|\vec{r}|^3}\\[.25cm]
+\ddot{\vec{r}} = \ddot{\vec{r_1}} - \ddot{\vec{r_2}} = - G(m_1 + m_2) \frac{\vec{r}}{|\vec{r}|^3}
+\end{align*}
+
+\end{column}
+
+\end{columns}
+
+\end{frame}
+
+\begin{frame}\frametitle{Kepler-Gesetze}
+
+\begin{columns}
+
+\begin{column}{.48\textwidth}
+
+\includegraphics[width=\textwidth, height=.5\textheight]{Bilder/Kepler-Gesetze.png}
+
+\end{column}
+
+\hfill
+
+\begin{column}{.48\textwidth}
+
+\begin{enumerate}
+\item Planeten bewegen sich\\ auf Ellipsen\\ (Sonne im Brennpunkt)\\[0.25cm]
+\item Radiusvektor überstreicht\\ in gleichen Zeiten\\ gleiche Flächen\\[0.25cm]
+\item $T^2 \propto a^3, \quad \frac{a^3}{T^2} = \frac{G(m_1+m_2)}{4\pi^2}$
+\end{enumerate}
+
+\end{column}
+
+\end{columns}
+
+\end{frame}
+
+\begin{frame}\frametitle{Dreikörperproblem}
+
+\begin{columns}
+
+\begin{column}{.48\textwidth}
+
+\includegraphics[width=\textwidth, height=0.33\textheight]{Bilder/3-Koerper-Problem.png}
+
+\begin{block}{beschränktes Dreikörperproblem}
+
+\tiny
+
+\begin{itemize}
+\item $m_1$ und $m_2$ auf Kreisbahnen\\ um gemeinsamen Schwerpunkt\\
+\item nicht von m beeinflusst 
+\end{itemize}
+
+\end{block}
+
+\end{column}
+
+\hfill
+
+\begin{column}{.48\textwidth}
+
+\tiny
+
+Def. Masseneinheit so, dass $G(m_1 m_2) = 1$\\
+$\Rightarrow \mu_i = G m_i$\\[.3cm]
+
+Lage der Massenpunkte:\\
+$(-\mu_2,0,0)$ für $m_1$\\
+$(+\mu_1,0,0)$ für $m_2$\\[.3cm]
+
+Def. Längeneinheit so, dass $a = |\vec{r_1} - \vec{r_2}| = 1$\\
+$\Rightarrow \omega^2 = (\frac{2\pi}{T}) = 1$\\
+wegen $\frac{a^3}{T^2} = \frac{1}{T^2} = \frac{G(m_1 + m_2)}{4\pi^2} = \frac{1}{4\pi^2}$\\[.5cm]
+
+Potenzial $U = - [\underset{\text{zentrifugal}}{\frac{1}{2}(x^2 + y^2)} + \underset{\text{gravitativ}}{\frac{\mu_1}{r_1} + \frac{\mu_2}{r_2}}]$\\
+
+$\ddot{x} - 2\dot{y} = -\frac{\partial U}{\partial x}$\\
+$\ddot{y} + 2\dot{x} = -\frac{\partial U}{\partial y}$
+
+\end{column}
+
+\end{columns}
+
+\end{frame}
+
+\begin{frame}\frametitle{Jacobi-Integral}
+
+Erhaltungsgröße des beschränkten Dreikörperproblems\\[.1cm]
+
+Pseudo-Energie-Erhaltung
+
+\begin{block}{Jacobi-Integrationskonstante}
+$C_j = -2U - v^2$
+\end{block}
+
+\hspace{3cm}
+
+mit Potenzial $U = - [\underset{\text{zentrifugal}}{\frac{1}{2}(x^2 + y^2)} + \underset{\text{gravitativ}}{\frac{\mu_1}{r_1} + \frac{\mu_2}{r_2}}]$\\
+
+und Geschwindigkeit $v^2 = \dot{x}^2 + \dot{y}^2 + \dot{z}^2$
+
+\end{frame}
+
+\begin{frame}\frametitle{Hill-Sphäre}
+
+\begin{block}{Hill'sche (Grenz)Fläche}
+
+\begin{itemize}
+\item Umgebung eines Körpers M (Erde),\\ in der seine Gravitationskraft für einen Probekörper m (Mond)\\ wichtiger ist als die eines anderen,\\ massereichen Körpers $M_{\tiny\astrosun}$ (Sonne), den er umkreist
+\item Radius der Einfluss-Sphäre,\\ auf dem sich Probekörper m bewegen kann
+\item für Planeten mit Masse M in Entfernung D von der Sonne: $R_{Hill} = (\frac{M}{3M_{\tiny\astrosun}})^{1/3} D$
+\item entspricht Entfernung zu Langrange-Punkten $L_1$ bzw. $L_2$
+\item Monde innerhalb Hill-Sphäre, Planetoiden außerhalb
+\end{itemize}
+
+\end{block} 
+
+\end{frame}
+
+\begin{frame}\frametitle{Lagrange-Punkte}
+
+\begin{columns}
+
+\begin{column}{.48\textwidth}
+
+\includegraphics[width=.9\textwidth, height=.3\textheight]{Bilder/Lagrange-Punkte1.png}
+
+\includegraphics[width=.8\textwidth, height=.3\textheight]{Bilder/Lagrange-Punkte2.png}
+
+\includegraphics[width=\textwidth, height=.3\textheight]{Bilder/Lagrange-Punkte3.png}
+
+\end{column}
+
+\hfill
+
+\begin{column}{.48\textwidth}
+
+\begin{itemize}
+\item Gleichgewichtspunkte des eingeschränkten Dreikörperproblems
+\item in $L_1$ bis $L_5$ können Körper kräftefrei ruhen\\[.3cm]
+
+\item 5 analytische Lösungen (für m vernachlässigt)
+
+\tiny
+
+\item Nullstellen des Gravitationsfelds\\ (Gleichgewicht mit Zentrifugalkraft)\\ im mitrotierenden Bezugssystem
+\item im nichtrotierenden Bezugsystem\\ laufen die Lagrange-Punkte synchron\\ mit den beiden Himmelskörpern\\ auf Kreisbahnen um den gemeinsamen Schwerpunkt
+\end{itemize}
+
+\end{column}
+
+\end{columns}
+
+\end{frame}
+
+\begin{frame}\frametitle{(Keplersche) Bahnelemente}
+
+\begin{columns}
+
+\begin{column}{.48\textwidth}
+
+\includegraphics[width=\textwidth, height=.8\textheight]{Bilder/Bahnelemente.png}
+
+\end{column}
+
+\hfill
+
+\begin{column}{.48\textwidth}
+
+\textbf{Gestaltelemente}\\[.1cm]
+
+\tiny
+(numerische) Exzentrizität \textbf{e}\\[.1cm]
+große Halbachse \textbf{a}\\[.5cm]
+
+\small
+\textbf{Lageelemente}\\[.1cm]
+
+\tiny
+Inklination \textbf{i}\\[.1cm]
+Winkel des aufsteigenden Knotens $\boldsymbol{\Omega}$\\[.1cm]
+Winkel vom aufsteigenden Knoten zum zentrumsnächsten Punkt $\boldsymbol{\omega}$\\[.5cm]
+
+\small
+\textbf{Zeitbezug}\\[.1cm]
+
+\tiny
+Zeitbezug \textbf{t} - legt den Zeitnullpunkt fest\\[.1cm]
+Abstand des Himmelskörpers vom Zentralkörper \textbf{r}
+
+\end{column}
+
+\end{columns}
+
+\end{frame}
+
+\begin{frame}\frametitle{(Langzeit)Stabilität der Planetenbahnen}
+
+\begin{itemize}
+\item Variation der Bahnelemente zur Bahnbestimmung mit Bahnstörungen
+\item Stabilitätsforderungen aus Eigenwerten der Störmatrix
+\item \textbf{Libration}: Taumelbewegung eines Mondes, da nicht immer exakt dieselbe Seite dem Planeten zugewandt
+\item Sonnensystem: N-Teilchen-System  $\to$ Stabilität? Chaos?
+\item Problem bei numerischer Integration der Bewegungsgleichungen
+\begin{itemize}
+\item kleine Zeitschritte erforderlich
+\item große Zeiträume müssen erfasst werden
+\end{itemize}
+\item Überschneidungen der Ellipsen möglich
+\end{itemize}
+
+\end{frame}
+
+\section{Spezielle Relativitätstheorie}
+
+\begin{frame}\frametitle{Vierervektor}
+
+\begin{itemize}
+\item Vektor in einem reellen, vierdimensionalen Raum mit einem indefiniten (positiv und negativ) Längenquadrat\\[.3cm]
+\item kontravariant \quad $x^{\mu} = (x^0,x^1,x^2,x^3)^\intercal$
+\item kovariant \quad $x_{\mu} = g_{\mu \nu} x^{\nu} = (x^0,-x^1,-x^2,-x^3)^\intercal$
+\item invariant \quad $s^2 = x^{\mu}x_{\mu} = x_{\mu}x^{\mu} = x'^{\mu}x'_{\mu} = s'^2$
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}\frametitle{Lorentz-Gruppe}
+
+\begin{itemize}
+\item Untergruppe der (zehnparametrigen) Poincaré-Gruppe\\ (zusätzlich mit Translationen) $x^{\mu} \to x'^{\mu} = \Lambda^{\mu}_{\nu} x^{\nu} + b^{\mu}$
+\item 4x4-Matrizen, die $(x - y)^2 = (x^{\alpha} - y^{\alpha})g_{\alpha\beta}(x^{\beta} - y^{\beta})$
+\item $L_+^{\uparrow}$ mit $det \Lambda = +1$ und $\Lambda_0^0 \geq +1$, \textit{eigentlich} bzw. \textit{orientierungserhaltend}, sind Drehungen und \textit{Boosts}
+\item $L_+^{\downarrow}$ mit $det \Lambda = +1$ und $\Lambda_0^0 \leq -1$ sind Raumzeitspiegelungen PT
+\item $L_-^{\uparrow}$ mit $det \Lambda = -1$ und $\Lambda_0^0 \geq +1$ sind Raumspiegelungen P
+\item $L_-^{\downarrow}$ mit $det \Lambda = -1$ und $\Lambda_0^0 \leq -1$ sind Zeitspiegelungen T
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}\frametitle{Lorentz-Transformationen}
+
+\begin{itemize}
+\item $x'^{\mu} = \Lambda^{\mu}_{\nu} x^{\nu}, \quad x'_{\mu} = \Lambda_{\mu}^{\nu} x_{\nu}$
+\item $\uuline{g} = \uuline{\Lambda^\intercal} \cdot \uuline{g'} \cdot \uuline{\Lambda}$
+\end{itemize}
+
+
+\textit{Boost} in Richtung $\vec{e_1}: L(v \vec e_1) =
+\begin{pmatrix}
+ \cosh \lambda & -\sinh \lambda & 0 & 0\\
+-\sinh \lambda &  \cosh \lambda & 0 & 0\\
+ 0 & 0 & 1 & 0\\
+ 0 & 0 & 0 & 1
+\end{pmatrix}$
+
+mit \textit{Rapidität} $\tanh \lambda = \beta = \frac{v}{c}$
+
+\end{frame}
+
+\begin{frame}\frametitle{Zeitdilatation und Längenkontraktion}
+
+Zeitdilatation\\
+$s^2 = (c\tau)^2 = (ct)^2 - (vt)^2 = t^2 (c^2 - v^2) \Rightarrow \boxed{\tau = \frac{t}{\gamma}}$\\[.5cm]
+
+Längenkontraktion
+$L_0 = v t, \quad L' = v \tau \Rightarrow \boxed{\frac{L_0}{L'} = \frac{t}{\tau} = \gamma}$
+
+\end{frame}
+
+\begin{frame}\frametitle{Minkowski-Diagramm}
+
+\begin{columns}
+
+\begin{column}{.48\textwidth}
+
+\centering
+
+\includegraphics[width=.9\textwidth, height=.5\textheight]{Bilder/Minkowski-Diagramm1.png}
+
+\includegraphics[width=.8\textwidth, height=.4\textheight]{Bilder/Minkowski-Diagramm2.png}
+
+\end{column}
+
+\hfill
+
+\begin{column}{.48\textwidth}
+
+\begin{itemize}
+\item Veranschaulichung der Eigenschaften von Raum und Zeit in der SRT
+\item Bahn eines Objekts heißt \glqq Weltlinie\grqq
+\item Punkt in Raumzeit heißt \glqq Ereignis\grqq
+\item klassisch ist Zeit universell\\ $\to$ gemeinsame Wegachse
+\item relativistisch keine Gleichzeitigkeit\\ $\to$ Winkel $\alpha = arctan(\beta)$
+\end{itemize}
+
+\end{column}
+
+\end{columns}
+
+\end{frame}
+
+\begin{frame}\frametitle{Relativistischer Dopplereffekt}
+
+\begin{itemize}
+\item Zeitdilatation berücksichtigt
+\item keine Unterscheidung bewegte Quelle/Beobachter möglich\\ $\to$ Symmetrie
+\item bedingt durch Lichtgeschwindigkeitslimit
+\item geometrischer Effekt der Raumzeit
+\item longitudinal \quad $f_{\rm B} = f_{\rm S} \sqrt{\frac{c+v}{c-v}} = f_{\rm S} \sqrt{\frac{1+\beta}{1-\beta}}$
+\item transversal \quad $f_{\rm B} = f_{\rm S} \sqrt{1-\frac{v^2}{c^2}} = \frac{f_{\rm S}}{\gamma}$
+\end{itemize}
+
+\end{frame}
+
+\section{Sternentstehung}
+
+\begin{frame}\frametitle{Kosmischer Materiekreislauf}
+
+\includegraphics[width=\textwidth, height=.9\textheight]{Bilder/Kosmischer_Materiekreislauf.png}
+
+\end{frame}
+
+\begin{frame}\frametitle{Interstellares Medium}
+
+\small
+
+\begin{itemize}
+\item Interstellares Medium = Materie \& Strahlung \& Magnetfeld (Galaxie)
+\item Abgrenzung zu Intergalaktischem Medium und Interplanetarer Materie
+\item neutrales oder ionisiertes Gas (99 \%) und Staub (1 \%)
+\item Gas aus 70 \% Wasserstoff, 30 \% Helium und nur Spuren höherer Elemente
+\item aus ISM entstehen Sterne, die später mit Sternwinden und Supernovae auch wieder Materie in den interstellaren Raum abgeben
+\item Masseanteil der ISM in der Galaxis nur wenige Prozent - Rest Sterne und DM
+\item Spektroskopischer Nachweis der Zusammensetzung
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}\frametitle{Molelkülwolken}
+
+\begin{itemize}
+\item interstellare Gaswolken, deren Größe, Dichte und Temperatur die Bildung von Molekülen erlaubt
+\item mehr als die Hälfte der (baryonischen) Masse der Milchstraße
+\item gewisse Dichte notwendig, um die Moleküle vor Strahlung zu schützen, die sie sonst wieder zerstört
+\item Vielzahl von Molekülen: CO, CN, HCN, OH, $H_2O$
+\item Dunkelwolken blenden Hintergrundsterne aus
+\item (Bok-)Globulen sind räumlich eng begrenzte Gebiete, in denen Sternentstehung stattfindet
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}\frametitle{Jeans-Modell}
+
+\begin{itemize}
+\item kugelförmige Wolke, homogene Dichteverteilung
+\item ohne Magnetfelder, Turbulenz etc.
+\end{itemize}
+
+\begin{block}{Jeans-Masse}
+$M_J (\rho, T) \propto \left (\frac{k_B T}{\mu m_u G} \right)^{3/2} \rho_0^{-1/2} \ \overset{\rho \ \approx \ 10^{-21} kg/m^3}{\underset{T \ \approx \ 50 K}{\approx}} \ 10^3 M_{\astrosun}$
+  \end{block}
+  
+  \begin{block}{Jeans-Radius}
+$R_J = \left( \frac{3 M_J}{4 \pi \rho_0} \right)^{1/3} \approx 10 \ pc$
+  \end{block}
+  
+  \begin{block}{Freifallzeit}
+$t_{ff} = \left( \frac{3 \pi}{32 G \rho_0} \right)^{1/2} \approx 10^5 y$
+  \end{block}
+
+\end{frame}
+
+\begin{frame}\frametitle{Fragmentierung}
+
+\begin{itemize}
+\item räumliche Dichteschwankungen, die zur Folge haben können, dass die Wolke lokal verklumpt und sich aufteilt
+\item erforderliche Mindestmasse für die Gravitationsinstabilität nimmt mit steigender Dichte zu
+\item Wolke kann also zunächst verklumpen bis globale Dichte gering genug, um einen weiteren Kollaps zu verhindern
+\item Verklumpen unterstützt den Prozess der Sternentstehung und sorgt so möglicherweise dafür, dass bereits geringere Massen zu Protosternen kollabieren können als es das Jeans-Kriterium für die jeweilige Wolkendichte vorsieht
+\item Rolle von Turbulenzen und Entstehung von Doppelsternsystemen ist Gegenstand aktueller Forschung
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}\frametitle{Protosterne}
+
+\begin{itemize}
+\item Bereich innerhalb einer kollabierenden interstellaren Wolke, der bereits ein annäherndes hydrostatisches Gleichgewicht erreicht hat
+\item wird durch einen aufgrund von Gravitationskraft erzeugten stetigen Massezuwachs aus der ihn umgebenden Wolke schließlich zu einem Stern
+\item während seines langsamen Kollapses setzt er Gravitationsenergie in Wärme um, in Form von Infrarotstrahlung abgestrahlt
+\item im HRD rechts von der Hayashi-Linie, also kein stabiler Zustand
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}\frametitle{Stabilitätsgleichungen}
+
+\tiny{
+  
+  \begin{block}{Massenerhaltung}
+    $\frac{dM(r)}{dr} = 4 \pi r^2 \rho(r)$
+  \end{block}
+  
+  % \pause
+  
+  \begin{block}{Hydrostatisches Gleichgewicht}
+    $\frac{dP(r)}{dr} = -G \frac{M(r)\rho(r)}{r^2}$
+  \end{block}
+  
+  % \pause
+  
+  \begin{block}{Thermisches Gleichgewicht}
+    $\frac{dL(r)}{dr} = 4 \pi r^2 \rho(r) \epsilon(r)$
+  \end{block}
+  
+  % \pause
+  
+  \begin{block}{Energietransport durch Konvektion}
+    $\frac{dT(r)}{dr} = ( 1 - \frac{1}{\gamma} ) \frac{dT(r)}{P(r)} \frac{dP}{dr}$
+  \end{block}
+  
+  % \pause
+  
+  \begin{block}{Energietransport durch Strahlung}
+    $\frac{dT(r)}{dr} = \frac{-3\bar{\kappa}}{4ac} \frac{\rho(r)}{T^3(r)} \frac{L(r)}{4 \pi r^2}$
+  \end{block}
+  
+}
+
+\end{frame}
+
+\begin{frame}\frametitle{Zustandsgleichungen}
+
+\tiny{
+
+  \begin{block}{Schweredruck}
+    $P_{grav}(r) = -G \displaystyle \int_R^r \frac{M(r')\rho(r')}{r'^2}dr'$
+  \end{block}
+  
+  % \pause
+
+  \begin{block}{Gasdruck}
+    $P_{gas} = \frac{\rho k_B T}{\bar{m}}, \quad \rho = \frac{N \bar{m}}{V}, \quad \bar{m} = \mu m_H, \quad \frac{1}{\mu} \approx 2 X + \frac{3}{4} Y + \frac{1}{2} Z$
+  \end{block}
+  
+  % \pause
+  
+  \begin{block}{Strahlungsdruck}
+    $P_{rad} = \frac{1}{3} a T^4, \quad a = \frac{4 \sigma}{c}$
+  \end{block}
+  
+  % \pause
+  
+  \begin{block}{Entartungsdruck (nicht relativistisch)}
+    $P_{deg} = K_1 (\frac{\rho}{\mu})^{\frac{5}{3}}, \quad K_1 = \frac{h^2}{20 m_e m_p}(\frac{3}{\pi m_p})^{\frac{2}{3}}, \quad v_e \ll c$
+  \end{block}
+  
+  % \pause
+  
+  \begin{block}{Entartungsdruck (relativistisch)}
+    $P_{rel} = K_2 (\frac{\rho}{\mu})^{\frac{4}{3}}, \quad K_2 = \frac{hc}{8 m_p}(\frac{3}{\pi m_p})^{\frac{1}{3}}, \quad v_e \approx c$
+  \end{block}
+  
+}
+
+\end{frame}
+
+\begin{frame}\frametitle{Hayashi-Linie}
+
+\begin{columns}
+
+\begin{column}{.48\textwidth}
+
+\includegraphics[width=\textwidth, height=.6\textheight]{Bilder/Hayashi-Linie.png}
+
+\end{column}
+
+\hfill
+
+\begin{column}{.48\textwidth}
+
+\tiny
+
+\begin{itemize}
+\item nahezu senkrechte Linie im HRD
+\item rechts davon können keine stabilen Sterne existieren
+\item Sterne direkt auf der Linie sind voll konvektiv und im hydrostatischen Gleichgewicht
+\item Entwicklung der kollabierenden Materie nähert sich der Linie von rechts
+\item Kollaps der Wolke im freien Fall ist bei Erreichen der Linie beendet (Geburt des Sterns)
+\item weitere Entwicklung entlang der Linie nach unten (bei konstanter Oberflächentemperatur verringert sich durch die Kontraktion die Oberfläche und somit nach dem Stefan-Boltzmann-Gesetz auch die Leuchtkraft
+\item in der Nach-Hauptreihenphase können Riesensterne die Linie nicht überschreiten und ihre Entwicklung biegt deshalb davor nach oben ab
+\end{itemize}
+
+\end{column}
+
+\end{columns}
+
+\end{frame}
+
+\begin{frame}\frametitle{Polytrope Gas-Kugeln}
+
+\begin{columns}
+
+\begin{column}{.48\textwidth}
+
+\includegraphics[width=\textwidth, height=.5\textheight]{Bilder/Polytropen.jpg}
+
+\end{column}
+
+\hfill
+
+\begin{column}{.48\textwidth}
+
+\tiny
+
+\begin{itemize}
+
+\item Zustandsänderung mit $pV^{n}=\mathrm{const}$ heißt \textit{polytrop}
+\item der Exponent n heißt \textit{Polytropenexponent}
+\item die \textit{Polytrope} ist eine Hyperbel, welche isotherme und isentrope Zustandsänderungen gut annähert, da der Polytropenexponent bei technischen Vorgängen als konstant angesehen werden kann
+\item $n = 0$: \textit{isobar}
+\item $n = 1$: \textit{isotherm}
+\item $n \to \infty $: \textit{isochor}
+\item $n = \kappa  =  \frac{c_{p}}{c_{V}}$: \textit{isentrop} oder auch \textit{adiabat-reversibel}
+\item die Polytropie zeichnet sich durch eine feste Wärmekapazität aus, welche sich aus $c_p, c_v$ und n ergibt
+
+\end{itemize}
+
+\end{column}
+
+\end{columns}
+
+\end{frame}
+
+\begin{frame}\frametitle{Lane-Emden-Gleichung}
+
+\tiny
+
+\begin{itemize}
+
+\item beschreibt die Struktur einer selbstgravitierenden Kugel mit Zustandsgleichung einer polytropen Flüssigkeit
+\item Lösungen beschreiben die Abhängigkeit des Drucks und der Dichte vom Radius r und erlauben somit Rückschlüsse auf die Stabilität und Ausdehnung der Kugel
+\item polytrope Flüssigkeit genügt $\textstyle P = K \rho^\gamma$, man verwendet allerdings statt $\textstyle \gamma$ meist den Polytropenindex $\textstyle n$, definiert als $\textstyle \gamma = 1 + \frac{1}{n}$
+\item Sternmaterie kann in guter Näherung als polytropes Fluid angesehen werden, so etwa entartetes Gas, das in Abhängigkeit davon, ob es relativistisch oder nicht-relativistisch ist, einen Polytropenindex von $\textstyle n=3\,\mathrm{bzw.}\,1,5$ besitzt (d.h. $\textstyle \gamma=\frac{4}{3}\, \mathrm{bzw.}\,\frac{5}{3})$
+\item Herleitung aus Gleichgewichtsbedingung für isentrope Kugeln mit Enthalpie, nach Anwendung des Laplace-Operators und der Poisson-Gleichung
+\item man erhält $\boxed{\frac{1}{\xi^2} \frac{d}{d\xi} \left({\xi^2 \frac{d\theta}{d\xi}}\right) + \theta^n = 0}$
+\item Gleichung lässt sich für n = 0, 1 und 5 analytisch lösen
+\item die ersten beiden Fälle führen auf einfach zu lösende Gleichungen, alle übrigen sind deutlich komplizierter
+\item für n = 1 wird die Gleichung zu einer sphärischen Besselschen Differentialgleichung mit der sinc-Funktion als Lösung - und der Radius ist unabhängig von der Gesamtmasse bzw. der Dichte im Zentrum $\to$ der Stern enthält im gleichen Volumen beliebig viel Masse, die die Gleichgewichtsbedingung erfüllt
+
+\end{itemize}
+
+\end{frame}
+
+\section{Sternentwicklung}
+
+\begin{frame}{Vogt-Russell-Theorem}
+
+  \begin{block}{Vogt-Russell-Theorem}
+\textit{\glqq Die Masse und Zusammensetzung eines Sterns bestimmt eindeutig seinen Radius, die Leuchtkraft und innere Struktur sowie die spätere Entwicklung\grqq .}\\[0.3cm]
+\textit{\glqq Die Abhängigkeit der Sternentwicklung von Masse und Zusammensetzung ist die Konsequenz einer zeitlichen Änderung der Zusammensetzung durch Kernfusion\grqq .}\\
+  \end{block}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Strahlungs- und Konvektionszonen}
+
+\centering
+\includegraphics{Bilder/Energietransport-Zonen.png}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Energieerzeugungsrate $\mathbf{\epsilon}$}
+  
+  \begin{block}{Energieerzeugungsrate}
+    $\epsilon(r) = \frac{dL}{dm} = \epsilon_G + \epsilon_{nuclear} = \epsilon_G + \epsilon_{PP} + \epsilon_{CNO}$
+  \end{block}
+ 
+\begin{columns}[t]
+
+\begin{column}{.48\textwidth}
+
+\includegraphics[width=0.8\textwidth, height=0.6\textheight]{Bilder/pp-Kette.png}
+
+\end{column}
+
+\begin{column}{.48\textwidth}
+
+\includegraphics[scale=0.5]{Bilder/CNO-Zyklus.png}
+
+\end{column}
+
+\end{columns}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Proton-Proton-Kette}
+  
+% \note{$M < 1.4 M_s, T < 3 Mio. K$}
+
+\begin{columns}[t]
+
+\begin{column}{.48\textwidth}
+
+\tiny{
+
+\begin{block}{\textit{PP I} (91 \%, 26 MeV)}
+$
+^1_1H + \ ^1_1H \to \ ^2_1H + e^+ + \nu_e$\\[0.1cm]...\\[0.1cm]
+$^3_2He \ + \ ^3_2He \to \ ^4_2He + 2 \ ^1_1H
+$
+\end{block}
+
+\begin{block}{\textit{PP II} (9 \%, 26 MeV)}
+$^3_2He + \ ^4_2He \to \ ^7_4Be + \gamma$\\[0.1cm]...\\[0.1cm]
+$^7_3Li + \ ^1_1H \to \ 2 \ ^4_2He
+$
+\end{block}
+
+\begin{block}{\textit{PP III} (0.1 \%, 19 MeV)}
+$^3_2He + \ ^4_2He \to \ ^7_4Be + \gamma$\\ 
+[0.1cm]...\\[0.1cm]
+$^8_4Be \to \ 2 \ ^4_2He
+$
+\end{block}
+
+}
+
+\end{column}
+
+\begin{column}{.48\textwidth}
+
+\centering
+\includegraphics[scale=0.2]{Bilder/pp-Kette.png}
+
+\begin{block}{Energieerzeugungsrate}
+\begin{align*}
+\epsilon_{pp} \underset{T \approx 10^6 K}{\propto} \rho X^2 T^4
+\end{align*}
+
+\end{block}
+
+\end{column}
+
+\end{columns}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{CNO-Zyklus (Bethe-Weizsäcker)}
+  
+\begin{columns}[t]
+
+\begin{column}{.48\textwidth}
+
+\begin{block}{CNO (1.6 \%, 25 MeV)}
+$
+^{12}_{12}C + \ ^1_1H \to \ ^{13}_7N + \gamma$\\[0.2cm]
+$
+^{13}_7N \to \ ^{13}_{12}C + e^+ + \nu_e$\\[0.2cm]
+$
+^{13}_{12}C + \ ^1_1H \to \ ^{14}_7N + \gamma$\\[0.2cm]
+$
+^{14}_1N + \ ^1_1H \to \ ^{15}_8O + \gamma$\\[0.2cm]
+$
+^{15}_8O \to \ ^{15}_7N + \nu_e + \gamma$\\[0.2cm]
+$
+^{15}_7N + \ ^1_1H \to \ ^{12}_{12}C + ^4_2He$\\[0.2cm]
+\end{block}
+
+\end{column}
+
+\begin{column}{.48\textwidth}
+
+\centering
+\includegraphics[scale=0.3]{Bilder/CNO-Zyklus.png}
+
+\begin{block}{Energieerzeugungsrate}
+\begin{align*}
+\epsilon_{CNO} \underset{T \approx 10^7 K}{\propto} \rho X_H Z_{CNO} T^{20}
+\end{align*}
+% \note{ab 15 Millionen Kelvin, ab 30 Millionen Kelvin vorherrschend}
+\end{block}
+
+\end{column}
+
+\end{columns}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Energieerzeugung und Temperatur}
+
+\centering
+\includegraphics[scale=0.5]{Bilder/Energieerzeugung.jpg}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Stellare Zeitskalen}
+
+  \begin{block}{Helmholtz-Kelvin-Zeit}
+$t_{HK} = \frac{|E_G|}{L} = \frac{\frac{3}{5} G M^2/R}{L} \underset{E_G \approx 4 \cdot 10^{41} J}{\approx} 10^7 y$
+  \end{block}
+
+\begin{block}{Nuklear-Fusions-Zeit}
+$t_n = \frac{E_n}{L} = \frac{\Delta m c^2}{L} \underset{E_n \approx 1.3 \cdot 10^{44} J}{\approx} 10^{10} y$
+  \end{block}
+
+\end{frame}
+
+\section{Sternendstadien}
+
+\begin{frame}
+  \frametitle{Sternendstadien}
+
+\centering
+\includegraphics[scale=0.8]{Bilder/Sternendstadien.png}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Zwiebelstruktur}
+
+\centering
+\includegraphics[scale=0.6]{Bilder/Zwiebelstruktur.jpg}
+
+\end{frame}
+
+\begin{frame}\frametitle{Entartete (degenerierte) Materie}
+
+\begin{itemize}
+\item in einem Zustand, der aufgrund quantenmechanischer Effekte von dem in der klassischen Physik bekannten Verhalten abweicht
+\item allgemein bei sehr großer Dichte oder sehr tiefer Temperatur
+\item wenn Fermionen zu großer Dichte konzentriert sind, tritt der Gravitation ein Entartungsdruck (Fermi-Druck) entgegen
+\item Ursache ist Pauli-Prinzip, das verbietet, dass zwei Fermionen einen identischen Quantenzustand annehmen können \item weitere Kompression würde bedeuten, dass sich Fermionen in höhere Energiezustände begeben müssten
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}\frametitle{Weiße Zwerge}
+
+\begin{itemize}
+\item Sterne mit $M < 8 M_{\tiny \astrosun}$ enden als weiße Zwerge
+\item entwickeln sich aus roten Riesen
+\item etwa erdgroß, mit hoher Dichte (Tonnen/$cm^3$) und leuchtschwach (kleine strahlende Oberfläche)
+\item strahlen nur Restwärme des ehemaligen heißen Sternenkerns ab
+\item kühlen schließlich im Laufe von Jahrmilliarden zu kalten schwarzen Zwergen aus
+\item Helium-Zwerge sind Überreste massearmer Sterne, die auskühlen, bevor es zum thermonuklearen Zünden des Heliums kommt 
+\item Radius verringert sich bei Massenzunahme
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}\frametitle{Neutronensterne}
+
+\tiny
+
+\begin{itemize}
+\item extrem hohe Dichte mit $D \approx 20 \ km$ und $M \approx (1,44 - 3) M_{\tiny \astrosun}$
+\item etwa die Masse eines Eisenwürfels von 700 m Kantenlänge - entspricht der Größenordnung der Dichte von Atomkernen
+\item im Zentrum könnte hypothetisch auch ein Kern aus einem Quark-Gluon-Plasma vorliegen (Quarkstern)
+\item entstehen bei einer Kern-Kollaps-Supernova (Typen II, Ib, Ic) am Ende der Entwicklung massereicher Sterne
+\item Kernmasse des Vorläufersterns muss zwischen 1,4 Sonnenmassen (Chandrasekhar-Grenze) und etwa 3 Sonnenmassen (Tolman-Oppenheimer-Volkoff-Grenze) betragen
+\item darüber entsteht ein Schwarzes Loch, darunter erfolgt keine Supernovaexplosion, sondern es entwickelt sich ein Weißer Zwerg \item beim Kollaps werden Elektronen in die Atomkerne gepresst Protonen und Elektronen verbinden sich zu Neutronen (und Elektron-Neutrinos
+\item Kern schrumpft weiter bis \textit{Entartungsdruck} die Kontraktion schlagartig stoppt - dabei wird ein großer Teil der Gravitationsenergie durch die Emission von Neutrinos frei
+\item Neutrinodetektoren können eine Supernova früher nachweisen als optische Teleskope
+\item starkes Gravitationsfeld wirkt als Gravitationslinse und lenkt vom Neutronenstern emittiertes Licht dergestalt ab, dass Teile der Rückseite des Sterns ins Blickfeld gelangen und mehr als die Hälfte seiner Oberfläche sichtbar ist
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}\frametitle{Aufbau eines Neutronensterns}
+
+\begin{columns}
+
+\begin{column}{.48\textwidth}
+
+\includegraphics[width=\textwidth, height=.6\textheight]{Bilder/Neutronenstern.jpg}
+
+\end{column}
+
+\hfill
+
+\begin{column}{.48\textwidth}
+
+\tiny
+
+\begin{itemize}
+\item an der Oberfläche ist der Druck null
+- Eisenatomkerne und Elektronen bilden ein Kristallgitter von maximal einigen Millimetern Dicke
+\item Zone aus kristallinen Eisenatomkernen setzt sich bis in eine Tiefe von etwa 10 Metern fort
+\item innere Kruste: Übergangsschicht von 1 - 2 km Dicke
+\item Im Anschluss an die innere Kruste besteht der Stern überwiegend aus Neutronen, die mit einem geringen Anteil von Protonen und Elektronen im thermodynamischen Gleichgewicht stehen
+\item sofern die Temperaturen hinreichend niedrig sind, verhalten sich die Neutronen dort supraflüssig und die Protonen supraleitfähig
+\end{itemize}
+
+\end{column}
+
+\end{columns}
+
+\end{frame}
+
+\begin{frame}\frametitle{Novae und Supernovae}
+
+\begin{itemize}
+\item kurzzeitiges, helles Aufleuchten eines Sterns am Ende seiner Lebenszeit durch eine Explosion, bei der der ursprüngliche Stern selbst vernichtet wird
+\item Die Leuchtkraft des Sterns nimmt dabei millionen- bis milliardenfach zu, er wird für kurze Zeit so hell wie eine ganze Galaxie
+\item hydrodynamische Supernova: massereiche Sterne mit einer Anfangsmasse von mehr als etwa acht Sonnenmassen, deren Kern am Ende ihrer Entwicklung und nach Verbrauch ihres nuklearen Brennstoffs kollabiert
+\item thermonukleare Supernova (Ia): Sterne mit geringerer Masse, die in ihrem vorläufigen Endstadium als Weißer Zwerg Material (z. B. von einem Begleiter in einem Doppelsternsystem) akkretieren, durch Eigengravitation kollabieren und dabei durch einsetzendes Kohlenstoffbrennen zerrissen werden
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}\frametitle{Schwarze Löcher (Arten)}
+
+\begin{itemize}
+\item astronomisches Objekt, dessen Gravitation so extrem stark ist, dass aus diesem Raumbereich (hinter Ereignishorizont) keine Materie und kein Lichtsignal nach außen gelangen kann
+\item \textbf{supermassive} $\approx (10^5 - 10^{10}) M_{\tiny\astrosun}$ in Galaxienzentren
+\item \textbf{mittelschwere} $\approx 10^3 M_{\tiny\astrosun}$ entstehen (möglicherweise) infolge von Sternenkollisionen und -verschmelzungen
+\item \textbf{stellare} $\approx 10 M_{\tiny\astrosun}$ als Sternendstadien
+\item \textbf{primordiale} $< M_{Mond}$ bereits beim Urknall in dichten Regionen entstanden
+\item \textbf{mikro} $< M_{Planck}$ beim LHC? extrem geringe Lebensdauer! 
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}\frametitle{Schwarze Löcher (Beobachtung)}
+
+{\fontsize{10}{10} \selectfont
+
+\begin{itemize}
+
+\item \textbf{Kinematischer Nachweis} Veränderung der Bahnen und Geschwindigkeiten von umkreisenden Sternen (oder Dopplerverschiebung)
+
+\item \textbf{Eruptiver Nachweis}
+
+Sterne, die dem Gezeitenradius eines Schwarzen Lochs zu nahe kommen, können durch die auftretenden Gezeitenkräfte zerrissen werden und dabei eine charakteristische Röntgenstrahlung freisetzen
+
+\item \textbf{Aberrativer Nachweis}
+
+Ablenkung, Verzerrung oder Bündelung elektromagnetischer Strahlung
+
+\item \textbf{Obskurativer Nachweis}
+
+Gravitationsrotverschiebung verursacht eine schwarze Färbung am Rand
+
+\item \textbf{Temporaler Nachweis}
+
+durch Zeitdilatation in der Nähe
+
+\item \textbf{Spektro-relativistischer Nachweis}
+
+Linseneffekte und Gravitationsverschiebungen verfremden die Spektren der Sterne, die sich in der Umgebung von Schwarzen Löchern befinden
+\end{itemize}
+
+}
+
+\end{frame}
+
+\section{Metriken}
+
+\begin{frame}\frametitle{Kontra- und Kovariante Tensoren}
+
+\begin{columns}
+
+\begin{column}{.48\textwidth}
+
+\includegraphics[width=.8\textwidth, height=.9\textheight]{Bilder/KontraKoVariant.png}
+
+\end{column}
+
+\hfill
+
+\begin{column}{.48\textwidth}
+
+\includegraphics[width=\textwidth, height=.4\textheight]{Bilder/Metrik.png}
+
+\end{column}
+
+\end{columns}
+
+\end{frame}
+
+\begin{frame}\frametitle{Schwarzschild-Metrik}
+
+\begin{itemize}
+
+\item Lösung der Feldgleichungen für Gravitationsfeld einer homogenen, nicht geladenen und nicht rotierenden Kugel
+
+\item \textbf{äußere Schwarzschild-Lösung} Vakuumlösung für den sphärisch-symmetrischen Fall - erste bekannte exakte Lösung der einsteinschen Feldgleichungen
+
+\item \textbf{innere Schwarzschild-Lösung} Metrik einer homogen gedachten Flüssigkeitskugel - Integration der Feldgleichungen reduziert sich auf die einfache lineare Summation eines Potentials (von $r=0$ bis $r=R$ für einen Körper mit Radius R oder ein als kugelförmig gleichverteilt gedachter Materie im Universum bis zu seiner Grenze R)
+
+\item \textbf{vollständige Schwarzschild-Modell} innere und äußere Lösung - einfachste Näherungslösung für diverse astronomische Objekte wie Dunkelwolken oder Neutronensterne - lässt aber keine Spekulationen über Singularitäten wie Schwarze Löcher zu
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}\frametitle{Hawking-Strahlung (Schwarzer Löcher)}
+
+{\fontsize{10}{10} \selectfont
+
+\begin{itemize}
+
+\item Quantenfeldtheorien erlauben Vakuumfluktuationen aus virtuellen Teilchen-Antiteilchen-Paaren (massebehaftete Teilchen oder masselose Photonen) - auch in der unmittelbaren Nähe des Ereignishorizontes Schwarzer Löcher - fällt ein (Anti)Teilchen in das hinein, werden die beiden Partner durch den Ereignishorizont getrennt - der fallende Partner trägt negative Energie, während der andere als reales (Anti)Teilchen mit positiver Energie in den freien Raum entkommt - fließt negative Energie in das Schwarze Loch, so verringert sich nach $E=mc^2$ seine Masse
+
+\item Teilchen die dem SL entkommen, bilden thermische \textit{Hawking-Strahlung} (als Schwarzkörperstrahlung mit bestimmter \textit{Hawking-Temperatur} verbunden, umgekehrt zur Masse des SL
+
+\item kleines SL $\to$ kleiner Ereignishorizont $\to$ starke Raumkrümmung $\to$ geringe Ausdehnung $\to$ mehr Vakuumfluktuationen $\to$ hohe Temperatur $\to$ SL verdampft schneller
+
+\item die Lebensdauer eines Schwarzen Loches ist proportional zur dritten Potenz seiner ursprünglichen Masse und beträgt bei einem Schwarzen Loch mit der Masse unserer Sonne ungefähr $10^{64}$ Jahre - sie liegt damit jenseits sämtlicher Beobachtungsgrenzen
+
+\end{itemize}
+
+}
+
+\end{frame}
+
+\begin{frame}\frametitle{Hawking-Temperatur}
+
+\begin{itemize}
+
+\item Wiensches Verschiebungsgesetz hat Maximum der Schwarzkörperstrahlung bei Wellenlängen $\lambda \approx \frac {\hbar c}{k_B T}$
+\item bei Schwarzen Löchern kommt als Längeneinheit nur der Schwarzschildradius $r_\mathrm{S} = \frac{2 G M}{c^2}$ in Betracht, so dass  $\lambda \approx r_\mathrm{S}\approx  \frac{G M}{c^2}$
+\item es ergibt sich $T \approx \frac {\hbar c^3}{k_B G M} \approx 10^{-6} \frac {M_{\odot}}{M}$
+
+\item die Strahlungsleistung lässt sich aus dem Stefan-Boltzmann-Gesetz abschätzen als
+$P \approx c \frac {{(k_B T)}^4}{{{(\hbar c)}}^3} A \approx c  \frac {\hbar c}{{r_S}^4} {r_S}^2 \approx \frac {\hbar c^6}{G^2 M^2} \approx 10^{38} M^{-2} \ W$
+
+\item die Lebensdauer ergibt sich der Größenordnung nach aus $\tau \approx \frac {G^2 M^3}{\hbar c^4} \approx 10^{64} \cdot \left(\frac {M}{M_{\odot}} \right)^3 y$
+
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}\frametitle{Kerr-Newman-Metrik}
+
+\begin{itemize}
+\item exakte \\ (asymptotisch flache\footnote{strebt im Unendlichen gegen Minkowski-Metrik}, stationäre und axialsymmetrische) \\ Lösung der Einstein-Gleichungen \\ für elektrisch geladene, rotierende Schwarze Löcher \vspace{.1cm}
+\item \tiny $ds^{2}=-\frac{\Delta}{\rho^{2}}\left(dt-a\sin^{2}\theta d\phi\right)^{2}+\frac{\sin^{2}\theta}{\rho^{2}}\left[\left(r^{2}+a^{2}\right)d\phi-{a}dt\right]^{2}
++\frac{\rho^{2}}{\Delta}dr^{2}+\rho^{2}d\theta^{2}$\\
+\small mit
+$\Delta\equiv r^{2}-2Mr+a^{2}+Q^{2}, \quad \rho^{2}\equiv r^{2}+a^{2}\cos^{2}\theta, \quad a\equiv\frac{J}{M}$ \vspace{.1cm}
+\item nach dem \textbf{No-Hair-Theorem} ist ein SL vollständig charakterisierbar durch Masse, Drehimpuls und Ladung
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}\frametitle{Ereignishorizont und Ergosphäre}
+
+\begin{columns}
+
+\begin{column}{.48\textwidth}
+
+\includegraphics[width=\textwidth, height=.7\textheight]{Bilder/Ergosphaere.png}
+
+\end{column}
+
+\hfill
+
+\begin{column}{.48\textwidth}
+
+{\fontsize{8}{10} \selectfont
+
+\begin{itemize}
+\item \textbf{Frame-Dragging} Beinflussung des lokalen Inertialsystems durch eine rotierende Masse (Newton: Gravitationsfeld nur von Masse, nicht von Drehimpuls abhängig)
+\item innerhalb der \textbf{Ergosphäre} findet FD statt - Beobachter werden zur Mitrotation gezwungen
+\item SL \glqq reißt\grqq Raumzeitgeometrie mit sich
+\item im \textbf{Penrose-Prozeß} ist bei einem Sturz in die Ergosphäre eine Extraktion der Rotationsenergie des SL möglich, da Ergosphäre außerhalb Ereignishorizont
+\item auch mit Lichtgeschwindigkeit kann sich Objekt nicht mehr der Rotation der Ergosphäre entziehen
+\end{itemize}
+
+}
+
+\end{column}
+
+\end{columns}
+
+\end{frame}
+
+\begin{frame}\frametitle{Morris-Thorne-Metrik (Wurmloch)}
+
+\begin{itemize}
+\item spezielle Lösungen (Kruskal-Lösungen) der Feldgleichungen
+\item neben dem Außen- und Innenraum des schwarzen Loches gibt es noch dazu äquivalente, gespiegelte Räume: \glqq weißes Loch\grqq, aus dem Materie zwar austreten, aber nicht in es eindringen kann
+\item nur in eine Richtung durchquerbar
+\item Wurmloch kann nur ohne Ereignishorizont funktionieren (durch weißes Loch aufgehoben)
+\item \textbf{Morris-Thorne-Metrik} $ds^2 = e^{2\phi(r)} c^2 dt^2 - \frac{r}{r - b(r)} dr^2 - r^2[d\vartheta^2 + sin^2\vartheta d\varphi^2] = c^2 dt^2 - dl^2 - (b_0^2 + l^2)\cdot (d\vartheta^2 + sin^2\vartheta d\varphi^2)$ mit\\
+Rotverschiebungsfunktion $\phi(r)$ und Schlundfunktion $b(r) = \frac{b_0}{r}$
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}\frametitle{Thermodynamik von Schwarzen Löchern}
+
+\begin{itemize}
+\item \textbf{0.HS} Oberflächengravitation am Ereignishorizont ist konstant\\[.1cm](vgl. Temperatur zwischen Systemen im thermischen Kontakt konstant)\\[.25cm]
+\item \textbf{1.HS} $dM = \underbrace{TdS}_{\delta Q} (+ \Omega dL - VdQ)$\\[.1cm](Energieerhaltung)\\[.25cm]
+\item \textbf{2.HS} $dS_H = \frac{k_B c^3}{4G\hbar} dA_H \geq 0$\\[.1cm](Entropiezunahme)\\[.25cm]
+\item \textbf{3.HS} Zustand, bei dem Oberflächengravitation am Ereignishorizont verschwindet, ist nicht erreichbar\\[.1cm](vgl. Unerreichbarkeit des absoluten Temperaturnullpunkts)
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}\frametitle{Holographisches Prinzip}
+
+\begin{itemize}
+\item Vermutung, dass es zu jeder Beschreibung der Dynamik eines Raum-Zeit-Gebiets eine äquivalente Beschreibung gibt, die nur auf dem Rand dieses Gebiets lokalisiert ist
+\item die Folge ist, dass die maximal mögliche Entropie eines Raumgebietes nur von dessen Oberfläche abhängt, nicht vom Volumen, wie bei der Bekenstein-Hawking-Entropie Schwarzer Löcher
+\item unter Berücksichtigung der Gravitation kann der \glqq Informationsgehalt\grqq, d. h. die Anzahl möglicher Anordnungen von Teilchen und Feldern, keine rein lokale Größe sein kann, denn dann wäre er proportional zum Volumen
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}\frametitle{Kovariante Ableitung}
+
+\begin{itemize}
+\item partielle Ableitung eines Tensors ist kein Tensor mehr $\to$ kovariante Ableitung benötigt
+\item kovariante Ableitung der Riemann-Metrik geht in partielle Ableitung der Minkowski-Metrik (bei verschwindendem Christoffelsymbol) über
+\item \textbf{kontravariante (partielle) Ableitung} $A^{\lambda}_{|\kappa} := \frac{\partial A^{\lambda}}{\partial x^{\kappa}}$
+\item \textbf{kovariante Ableitung} $A^{\lambda}_{||\kappa} := A^{\lambda}_{|\kappa} + \Gamma^{\lambda}_{\kappa\rho} A^{\rho}$
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}\frametitle{Parallelverschiebung}
+
+\begin{itemize}
+\item $\delta A^{\mu} = -\Gamma^{\mu}_{\kappa \rho}A^{\kappa}dx^{\rho}$
+\item im euklidischen Raum ist ein geschlossenes Wegintegral über die Parallelverschiebung null
+\item im gekrümmten Raum hingegen im Allgemeinen nicht
+\item zur Berechnung differenziell kleiner Flächen wird der \textbf{Riemann'sche Krümmungstensor} benötigt: $\delta A^{\rho} = dx^\nu dx^\mu A^\sigma \cdot R^\rho_{\nu \mu \sigma}$
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}\frametitle{Riemann-Krümmungstensor}
+
+\begin{itemize}
+\item Tensor 4. Stufe
+\item beschreibt qualitativ Divergenz des Gravitationsfelds,\\ da durch erste Ableitungen der Christoffelsymbole (Felder) bzw. zweite der Metrik (Potenzial) ausdrückbar
+\end{itemize}
+
+\vspace{.5cm}
+
+$R^\mu_{\lambda\kappa\rho} = \Gamma^\mu_{\lambda\kappa|\rho} - \Gamma^\mu_{\lambda\rho|\kappa} - \Gamma^\sigma_{\lambda\rho} \Gamma^\mu_{\sigma\kappa} + \Gamma^\sigma_{\lambda\kappa}\Gamma^\mu_{\sigma\rho}$
+\end{frame}
+
+\begin{frame}\frametitle{Hydrodynamik}
+
+\tiny
+
+\begin{block}{Eulergleichung}
+$\rho \left(\partial_t\vec{v} + \left(\vec{v}\cdot\vec{\nabla}\right) \vec{v}\right) = -\vec{\nabla}P + \vec{f}_0$
+\end{block}
+
+\begin{block}{Kontinuitätsgleichung}
+$\partial_t\rho + \vec{\nabla} \cdot (\rho \vec{v}) = 0$
+\end{block}
+
+\begin{block}{Energie-Massendichte}
+verallgemeinert $\rho$=$\frac{\Delta m}{\Delta V}$=$\frac{\text{Ruhmasse}}{\text{Eigenvolumen}}$ \quad als \quad $M^{\alpha\beta} = \rho u^\alpha u^\beta$ \quad mit \quad $M^{00} = \gamma^2\rho c^2$
+\end{block}
+
+\begin{block}{Energie-Impuls-Tensor}
+$T^{\alpha\beta} = M^{\alpha\beta} + P^{\alpha\beta} +  T^{\alpha\beta}_{el.mag.} = \left(\rho + \frac{P}{c^2}\right) u^\alpha u^\beta - \eta^{\alpha\beta}P + \frac{1}{4\pi} (F^\alpha_\gamma F^{\gamma\beta} + \frac{1}{4} \eta^{\alpha\beta} F_{\gamma\delta} F^{\gamma\delta})$
+\end{block}
+
+\begin{block}{Relativistische Verallgemeinerung (von Euler- und Kontinuitätsgleichung)}
+$\partial_\beta T^{\alpha \beta} = f^\alpha$ mit Minkowski-Kraftdichte $f^\alpha$
+\end{block}
+
+\end{frame}
+
+\begin{frame}\frametitle{Newton-Grenzfall}
+
+
+\begin{block}{Newton-Bewegungsgleichungen (klassisch)}
+$\frac{d^2x^i}{dt^2} = - \frac{\partial \phi}{\partial x^i}$
+\end{block}
+
+\begin{block}{Äquivalenzprinzip}
+
+\begin{itemize}\tiny
+\item schwache Formulierung: $m_t = m_s$
+\item starke Formulierung: Beschleunigung $\hat{=}$ Gravitation\\ und es gibt (im abgeschlossenen Bezugssystem) kein Experiment zur Unterscheidung
+\item kräftefreier Massenpunkt in durch Gravitation in gleichem Maß mit beschleunigtem Bezugssystem: $\frac{d^2x^i}{d\tau^2} = 0$
+\end{itemize}
+
+\end{block}
+
+\begin{block}{Grenzfälle der Metrik}
+
+\begin{itemize}\tiny
+\item allgemeine Metrik $g_{\mu\nu}$ als kleine Störung $h_{\mu\nu}$ der Minkowski-Metrik $\eta_{\mu\nu}$: $g_{\mu \nu} = \eta_{\mu \nu} + h_{\mu \nu}$
+\item \textbf{ART} (Riemann) $[g_{\mu\nu}]$ $\overset{|h_{\mu\nu}|\ll 1}{\longrightarrow}$ \textbf{SRT} (Minkowski) $[\eta_{\mu\nu}]$ $\overset{v \ll c}{\longrightarrow}$ \textbf{Newton}, (Euklid) $[\delta_{ij}]$
+\end{itemize}
+
+\end{block}
+
+\begin{block}{Newton-Grenzfall}
+$R_{\mu\nu} - \frac{R}{2}g_{\mu\nu} \rightarrow \Box g_{\mu\nu}$
+\end{block}
+
+\end{frame}
+
+\begin{frame}\frametitle{Einstein'sche Feldgleichungen}
+
+\begin{block}{Einstein'sche Feldgleichungen}
+$R_{\mu\nu} - \frac{R}{2} g_{\mu\nu} + \Lambda g_{\mu\nu} = -\frac{8 \pi G}{c^4} \quad \text{bzw.} \quad G_{\mu\nu} + \Lambda g_{\mu\nu} = \kappa T_{\mu\nu}$
+\end{block}
+
+\end{frame}
+
+\begin{frame}\frametitle{Bianchi-Identitäten}
+
+Christoffelsymbole verschwinden im lokalen IS\\ $\Rightarrow$ der Raum ist lokal flach (krümmungsfrei)
+
+\vspace{.5cm}
+
+$\boxed{R_{iklm||n} + R_{ikmn||l} + R_{iknl||m} = 0}$
+
+\end{frame}
+
+\begin{frame}\frametitle{Gauß'sche Normalkoordinaten}
+
+\begin{block}{Gauß-Koordinaten}
+$x^\mu = \left( \begin{array} ct \\ r \\ \theta \\ \phi \end{array} \right)$
+\end{block}
+
+\begin{block}{Isotrope Metrik in Gauß-Koordinaten}
+$ds^2 = c^2 dt^2 - U(r,t)dr^2 - V(r,t)(d\theta^2 + \sin^2{\theta}d\phi^2)$
+\end{block}
+
+\end{frame}
+
+\begin{frame}\frametitle{Robertson-Walker-Metrik}
+Lösung der Feldgleichungen für homogenes, isotropes Universum:\\[.5cm]
+$ds^2 = c^2dt^2 - R(t)^2\left(\frac{dr^2}{1-kr^2}+r^2(d\theta^2 + \sin^2\theta d\phi^2)\right)$
+\end{frame}
+
+\section{Kosmologische Modelle}
+
+\begin{frame}\frametitle{Kosmologisches Prinzip}
+
+\begin{itemize}
+\item \glqq Alle Positionen (homogen) und Richtungen (isotrop) sind gleichwertig.\grqq
+\item geht in die Robertson-Walker-Metrik ein
+\item \textbf{Olbers'sches Paradoxon} Wenn es unendlich viele Sterne (homogen und isotrop) in allen Distanzen und Richtungen gibt, warum ist der Nachthimmel nicht hell sondern dunkel.\end{itemize}
+
+\end{frame}
+
+\begin{frame}\frametitle{Friedmann-Gleichung}
+
+\centering
+
+\includegraphics[width=\textwidth, height=0.7\textheight]{Bilder/Parameter.jpg}
+
+\vspace{.5cm}
+
+$\boxed{\dot{a}^2 - \frac{K_s}{a^2} - \frac{K_m}{a} - \frac{\Lambda}{3}a^2 = -K}$
+
+\end{frame}
+
+\begin{frame}\frametitle{Friedmann-Modelle}
+
+\begin{block}{Lemaître-Universum}
+zeitweise expandierend, dazwischen annähernd statisch, \quad $\Lambda > 0$
+\end{block}
+
+\begin{block}{Einstein-Kosmos}
+statisch, instabil, \quad $\Lambda > 0$
+\end{block}
+
+\begin{block}{De-Sitter-Modell}
+flach, \glqq materiefrei\grqq, \quad $\Lambda > 0$
+\end{block}
+
+\begin{block}{Einstein-De-Sitter-Modell}
+flach, unendlich ausgedehnt, \quad $\Lambda = 0$
+\end{block}
+
+\end{frame}
+
+\begin{frame}\frametitle{Flächen und Abstände in der RWM}
+
+\begin{block}{Metrik}
+$ds^2 = c^2dt^2 - a(t)^2[d\chi^2 + f^2(\chi)d\Omega^2]$, wobei $r = f(\chi) \underset{k=0} {=}\chi$
+\end{block}
+
+\begin{block}{Abstand}
+$D = a(t) \cdot \chi$
+\end{block}
+
+\begin{block}{Fläche}
+$A = 4\pi f^2(\chi) a^2$
+\end{block}
+
+\begin{block}{Verhältnis Fläche/Durchmesser}
+$\frac{A}{D^2} = \frac{4\pi f^2(\chi)}{\chi^2 } = 4\pi \cdot \underbrace{[\frac{f(D/a)}{D/a}]}_{\text{Abweichung vom euklid. Raum}}$
+\end{block}
+
+\end{frame}
+
+\begin{frame}\frametitle{Rotverschiebungs-Abstands-Relation}
+
+\begin{block}{Lichttrajektorie von damals $\chi(t_1) = 0$ bis heute $\chi(t_0) = \chi$}
+$d^2 = c^2 dt^2 - a^2(t) d\chi^2 = 0$
+$d\chi = \frac{c dt}{a(t)} \quad \Rightarrow \quad \chi = \displaystyle \int_{t_1}^{t_0} d\chi$\\
+$\Rightarrow \frac{a(t)}{\delta t} = a(t) \nu = const.$
+\end{block}
+
+\begin{block}{Rotverschiebungsparameter}
+$z := \frac{\lambda_{Empf.}}{\lambda_{Quelle}} - 1 = \frac{\lambda_0}{\lambda_1} - 1 = \frac{\nu_1}{\nu_0} - 1$
+\end{block}
+
+\tiny
+
+\begin{block}{Rotverschiebungs-Abstands-Relation}
+$z_{kosm.} = \frac{H_0 D}{c} + (\frac{1+q_0}{2c^2}) H_0^2 D^2$\\
+mit \textbf{Hubble-Konstante} $H_0 := \frac{c \cdot \dot{a}(t_0)}{a(t_0)}$, \textbf{Verzögerungsparameter} $q_0 := \frac{\ddot{a}(t_0) \cdot a(t_0)}{\dot{a}(t_0)}$\\ und dem Abstand zur sendenden Galaxie $D = D(t_0) = a(t_0) \chi$
+\end{block}
+
+\end{frame}
+
+\begin{frame}\frametitle{Weltalter und -horizont}
+
+\begin{columns}
+
+\begin{column}{.48\textwidth}
+
+\includegraphics[width=\textwidth, height=.6\textheight]{Bilder/Welthorizont}
+
+\end{column}
+
+\hfill
+
+\begin{column}{.48\textwidth}
+
+\begin{block}{Weltalter}
+Beginn der Welt bei $t_1=0$ mit $a(t_1) = 0$, Alter der Welt ist $t_0$\\
+Licht, das uns heute erreicht, kann maximal während $[t_1,t_0]$ unterwegs gewesen sein $\Rightarrow$ es gibt eine maximale Entfernung $D(t_0)$ zu Lichtquelle d.h. ein \textbf{Welthorizont} (Größe des sichtbaren Weltalls), über den wir nicht hinaus schauen können
+\end{block}
+
+\end{column}
+
+\end{columns}
+
+\end{frame}
+
+\begin{frame}\frametitle{Überlichtgeschwindigkeiten}
+
+\begin{columns}
+
+\begin{column}{.48\textwidth}
+
+\includegraphics[width=\textwidth, height=.7\textheight]{Bilder/Ueberlichtgeschwindigkeit}
+
+\end{column}
+
+\hfill
+
+\begin{column}{.48\textwidth}
+
+\begin{itemize}
+\item eine relative Fluchtgeschwindigkeit zweier Galaxien größer c ist vereinbar mit der SRT, da sich die Galaxien so nicht im gleichen Inertialsystem befinden und (außerhalb des Lichtkegels $ds^2 = 0$ liegend) nicht kausal verbunden sind
+\item die Robertson-Walker-Metrik gilt also auch für nicht kausal verbundene Bereiche
+\end{itemize}
+
+\end{column}
+
+\end{columns}
+
+\end{frame}
+
+\begin{frame}\frametitle{Weltzustand}
+
+\begin{itemize}
+\item das \textbf{Lambda-ColdDarkMatter-Modell} ist ein kosmologisches Modell, das mit wenigen Parametern die Entwicklung des Universums seit dem Urknall beschreibt
+\item 5 Parameter: $(\Omega_m)\Omega_k,\Omega_{\Lambda}, H_0, q_0)$\\[.1cm] wobei
+$\Omega_m$: Materiedichte, $\Omega_k$: Krümmungsdichte, $\Omega_{\Lambda}$: Kosmologische Konstante (Dunkle Energie), $H_0$: Hubble-Konstante, $q_0$: Verzögerungsparameter
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}\frametitle{Kosmologische Konstante}
+
+\begin{columns}
+
+\begin{column}{.48\textwidth}
+
+\includegraphics[width=\textwidth, height=.6\textheight]{Bilder/Lambda}
+
+\end{column}
+
+\hfill
+
+\begin{column}{.48\textwidth}
+
+\begin{block}{Experiment (CMB)}
+$\rho_{\Lambda} \approx 6 \cdot 10^{-27} kg/m^3$
+\end{block}
+
+\begin{block}{Theorie (QFT)}
+$\rho_{vac} \approx 5 \cdot 10^{96} kg/m^3$
+\end{block}
+
+\begin{block}{Vergleich / Diskrepanz}
+$\frac{\rho_{\Lambda}}{\rho_{vac}} \approx 10^{-123}$!!!
+\end{block}
+
+\end{column}
+
+\end{columns}
+
+\end{frame}
+
+\begin{frame}\frametitle{Gödel-Universum}
+
+\tiny
+
+\begin{itemize}
+\item
+von Kurt Gödel 1949 entwickeltes Modell eines rotierenden, geschlossenen, stationären Universums mit negativer kosmologischer Konstante
+
+\item Gödels Universum ist rotierend (mit einer Umlaufzeit von ca. 70 Millionen Jahren), die Zentrifugalkraft gleicht die Gravitationskraft aus - somit endet es nicht in einem finalen Kollaps (Big Crunch) und steht auch im Einklang mit der ART
+
+\item das Zentrum der Rotation liegt überall - jeder der Betrachter befindet sich im Zentrum
+
+\item das Modell beinhaltet so genannte geschlossene zeitartige Kurven (vierdimensionale Weltlinien), die durch die rotierende Masse verursacht werden
+
+\item sie laufen kreisförmig in sich zurück - dies hat zur Folge, dass man bei einem Flug mit einem ausreichend schnellen Raumschiff in den Raum hinaus wieder am Ausgangspunkt des Fluges ankommen kann - dabei kommt man auch je nach Größe der Weltlinie und Geschwindigkeit des Raumschiffes zum oder vor dem Zeitpunkt des Abfluges zurück, da durch die Rotation des Universums nicht nur der Raum, sondern auch die Zeit verzerrt wird
+
+\item es lässt sich spekulieren, dass so das ganze Universum als große Zeitmaschine funktionieren kann - Raumreisen sind im Gödel-Universum gleichzeitig Zeitreisen
+
+\item im Modell breitet sich Licht extrem aus - strahlt beispielsweise ein Stern im Norden des Betrachters, entfernt sich sein Licht bis zur größten Entfernung im Norden und kehrt dann aus westlicher Richtung zum Betrachter zurück - so kann es auch das ganze Universum umkreisen
+
+\item wie bei allen anderen Zeitreisen gibt es auch hier das Problem der (paradoxen) Verletzungen der Kausalität
+\end{itemize}
+
+\end{frame}
+
+\section{Galaxien}
+
+\begin{frame}\frametitle{Daten Milchstraße}
+
+\begin{columns}
+
+\begin{column}{.48\textwidth}
+
+\includegraphics[width=\textwidth, height=.5\textheight]{Bilder/Balkenspiralgalaxie}
+
+\end{column}
+
+\hfill
+
+\begin{column}{.48\textwidth}
+
+\begin{itemize}
+\item Durchmesser: 100.000–120.000 Lichtjahre
+\item Dicke: 3.000–16.000 (Bulge) Lichtjahre
+\item Masse (sichtbar): ca. 400 Milliarden Sonnenmassen
+\item Sterne: ca. 100 bis 300 Milliarden
+\item Typ: Balkenspiralgalaxie
+\end{itemize}
+
+\end{column}
+
+\end{columns}
+
+\end{frame}
+
+\begin{frame}\frametitle{oortsche (differenzielle) Rotationsformeln}
+
+\begin{columns}
+
+\begin{column}{.48\textwidth}
+
+\includegraphics[width=.9\textwidth, height=.6\textheight]{Bilder/Oort}
+
+\end{column}
+
+\hfill
+
+\begin{column}{.48\textwidth}
+
+\begin{itemize}
+\tiny
+\item 1927 gelang Oort der Nachweis der Rotation unserer Galaxis durch Untersuchung der räumlichen Verteilung von Radialgeschwindigkeiten und Eigenbewegungen
+\item Rotationsformeln gelten nur im Mittel über viele Sterne (einzelne Sterne haben zusätzlich Pekuliargeschwindigkeiten)
+\item $ v_\text{r} \approx A\cdot d\cdot \sin(2l) $ (Radialbewegung)
+\item $ v_\text{t} \approx A\cdot d\cdot \cos(2l) + B\cdot r $ (Eigenbewegung)
+\item $ A =  \frac{1}{2}\left(\frac{V_{0}}{R_{0}}-\frac{\mathrm dv}{\mathrm dr}\Big|_{R_{0}}\right) \approx +14{,}8 \pm 0{,}8 \ \mathrm{km/s/kpc} $ (Scherung)
+\item $ B = -\frac{1}{2}\left(\frac{V_{0}}{R_{0}}+\frac{\mathrm dv}{\mathrm dr}\Big|_{R_{0}}\right) \approx -12{,}4 \pm 0{,}6 \ \mathrm{km/s/kpc} $ (Wirbelstärke)
+\item l ist die \glqq galaktische Länge des Sterns und d seine Entfernung von der Sonne
+\end{itemize}
+
+\end{column}
+
+\end{columns}
+
+\end{frame}
+
+\begin{frame}\frametitle{Eigenbewegung}
+
+\begin{columns}
+
+\begin{column}{.48\textwidth}
+
+\includegraphics[width=.9\textwidth, height=.4\textheight]{Bilder/Eigenbewegung}
+
+\end{column}
+
+\hfill
+
+\begin{column}{.48\textwidth}
+
+\tiny
+\begin{itemize}
+\item die auf räumlichen Bewegungen von Himmelskörpern beruhende, langsame Positionsänderung an der gedachten 
+Himmelskugel
+\item zusammen mit der Radialgeschwindigkeit ergibt sie die Raumbewegung des Objekts
+\item in zwei sphärischen Komponenten (nördlich und östlich) angegeben
+\item für Objekte außerhalb des Sonnensystems meist kleiner als 1 Bogensekunde pro Jahr
+\item die Eigenbewegung gibt eine Winkelgeschwindigkeit an, aus der sich die Geschwindigkeitskomponente senkrecht zur Verbindung Erde und Stern berechnet (Tangentialgeschwindigkeit) durch Multiplikation mit dem Abstand
+\end{itemize}
+
+\end{column}
+
+\end{columns}
+
+\end{frame}
+
+\begin{frame}\frametitle{Hubble-Sequenz}
+
+\begin{columns}
+
+\begin{column}{.48\textwidth}
+
+\includegraphics[width=\textwidth, height=.4\textheight]{Bilder/Hubble-Sequenz}
+
+\end{column}
+
+\hfill
+
+\begin{column}{.48\textwidth}
+
+\tiny
+\begin{itemize}
+\item morphologisches Ordnungsschema für Galaxien, 1936 von Edwin Hubble entwickelt
+\item man bezeichnet zuweilen immer noch (eigentlich inkorrekt) elliptische Galaxien als \glqq frühe\grqq \ und Spiralgalaxien als \glqq späte\grqq
+\item Hubble-Sequenz auf die Erscheinung von Galaxien im sichtbaren Bereich ausgelegt 
+\item heutzutage nur sehr eingeschränkt benutzt - aber es fehlt ein moderneres, besseres Klassifikationsschema für
+\item zuverlässige qualitative (im Gegensatz zu quantitativer) Beschreibung schwierig
+\end{itemize}
+
+\end{column}
+
+\end{columns}
+
+\end{frame}
+
+\begin{frame}\frametitle{(Lin-Shu)Dichtewellentheorie}
+
+\begin{columns}
+
+\begin{column}{.48\textwidth}
+
+\includegraphics[width=\textwidth, height=.5\textheight]{Bilder/Spiralarme}
+
+Spiralarme als Folge von leicht versetzten elliptischen Umlaufbahnen um das galaktische Zentrum
+
+\end{column}
+
+\hfill
+
+\begin{column}{.48\textwidth}
+
+\tiny
+\begin{itemize}
+\item Beschreibung der Bildung und Aufrechterhaltung der Spiralstruktur in Spiralgalaxien
+\item die Theorie geht davon aus, dass die Spiralarme ein Wellenphänomen sind und ständig neu gebildet werden
+\item Dichtewellen durchlaufen die Materie der Galaxie, wobei die Spiralarme die Gebiete maximaler Dichte (Gebiete der Sternentstehung) darstellen
+\item nicht klar, wie die Wellen angefacht und gedämpft werden oder welche Rolle die interstellaren Magnetfelder spielen
+\item weitere Frage wirft die Beobachtung auf, dass Spiralarme in der Regel nicht gleichmäßig ausgeformt sind - bei genauerem Hinsehen lassen sie z. B. Lücken und Beulen oder Verbindungen zwischen verschiedenen Spiralarmen erkennen
+\end{itemize}
+
+\end{column}
+
+\end{columns}
+
+\end{frame}
+
+\begin{frame}\frametitle{Stabilität rotierender Scheiben}
+
+\begin{itemize}
+\item ist die Scheibe stabil gegen gravitative Störungen?
+\item " gegen Dichtefluktuationen?
+\item \glqq Jeans-Kriterium\grqq \ für Kollaps
+\item \glqq Toomre-Kriterium\grqq \ zusätzlich mit Verscherungen durch differenzielle Rotation
+\item Stabilisierung gegen Eigengravitation durch Druck oder Rotation
+\item Q-Faktor misst die relative Bedeutung von Vortizität / Wirbelstärke (Tendenz eines Fluidelements zur Eigendrehung) und innerer Geschwindigkeitsdispersion (stabilisierend) gegenüber der Oberflächendichte der Scheibe (destabilisierend)
+\item $Q < 1$ bedeutet Instabilität
+\end{itemize}
+
+\end{frame}
+
+\end{document}
