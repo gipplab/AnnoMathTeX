@@ -11,7 +11,7 @@ from collections import OrderedDict
 mypath = "F:\\arXiv"
 
 # annotation_catalog = {}
-with open(mypath + "\\output2\\" + "annotation_catalog.pkl", "rb") as f:
+with open(mypath + "\\output2\\" + "annotation_catalog_all.pkl", "rb") as f:
     annotation_catalog = pickle.load(f)
 
 annotation_candidates = {}
@@ -62,6 +62,6 @@ for identifier in annotation_catalog.items():
 
         annotation_candidates[identifier[0]] = OrderedDict(sorted(matches.items(), key=itemgetter(1), reverse=True))
 
-        f = open(mypath + "\\output2\\" + "annotation_candidates.pkl", "wb")
+        f = open(mypath + "\\output2\\" + "annotation_candidates_all.pkl", "wb")
         pickle.dump(OrderedDict(sorted(annotation_candidates.items())), f)
         f.close()
