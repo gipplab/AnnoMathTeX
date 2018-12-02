@@ -1,12 +1,13 @@
 import re
 from .model.chunk import Chunk
 from .model.word import Word
-
-
-
+from .model.latexfile import LaTeXFile
 
 
 class LaTeXProcessor:
+    """
+    Processes the LaTeX file that the user uploads
+    """
 
     def __init__(self, requestFile):
         """
@@ -16,10 +17,25 @@ class LaTeXProcessor:
 
 
     def get_file_string(self):
-        return self.decode(self.requestFile)
+        """
+        For testing purposes
+        :return: decoded file (string)
+        """
+        return self.decode()
 
     def get_processed_lines(self):
-        return self.find_math_tags(self.file_string)
+        """
+        For testing purposes
+        :return: Found Math Tags etc.
+        """
+        return self.find_math_tags()
+
+    def get_latex_file(self):
+        """
+        :return: processed LaTeX file with body, chunks, words
+        """
+        processed_lines = self.find_math_tags()
+        return LaTeXFile(processed_lines)
 
 
     def decode(self):
@@ -34,7 +50,11 @@ class LaTeXProcessor:
 
 
     def find_math_tags(self):
-        lines = self.load_file()
+        """
+        Finds the math tags and creates chunks that hihglights them
+        :return: List of lines of the file
+        """
+        lines = self.decode()
         processed_lines = []
         for line in lines:
             chunks = []
@@ -52,4 +72,9 @@ class LaTeXProcessor:
             processed_lines.append(chunks)
 
         return processed_lines
+
+
+    def find_named_entities(self):
+        #todo
+        pass
 

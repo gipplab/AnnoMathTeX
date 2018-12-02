@@ -19,6 +19,8 @@ class FileUploadView(View):
         if form.is_valid():
             #TODO add check to see whether file is .tex
             latexprocessor = LaTeXProcessor(request.FILES['file'])
-            return render(request, 'render_file_template.html', {'TexFile': latexprocessor.get_file_string()})
+            return render(request,
+                          'render_file_template.html',
+                          {'TexFile': latexprocessor.get_latex_file()})
 
         return render(request, "file_upload_template.html", self.initial)

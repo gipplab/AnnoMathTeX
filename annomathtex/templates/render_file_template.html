@@ -1,5 +1,19 @@
 {% block content %}
 
-    {{ TexFile }}
+
+    {{ TeXFile }}
+    {% for Line in TexFile.body %}
+
+        <div>
+            {% for Chunk in Line %}
+                <span class="inline" title={{ Chunk.type }}>{{ Chunk.str }}</span>
+                {% if Chunk.endline %}
+                    </br>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+    {% endfor %}
+
 
 {% endblock %}
