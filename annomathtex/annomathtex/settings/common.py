@@ -111,7 +111,8 @@ MEDIA_URL = '/media/'
 
 
 # ##### DEBUG CONFIGURATION ###############################
-DEBUG = False
+#Set by IM
+DEBUG = True
 
 
 # finally grab the SECRET KEY

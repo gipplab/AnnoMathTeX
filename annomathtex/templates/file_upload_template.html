@@ -1,56 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>{% load static %}
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Custom CSS -->
-    {% comment "Load your css like so" %}
-      <link rel="stylesheet" href="{% static 'css/my/app/app.css' %}">
-    {% endcomment %}
-
-
-    <title>AnnoMathTex</title>
-  </head>
-
-  <body>
-
-
-
-     <!-- Your FrontEnd JS Code -->
-     {% comment "Below is an example of how you might render your Angular/React/Vue front-end framework code" %}
-        <script src="{% static 'js/my/app/app.js' %}"></script>
-
-    <script type="text/javascript" src="index.js"></script>
-    {% endcomment %}
-
-  </body>
-</html>
-
 {% block content %}
-
-    {% for Line in TexFile.body %}
-
-        <div>
-            {% for Chunk in Line %}
-                <span class="inline" title={{ Chunk.type }}>{{ Chunk.str }}</span>
-                {% if Chunk.endline %}
-                    </br>
-                {% endif %}
-            {% endfor %}
-        </div>
-
-    {% endfor %}
-
-
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="file">
+        <button type="submit" >Upload</button>
+    </form>
 {% endblock %}
