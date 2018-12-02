@@ -1,7 +1,7 @@
 import os
 import re
-from .word import Word
-from .chunk import Chunk
+from annomathtex.annomathtex.latexprocessing.model.word import Word
+from annomathtex.annomathtex.latexprocessing.model.chunk import Chunk
 
 
 
