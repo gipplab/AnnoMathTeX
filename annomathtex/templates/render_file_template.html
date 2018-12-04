@@ -21,8 +21,8 @@
               <script>
                   var chunkType = "{{ Chunk.type }}";
 
-                  tippy('.btn', {
-                    content: chunkType,
+                  tippy('.token', {
+                    content: document.querySelector('#myTemplate'),
                     delay: 100,
                     arrow: true,
                     arrowType: 'round',
@@ -35,11 +35,12 @@
                   })
               </script>
 
-              <span class="inline btn">
+              <span class="inline token">
                 <strong style="color: pink;">
                   {{ Chunk.str }}
                 </strong>
               </span>
+              <div id="myTemplate">PUT THE POPUP STUFF HEEEEERE</div>
                 {# <span class="inline" title={{ Chunk.type }}>{{ Chunk.str }}</span> #}
                 {% if Chunk.endline %}
                     </br>
