@@ -1,3 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://unpkg.com/tippy.js@3/dist/tippy.all.min.js"></script>
+
+
+</head>
+
+<body>
+
+
+
 {% block content %}
 
 
@@ -6,7 +18,29 @@
 
         <div>
             {% for Chunk in Line %}
-                <span class="inline" title={{ Chunk.type }}>{{ Chunk.str }}</span>
+              <script>
+                  var chunkType = "{{ Chunk.type }}";
+
+                  tippy('.btn', {
+                    content: chunkType,
+                    delay: 100,
+                    arrow: true,
+                    arrowType: 'round',
+                    size: 'large',
+                    duration: 500,
+                    animation: 'scale',
+                    allowHTML: true,
+                    hideOnClick: true,
+                    trigger: "click"
+                  })
+              </script>
+
+              <span class="inline btn">
+                <strong style="color: pink;">
+                  {{ Chunk.str }}
+                </strong>
+              </span>
+                {# <span class="inline" title={{ Chunk.type }}>{{ Chunk.str }}</span> #}
                 {% if Chunk.endline %}
                     </br>
                 {% endif %}
@@ -17,3 +51,7 @@
 
 
 {% endblock %}
+
+</body>
+</html>
+
