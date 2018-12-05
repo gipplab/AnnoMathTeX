@@ -7,8 +7,9 @@ Punctuation are excluded.
 
 class Token(object, metaclass=ABCMeta):
 
-    def __init__(self, highlight, content, endline):
+    def __init__(self, type, highlight, content, endline):
         """
+        :param type: String, "Word" or "Identifier". Needed for correct template rendering
         :param highlight: String, color, that the Token should be highlighted in. None if no highlight desired.
         :param content: String, The Word/Identifier itself.
         :param endline: Boolean, needed for page rendering
@@ -16,6 +17,7 @@ class Token(object, metaclass=ABCMeta):
         self.highlight = highlight
         self.content = content
         self.endline = endline
+        self.type = type
 
     @abstractmethod
     def get_type(self):
@@ -31,4 +33,8 @@ class Token(object, metaclass=ABCMeta):
 
     @abstractmethod
     def get_endline(self):
+        raise NotImplementedError('must be impplemented')
+
+    @abstractmethod
+    def set_endline(self, new_endline_val):
         raise NotImplementedError('must be impplemented')

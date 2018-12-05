@@ -14,16 +14,17 @@ This class inherits from Token. Every word in the LaTeX file is a Word.
 class Word(Token):
     #todo: add colouring for named entity is this class
 
-    def __init__(self, highlight, content, endline, named_entity):
+    def __init__(self, type, highlight, content, endline, named_entity):
         """
         Constructor of superclass Token is called for highlight and content
 
+        :param type: String, "Word" or "Identifier". Needed for correct template rendering
         :param highlight: String, colour, that the Word should be highlighted in. None if no highlight desired.
         :param content: String, The Word itself.
         :param endline: Boolean, needed for page rendering
         :param named_entity: Boolean, whether the Word is a named entity.
         """
-        super().__init__(highlight, content, endline)
+        super().__init__(type, highlight, content, endline)
         self.named_entity = named_entity
 
     def get_type(self):
@@ -31,7 +32,7 @@ class Word(Token):
         Get the name of the current class.
         :return: Name of class.
         """
-        return self.__class__.__name__
+        return self.type
 
     def get_highlight(self):
         """
@@ -60,3 +61,11 @@ class Word(Token):
         :return: Boolean, named entity or not.
         """
         return self.named_entity
+
+    def set_endline(self, new_endline_val):
+        """
+        set the endline value
+        :param new_endline_val:
+        :return: None
+        """
+        self.endline = new_endline_val

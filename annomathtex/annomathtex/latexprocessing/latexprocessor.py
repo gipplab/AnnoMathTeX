@@ -1,7 +1,9 @@
 import re
+import nltk
 from nltk.tokenize import word_tokenize
 from .model.chunk import Chunk
 from .model.word import Word
+from .model.identifier import Identifier
 from .model.latexfile import LaTeXFile
 
 
@@ -57,35 +59,67 @@ class LaTeXProcessor:
         """
 
         def extract_words(line_chunk, endline):
+            #todo: use NECKAR NER
             words= []
-            for word in word_tokenize(line_chunk):
-                #handle NE recognition
-                pass
+            word_tokens = nltk.word_tokenize(line_chunk)
+
+            """pos_word_tuples = nltk.pos_tag(word_tokens)
+            
+            for _, pos_word_tuple in enumerate(pos_word_tuples, binary=True):
+                if isinstance(pos_word_tuple, nltk.tree.Tree):
+                    #ne
+                    pass
+                else:
+                    #not ne
+                    pass"""
+
+            for word in word_tokens:
+                words.append(Word(type='Word', highlight=None, content=word, endline=False, named_entity=False))
+
+            if endline:
+                words[-1].endline = True
+
+            return words
 
 
 
         def extract_identifiers(line_chunk, endline):
-            pass
+            #todo: implement
+            identifiers = []
+            identifier_tokens = nltk.word_tokenize(line_chunk)
+
+            for identifier in identifier_tokens:
+                identifiers.append(Identifier(type='Identifier', highlight=True, content=identifier, endline=False, qid=None))
+
+            if endline:
+                identifiers[-1].endline = True
+
+            return identifiers
 
 
         lines = self.decode()
-        processed_lines = []
+        all_processed_lines = []
         for line in lines:
             chunks = []
             line_copy = line
             maths = re.findall(r'\$.*?\$', line)
+            processed_line = []
             if len(maths) > 0:
                 for i, math in enumerate(maths):
                     search_pattern = '.*?(?=\$.*?\$)'
                     non_math = re.findall(search_pattern, line_copy)[0]
-                    chunks.append(Chunk(non_math, type='non_math', highlight=False, endline=False))
-                    chunks.append(Chunk(math, type='math', highlight=True, endline=False))
+                    processed_line += extract_words(non_math, False)
+                    processed_line += extract_identifiers(math, False)
+                    #chunks.append(Chunk(non_math, type='non_math', highlight=False, endline=False))
+                    #chunks.append(Chunk(math, type='math', highlight=True, endline=False))
                     line_copy = line[len(non_math)+len(math):]
 
-            chunks.append(Chunk(line_copy, type='non_math', highlight=False, endline=True))
-            processed_lines.append(chunks)
+            #chunks.append(Chunk(line_copy, type='non_math', highlight=False, endline=True))
+            #processed_lines.append(chunks)
+            processed_line += extract_words(line_copy, False)
+            all_processed_lines.append(processed_line)
 
-        return processed_lines
+        return all_processed_lines
 
 
     def find_named_entities(self):
