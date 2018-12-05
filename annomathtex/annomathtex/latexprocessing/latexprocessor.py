@@ -1,4 +1,5 @@
 import re
+from nltk.tokenize import word_tokenize
 from .model.chunk import Chunk
 from .model.word import Word
 from .model.latexfile import LaTeXFile
@@ -55,12 +56,15 @@ class LaTeXProcessor:
         :return: List of lines of the file
         """
 
-        #todo: inner class: identifier extractor
+        def extract_words(line_chunk, endline):
+            words= []
+            for word in word_tokenize(line_chunk):
+                #handle NE recognition
+                pass
 
-        def extract_words():
-            pass
 
-        def extract_identifiers():
+
+        def extract_identifiers(line_chunk, endline):
             pass
 
 
