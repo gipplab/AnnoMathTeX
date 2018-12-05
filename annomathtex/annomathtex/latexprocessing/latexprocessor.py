@@ -7,6 +7,7 @@ from .model.latexfile import LaTeXFile
 
 
 class LaTeXProcessor:
+    #todo: add colour coding for individual latex commands
     """
     Processes the LaTeX file that the user uploads
     """
@@ -79,7 +80,7 @@ class LaTeXProcessor:
                     pass"""
 
             for word in word_tokens:
-                words.append(Word(type='Word', highlight=None, content=word, endline=False, named_entity=False))
+                words.append(Word(type='Word', highlight='black', content=word, endline=False, named_entity=False))
 
             if endline:
                 words[-1].endline = True
@@ -98,7 +99,7 @@ class LaTeXProcessor:
             identifier_tokens = nltk.word_tokenize(line_chunk)
 
             for identifier in identifier_tokens:
-                identifiers.append(Identifier(type='Identifier', highlight=True, content=identifier, endline=False, qid=None))
+                identifiers.append(Identifier(type='Identifier', highlight='pink', content=identifier, endline=False, qid=None))
 
             if endline:
                 identifiers[-1].endline = True

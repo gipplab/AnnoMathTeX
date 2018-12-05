@@ -45,13 +45,6 @@ class Identifier(Token):
         """
         return self.endline
 
-    def get_qid(self):
-        """
-        Get the Wikidata Quid for the identifier
-        :return: Wikidata Quid
-        """
-        return self.qid
-
     def set_endline(self, new_endline_val):
         """
         set the endline value
@@ -59,3 +52,10 @@ class Identifier(Token):
         :return: None
         """
         self.endline = new_endline_val
+
+    def get_qid(self):
+        """
+        Get the Wikidata Quid for the identifier
+        :return: Wikidata Quid
+        """
+        return self.qid

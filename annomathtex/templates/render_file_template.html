@@ -37,7 +37,8 @@
 
               {% if not Token.content == None %}
                 <span class="inline token">
-                  <strong style="color: pink;">
+                  {# <strong style="color: pink;"> #}
+                  <strong style="color: {{ Token.highlight }};">
                     {{ Token.content }}
                   </strong>
                 </span>
