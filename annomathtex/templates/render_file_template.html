@@ -35,16 +35,18 @@
                   })
               </script>
 
-              <span class="inline token">
-                <strong style="color: pink;">
-                  {{ Token.content }}
-                </strong>
-              </span>
-              <div id="myTemplate">PUT THE POPUP STUFF HEEEEERE</div>
-                {# <span class="inline" title={{ Chunk.type }}>{{ Chunk.str }}</span> #}
-                {% if Token.endline %}
-                    </br>
-                {% endif %}
+              {% if not Token.content == None %}
+                <span class="inline token">
+                  <strong style="color: pink;">
+                    {{ Token.content }}
+                  </strong>
+                </span>
+                <div id="myTemplate">PUT THE POPUP STUFF HEEEEERE</div>
+              {% endif %}
+
+              {% if Token.endline %}
+                  </br>
+              {% endif %}
             {% endfor %}
         </div>
 

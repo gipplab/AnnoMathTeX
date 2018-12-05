@@ -1,9 +1,8 @@
 import re
 import nltk
-from nltk.tokenize import word_tokenize
-from .model.chunk import Chunk
 from .model.word import Word
 from .model.identifier import Identifier
+from .model.empty_line import EmptyLine
 from .model.latexfile import LaTeXFile
 
 
@@ -59,6 +58,12 @@ class LaTeXProcessor:
         """
 
         def extract_words(line_chunk, endline):
+            """
+
+            :param line_chunk:
+            :param endline:
+            :return:
+            """
             #todo: use NECKAR NER
             words= []
             word_tokens = nltk.word_tokenize(line_chunk)
@@ -81,9 +86,13 @@ class LaTeXProcessor:
 
             return words
 
-
-
         def extract_identifiers(line_chunk, endline):
+            """
+
+            :param line_chunk:
+            :param endline:
+            :return:
+            """
             #todo: implement
             identifiers = []
             identifier_tokens = nltk.word_tokenize(line_chunk)
@@ -97,9 +106,11 @@ class LaTeXProcessor:
             return identifiers
 
 
+
         lines = self.decode()
         all_processed_lines = []
         for line in lines:
+            #print(line, len(line))
             chunks = []
             line_copy = line
             maths = re.findall(r'\$.*?\$', line)
@@ -116,13 +127,15 @@ class LaTeXProcessor:
 
             #chunks.append(Chunk(line_copy, type='non_math', highlight=False, endline=True))
             #processed_lines.append(chunks)
-            processed_line += extract_words(line_copy, False)
+            if line == '\n':
+                processed_line = [EmptyLine()]
+            else:
+                processed_line += extract_words(line_copy, False)
+
             all_processed_lines.append(processed_line)
 
+        #for l in all_processed_lines:
+        #    print(l)
+
         return all_processed_lines
-
-
-    def find_named_entities(self):
-        #todo
-        pass
 
