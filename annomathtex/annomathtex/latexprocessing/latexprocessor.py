@@ -51,9 +51,19 @@ class LaTeXProcessor:
 
     def find_math_tags(self):
         """
-        Finds the math tags and creates chunks that hihglights them
+        Finds the math tags and creates chunks that highlights them
         :return: List of lines of the file
         """
+
+        #todo: inner class: identifier extractor
+
+        def extract_words():
+            pass
+
+        def extract_identifiers():
+            pass
+
+
         lines = self.decode()
         processed_lines = []
         for line in lines:
