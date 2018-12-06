@@ -4,18 +4,26 @@ from .token import Token
 class Identifier(Token):
     #todo: method: find wikidata quid
 
-    def __init__(self, type, highlight, content, endline, qid):
+    def __init__(self, unique_id, type, highlight, content, endline, qid):
         """
         Constructor of superclass Token is called for highlight and content
 
+        :param unique_id: uuid.uuid1 object, converted to a string. Needed in template for rendering.
         :param type: String, "Word" or "Identifier". Needed for correct template rendering
         :param highlight: String, colour, that the Identifier should be highlighted in. None if no highlight desired.
         :param content: String, The Identifier itself.
         :param endline: Boolean, needed for page rendering
         :param qid: String, the Wikidata Quid corresponding to the identifier.
         """
-        super().__init__(type, highlight, content, endline)
+        super().__init__(unique_id, type, highlight, content, endline)
         self.qid = qid
+
+    def get_unique_id(self):
+        """
+        Get the unique id of the identifier
+        :return: String of unique id
+        """
+        return self.unique_id
 
     def get_type(self):
         """

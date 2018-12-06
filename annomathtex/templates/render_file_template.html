@@ -3,7 +3,6 @@
 <head>
 <script src="https://unpkg.com/tippy.js@3/dist/tippy.all.min.js"></script>
 
-
 </head>
 
 <body>
@@ -33,16 +32,30 @@
                     hideOnClick: true,
                     trigger: "click"
                   })
+
+
+                  function changeColour() {
+                    var token = document.getElementById("tokenContent");
+                    token.style.color="blue;";
+                  }
+
+                  $("#clickButton").click(function () {
+                    alert("test");
+                  })
               </script>
 
               {% if not Token.content == None %}
-                <span class="inline token">
+                <span class="inline token" id="tokenContent">
                   {# <strong style="color: pink;"> #}
                   <strong style="color: {{ Token.highlight }};">
                     {{ Token.content }}
                   </strong>
                 </span>
-                <div id="myTemplate">PUT THE POPUP STUFF HEEEEERE</div>
+                <div id="myTemplate">
+                  PUT THE POPUP STUFF HEEEEERE </br>
+                  <button onclick="javascript:clickTest()">Highlight</button>
+                  {# <button id="clickButton">Highlight</button> #}
+                </div>
               {% endif %}
 
               {% if Token.endline %}
