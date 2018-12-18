@@ -1,5 +1,6 @@
 import re
 import nltk
+from uuid import uuid1
 from .model.word import Word
 from .model.identifier import Identifier
 from .model.empty_line import EmptyLine
@@ -78,9 +79,10 @@ class LaTeXProcessor:
                 else:
                     #not ne
                     pass"""
-
-            for word in word_tokens:
-                words.append(Word(type='Word', highlight='black', content=word, endline=False, named_entity=False))
+            #colours = ['black', 'red', 'orange', 'blue', 'green']
+            for _, word in enumerate(word_tokens):
+            #    c = i%5
+                words.append(Word(str(uuid1()), type='Word', highlight="black", content=word, endline=False, named_entity=False))
 
             if endline:
                 words[-1].endline = True
@@ -99,7 +101,7 @@ class LaTeXProcessor:
             identifier_tokens = nltk.word_tokenize(line_chunk)
 
             for identifier in identifier_tokens:
-                identifiers.append(Identifier(type='Identifier', highlight='pink', content=identifier, endline=False, qid=None))
+                identifiers.append(Identifier(str(uuid1()), type='Identifier', highlight='pink', content=identifier, endline=False, qid=None))
 
             if endline:
                 identifiers[-1].endline = True
@@ -110,6 +112,7 @@ class LaTeXProcessor:
 
         lines = self.decode()
         all_processed_lines = []
+        token_id = 0
         for line in lines:
             #print(line, len(line))
             chunks = []
@@ -129,7 +132,7 @@ class LaTeXProcessor:
             #chunks.append(Chunk(line_copy, type='non_math', highlight=False, endline=True))
             #processed_lines.append(chunks)
             if line == '\n':
-                processed_line = [EmptyLine()]
+                processed_line = [EmptyLine(uuid1())]
             else:
                 processed_line += extract_words(line_copy, False)
 
