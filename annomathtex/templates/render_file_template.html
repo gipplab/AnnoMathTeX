@@ -17,9 +17,13 @@
         <div>
             {% for Token in Line %}
               <script>
+                  var iteration = {{ forloop.counter }};
+                  var popupId = 'popup'+iteration.toString();
+                  var popupIdQuerySelector = '#'+popupId;
 
                   tippy('.token', {
-                    content: document.querySelector('#myTemplate'),
+                    //content: document.querySelector('#popup'),
+                    content: document.querySelector(popupIdQuerySelector),
                     delay: 100,
                     arrow: true,
                     arrowType: 'round',
@@ -34,7 +38,6 @@
                   function changeColor() {
                     var token = document.getElementById("tokenContent");
                     token.style.color="blue;";
-
                   }
 
 
@@ -48,7 +51,7 @@
                     {{ Token.content }}
                   </strong>
                 </span>
-                <div id="myTemplate">
+                <div id="popup">
                   POPUP </br>
                   <button onclick="javascript:changeColor()">Highlight</button>
                 </div>
