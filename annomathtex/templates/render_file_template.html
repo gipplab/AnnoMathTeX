@@ -19,8 +19,7 @@
               <script>
 
                   tippy('.token', {
-                    //content: document.querySelector('#myTemplate'),
-                    content: 'TEST',
+                    content: document.querySelector('#myTemplate'),
                     delay: 100,
                     arrow: true,
                     arrowType: 'round',
@@ -32,18 +31,27 @@
                     trigger: "click"
                   })
 
+                  function changeColor() {
+                    var token = document.getElementById("tokenContent");
+                    token.style.color="blue;";
+
+                  }
+
 
               </script>
 
 
               {% if not Token.content == None %}
-                <span class="inline token">
+                <span class="inline token" id="tokenContent">
                   {# <strong style="color: pink;"> #}
                   <strong style="color: {{ Token.highlight }};">
                     {{ Token.content }}
                   </strong>
                 </span>
-                {# <div id="myTemplate"></div> #}
+                <div id="myTemplate">
+                  POPUP </br>
+                  <button onclick="javascript:changeColor()">Highlight</button>
+                </div>
               {% endif %}
 
               {% if Token.endline %}
