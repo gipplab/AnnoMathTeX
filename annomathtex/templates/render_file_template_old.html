@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://unpkg.com/tippy.js@3/dist/tippy.all.min.js"></script>
+
+
+</head>
+
+<body>
+
+
+<script>
+
+    tippy('.token', {
+      content: document.querySelector('#myTemplate'),
+      delay: 100,
+      arrow: true,
+      arrowType: 'round',
+      size: 'large',
+      duration: 500,
+      animation: 'scale',
+      allowHTML: true,
+      hideOnClick: true,
+      trigger: "click"
+    })
+
+    function changeColor() {
+      var token = document.getElementById("tokenContent");
+      token.style.color="blue;";
+
+    }
+
+
+</script>
+
+
+{% for Line in TexFile.body %}
+
+    <div>
+        {% for Token in Line %}
+
+
+
+          {% if not Token.content == None %}
+            <span class="inline token" id="tokenContent">
+              {# <strong style="color: pink;"> #}
+              <strong style="color: {{ Token.highlight }};">
+                {{ Token.content }}
+              </strong>
+            </span>
+            <div id="myTemplate">
+              POPUP </br>
+              <button onclick="javascript:changeColor()">Highlight</button>
+            </div>
+          {% endif %}
+
+          {% if Token.endline %}
+              </br>
+          {% endif %}
+        {% endfor %}
+    </div>
+
+{% endfor %}
+
+</body>
+</html>

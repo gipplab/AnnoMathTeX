@@ -11,55 +11,69 @@
 
 
 {% block content %}
+  {% load operations %}
 
     {% for Line in TexFile.body %}
 
         <div>
             {% for Token in Line %}
-              <script>
-                  var iteration = {{ forloop.counter }};
-                  var popupId = 'popup'+iteration.toString();
-                  var popupIdQuerySelector = '#'+popupId;
+              {% with currentIteration=forloop.parentloop.counter0|current_iteration:forloop.counter0%}
+              {% with popupIdQuerySelector=currentIteration|create_popup_id_query_selector %}
+              {% with popupId=currentIteration|create_popup_id %}
+              {% with tokenContentId=currentIteration|create_token_content_id %}
+                <script>
 
-                  tippy('.token', {
-                    //content: document.querySelector('#popup'),
-                    content: document.querySelector(popupIdQuerySelector),
-                    delay: 100,
-                    arrow: true,
-                    arrowType: 'round',
-                    size: 'large',
-                    duration: 500,
-                    animation: 'scale',
-                    allowHTML: true,
-                    hideOnClick: true,
-                    trigger: "click"
-                  })
+                    var popupId = "{{ popupId }}";
+                    var tokenContentId = "{{ tokenContentId }}";
+                    var tC = "{{ Token.content }}";
 
-                  function changeColor() {
-                    var token = document.getElementById("tokenContent");
-                    token.style.color="blue;";
-                  }
+                    tippy('.token', {
+                      //content: document.querySelector('#popup'),
+                      //content: document.querySelector(popupIdQuerySelector),
+                      content: document.querySelector('#'+CSS.escape(popupId)),
+                      //content: tC,
+                      delay: 100,
+                      arrow: true,
+                      arrowType: 'round',
+                      size: 'large',
+                      duration: 500,
+                      animation: 'scale',
+                      allowHTML: true,
+                      hideOnClick: true,
+                      trigger: "click"
+                    })
+
+                    function changeColor() {
+                      var token = document.getElementById(CSS.escape(tokenContentId));
+                      token.style.color="blue;";
+                    }
 
 
-              </script>
+                </script>
 
 
-              {% if not Token.content == None %}
-                <span class="inline token" id="tokenContent">
-                  {# <strong style="color: pink;"> #}
-                  <strong style="color: {{ Token.highlight }};">
-                    {{ Token.content }}
-                  </strong>
-                </span>
-                <div id="popup">
-                  POPUP </br>
-                  <button onclick="javascript:changeColor()">Highlight</button>
-                </div>
-              {% endif %}
+                {% if not Token.content == None %}
+                  <span class="inline token" id="{{ tokenContentId }}">
+                    {# <strong style="color: pink;"> #}
+                    <strong style="color: {{ Token.highlight }};">
+                      {{ Token.content }}
+                    </strong>
+                  </span>
+                  <div id="{{ popupId }}">
+                    POPUP </br>
+                    <button onclick="javascript:changeColor()">Highlight</button>
+                  </div>
+                {% endif %}
 
-              {% if Token.endline %}
-                  </br>
-              {% endif %}
+                {% if Token.endline %}
+                    </br>
+                {% endif %}
+
+              {% endwith %}
+              {% endwith %}
+              {% endwith %}
+              {% endwith %}
+
             {% endfor %}
         </div>
 

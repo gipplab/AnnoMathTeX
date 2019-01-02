@@ -20,7 +20,8 @@ class FileUploadView(View):
             #TODO add check to see whether file is .tex
             latexprocessor = LaTeXProcessor(request.FILES['file'])
             return render(request,
-                          'render_file_template.html',
+                          #'render_file_template.html',
+                          'render_file_template_2.html',
                           {'TexFile': latexprocessor.get_latex_file()})
 
         return render(request, "file_upload_template.html", self.initial)

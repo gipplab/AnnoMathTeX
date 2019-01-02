@@ -21,6 +21,7 @@ class Token(object, metaclass=ABCMeta):
         self.endline = endline
         self.type = type
 
+
     @abstractmethod
     def get_unique_id(self):
         raise NotImplementedError('must be implemented')
