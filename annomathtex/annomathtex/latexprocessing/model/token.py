@@ -16,6 +16,8 @@ class Token(object, metaclass=ABCMeta):
         :param endline: Boolean, needed for page rendering
         """
         self.unique_id = unique_id
+        self.unique_id_2 = 'button' + str(unique_id)
+        self.unique_id_3 = 'modal' + str(unique_id)
         self.highlight = highlight
         self.content = content
         self.endline = endline

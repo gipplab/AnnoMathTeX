@@ -2,85 +2,58 @@
 <html>
 <head>
 <script src="https://unpkg.com/tippy.js@3/dist/tippy.all.min.js"></script>
-
-
 </head>
 
 <body>
 
 
 
-{% block content %}
-  {% load operations %}
-
-    {% for Line in TexFile.body %}
-
-        <div>
-            {% for Token in Line %}
-              {% with currentIteration=forloop.parentloop.counter0|current_iteration:forloop.counter0%}
-              {% with popupIdQuerySelector=currentIteration|create_popup_id_query_selector %}
-              {% with popupId=currentIteration|create_popup_id %}
-              {% with tokenContentId=currentIteration|create_token_content_id %}
-                <script>
-
-                    var popupId = "{{ popupId }}";
-                    var tokenContentId = "{{ tokenContentId }}";
-                    var tC = "{{ Token.content }}";
-
-                    tippy('.token', {
-                      //content: document.querySelector('#popup'),
-                      //content: document.querySelector(popupIdQuerySelector),
-                      content: document.querySelector('#'+CSS.escape(popupId)),
-                      //content: tC,
-                      delay: 100,
-                      arrow: true,
-                      arrowType: 'round',
-                      size: 'large',
-                      duration: 500,
-                      animation: 'scale',
-                      allowHTML: true,
-                      hideOnClick: true,
-                      trigger: "click"
-                    })
-
-                    function changeColor() {
-                      var token = document.getElementById(CSS.escape(tokenContentId));
-                      token.style.color="blue;";
-                    }
 
 
-                </script>
 
+{% for Line in TexFile.body %}
+    <div>
+        {% for Token in Line %}
+          {% if not Token.content == None %}
+            <span class="inline token" id="but">
+              <strong style="color: {{ Token.highlight }};">
+                {{ Token.content }}
+              </strong>
+            </span>
+            <div id="{{ Token.unique_id }}">
+              POPUP </br>
+              <button onclick="changeColor()">Highlight</button>
+            </div>
 
-                {% if not Token.content == None %}
-                  <span class="inline token" id="{{ tokenContentId }}">
-                    {# <strong style="color: pink;"> #}
-                    <strong style="color: {{ Token.highlight }};">
-                      {{ Token.content }}
-                    </strong>
-                  </span>
-                  <div id="{{ popupId }}">
-                    POPUP </br>
-                    <button onclick="javascript:changeColor()">Highlight</button>
-                  </div>
-                {% endif %}
+            <script>
+              tippy('.token', {
+                content: document.getElementById("{{ Token.unique_id }}"),
+                delay: 100,
+                arrow: true,
+                arrowType: 'round',
+                size: 'large',
+                duration: 500,
+                animation: 'scale',
+                allowHTML: true,
+                hideOnClick: true,
+                trigger: "click"
+              })
 
-                {% if Token.endline %}
-                    </br>
-                {% endif %}
+              function changeColor() {
+              var token = document.getElementById("tokenContent");
+              token.style.color="blue;";
 
-              {% endwith %}
-              {% endwith %}
-              {% endwith %}
-              {% endwith %}
+              }
+          </script>
 
-            {% endfor %}
-        </div>
+          {% endif %}
+          {% if Token.endline %}
+              </br>
+          {% endif %}
+        {% endfor %}
+    </div>
 
-    {% endfor %}
-
-
-{% endblock %}
+{% endfor %}
 
 </body>
 </html>

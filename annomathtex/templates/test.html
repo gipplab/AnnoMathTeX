@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<span class="inline" id="token" style="color: black;">
+    Test text of testiness
+</span>
+<button onclick="changeColor()">Highlight</button>
+
+<script>
+  function changeColor() {
+    var token = document.getElementById("token");
+    token.style.color="blue;";
+    alert(token.innerHTML);
+  }
+</script>
+
+</body>
+</html>
+

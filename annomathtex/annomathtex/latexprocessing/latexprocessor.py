@@ -141,5 +141,8 @@ class LaTeXProcessor:
         #for l in all_processed_lines:
         #    print(l)
 
+        #testing purposes
+        all_processed_lines.insert(20, [Word('identifier', type='Word', highlight="black", content="TESTWORDBLABLABLA", endline=True, named_entity=True)])
+
         return all_processed_lines
 
