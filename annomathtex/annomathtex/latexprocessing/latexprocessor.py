@@ -142,7 +142,7 @@ class LaTeXProcessor:
         #    print(l)
 
         #testing purposes
-        all_processed_lines.insert(20, [Word('identifier', type='Word', highlight="black", content="TESTWORDBLABLABLA", endline=True, named_entity=True)])
+        all_processed_lines.insert(20, [Word('identifier', type='Word', highlight="pink", content="TESTWORDBLABLABLA", endline=True, named_entity=True)])
 
         return all_processed_lines
 

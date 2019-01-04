@@ -15,7 +15,7 @@ class Token(object, metaclass=ABCMeta):
         :param content: String, The Word/Identifier itself.
         :param endline: Boolean, needed for page rendering
         """
-        self.unique_id = unique_id
+        self.unique_id = str(unique_id)
         self.unique_id_2 = 'button' + str(unique_id)
         self.unique_id_3 = 'modal' + str(unique_id)
         self.highlight = highlight
