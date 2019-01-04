@@ -44,32 +44,17 @@
       }
   </style>
 
-  <script>
-    function footest(unique_id) {
-
-      document.getElementById(unique_id).style.color="blue";
-    }
-  </script>
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
 </head>
 
 <body>
-
-<script>
-  function upperTest() {
-    alert("ALERT FROM UPPER SCRIPT");
-  }
-</script>
 
 
 <div id="foo" class="modal">
   <!-- Modal content -->
   <div class="modal-content">
     <span class="close" id="span">&times;</span>
-    <p>Some text in the Modal..</p>
-    <button id="highlightBtn" onclick="lowerScript()">CLICK ME</button>
+    <p>Put information about the identifier here!</p>
+    <button id="highlightBtn" onclick="highlightToken()">HIGHLIGHT</button>
     <p id="placeholder"></p>
   </div>
 </div>
@@ -94,15 +79,9 @@
         modal.style.display = "none";
       }
     }
-
-    var placeholder = document.getElementById("placeholder");
-
-    function highlight() {
-      alert("TESTALERT");
-    }
   }
 
-  function lowerScript() {
+  function highlightToken() {
     document.getElementById(uniqueID).style.color = 'blue';
   }
 
