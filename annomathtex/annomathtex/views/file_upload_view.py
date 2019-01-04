@@ -21,7 +21,7 @@ class FileUploadView(View):
             latexprocessor = LaTeXProcessor(request.FILES['file'])
             return render(request,
                           #'render_file_template.html',
-                          'render_file_modal.html',
+                          'render_file_modal_2.html',
                           {'TexFile': latexprocessor.get_latex_file()})
 
         return render(request, "file_upload_template.html", self.initial)

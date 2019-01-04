@@ -87,7 +87,7 @@
                   3RD TESTBUTTON
                 </button>
                 <button onclick="document.getElementById('{{ Token.unique_id }}').style.color = 'blue'; $('#{{ Token.unique_id }}').load(document.URL + ' #{{ Token.unique_id }}');">4TH TESTBUTTON</button>
-                <button onclick="document.getElementById('{{ Token.unique_id }}').style.color = 'blue';">4.5TH TESTBUTTON</button>
+                <button onclick="document.getElementById('{{ Token.unique_id }}').style.color = 'blue'">4.5TH TESTBUTTON</button>
                 <button onclick="highlight({{ Token.unique_id }})">7TH TESTBUTTON</button>
               </div>
 
@@ -135,13 +135,14 @@
 
 {% endfor %}
 
-<button onclick="document.getElementById('identifier').style.color = 'blue';">5TH TESTBUTTON</button>
+<button onclick="document.getElementById('identifier').style.color = 'blue'">5TH TESTBUTTON</button>
 
 
 <div id="placeholder"></div>
 
 <script type="text/javascript">
   function highlight(unique_id) {
+    alert(unique_id);
     var color = 'blue;';
     inputs += '<button onclick="document.getElementById("'+ unique_id +'").style.color="'+color+'">6th Testbutton</button>';
     document.getElementById("placeholder").insertAdjacentHTML('afterbegin', input);
