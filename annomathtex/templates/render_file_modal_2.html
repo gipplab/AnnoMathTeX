@@ -55,16 +55,20 @@
     <span class="close" id="span">&times;</span>
     <p>Put information about the identifier here!</p>
     <button id="highlightBtn" onclick="highlightToken()">HIGHLIGHT</button>
+    <button id="unHighlightBtn" onclick="unHighlightToken()">UNHIGHLIGHT</button>
     <p id="placeholder"></p>
   </div>
 </div>
 
 <script>
 
+  var highlightedIDs = [];
+
   function alertthis(unique_id) {
     //Not the best way of doing this
     //https://stackoverflow.com/questions/5786851/define-global-variable-in-a-javascript-function
     window.uniqueID = unique_id;
+    //highlightedIDs.push(unique_id);
     //alert(unique_id);
     var modal = document.getElementById("foo");
     modal.style.display = "block";
@@ -83,6 +87,18 @@
 
   function highlightToken() {
     document.getElementById(uniqueID).style.color = 'blue';
+    highlightedIDs.push(uniqueID);
+    //document.getElementById("placeholder").innerHTML += uniqueID;
+    console.log(highlightedIDs);
+  }
+
+  function unHighlightToken() {
+    var index = highlightedIDs.indexOf(uniqueID);
+    if (index > -1) {
+      highlightedIDs.splice(index, 1);
+      document.getElementById(uniqueID).style.color = 'black';
+    }
+    console.log(highlightedIDs);
   }
 
 </script>
