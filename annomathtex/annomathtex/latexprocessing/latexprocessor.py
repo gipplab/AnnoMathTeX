@@ -44,7 +44,7 @@ class LaTeXProcessor:
 
     def decode(self):
         """
-        File is in bytes and has to be converted to string in utf-8
+        TeX files are in bytes and have to be converted to string in utf-8
         :return: list of lines (string)
         """
         bytes = self.requestFile.read()
@@ -55,33 +55,23 @@ class LaTeXProcessor:
 
     def find_math_tags(self):
         """
+        #TODO: multiline math environments
         Finds the math tags and creates chunks that highlights them
         :return: List of lines of the file
         """
 
         def extract_words(line_chunk, endline):
             """
-
-            :param line_chunk:
-            :param endline:
-            :return:
+            This method extracts the word that are contained in a line.
+            :param line_chunk: Part of line that is being processed (list of words).
+            :param endline: Boolean. True if the line_chunk ends the line.
+            :return: List of the words fom line_chunk as Word() objects.
             """
             #todo: use NECKAR NER
             words= []
             word_tokens = nltk.word_tokenize(line_chunk)
 
-            """pos_word_tuples = nltk.pos_tag(word_tokens)
-            
-            for _, pos_word_tuple in enumerate(pos_word_tuples, binary=True):
-                if isinstance(pos_word_tuple, nltk.tree.Tree):
-                    #ne
-                    pass
-                else:
-                    #not ne
-                    pass"""
-            #colours = ['black', 'red', 'orange', 'blue', 'green']
             for _, word in enumerate(word_tokens):
-            #    c = i%5
                 words.append(Word(str(uuid1()), type='Word', highlight="black", content=word, endline=False, named_entity=False))
 
             if endline:
@@ -91,10 +81,10 @@ class LaTeXProcessor:
 
         def extract_identifiers(line_chunk, endline):
             """
-
-            :param line_chunk:
-            :param endline:
-            :return:
+            This method extracts the identifiers that are contained in a line.
+            :param line_chunk: Part of line that is being processed (list of words).
+            :param endline: Boolean. True if the line_chunk ends the line.
+            :return: List of the words fom line_chunk as Identifier() objects.
             """
             #todo: implement
             identifiers = []
@@ -108,29 +98,30 @@ class LaTeXProcessor:
 
             return identifiers
 
+        pattern1 = r'\$\$?.+?\$\$?'
+        pattern2 = r'\\\[.*?\\\]'
+        pattern3 = r'\\\(.*?\\\)'
 
 
         lines = self.decode()
         all_processed_lines = []
-        token_id = 0
         for line in lines:
-            #print(line, len(line))
-            chunks = []
             line_copy = line
-            maths = re.findall(r'\$.*?\$', line)
+            #maths = re.findall(r'\$.*?\$', line)
+            maths = re.findall(r'\$\$?.+?\$\$?', line)
+            #maths += re.findall(r'\\\[.*?\\\]', line)
+            #maths += re.findall(r'\\\(.*?\\\)', line)
             processed_line = []
             if len(maths) > 0:
                 for i, math in enumerate(maths):
-                    search_pattern = '.*?(?=\$.*?\$)'
+                    #search_pattern = '.*?(?=\$.*?\$)'
+                    search_pattern = '.*?(?=\$.+?\$)'
+                    #what if mulitple math environments per line? Problem?
                     non_math = re.findall(search_pattern, line_copy)[0]
                     processed_line += extract_words(non_math, False)
                     processed_line += extract_identifiers(math, False)
-                    #chunks.append(Chunk(non_math, type='non_math', highlight=False, endline=False))
-                    #chunks.append(Chunk(math, type='math', highlight=True, endline=False))
                     line_copy = line[len(non_math)+len(math):]
 
-            #chunks.append(Chunk(line_copy, type='non_math', highlight=False, endline=True))
-            #processed_lines.append(chunks)
             if line == '\n':
                 processed_line = [EmptyLine(uuid1())]
             else:
@@ -142,7 +133,7 @@ class LaTeXProcessor:
         #    print(l)
 
         #testing purposes
-        all_processed_lines.insert(20, [Word('identifier', type='Word', highlight="pink", content="TESTWORDBLABLABLA", endline=True, named_entity=True)])
+        #all_processed_lines.insert(20, [Word('identifier', type='Word', highlight="pink", content="TESTWORDBLABLABLA", endline=True, named_entity=True)])
 
         return all_processed_lines
 
