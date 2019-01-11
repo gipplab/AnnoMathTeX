@@ -48,16 +48,24 @@
       }
   </style>
 
+  <script
+    src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+  </script>
+
 </head>
 
 <body>
 
 
-<form method="get" enctype="multipart/form-data">
+<form action="/file_upload/" method="POST" id="post-form">
     {% csrf_token %}
-    <input type="text" name="test" class="data", id="save_data">
-    <button type="submit" >Save</button>
+    <div class="fieldWrapper">
+        {{ form}}
+    </div>
+    <div></div>
+    <input type="submit" value="Post" class="tiny button">
 </form>
+
 
 
 
@@ -122,6 +130,17 @@
     document.getElementById("test").innerHTML = highlightedIDs;
     return;
   }
+
+  function create_post() {
+    console.log("create post working");
+  }
+
+  $('#post-form').on('submit', function(event){
+    event.preventDefault();
+    console.log('form submitted');
+    alert("test");
+    create_post();
+  });
 
 </script>
 
