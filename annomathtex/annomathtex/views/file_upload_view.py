@@ -25,3 +25,7 @@ class FileUploadView(View):
                           {'TexFile': latexprocessor.get_latex_file()})
 
         return render(request, "file_upload_template.html", self.initial)
+
+    """def register(self, request):
+        u = request.GET["test"]
+        print(u)"""

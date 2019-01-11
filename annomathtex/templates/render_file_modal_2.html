@@ -4,6 +4,10 @@
   <style>
     body {font-family: Arial, Helvetica, sans-serif;}
 
+      .data {
+        display: none;
+      }
+
       /* The Modal (background) */
       .modal {
         display: none; /* Hidden by default */
@@ -49,6 +53,14 @@
 <body>
 
 
+<form method="get" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="text" name="test" class="data", id="save_data">
+    <button type="submit" >Save</button>
+</form>
+
+
+
 <div id="foo" class="modal">
   <!-- Modal content -->
   <div class="modal-content">
@@ -83,6 +95,7 @@
         modal.style.display = "none";
       }
     }
+    return;
   }
 
   function highlightToken() {
@@ -90,6 +103,8 @@
     highlightedIDs.push(uniqueID);
     //document.getElementById("placeholder").innerHTML += uniqueID;
     console.log(highlightedIDs);
+    updateData();
+    return;
   }
 
   function unHighlightToken() {
@@ -99,6 +114,13 @@
       document.getElementById(uniqueID).style.color = 'black';
     }
     console.log(highlightedIDs);
+    updateData();
+    return
+  }
+
+  function updateData(){
+    document.getElementById("test").innerHTML = highlightedIDs;
+    return;
   }
 
 </script>
