@@ -8,6 +8,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from .views.file_upload_view import FileUploadView
+from .views.render_file_view import RenderFileView
 from .views.test_view import TestView
 
 urlpatterns = [
@@ -22,6 +23,7 @@ urlpatterns = [
     # enable the admin interface
     url(r'^admin/', admin.site.urls),
     url(r'^file_upload/', FileUploadView.as_view()),
+    url(r'^render_file/', RenderFileView.as_view()),
     url(r'^test/', TestView.as_view())
 
 ]

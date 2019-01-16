@@ -1,4 +1,8 @@
-class LaTeXFile:
+from django.db import models
+
+
+
+class LaTeXFile(models.Model):
 
     def __init__(self, processed_lines):
         """

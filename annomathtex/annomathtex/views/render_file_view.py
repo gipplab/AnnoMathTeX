@@ -6,16 +6,28 @@ from ..forms.save_annotation_form import SaveAnnotationForm
 
 class RenderFileView(View):
 
-    def __init__(self, request, dict):
-        self.request = request
-        self.dict = dict
+    form_class = SaveAnnotationForm
+    initial = {'key': 'value'}
+    template_name = 'render_file_modal_2.html'
+
+    """def __init__(self, latexfile):
+        self.latexfile = latexfile
         self.form_class = SaveAnnotationForm
         self.initial = {'key': 'value'}
-        self.template_name = 'render_file_modal_2.html'
+        self.template_name = 'render_file_modal_2.html'"""
 
-    def get(self, *args, **kwargs):
-        form = self.form_class(initial=self.initial)
-        return render(self.request, self.template_name, {'form': form})
+    def get(self, request, *args, **kwargs):
+        #form = self.form_class(initial=self.initial)
+        form = SaveAnnotationForm()
+        latexfile = request.session['latexfile']
+        return render(request,
+                      self.template_name,
+                      {'form': form, 'TexFile': latexfile})
 
     def post(self, request, *args, **kwargs):
-        pass
+        form = SaveAnnotationForm(request.POST, request.FILES)
+        if form.is_valid():
+            print('valid')
+            return render(request, 'render_file_modal_2.html')
+
+        return render(request, 'render_file_modal_2.html')
