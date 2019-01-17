@@ -62,7 +62,7 @@ class LaTeXProcessor:
 
         def extract_words(line_chunk, endline):
             """
-            This method extracts the word that are contained in a line.
+            This method extracts the words that are contained in a line.
             :param line_chunk: Part of line that is being processed (list of words).
             :param endline: Boolean. True if the line_chunk ends the line.
             :return: List of the words fom line_chunk as Word() objects.

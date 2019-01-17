@@ -13,6 +13,7 @@ This class inherits from Token. Every word in the LaTeX file is a Word.
 
 class Word(Token):
     #todo: add colouring for named entity is this class
+    #todo: differentiate between named entity and NNS
 
     def __init__(self, unique_id, type, highlight, content, endline, named_entity):
         """

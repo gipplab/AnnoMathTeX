@@ -3,6 +3,7 @@ from django.views.generic import View
 from ..forms.uploadfileform import UploadFileForm
 from ..forms.save_annotation_form import SaveAnnotationForm
 from ..latexprocessing.latexprocessor import LaTeXProcessor
+from ..latexprocessing.process_latex_file import get_processed_file
 from .render_file_view import RenderFileView
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
@@ -64,10 +65,12 @@ class FileUploadView(View):
             form = UploadFileForm(request.POST, request.FILES)
             if form.is_valid():
                 #TODO add check to see whether file is .tex
-                latexprocessor = LaTeXProcessor(request.FILES['file'])
+                #latexprocessor = LaTeXProcessor(request.FILES['file'])
+                #latex_file = latexprocessor.get_latex_file()
+                latex_file = get_processed_file(request.FILES['file'])
                 return render(request,
                               'render_file_modal_2.html',
-                              {'TexFile': latexprocessor.get_latex_file()})
+                              {'TexFile': latex_file})
 
             return render(request, "file_upload_template.html", self.save_annotation_form)
 
