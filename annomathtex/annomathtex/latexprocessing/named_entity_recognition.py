@@ -1,6 +1,7 @@
 import nltk
 from .model.word import Word
 from uuid import uuid1
+import en_core_web_sm
 
 
 def own_tagger(line_chunk):
@@ -18,7 +19,8 @@ def nlt_ner_1(line_chunk):
     for _, word in enumerate(word_tokens):
         is_ne = True if word[1] in tag_list else False
         words.append(
-            Word(str(uuid1()), type='Word', highlight="black", content=word, endline=False, named_entity=False))
+            Word(str(uuid1()), type='Word', highlight="black", content=word, endline=False, named_entity=is_ne)
+        )
 
     return words
 
@@ -41,19 +43,34 @@ def stanford_core_nlp_ner(line_chunk):
 
 
 def spacy_ner(line_chunk):
-    pass
+    words = []
+    nlp = en_core_web_sm.load()
+    word_tokens = nlp(line_chunk)
+    tag_list = ['NOUN', 'PROPN']
+    for word in word_tokens:
+        is_ne = True if word.pos_ in tag_list else False
+        words.append(
+            Word(str(uuid1()), type='Word', highlight="black", content=word, endline=False, named_entity=is_ne)
+        )
+
+    return words
 
 
-def handle(line_chunk, ner='nltk_ner_1'):
+def handle(line_chunk, endline, ner='nltk_ner_1'):
+
     if ner == 'nltk_ner_1':
-        return nlt_ner_1(line_chunk)
+        words = nlt_ner_1(line_chunk)
     elif ner == 'nltk_ner_2':
-        return nlt_ner_2(line_chunk)
+        words = nlt_ner_2(line_chunk)
     elif ner == 'stanford_core_nlp_ner':
-        return stanford_core_nlp_ner(line_chunk)
+        words = stanford_core_nlp_ner(line_chunk)
     elif ner == 'spacy_ner':
-        return spacy_ner(line_chunk)
+        words = spacy_ner(line_chunk)
 
+    if endline:
+        words[-1].endline = True
+
+    return words
 
 
 

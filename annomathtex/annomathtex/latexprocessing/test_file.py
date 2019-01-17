@@ -49,9 +49,11 @@ def core_nlp(line_chunk):
 def spacy_ner(line_chunk):
     nlp = en_core_web_sm.load()
     d = nlp(line_chunk)
+    tag_list = ['NOUN', 'PROPN']
     for w in d:
-        #print(w, w.ent_type_, w.pos_)
-        print(w, w.pos_)
+        is_ne = True if w.pos_ in tag_list else False
+        if is_ne:
+            print(w)
 
 
 ex1 = "You Google will have to download the pre-trained models(for the most part convolutional networks) separately. The limitations that you’ll face is that despite having a good amount of pre-trained models, they are mostly English or German. Mind you, they are extremely good and as far as performance is concerned, spaCy is absolutely astonishing. The other great thing about it is the brilliant documentation."
@@ -65,4 +67,4 @@ ex3 = 'In physics, mass–energy equivalence states that anything having mass ha
 #core_nlp(ex2)
 
 
-spacy_ner(ex2)
+spacy_ner(ex3)
