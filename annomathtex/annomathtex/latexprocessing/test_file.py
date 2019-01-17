@@ -7,10 +7,9 @@ import en_core_web_sm
 import os
 from stanfordcorenlp import StanfordCoreNLP
 import logging
+#from .__latex_processing_config__ import __SCNLP_PATH__
 
-
-basepath = path.dirname(__file__)
-latexfolder = path.abspath(path.join(basepath, "../../.."))
+__SCNLP_PATH__ = '~/stanford-corenlp-full-2018-02-27'
 
 
 
@@ -39,10 +38,11 @@ def extract_words(line_chunk):
     return word_tokens
 
 
-@staticmethod
+#@staticmethod
 def start_corenlp():
     print("Starting CoreNLP Server")
-    path_to_libs = os.path.join(os.path.dirname(__file__)) + "/resources/corenlp/stanford-corenlp-full-2018-10-05"
+    #path_to_libs = os.path.join(os.path.dirname(__file__)) + "/resources/corenlp/stanford-corenlp-full-2018-10-05"
+    path_to_libs = __SCNLP_PATH__
     command = "cd " + path_to_libs + "; java -mx4g -cp '*' edu.stanford.nlp.pipeline.StanfordCoreNLPServer -annotators 'tokenize,ssplit,pos,lemma,parse,sentiment' -port 9000 -timeout 30000 -props edu/stanford/nlp/coref/properties/neural-english.properties"
     os.system(command)
 
@@ -64,6 +64,12 @@ class SCNLP:
         'outputFormat': 'json'
         }
 
+    def pos(self, sentence):
+        return self.nlp.pos_tag(sentence)
+
+    def ner(self, sentence):
+        return self.nlp.ner(sentence)
+
 
 
 def spacy_ner(line_chunk):
@@ -79,7 +85,7 @@ def spacy_ner(line_chunk):
 
 
 
-ex1 = "You Google will have to download the pre-trained models(for the most part convolutional networks) separately. The limitations that you’ll face is that despite having a good amount of pre-trained models, they are mostly English or German. Mind you, they are extremely good and as far as performance is concerned, spaCy is absolutely astonishing. The other great thing about it is the brilliant documentation."
+ex1 = "You will have to download the pre-trained models(for the most part convolutional networks) separately. The limitations that you’ll face is that despite having a good amount of pre-trained models, they are mostly English or German. Mind you, they are extremely good and as far as performance is concerned, spaCy is absolutely astonishing. The other great thing about it is the brilliant documentation."
 
 ex2 = 'European authorities fined Google a record $5.1 billion on Wednesday for abusing its power in the mobile phone market and ordered the company to alter its practices'
 #extract_words(ex)
@@ -88,6 +94,9 @@ ex3 = 'In physics, mass–energy equivalence states that anything having mass ha
 #extract_words(ex2)
 
 #core_nlp(ex2)
+#spacy_ner(ex3)
 
+#start_corenlp()
 
-spacy_ner(ex3)
+nlp=SCNLP()
+print(nlp.pos(ex2))
