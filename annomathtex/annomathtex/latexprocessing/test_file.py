@@ -5,7 +5,8 @@ from spacy import displacy
 from collections import Counter
 import en_core_web_sm
 import os
-#from stanfordcorenlp import StanfordCoreNLP
+from stanfordcorenlp import StanfordCoreNLP
+import logging
 
 
 basepath = path.dirname(__file__)
@@ -38,12 +39,31 @@ def extract_words(line_chunk):
     return word_tokens
 
 
-def core_nlp(line_chunk):
-    #os.system('cd ~ & ls')
-    #nlp = StanfordCoreNLP('http://localhost', port=9000, timeout=30000)
-    #print(nlp.word_tokenize(line_chunk))
-    #print(nlp.ner(line_chunk))
-    pass
+@staticmethod
+def start_corenlp():
+    print("Starting CoreNLP Server")
+    path_to_libs = os.path.join(os.path.dirname(__file__)) + "/resources/corenlp/stanford-corenlp-full-2018-10-05"
+    command = "cd " + path_to_libs + "; java -mx4g -cp '*' edu.stanford.nlp.pipeline.StanfordCoreNLPServer -annotators 'tokenize,ssplit,pos,lemma,parse,sentiment' -port 9000 -timeout 30000 -props edu/stanford/nlp/coref/properties/neural-english.properties"
+    os.system(command)
+
+
+class SCNLP:
+    def __init__(self, host='http://localhost', port=9000):
+        """
+        Initializes connection to the localhost StanfordCoreNLP server
+        :param host: hostname of the local server
+        :param port: of the server
+        """
+        self.nlp = StanfordCoreNLP(host, port=port,
+                   timeout=30000)
+        #logging_level = logging.INFO)
+        self.props = {
+        'annotators':
+        'tokenize,ssplit,pos,lemma,ner,parse,depparse,dcoref,relation',
+        'pipelineLanguage': 'en',
+        'outputFormat': 'json'
+        }
+
 
 
 def spacy_ner(line_chunk):
@@ -54,6 +74,9 @@ def spacy_ner(line_chunk):
         is_ne = True if w.pos_ in tag_list else False
         if is_ne:
             print(w)
+
+
+
 
 
 ex1 = "You Google will have to download the pre-trained models(for the most part convolutional networks) separately. The limitations that you’ll face is that despite having a good amount of pre-trained models, they are mostly English or German. Mind you, they are extremely good and as far as performance is concerned, spaCy is absolutely astonishing. The other great thing about it is the brilliant documentation."
