@@ -4,6 +4,7 @@ from uuid import uuid1
 import en_core_web_sm
 from stanfordcorenlp import StanfordCoreNLP
 from .__latex_processing_config__ import __SCNLP_PATH__
+from abc import ABCMeta, abstractmethod
 import os
 
 
@@ -12,38 +13,54 @@ def own_tagger(line_chunk):
     pass
 
 
-def nlt_ner_1(line_chunk):
-    word_tokens = nltk.word_tokenize(line_chunk)
-    word_tokens = nltk.pos_tag(word_tokens)
 
-    words = []
+class NLTK_NER_1:
+    def tag(self, line_chunk, endline):
+        word_tokens = nltk.word_tokenize(line_chunk)
+        word_tokens = nltk.pos_tag(word_tokens)
 
-    tag_list = ['NN', 'NNS', 'NNP', 'NNPS']
-    for _, word in enumerate(word_tokens):
-        is_ne = True if word[1] in tag_list else False
-        words.append(
-            Word(str(uuid1()), type='Word', highlight="black", content=word, endline=False, named_entity=is_ne)
-        )
+        words = []
 
-    return words
+        tag_list = ['NN', 'NNS', 'NNP', 'NNPS']
+        for _, word in enumerate(word_tokens):
+            is_ne = True if word[1] in tag_list else False
+            words.append(
+                Word(str(uuid1()), type='Word', highlight="black", content=word, endline=False, named_entity=is_ne)
+            )
 
-def nlt_ner_2(line_chunk):
-    #Not sure if necessary
-    words = []
-    word_tokens = nltk.word_tokenize(line_chunk)
-    word_tokens = nltk.pos_tag(word_tokens)
-    word_tokens = nltk.ne_chunk(word_tokens)
+        if endline:
+            words[-1].endline = True
 
-    tag_list = ['NN', 'NNS', 'NNP', 'NNPS']
-    for _, word in enumerate(word_tokens):
-        # if word[1] in tag_list:
-        #    print(word)
-        print(word, type(word))
+        return words
 
 
-def stanford_core_nlp_ner(line_chunk):
 
-    def start_corenlp():
+class NLTK_NER_2:
+    def tag(self, line_chunk, endline):
+        #Not sure if necessary
+        words = []
+        word_tokens = nltk.word_tokenize(line_chunk)
+        word_tokens = nltk.pos_tag(word_tokens)
+        word_tokens = nltk.ne_chunk(word_tokens)
+
+        tag_list = ['NN', 'NNS', 'NNP', 'NNPS']
+        for _, word in enumerate(word_tokens):
+            # if word[1] in tag_list:
+            #    print(word)
+            print(word, type(word))
+
+        if endline:
+            words[-1].endline = True
+
+
+
+class StanfordCoreNLPNER:
+
+    def __init__(self):
+        self.start_corenlp()
+        self.nlp = self.SCNLP()
+
+    def start_corenlp(self):
         """
         Only has to be started once
         When to kill?
@@ -79,52 +96,44 @@ def stanford_core_nlp_ner(line_chunk):
         def ner(self, sentence):
             return self.nlp.ner(sentence)
 
-    start_corenlp()
-    nlp = SCNLP()
+    def tag(self, line_chunk, endline):
 
-    words = []
-    word_tokens = nlp.pos(line_chunk)
-    tag_list = ['NN', 'NNS', 'NNP', 'NNPS']
-    for _, word in enumerate(word_tokens):
-        is_ne = True if word[1] in tag_list else False
-        words.append(
-            Word(str(uuid1()), type='Word', highlight="black", content=word, endline=False, named_entity=is_ne)
-        )
+        words = []
+        word_tokens = self.nlp.pos(line_chunk)
+        tag_list = ['NN', 'NNS', 'NNP', 'NNPS']
+        for _, word in enumerate(word_tokens):
+            is_ne = True if word[1] in tag_list else False
+            words.append(
+                Word(str(uuid1()), type='Word', highlight="black", content=word, endline=False, named_entity=is_ne)
+            )
 
-    return words
+        if endline:
+            words[-1].endline = True
 
-
-
-
-def spacy_ner(line_chunk):
-    words = []
-    nlp = en_core_web_sm.load()
-    word_tokens = nlp(line_chunk)
-    tag_list = ['NOUN', 'PROPN']
-    for word in word_tokens:
-        is_ne = True if word.pos_ in tag_list else False
-        words.append(
-            Word(str(uuid1()), type='Word', highlight="black", content=word, endline=False, named_entity=is_ne)
-        )
-
-    return words
+        return words
 
 
-def handle(line_chunk, endline, ner='nltk_ner_1'):
+class Spacy_NER:
 
-    if ner == 'nltk_ner_1':
-        words = nlt_ner_1(line_chunk)
-    elif ner == 'nltk_ner_2':
-        words = nlt_ner_2(line_chunk)
-    elif ner == 'stanford_core_nlp_ner':
-        words = stanford_core_nlp_ner(line_chunk)
-    elif ner == 'spacy_ner':
-        words = spacy_ner(line_chunk)
+    def __init__(self):
+        self.nlp = en_core_web_sm.load()
 
-    if endline:
-        words[-1].endline = True
+    def tag(self, line_chunk, endline):
+        words = []
 
-    return words
+        word_tokens = self.nlp(line_chunk)
+        tag_list = ['NOUN', 'PROPN']
+        for word in word_tokens:
+            is_ne = True if word.pos_ in tag_list else False
+            words.append(
+                Word(str(uuid1()), type='Word', highlight="black", content=word, endline=False, named_entity=is_ne)
+            )
+
+        if endline:
+            words[-1].endline = True
+
+        return words
+
 
 
 
