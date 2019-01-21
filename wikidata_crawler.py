@@ -104,12 +104,35 @@ def iterate_wikidata_pages(r):
 
 
 def calc_ranges(until, num_processes):
+    #https://stackoverflow.com/questions/2130016/splitting-a-list-into-n-parts-of-approximately-equal-length
     k, m = divmod(len(until), num_processes)
     return (until[i * k + min(i, m):(i + 1) * k + min(i + 1, m)] for i in range(num_processes))
 
 
+def testing(num_processes):
+    print(num_processes, ' Processes running')
+    start = time()
 
-start = time()
+    ranges = calc_ranges(range(1, 5000), num_processes)
+    pool = Pool(processes=num_processes)
+    results = [pool.apply_async(iterate_wikidata_pages, args=(r,)) for r in ranges]
+
+    qids = {}
+    for p in results:
+        d = p.get()
+        qids.update(d)
+
+    print(qids)
+    end = time()
+    print('ELAPSED TIME with ', num_processes, ' processes: ', end - start)
+
+
+
+#############
+#25 processes seems to be good
+#############
+
+"""start = time()
 
 num_processes = 2
 ranges = calc_ranges(range(240,260), 2)
@@ -124,7 +147,7 @@ for p in results:
 
 print(qids)
 end = time()
-print('ELAPSED TIME: ', end-start)
+print('ELAPSED TIME: ', end-start)"""
 
 
 
