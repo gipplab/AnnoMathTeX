@@ -1,5 +1,5 @@
 from SPARQLWrapper import SPARQLWrapper, JSON
-from sparql_queries.mathematical_expression import mathematical_expression_query
+from .sparql_queries import mathematical_expression_query
 import pandas as pd
 
 
