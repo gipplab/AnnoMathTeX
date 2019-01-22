@@ -90,3 +90,19 @@ SELECT ?item ?itemLabel ?defining_formula WHERE {
              FILTER( contains(?defining_formula, 'E=m'))      
  }
 """
+
+
+#same as above but get tex string
+emc_tex = """
+SELECT 
+?item ?itemLabel ?itemDescription ?TeXString
+WHERE {
+     ?item wdt:P1993 ?TeXString .
+     FILTER( contains(?TeXString, 'E=m')) 
+     #this has to be in the clause, in order to get itemLabel and itemDescription
+     SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }     
+ }
+"""
+
+
+
