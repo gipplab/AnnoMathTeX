@@ -117,6 +117,7 @@ class LaTeXProcessor:
                     #search_pattern = '.*?(?=\$.*?\$)'
                     search_pattern = '.*?(?=\$.+?\$)'
                     #what if mulitple math environments per line? Problem?
+                    #shouldn't matter, an identifier won't go beyond linebreak
                     non_math = re.findall(search_pattern, line_copy)[0]
                     processed_line += extract_words(non_math, False)
                     processed_line += extract_identifiers(math, False)
