@@ -9,6 +9,9 @@ Wikidata List of Properties:
 Wikidata SPARQL examples
     - https://www.wikidata.org/wiki/Wikidata:SPARQL_query_service/queries/examples#Finding_John_and_Sarah_Connor
 
+Good tutorial
+    - https://www.wikidata.org/wiki/Wikidata:SPARQL_tutorial
+
 
 Steps:
     1. Get LaTeX math environment
@@ -59,4 +62,31 @@ WHERE {
   ?item wdt:P416 ?quantity_symbol;
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
 }
+"""
+
+
+#get page for mass
+mass = """
+SELECT distinct ?item ?itemLabel ?itemDescription ?definingFormula ?quantitySymbol WHERE{  
+  ?item ?label "mass"@en.  
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }    
+}
+"""
+
+#Item description contains 'unit'
+unit_in_item_description="""
+SELECT ?item ?label ?itemDescription WHERE {
+            ?item rdfs:label ?itemDescription .
+            FILTER( contains(?itemDescription, 'unit' ))
+ }
+LIMIT 10
+"""
+
+
+#defining formula contains E=m
+emc = """
+SELECT ?item ?itemLabel ?defining_formula WHERE {
+             ?item wdt:P2534 ?defining_formula .
+             FILTER( contains(?defining_formula, 'E=m'))      
+ }
 """
