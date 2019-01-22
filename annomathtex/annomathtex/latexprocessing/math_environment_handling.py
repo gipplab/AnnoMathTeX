@@ -44,7 +44,7 @@ class WikidataQidPywikibot:
 
 class Sparql:
     """
-    https://people.wikimedia.org/~bearloga/notes/wdqs-python.html
+    import queries from separate file
     """
     sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
 
@@ -63,8 +63,11 @@ class Sparql:
 
     @classmethod
     def defining_formula(self, results):
-        #TODO add rest
-        _defining_formula = results['defining_formula']
+        #for mathML format of formula
+        #the defining formula property is written in MathML
+        #currently only reutrns the MathML as string
+        #todo: mathML to latex
+        _defining_formula = results['defining_formula']['value']
         return _defining_formula
 
 

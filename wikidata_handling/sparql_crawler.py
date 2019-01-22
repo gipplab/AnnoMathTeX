@@ -1,6 +1,6 @@
 from SPARQLWrapper import SPARQLWrapper, JSON
 import pandas as pd
-from sparql_queries import mathematical_expression_query, emc, mass, emc_tex
+from sparql_queries import mathematical_expression_query, emc, mass, emc_tex, emc_tex_2_1, emc_tex_2_2
 
 
 
@@ -26,9 +26,7 @@ class Sparql:
         results = self.sparql.query().convert()
         definig_formula = results['results']['bindings'][0]['defining_formula']
 
-        for k in definig_formula:
-            print(k, definig_formula[k])
-        #print(definig_formula)
+        print(type(definig_formula['value']))
 
 
     def defining_formula_pd(self, query_string):
@@ -52,11 +50,25 @@ class Sparql:
 
 
 
+
 s = Sparql()
-_query = emc_tex
+#_query =
+
+#print(emc_tex)
+
+#print()
+
+e = """
+'E=m'
+"""
+
+r = emc_tex_2_1 + e + emc_tex_2_2
 
 
-s.tex_string(_query)
+s.tex_string(r)
+
+#s.defining_formula_json(_query)
+#s.tex_string(_query)
 #s.defining_formula_json(_query)
 #print(s.query(_query).head())
 

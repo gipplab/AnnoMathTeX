@@ -75,9 +75,11 @@ SELECT distinct ?item ?itemLabel ?itemDescription ?definingFormula ?quantitySymb
 
 #Item description contains 'unit'
 unit_in_item_description="""
-SELECT ?item ?label ?itemDescription WHERE {
-            ?item rdfs:label ?itemDescription .
-            FILTER( contains(?itemDescription, 'unit' ))
+SELECT ?item ?itemLabel ?itemDescription WHERE {
+    ?item rdfs:label ?itemDescription .
+    FILTER( contains(?itemDescription, 'unit' ))
+    #this has to be in the clause, in order to get itemLabel and itemDescription
+    SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". } 
  }
 LIMIT 10
 """
@@ -86,8 +88,10 @@ LIMIT 10
 #defining formula contains E=m
 emc = """
 SELECT ?item ?itemLabel ?defining_formula WHERE {
-             ?item wdt:P2534 ?defining_formula .
-             FILTER( contains(?defining_formula, 'E=m'))      
+     ?item wdt:P2534 ?defining_formula .
+     FILTER( contains(?defining_formula, 'E=m'))  
+     #this has to be in the clause, in order to get itemLabel and itemDescription
+     SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }    
  }
 """
 
@@ -104,5 +108,29 @@ WHERE {
  }
 """
 
+
+emc_tex_2 = """
+SELECT 
+?item ?itemLabel ?itemDescription ?TeXString
+WHERE {
+     ?item wdt:P1993 ?TeXString .
+     FILTER( contains(?TeXString, {})) 
+     #this has to be in the clause, in order to get itemLabel and itemDescription
+     SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }     
+ }
+"""
+
+emc_tex_2_1 = """
+SELECT 
+?item ?itemLabel ?itemDescription ?TeXString
+WHERE {
+     ?item wdt:P1993 ?TeXString .
+     FILTER( contains(?TeXString,"""
+
+emc_tex_2_2 = """)) 
+     #this has to be in the clause, in order to get itemLabel and itemDescription
+     SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }     
+ }
+"""
 
 
