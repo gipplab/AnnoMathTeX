@@ -1,5 +1,5 @@
 from SPARQLWrapper import SPARQLWrapper, JSON
-from .sparql_queries import tex_string_query, defining_formula_query
+from .sparql_queries import tex_string_query, defining_formula_query, concat_query
 
 """
 Math environment handling involves the revognition of formulae and identifiers.
@@ -50,7 +50,8 @@ class Sparql:
     sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
 
 
-    def formulate_query(self, query, search_item):
+    @classmethod
+    def formulate_query(self, query, search_string):
         """
 
         :param query: tuple of query parts
@@ -58,10 +59,10 @@ class Sparql:
         :return: entire query
         """
 
-        entire_query = search_item.join(p for p in query)
+        entire_query = search_string.join(p for p in query)
         return entire_query
 
-    @classmethod
+
     def defining_formula_contains(self, search_item):
         """
         Search for a formula with the defining formula property
@@ -96,7 +97,6 @@ class Sparql:
         return results_dict
 
 
-    @classmethod
     def tex_string_contains(self, search_item):
         """
         Searching for items in wikidata that contain latex_part_formula
@@ -122,6 +122,34 @@ class Sparql:
             'qid': qid,
             'link': url,
             'tex_string': tex_string,
+            'item_label': item_label,
+            'item_description': item_description
+        }
+        return results_dict
+
+
+    def broad_search(self, search_string):
+        """
+        Use concatenaed properties to query
+        :param search_string: string from latex doc that is being search for
+        :return:
+        """
+        entire_query = self.formulate_query(concat_query, search_string)
+
+        self.sparql.setQuery(entire_query)
+        self.sparql.setReturnFormat(JSON)
+        query_results = self.sparql.query().convert()
+        results = query_results['results']['bindings'][0]
+        url = results['item']['value']
+        qid = url.split('/')[-1]
+        found_string = results['searchSpace']['value']
+        item_label = results['itemLabel']['value']
+        item_description = results['itemDescription']['value']
+
+        results_dict = {
+            'qid': qid,
+            'link': url,
+            'found_string': found_string,
             'item_label': item_label,
             'item_description': item_description
         }

@@ -59,5 +59,20 @@ WHERE {
 """
 )
 
+concat_query = (
+"""
+SELECT 
+?item ?itemLabel ?itemDescription ?searchSpace
+WHERE {
+     ?item wdt:P1993|wdt:P2534 ?searchSpace;
+     FILTER( contains(?searchSpace, """,
+""")) 
+     #this has to be in the clause, in order to get itemLabel and itemDescription
+     SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }     
+ }
+"""
+
+)
+
 
 

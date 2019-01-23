@@ -1,6 +1,6 @@
 from SPARQLWrapper import SPARQLWrapper, JSON
 import pandas as pd
-from sparql_queries import mathematical_expression_query, emc_tex
+from sparql_queries import mathematical_expression_query, emc_tex, concat
 
 
 
@@ -56,6 +56,14 @@ class Sparql:
         print(link)
 
 
+    def concat(self, query_string):
+        self.sparql.setQuery(query_string)
+        self.sparql.setReturnFormat(JSON)
+        results = self.sparql.query().convert()
+        results = results['results']['bindings'][0]
+        for k in results:
+            print(k, results[k])
+
 
 
 
@@ -64,8 +72,8 @@ class Sparql:
 s = Sparql()
 
 
-_query = emc_tex
+_query = concat
 
-s.tex_string(_query)
+s.concat(_query)
 
 
