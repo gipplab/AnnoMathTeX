@@ -98,11 +98,6 @@ class LaTeXProcessor:
 
             return identifiers
 
-        pattern1 = r'\$\$?.+?\$\$?'
-        pattern2 = r'\\\[.*?\\\]'
-        pattern3 = r'\\\(.*?\\\)'
-
-
         lines = self.decode()
         all_processed_lines = []
         for line in lines:

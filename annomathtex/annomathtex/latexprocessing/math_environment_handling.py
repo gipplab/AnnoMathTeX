@@ -36,7 +36,7 @@ class WikidataQidPywikibot:
 
     Claim object useful properties:
         - get_sources()
-        -get_target()
+        - get_target()
 
     pywikibot.category - listify
     """
@@ -154,33 +154,6 @@ class Sparql:
             'item_description': item_description
         }
         return results_dict
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
