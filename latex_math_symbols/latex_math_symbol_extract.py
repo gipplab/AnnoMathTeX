@@ -7,6 +7,7 @@ file_names = [f for f in os.listdir(os.getcwd()) if not f.endswith('.py')]
 
 
 symbol_dict = {}
+symbol_list = []
 
 for file_name in file_names:
     path = os.getcwd() + '/' + file_name
@@ -16,7 +17,12 @@ for file_name in file_names:
     symbols = re.findall(r'(?<=<math>).*?(?=</math)', lines)
 
     symbol_dict[file_name] = symbols
+    symbol_list += symbols
 
 
-with open('latex_math_symbols.json', 'w') as outfile:
-    json.dump(symbol_dict, outfile)
+
+def write_to_json(symbol_dict):
+    with open('latex_math_symbols.json', 'w') as outfile:
+        json.dump(symbol_dict, outfile)
+
+
