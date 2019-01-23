@@ -135,6 +135,9 @@ class Spacy_NER:
         return words
 
 
+class NESparql:
+    pass
+
 
 
 

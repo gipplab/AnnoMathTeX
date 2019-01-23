@@ -1,5 +1,6 @@
 from SPARQLWrapper import SPARQLWrapper, JSON
 from .sparql_queries import tex_string_query, defining_formula_query, concat_query
+from .sparql import Sparql
 
 """
 Math environment handling involves the revognition of formulae and identifiers.
@@ -42,25 +43,20 @@ class WikidataQidPywikibot:
     """
 
 
-class Sparql:
+class MathSparql(Sparql):
     """
     import queries from separate file
     todo: remove redundancy
+    todo: regex in query, to ignore whitespaces
     """
-    sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
+    #sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
 
 
-    @classmethod
-    def formulate_query(self, query, search_string):
-        """
-
-        :param query: tuple of query parts
-        :param search_item: item that is being searched for, i.e. inserted into query
-        :return: entire query
-        """
-
+    #@classmethod
+    """def formulate_query(self, query, search_string):
         entire_query = search_string.join(p for p in query)
-        return entire_query
+        return entire_query"""
+
 
 
     def defining_formula_contains(self, search_item):

@@ -1,12 +1,12 @@
-| <math>| \,</math>       || <tt><nowiki>|</nowiki></tt>  || [[divisor|divides]]
+| <math>|</math>       || <tt><nowiki>|</nowiki></tt>  || [[divisor|divides]]
 | <math>\|</math>         || <tt>\<nowiki>|</nowiki></tt> || [[unitary divisors|divides unitarily]], is parallel with
-| <math>/ \,</math>       || <tt>/</tt>                   || slash
+| <math>/</math>       || <tt>/</tt>                   || slash
 | <math>\backslash</math> || <tt>\backslash</tt>          || &nbsp;
 |-
-| <math>( \,</math>       || <tt>( \,</tt>                || left parenthesis
-| <math>) \,</math>       || <tt>) \,</tt>                || right parenthesis
-| <math>[ \,</math>       || <tt>[ \,</tt>                || left [square] bracket
-| <math>] \,</math>       || <tt>] \,</tt>                || right [square] bracket
+| <math>(</math>       || <tt>( \,</tt>                || left parenthesis
+| <math>)</math>       || <tt>) \,</tt>                || right parenthesis
+| <math>[</math>       || <tt>[ \,</tt>                || left [square] bracket
+| <math>]</math>       || <tt>] \,</tt>                || right [square] bracket
 |-
 | <math>\{</math>         || <tt>\{</tt>                  || left brace
 | <math>\}</math>         || <tt>\}</tt>                  || right brace
