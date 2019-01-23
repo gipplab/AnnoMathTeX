@@ -1,0 +1,30 @@
+| <math>\sin</math>    || <tt>\sin</tt>
+| <math>\arcsin</math> || <tt>\arcsin</tt>
+| <math>\csc</math>    || <tt>\csc</tt>
+| <math>\arccsc</math> || <tt>\arccsc</tt>
+|-
+| <math>\cos</math>    || <tt>\cos</tt>
+| <math>\arccos</math> || <tt>\arccos</tt>
+| <math>\sec</math>    || <tt>\sec</tt>
+| <math>\arcsec</math> || <tt>\arcsec</tt>
+|-
+| <math>\tan</math>    || <tt>\tan</tt>
+| <math>\arctan</math> || <tt>\arctan</tt>
+| <math>\cot</math>    || <tt>\cot</tt>
+| <math>\arccot</math> || <tt>\arccot</tt>
+
+
+| <math>\sinh</math>                  || <tt>\sinh</tt>
+| <math>\operatorname{arsinh}</math>  || <tt>\operatorname{arsinh}</tt>
+| <math>\operatorname{csch}</math>    || <tt>\operatorname{csch}</tt>
+| <math>\operatorname{arcsch}</math>  || <tt>\operatorname{arcsch}</tt>
+|-
+| <math>\cosh</math>                  || <tt>\cosh</tt>
+| <math>\operatorname{arcosh}</math>  || <tt>\operatorname{arcosh}</tt>
+| <math>\operatorname{sech}</math>    || <tt>\operatorname{sech}</tt>
+| <math>\operatorname{arsech}</math>  || <tt>\operatorname{arsech}</tt>
+|-
+| <math>\tanh</math>                  || <tt>\tanh</tt>
+| <math>\operatorname{artanh}</math>  || <tt>\operatorname{artanh}</tt>
+| <math>\coth</math>                  || <tt>\coth</tt>
+| <math>\operatorname{arcoth}</math>  || <tt>\operatorname{arcoth}</tt>

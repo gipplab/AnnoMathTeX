@@ -1,0 +1,24 @@
+| <math>\rightarrow</math> or <math>\to</math>      || <tt>\rightarrow</tt> or <tt>\to</tt>         || &nbsp;
+| <math>\Rightarrow</math>      || <tt>\Rightarrow</tt>         || &nbsp;
+| <math>\longrightarrow</math>  || <tt>\longrightarrow</tt>     || &nbsp;
+| <math>\Longrightarrow</math>  || <tt>\Longrightarrow</tt>     || &nbsp;
+|-
+| <math>\mapsto</math>          || <tt>\mapsto</tt>             || &nbsp;
+| <math></math>          || <tt></tt>             || &nbsp;
+| <math>\longmapsto</math>      || <tt>\longmapsto</tt>         || &nbsp;
+| <math></math>          || <tt></tt>             || &nbsp;
+|-
+| <math>\leftarrow</math> or <math>\gets</math>       || <tt>\leftarrow</tt> or <tt>\gets</tt>      || &nbsp;
+| <math>\Leftarrow</math>       || <tt>\Leftarrow</tt>          || &nbsp;
+| <math>\longleftarrow</math>   || <tt>\longleftarrow</tt>      || &nbsp;
+| <math>\Longleftarrow</math>   || <tt>\Longleftarrow</tt>      || &nbsp;
+
+
+| <math>\uparrow</math>         || <tt>\uparrow</tt>            || [[Knuth's up-arrow notation]]
+| <math>\Uparrow</math>         || <tt>\Uparrow</tt>            || &nbsp;
+|-
+| <math>\downarrow</math>       || <tt>\downarrow</tt>          || &nbsp;
+| <math>\Downarrow</math>       || <tt>\Downarrow</tt>          || &nbsp;
+|-
+| <math>\updownarrow</math>     || <tt>\updownarrow</tt>        || &nbsp;
+| <math>\Updownarrow</math>     || <tt>\Updownarrow</tt>        || &nbsp;

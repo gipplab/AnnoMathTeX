@@ -1,0 +1,21 @@
+| <math>\overline{\rm AB}</math>           || <tt>\overline{\rm AB}</tt>            || segment
+| <math>\overrightarrow{\rm AB}</math>     || <tt>\overrightarrow{\rm AB}</tt>      || ray (half-line)
+|-
+| <math>\angle</math>         || <tt>\angle</tt>                       || angle
+| <math>\measuredangle</math> || <tt>\measuredangle</tt>               || measured angle
+|-
+| <math>\triangle</math>      || <tt>\triangle</tt>                    || triangle
+| <math>\square</math>        || <tt>\square</tt>                      || square
+|-
+| <math>\cong</math>          || <tt>\cong</tt>                        || congruent (same shape and size)
+| <math>\ncong</math>         || <tt>\ncong</tt>                       || not congruent
+|-
+| <math>\sim</math>           || <tt>\sim</tt>                         || similar (same shape)
+| <math>\nsim</math>          || <tt>\nsim</tt>                        || not similar
+|-
+| <math>\|</math>             || <tt>\<nowiki>|</nowiki></tt>          || is parallel with
+| <math>\nparallel</math>     || <tt>\nparallel</tt>                   || is not parallel with
+|-
+| <math>\perp</math>          || <tt>\perp</tt>                        || is perpendicular to
+| <math>\not\perp</math>      || <tt>\not\perp</tt>                    || is not perpendicular to
+|-

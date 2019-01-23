@@ -1,0 +1,83 @@
+| <math>\neq</math> or <math>\ne \,</math> || <tt>\neq</tt> or <tt>\ne</tt> || is not equal to
+| <math>\notin</math>                      || <tt>\notin</tt>               || is not member of
+|-
+| <math>\nless</math>                      || <tt>\nless</tt>               || is not less than
+| <math>\ngtr</math>                       || <tt>\ngtr</tt>                || is not greater than
+|-
+| <math>\nleq</math>                       || <tt>\nleq</tt>                || is not less than or equal to
+| <math>\ngeq</math>                       || <tt>\ngeq</tt>                || is not greater than or equal to
+|-
+| <math>\nleqslant</math>                  || <tt>\nleqslant</tt>           || &nbsp;
+| <math>\ngeqslant</math>                  || <tt>\ngeqslant</tt>           || &nbsp;
+|-
+| <math>\nleqq</math>                      || <tt>\nleqq</tt>               || &nbsp;
+| <math>\ngeqq</math>                      || <tt>\ngeqq</tt>               || &nbsp;
+|-
+| <math>\lneq</math>                       || <tt>\lneq</tt>                || &nbsp;
+| <math>\gneq</math>                       || <tt>\gneq</tt>                || &nbsp;
+|-
+| <math>\lneqq</math>                      || <tt>\lneqq</tt>               || &nbsp;
+| <math>\gneqq</math>                      || <tt>\gneqq</tt>               || &nbsp;
+|-
+| <math>\lvertneqq</math>                  || <tt>\lvertneqq</tt>           || &nbsp;
+| <math>\gvertneqq</math>                  || <tt>\gvertneqq</tt>           || &nbsp;
+|-
+| <math>\lnsim</math>                      || <tt>\lnsim</tt>               || &nbsp;
+| <math>\gnsim</math>                      || <tt>\gnsim</tt>               || &nbsp;
+|-
+| <math>\lnapprox</math>                   || <tt>\lnapprox</tt>            || &nbsp;
+| <math>\gnapprox</math>                   || <tt>\gnapprox</tt>            || &nbsp;
+|-
+| <math>\nprec</math>                      || <tt>\nprec</tt>               || does not precede
+| <math>\nsucc</math>                      || <tt>\nsucc</tt>               || does not succeed
+|-
+| <math>\npreceq</math>                    || <tt>\npreceq</tt>             || neither precedes nor equals
+| <math>\nsucceq</math>                    || <tt>\nsucceq</tt>             || neither succedes nor equals
+|-
+| <math>\precneqq</math>                   || <tt>\precneqq</tt>            || &nbsp;
+| <math>\succneqq</math>                   || <tt>\succneqq</tt>            || &nbsp;
+|-
+| <math>\precnsim</math>                   || <tt>\precnsim</tt>            || &nbsp;
+| <math>\succnsim</math>                   || <tt>\succnsim</tt>            || &nbsp;
+|-
+| <math>\precnapprox</math>                || <tt>\precnapprox</tt>         || &nbsp;
+| <math>\succnapprox</math>                || <tt>\succnapprox</tt>         || &nbsp;
+|-
+| <math>\nsim</math>                       || <tt>\nsim</tt>                || is not similar to
+| <math>\ncong</math>                      || <tt>\ncong</tt>               || is not congruent to
+|-
+| <math>\nshortmid</math>                  || <tt>\nshortmid</tt>           || &nbsp;
+| <math>\nshortparallel</math>             || <tt>\nshortparallel</tt>      || &nbsp;
+|-
+| <math>\nmid</math>                       || <tt>\nmid</tt>                || &nbsp;
+| <math>\nparallel</math>                  || <tt>\nparallel</tt>           || is not parallel with
+|-
+| <math>\nvdash</math>                     || <tt>\nvdash</tt>              || &nbsp;
+| <math>\nvDash</math>                     || <tt>\nvDash</tt>              || &nbsp;
+|-
+| <math>\nVdash</math>                     || <tt>\nVdash</tt>              || &nbsp;
+| <math>\nVDash</math>                     || <tt>\nVDash</tt>              || &nbsp;
+|-
+| <math>\ntriangleleft</math>              || <tt>\ntriangleleft</tt>       || &nbsp;
+| <math>\ntriangleright</math>             || <tt>\ntriangleright</tt>      || &nbsp;
+|-
+| <math>\ntrianglelefteq</math>            || <tt>\ntrianglelefteq</tt>     || &nbsp;
+| <math>\ntrianglerighteq</math>           || <tt>\ntrianglerighteq</tt>    || &nbsp;
+|-
+| <math>\nsubseteq</math>                  || <tt>\nsubseteq</tt>           || &nbsp;
+| <math>\nsupseteq</math>                  || <tt>\nsupseteq</tt>           || &nbsp;
+|-
+| <math>\nsubseteqq</math>                 || <tt>\nsubseteqq</tt>          || &nbsp;
+| <math>\nsupseteqq</math>                 || <tt>\nsupseteqq</tt>          || &nbsp;
+|-
+| <math>\subsetneq</math>                  || <tt>\subsetneq</tt>           || &nbsp;
+| <math>\supsetneq</math>                  || <tt>\supsetneq</tt>           || &nbsp;
+|-
+| <math>\varsubsetneq</math>               || <tt>\varsubsetneq</tt>        || &nbsp;
+| <math>\varsupsetneq</math>               || <tt>\varsupsetneq</tt>        || &nbsp;
+|-
+| <math>\subsetneqq</math>                 || <tt>\subsetneqq</tt>          || &nbsp;
+| <math>\supsetneqq</math>                 || <tt>\supsetneqq</tt>          || &nbsp;
+|-
+| <math>\varsubsetneqq</math>              || <tt>\varsubsetneqq</tt>       || &nbsp;
+| <math>\varsupsetneqq</math>              || <tt>\varsupsetneqq</tt>       || &nbsp;

@@ -1,0 +1,24 @@
+| <math>| \,</math>       || <tt><nowiki>|</nowiki></tt>  || [[divisor|divides]]
+| <math>\|</math>         || <tt>\<nowiki>|</nowiki></tt> || [[unitary divisors|divides unitarily]], is parallel with
+| <math>/ \,</math>       || <tt>/</tt>                   || slash
+| <math>\backslash</math> || <tt>\backslash</tt>          || &nbsp;
+|-
+| <math>( \,</math>       || <tt>( \,</tt>                || left parenthesis
+| <math>) \,</math>       || <tt>) \,</tt>                || right parenthesis
+| <math>[ \,</math>       || <tt>[ \,</tt>                || left [square] bracket
+| <math>] \,</math>       || <tt>] \,</tt>                || right [square] bracket
+|-
+| <math>\{</math>         || <tt>\{</tt>                  || left brace
+| <math>\}</math>         || <tt>\}</tt>                  || right brace
+| <math>\langle</math>    || <tt>\langle</tt>             || left angle bracket
+| <math>\rangle</math>    || <tt>\rangle</tt>             || right angle bracket
+|-
+| <math>\lceil</math>     || <tt>\lceil</tt>              || [[ceiling]] (left)
+| <math>\rceil</math>     || <tt>\rceil</tt>              || [[ceiling]] (right)
+| <math>\lfloor</math>    || <tt>\lfloor</tt>             || [[floor]] (left)
+| <math>\rfloor</math>    || <tt>\rfloor</tt>             || [[floor]] (right)
+|-
+| <math>\ulcorner</math>     || <tt>\ulcorner</tt>              || &nbsp;
+| <math>\urcorner</math>     || <tt>\urcorner</tt>              || &nbsp;
+| <math>\llcorner</math>     || <tt>\llcorner</tt>              || &nbsp;
+| <math>\lrcorner</math>     || <tt>\lrcorner</tt>              || &nbsp;

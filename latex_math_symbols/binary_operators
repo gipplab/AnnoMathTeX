@@ -1,0 +1,39 @@
+| <math>\pm</math>              || <tt>\pm</tt>               || plus or minus
+| <math>\cap</math>             || <tt>\cap</tt>              || [[set intersection]]
+| <math>\diamond</math>         || <tt>\diamond</tt>          || &nbsp;
+| <math>\oplus</math>           || <tt>\oplus</tt>            || &nbsp;
+|-
+| <math>\mp</math>              || <tt>\mp</tt>               || minus or plus
+| <math>\cup</math>             || <tt>\cup</tt>              || [[set union]]
+| <math>\bigtriangleup</math>   || <tt>\bigtriangleup</tt>    || &nbsp;
+| <math>\ominus</math>          || <tt>\ominus</tt>           || &nbsp;
+|-
+| <math>\times</math>           || <tt>\times</tt>            || multiplied by
+| <math>\uplus</math>           || <tt>\uplus</tt>            || [[multiset addition]]
+| <math>\bigtriangledown</math> || <tt>\bigtriangledown</tt>  || &nbsp;
+| <math>\otimes</math>          || <tt>\otimes</tt>           || &nbsp;
+|-
+| <math>\div</math>             || <tt>\div</tt>              || divided by
+| <math>\sqcap</math>           || <tt>\sqcap</tt>            || &nbsp;
+| <math>\triangleleft</math>    || <tt>\triangleleft</tt>     || &nbsp;
+| <math>\oslash</math>          || <tt>\oslash</tt>           || &nbsp;
+|-
+| <math>\ast</math>             || <tt>\ast</tt>              || asterisk
+| <math>\sqcup</math>           || <tt>\sqcup</tt>            || &nbsp;
+| <math>\triangleright</math>   || <tt>\triangleright</tt>    || &nbsp;
+| <math>\odot</math>            || <tt>\odot</tt>             || &nbsp;
+|-
+| <math>\star</math>            || <tt>\star</tt>             || &nbsp;
+| <math>\vee</math>             || <tt>\vee</tt>              || &nbsp;
+| <math>\bigcirc</math>         || <tt>\bigcirc</tt>          || &nbsp;
+| <math>\circ</math>            || <tt>\circ</tt>             || &nbsp;
+|-
+| <math>\dagger</math>          || <tt>\dagger</tt>           || &nbsp;
+| <math>\wedge</math>           || <tt>\wedge</tt>            || &nbsp;
+| <math>\bullet</math>          || <tt>\bullet</tt>           || &nbsp;
+| <math>\setminus</math>        || <tt>\setminus</tt>         || [[set difference]]
+|-
+| <math>\ddagger</math>         || <tt>\ddagger</tt>          || &nbsp;
+| <math>\cdot</math>            || <tt>\cdot</tt>             || &nbsp;
+| <math>\wr</math>              || <tt>\wr</tt>               || &nbsp;
+| <math>\amalg</math>           || <tt>\amalg</tt>            || &nbsp;

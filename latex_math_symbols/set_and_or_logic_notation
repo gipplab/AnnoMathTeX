@@ -1,0 +1,73 @@
+| <math>\N</math>              || <tt>\N</tt>                                                            || set of [[natural numbers]]
+|-
+| <math>\Z</math>              || <tt>\Z</tt>                                                            || set of [[integers]]
+|-
+| <math>\Q</math>              || <tt>\Q</tt>                                                            || set of [[rational numbers]]
+|-
+| <math>\mathbb{A}</math>      || <tt>\mathbb{A}</tt>                                                    || set of [[algebraic numbers]]
+|-
+| <math>\R</math>              || <tt>\R</tt>                                                            || set of [[real numbers]]
+|-
+| <math>\C</math>              || <tt>\C</tt>                                                            || set of [[complex numbers]]
+|-
+| <math>\mathbb{H}</math>      || <tt>\mathbb{H}</tt>                                                    || set of [[quaternions]]
+|-
+| <math>\mathbb{O}</math>      || <tt>\mathbb{O}</tt>                                                    || set of [[octonions]]
+|-
+| <math>\mathbb{S}</math>      || <tt>\mathbb{S}</tt>                                                    || set of [[sedenions]]
+|-
+| <math>\in</math>             || <tt>\in</tt>                                                           || is member of
+|-
+| <math>\notin</math>          || <tt>\notin</tt>                                                        || is not member of
+|-
+| <math>\ni</math>             || <tt>\ni</tt>                                                           || owns (has member)
+|-
+| <math>\subset</math>         || <tt>\subset</tt>                                                       || is proper subset of
+|-
+| <math>\subseteq</math>       || <tt>\subseteq</tt>                                                     || is subset of
+|-
+| <math>\supset</math>         || <tt>\supset</tt>                                                       || is proper superset of
+|-
+| <math>\supseteq</math>       || <tt>\supseteq</tt>                                                     || is superset of
+|-
+| <math>\cup</math>            || <tt>\cup</tt>                                                          || [[set union]]
+|-
+| <math>\cap</math>            || <tt>\cap</tt>                                                          || [[set intersection]]
+|-
+| <math>\setminus</math>       || <tt>\setminus</tt>                                                     || [[set difference]]
+|-
+
+
+| <math>\exists</math>         || <tt>\exists</tt>                                                       || [[there exists at least one]]
+|-
+| <math>\exists!</math>        || <tt>\exists!</tt>                                                      || [[there exists one and only one]]
+|-
+| <math>\nexists</math>        || <tt>\nexists</tt>                                                      || there is no
+|-
+| <math>\forall</math>         || <tt>\forall</tt>                                                       || [[for all]]
+|-
+| <math>\neg</math>            || <tt>\neg</tt>                                                          || [[not]] ([[logical not]])
+|-
+| <math>\lor</math>            || <tt>\lor</tt>                                                          || [[or]] ([[logical or]])
+|-
+| <math>\land</math>           || <tt>\land</tt>                                                         || [[and]] ([[logical and]])
+|-
+| <math>\Longrightarrow</math> or <math>\implies</math>
+| <tt>\Longrightarrow</tt> or <tt>\implies</tt>
+| [[implies]]
+|-
+| <math>\Rightarrow</math>     || <tt>\Rightarrow</tt>                                                   || ''(preferred for right implication)''
+|-
+| <math>\Longleftarrow</math>
+| <tt>\Longleftarrow</tt>
+| is implied by (only if)
+|-
+| <math>\Leftarrow</math>      || <tt>\Leftarrow</tt>                                                    || ''(preferred for left implication)''
+|-
+| <math>\iff</math>            || <tt>\iff</tt>                                                          || is equivalent to (if and only if, iff)
+|-
+| <math>\Leftrightarrow</math> || <tt>\Leftrightarrow</tt>                                               || ''(preferred for equivalence)''
+|-
+| <math>\top</math>            || <tt>\top</tt>                                                          || &nbsp;
+|-
+| <math>\bot</math>            || <tt>\bot</tt>
