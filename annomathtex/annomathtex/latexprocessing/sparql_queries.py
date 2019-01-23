@@ -48,10 +48,10 @@ WHERE {
 tex_string_query = (
 """
 SELECT 
-?item ?itemLabel ?itemDescription ?TeXString
+?item ?itemLabel ?itemDescription ?teXString
 WHERE {
-     ?item wdt:P1993 ?TeXString .
-     FILTER( contains(?TeXString,""",
+     ?item wdt:P1993 ?teXString .
+     FILTER( contains(?teXString,""",
 """)) 
      #this has to be in the clause, in order to get itemLabel and itemDescription
      SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }     

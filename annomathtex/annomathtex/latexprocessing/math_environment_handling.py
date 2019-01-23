@@ -45,47 +45,59 @@ class WikidataQidPywikibot:
 class Sparql:
     """
     import queries from separate file
+    todo: remove redundancy
     """
     sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
 
 
-    def query(self, query_string, type='TeXString'):
-        self.sparql.setQuery(query_string)
-        self.sparql.setReturnFormat(JSON)
-        query_results = self.sparql.query().convert()
-        results = query_results['results']['bindings'][0]
+    def formulate_query(self, query, search_item):
+        """
 
-        if type == 'defining_formula':
-            return self.defining_formula(results)
+        :param query: tuple of query parts
+        :param search_item: item that is being searched for, i.e. inserted into query
+        :return: entire query
+        """
 
-        else:
-            return self.tex_string(results)
+        entire_query = search_item.join(p for p in query)
+        return entire_query
 
     @classmethod
-    def defining_formula(self, latex_formula):
+    def defining_formula_contains(self, search_item):
         """
         Search for a formula with the defining formula property
 
         For mathML format of formula
         The defining formula property is written in MathML
         Currently only reutrns the MathML as string
-        :param results:
+        :param search_item:
         :return:
         """
         #todo: mathML to latex
+        entire_query = self.formulate_query(defining_formula_query, search_item)
 
-        self.sparql.setQuery(query_string)
+        self.sparql.setQuery(entire_query)
         self.sparql.setReturnFormat(JSON)
         query_results = self.sparql.query().convert()
         results = query_results['results']['bindings'][0]
+        url = results['item']['value']
+        qid = url.split('/')[-1]
+        defining_formula = results['definingFormula']['value']
+        item_label = results['itemLabel']['value']
+        item_description = results['itemDescription']['value']
 
+        results_dict = {
+            'qid': qid,
+            'link': url,
+            'defining_formula': defining_formula,
+            'item_label': item_label,
+            'item_description': item_description
+        }
 
-        _defining_formula = results['defining_formula']['value']
-        return _defining_formula
+        return results_dict
 
 
     @classmethod
-    def tex_string_contains(self, latex__part_formula):
+    def tex_string_contains(self, search_item):
         """
         Searching for items in wikidata that contain latex_part_formula
 
@@ -94,13 +106,26 @@ class Sparql:
         :param latex_formula:
         :return:
         """
-        self.sparql.setQuery(tex_string_query.join(latex_part_formula))
+        entire_query = self.formulate_query(tex_string_query, search_item)
+
+        self.sparql.setQuery(entire_query)
         self.sparql.setReturnFormat(JSON)
         query_results = self.sparql.query().convert()
         results = query_results['results']['bindings'][0]
-        tex_string = results['TeXString']['value']
-        #should return description, qid, name of the item that was searched for
-        return tex_string
+        url = results['item']['value']
+        qid = url.split('/')[-1]
+        tex_string = results['teXString']['value']
+        item_label = results['itemLabel']['value']
+        item_description = results['itemDescription']['value']
+
+        results_dict = {
+            'qid': qid,
+            'link': url,
+            'tex_string': tex_string,
+            'item_label': item_label,
+            'item_description': item_description
+        }
+        return results_dict
 
 
 
