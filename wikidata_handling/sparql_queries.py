@@ -102,32 +102,7 @@ SELECT
 ?item ?itemLabel ?itemDescription ?TeXString
 WHERE {
      ?item wdt:P1993 ?TeXString .
-     FILTER( contains(?TeXString, 'E=m')) 
-     #this has to be in the clause, in order to get itemLabel and itemDescription
-     SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }     
- }
-"""
-
-
-emc_tex_2 = """
-SELECT 
-?item ?itemLabel ?itemDescription ?TeXString
-WHERE {
-     ?item wdt:P1993 ?TeXString .
-     FILTER( contains(?TeXString, {})) 
-     #this has to be in the clause, in order to get itemLabel and itemDescription
-     SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }     
- }
-"""
-
-emc_tex_2_1 = """
-SELECT 
-?item ?itemLabel ?itemDescription ?TeXString
-WHERE {
-     ?item wdt:P1993 ?TeXString .
-     FILTER( contains(?TeXString,"""
-
-emc_tex_2_2 = """)) 
+     FILTER( contains(?TeXString, 'E=mc')) 
      #this has to be in the clause, in order to get itemLabel and itemDescription
      SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }     
  }

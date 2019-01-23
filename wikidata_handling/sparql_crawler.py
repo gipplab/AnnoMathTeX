@@ -1,6 +1,6 @@
 from SPARQLWrapper import SPARQLWrapper, JSON
 import pandas as pd
-from sparql_queries import mathematical_expression_query, emc, mass, emc_tex, emc_tex_2_1, emc_tex_2_2
+from sparql_queries import mathematical_expression_query, emc_tex
 
 
 
@@ -42,8 +42,18 @@ class Sparql:
         self.sparql.setReturnFormat(JSON)
         results = self.sparql.query().convert()
         results = results['results']['bindings'][0]
+        #link to site
+        link = results['item']['value']
+        qid = link.split('/')[-1]
         tex_string = results['TeXString']['value']
+        item_label = results['itemLabel']['value']
+        item_description = results['itemDescription']['value']
+
+        print(qid)
         print(tex_string)
+        print(item_label)
+        print(item_description)
+        print(link)
 
 
 
@@ -52,24 +62,10 @@ class Sparql:
 
 
 s = Sparql()
-#_query =
-
-#print(emc_tex)
-
-#print()
-
-e = """
-'E=m'
-"""
-
-r = emc_tex_2_1 + e + emc_tex_2_2
 
 
-s.tex_string(r)
+_query = emc_tex
 
-#s.defining_formula_json(_query)
-#s.tex_string(_query)
-#s.defining_formula_json(_query)
-#print(s.query(_query).head())
+s.tex_string(_query)
 
 
