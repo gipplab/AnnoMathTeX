@@ -30,7 +30,7 @@ def extract_words(line_chunk, endline):
     words = []
     word_tokens = nltk.word_tokenize(line_chunk)
 
-    print(word_tokens)
+    #print(word_tokens)
 
     for _, word in enumerate(word_tokens):
         words.append(

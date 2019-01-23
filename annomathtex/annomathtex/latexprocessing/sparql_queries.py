@@ -30,7 +30,7 @@ Important:
 """
 
 
-
+################ MATH ####################
 
 defining_formula_query = (
 """
@@ -59,6 +59,9 @@ WHERE {
 """
 )
 
+
+#improve by including more properties
+
 concat_query = (
 """
 SELECT 
@@ -76,3 +79,17 @@ WHERE {
 
 
 
+################## Named Entities / Nouns ###################
+
+#improve by making search fuzzy (contains) and fidning some way of limiting found instances
+#to operators, symbols, science, ...
+
+named_entity_query = ("""
+SELECT 
+distinct ?item ?itemLabel ?itemDescription
+WHERE{  
+  ?item ?label """,
+"""@en.  
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }    
+}
+""")

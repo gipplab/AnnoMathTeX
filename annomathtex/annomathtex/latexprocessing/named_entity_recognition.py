@@ -4,7 +4,6 @@ from uuid import uuid1
 import en_core_web_sm
 from stanfordcorenlp import StanfordCoreNLP
 from .__latex_processing_config__ import __SCNLP_PATH__
-from abc import ABCMeta, abstractmethod
 import os
 
 
@@ -134,9 +133,6 @@ class Spacy_NER:
 
         return words
 
-
-class NESparql:
-    pass
 
 
 
