@@ -20,7 +20,7 @@ BETTER: Construct rules, by which the strings are split into their parts
 
 
 
-file_names = [f for f in os.listdir(os.getcwd()) if not f.endswith('.py')]
+file_names = [f for f in os.listdir(os.getcwd()) if not f.endswith('.py') and not f.endswith('.json')]
 symbol_dict = {}
 symbol_list = []
 
@@ -41,6 +41,5 @@ def write_to_json(symbol_dict):
         json.dump(symbol_dict, outfile)
 
 
-operators = []
-
-print('lim' in symbol_list)
+for k in symbol_dict:
+    print(k, symbol_dict[k])
