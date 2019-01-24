@@ -21,18 +21,33 @@ BETTER: Construct rules, by which the strings are split into their parts
 
 
 file_names = [f for f in os.listdir(os.getcwd()) if not f.endswith('.py') and not f.endswith('.json')]
-symbol_dict = {}
-symbol_list = []
 
-for file_name in file_names:
-    path = os.getcwd() + '/' + file_name
-    with open(path, 'r') as file:
-        lines = file.read()#.splitlines()
 
-    symbols = re.findall(r'(?<=<math>).*?(?=</math)', lines)
 
-    symbol_dict[file_name] = symbols
-    symbol_list += symbols
+split_symbols = ['delimiters', 'relational_operators',
+                 'binary_operators', 'set_and_or_logic_notation',
+                 'arrows', 'unary_operators', 'negated_binary_operators']
+
+all_others = [f for f in file_names if f not in split_symbols]
+
+
+
+
+
+def extract_symbols(file_names):
+    symbol_dict = {}
+    symbol_list = []
+    for file_name in file_names:
+        path = os.getcwd() + '/' + file_name
+        with open(path, 'r') as file:
+            lines = file.read()#.splitlines()
+
+        symbols = re.findall(r'(?<=<math>).*?(?=</math)', lines)
+
+        symbol_dict[file_name] = symbols
+        symbol_list += symbols
+
+    return symbol_dict, symbol_list
 
 
 
@@ -41,5 +56,17 @@ def write_to_json(symbol_dict):
         json.dump(symbol_dict, outfile)
 
 
-for k in symbol_dict:
-    print(k, symbol_dict[k])
+#for k in symbol_dict:
+#    print(k, symbol_dict[k])
+
+
+_, _split = extract_symbols(split_symbols)
+
+
+split_string = '|'.join('({})'.format(c) for c in _split)
+split_string += '|(\W)'
+print(split_string)
+
+e_1 = "{{B_s^2}\over{4 \pi ( \\rho_n+\\rho_I )}}"
+
+

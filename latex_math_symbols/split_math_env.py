@@ -8,7 +8,7 @@ ignore_characters = ['\;']
 
 
 
-#######                                                                           #########
+""""#######                                                                           #########
 ### Adapted from https://github.com/alvinwan/TexSoup/blob/master/TexSoup/reader.py#L9   ###
 #######                                                                           #########
 
@@ -31,7 +31,7 @@ BRACKETS_DELIMITERS = {'(', ')', '<', '>', '[', ']', '{', '}',
 SIZE_PREFIX = ('left', 'right', 'big', 'Big', 'bigg', 'Bigg')
 PUNCTUATION_COMMANDS = {command + bracket
                         for command in SIZE_PREFIX
-                        for bracket in BRACKETS_DELIMITERS.union({'|', '.'})}
+                        for bracket in BRACKETS_DELIMITERS.union({'|', '.'})}"""
 
 capure = []
 
