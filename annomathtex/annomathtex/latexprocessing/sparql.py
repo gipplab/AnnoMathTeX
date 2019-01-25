@@ -21,5 +21,6 @@ class Sparql(object, metaclass=ABCMeta):
         :param search_item: item that is being searched for, i.e. inserted into query
         :return: entire query
         """
-        entire_query = search_string.join(p for p in query)
+        #entire_query = search_string.join(p for p in query)
+        entire_query = "\'{}\'".format(search_string).join(p for p in query)
         return entire_query

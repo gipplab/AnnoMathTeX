@@ -72,7 +72,7 @@ class Sparql:
         :param search_item: item that is being searched for, i.e. inserted into query
         :return: entire query
         """
-        entire_query = search_string.join(p for p in query)
+        entire_query = "\'{}\'".format(search_string).join(p for p in query)
         return entire_query
 
 
@@ -81,9 +81,31 @@ class Sparql:
         self.sparql.setQuery(entire_query)
         self.sparql.setReturnFormat(JSON)
         results = self.sparql.query().convert()
-        results = results['results']['bindings'][0]
-        print(results)
+        results = results['results']['bindings']#[0]
+        results_cleaned = []
+        #print(results[0])
+        for r in results:
+            item_description = None
+            if 'itemDescription' in r:
+                item_description = r['itemDescription']['value']
 
+            url = r['item']['value']
+            qid = url.split('/')[-1]
+            defining_formula = r['searchSpace']['value']
+            item_label = r['itemLabel']['value']
+
+            results_dict = {
+                'qid': qid,
+                'link': url,
+                'defining_formula': defining_formula,
+                'item_label': item_label,
+                'item_description': item_description
+            }
+
+            results_cleaned.append(results_dict)
+
+
+        return results_cleaned
 
 
 
@@ -105,18 +127,14 @@ WHERE {
 
 s = Sparql()
 
+v = s.handle_concat(concat_query, 'X_{k+1} = g ')
 
-_query = concat_query[0] + "'$'" + concat_query[1]
+for k in v:
+    print(k)
 
-print(_query)
-x = '\'$\''
 
-y = '$'
 
-q = concat_query[0] + "\'{}\'".format(y) + concat_query[1]
-print(q)
-#s.concat(q)
 
-#s.handle_concat(_query, '$')
+
 
 
