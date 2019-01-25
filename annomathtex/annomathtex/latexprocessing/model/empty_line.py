@@ -7,7 +7,7 @@ Needed to treat empty lines
 
 class EmptyLine(Token):
 
-    def __init__(self, unique_id, type='Emptyline', highlight=None, content=None, endline=True):
+    def __init__(self, unique_id, type='Emptyline', highlight=None, content=None, endline=True, wikidata_result=None):
         """
         Constructor of superclass Token is called for highlight and content
 
@@ -17,7 +17,7 @@ class EmptyLine(Token):
         :param content: String, The Identifier itself.
         :param endline: Boolean, needed for page rendering
         """
-        super().__init__(unique_id, type, highlight, content, endline)
+        super().__init__(unique_id, type, highlight, content, endline, wikidata_result)
 
     def get_unique_id(self):
         """

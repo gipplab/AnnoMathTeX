@@ -5,6 +5,8 @@ from .model.word import Word
 from .model.identifier import Identifier
 from .model.empty_line import EmptyLine
 from .model.latexfile import LaTeXFile
+from .named_entity_handling import NESparql
+from .math_environment_handling import MathSparql
 
 
 def decode(request_file):
@@ -26,7 +28,8 @@ def extract_words(line_chunk, endline):
     :param endline: Boolean. True if the line_chunk ends the line.
     :return: List of the words fom line_chunk as Word() objects.
     """
-    # todo: use NECKAR NER
+    # todo: use NECKAR NER to evaluate later, evaluation can be done in different file (independent of Django)
+
     words = []
     word_tokens = nltk.word_tokenize(line_chunk)
 
@@ -34,7 +37,16 @@ def extract_words(line_chunk, endline):
 
     for _, word in enumerate(word_tokens):
         words.append(
-            Word(str(uuid1()), type='Word', highlight="black", content=word, endline=False, named_entity=False))
+            Word(
+                str(uuid1()),
+                type='Word',
+                highlight="black",
+                content=word,
+                endline=False,
+                named_entity=False,
+                wikidata_result = None
+            )
+        )
 
     if endline:
         words[-1].endline = True
@@ -54,8 +66,19 @@ def extract_identifiers(line_chunk, endline):
     identifier_tokens = nltk.word_tokenize(line_chunk)
 
     for identifier in identifier_tokens:
+
+        wikidata_result = mathsparql.broad_search(identifier)
+
         identifiers.append(
-            Identifier(str(uuid1()), type='Identifier', highlight='pink', content=identifier, endline=False, qid=None))
+            Identifier(
+                str(uuid1()),
+                type='Identifier',
+                highlight='pink',
+                content=identifier,
+                endline=False,
+                wikidata_result=None
+            )
+        )
 
     if endline:
         identifiers[-1].endline = True
@@ -67,9 +90,15 @@ def extract_identifiers(line_chunk, endline):
 def process_lines(request_file):
     """
     processes the file
+    todo: check runtime with multiprocessing
     :param request_file: request.FILES['file'], the file that the user uploaded
     :return:
     """
+
+    global nesparql, mathsparql
+    nesparql = NESparql()
+    mathsparql = MathSparql()
+
 
     lines = decode(request_file)
     all_processed_lines = []

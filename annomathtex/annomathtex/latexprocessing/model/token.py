@@ -7,7 +7,7 @@ Punctuation are excluded.
 
 class Token(object, metaclass=ABCMeta):
     #todo: add recommendation as field, so that it can be accessed in render_file_template.html
-    def __init__(self, unique_id, type, highlight, content, endline):
+    def __init__(self, unique_id, type, highlight, content, endline, wikidata_result):
         """
         :param unique_id: uuid.uuid1 object, converted to a string. Needed in template for rendering.
         :param type: String, "Word" or "Identifier". Needed for correct template rendering
@@ -22,6 +22,7 @@ class Token(object, metaclass=ABCMeta):
         self.content = content
         self.endline = endline
         self.type = type
+        self.wikidata_result = wikidata_result
 
 
     @abstractmethod

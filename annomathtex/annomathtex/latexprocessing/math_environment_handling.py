@@ -25,7 +25,7 @@ Ideas:
     
 """
 
-import pywikibot
+#import pywikibot
 
 class WikidataQidPywikibot:
     """
@@ -41,6 +41,7 @@ class WikidataQidPywikibot:
 
     pywikibot.category - listify
     """
+    pass
 
 
 class MathSparql(Sparql):
