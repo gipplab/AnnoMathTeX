@@ -174,7 +174,7 @@
               class="inline"
               id="{{ Token.unique_id }}"
               style="color: {{ Token.highlight }};"
-              onclick="alertthis('{{ Token.unique_id }}', '{{ Token.wikidata_result }}')"
+              onclick="alertthis('{{ Token.unique_id }}', '{{ Token.wikidata_result|escapejs }}')"
             >
                 {{ Token.content }}
             </span>

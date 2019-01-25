@@ -7,6 +7,7 @@ from .model.empty_line import EmptyLine
 from .model.latexfile import LaTeXFile
 from .named_entity_handling import NESparql
 from .math_environment_handling import MathSparql
+import json
 
 
 def decode(request_file):
@@ -69,8 +70,8 @@ def extract_identifiers(line_chunk, endline):
 
         wikidata_result = mathsparql.broad_search(identifier)
         #print('wikidata results: ', wikidata_result)
-        if len(wikidata_result)>0:
-            wikidata_result = 'TESTESTTESTESTE'
+        #if len(wikidata_result)>0:
+        #    wikidata_result = {'0': {'01':'test01'}}
 
         identifiers.append(
             Identifier(
@@ -79,7 +80,7 @@ def extract_identifiers(line_chunk, endline):
                 highlight='pink',
                 content=identifier,
                 endline=False,
-                wikidata_result=wikidata_result
+                wikidata_result= json.dumps({'wikidata_result':wikidata_result})
             )
         )
 
