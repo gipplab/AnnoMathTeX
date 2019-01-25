@@ -68,6 +68,7 @@ def extract_identifiers(line_chunk, endline):
     for identifier in identifier_tokens:
 
         wikidata_result = mathsparql.broad_search(identifier)
+        print('wikidata result: ', wikidata_result)
 
         identifiers.append(
             Identifier(

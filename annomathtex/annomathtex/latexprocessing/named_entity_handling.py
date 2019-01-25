@@ -34,3 +34,4 @@ class NESparql(Sparql):
             'item_description': item_description
         }
         return results_dict
+

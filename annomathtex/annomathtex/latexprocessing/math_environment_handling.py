@@ -125,7 +125,7 @@ class MathSparql(Sparql):
         return results_dict
 
 
-    def broad_search(self, search_string):
+    def broad_search2(self, search_string):
         """
         Use concatenaed properties to query
         :param search_string: string from latex doc that is being search for
@@ -151,3 +151,32 @@ class MathSparql(Sparql):
             'item_description': item_description
         }
         return results_dict
+
+
+    def broad_search(self, search_string):
+        """
+        Use concatenaed properties to query
+        :param search_string: string from latex doc that is being search for
+        :return:
+        """
+        try:
+            entire_query = self.formulate_query(concat_query, search_string)
+            self.sparql.setQuery(entire_query)
+            self.sparql.setReturnFormat(JSON)
+
+            query_results = self.sparql.query().convert()
+            #results = query_results['results']['bindings'][0]
+            #url = results['item']['value']
+            #qid = url.split('/')[-1]
+            #found_string = results['searchSpace']['value']
+            #item_label = results['itemLabel']['value']
+            #item_description = results['itemDescription']['value']
+
+        except Exception as e:
+            print(e, search_string)
+
+
+        print(entire_query)
+        print()
+
+        return None

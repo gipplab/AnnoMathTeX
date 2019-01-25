@@ -65,15 +65,58 @@ class Sparql:
             print(k, results[k])
 
 
+    def formulate_query(self, query, search_string):
+        """
+
+        :param query: tuple of query parts
+        :param search_item: item that is being searched for, i.e. inserted into query
+        :return: entire query
+        """
+        entire_query = search_string.join(p for p in query)
+        return entire_query
 
 
+    def handle_concat(self, query, search_item):
+        entire_query = self.formulate_query(query, search_item)
+        self.sparql.setQuery(entire_query)
+        self.sparql.setReturnFormat(JSON)
+        results = self.sparql.query().convert()
+        results = results['results']['bindings'][0]
+        print(results)
+
+
+
+
+concat_query = (
+"""
+SELECT 
+?item ?itemLabel ?itemDescription ?searchSpace
+WHERE {
+     ?item wdt:P1993|wdt:P2534 ?searchSpace;
+     FILTER( contains(?searchSpace, """,
+""")) 
+     #this has to be in the clause, in order to get itemLabel and itemDescription
+     SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }     
+ }
+"""
+
+)
 
 
 s = Sparql()
 
 
-_query = concat
+_query = concat_query[0] + "'$'" + concat_query[1]
 
-s.concat(_query)
+print(_query)
+x = '\'$\''
+
+y = '$'
+
+q = concat_query[0] + "\'{}\'".format(y) + concat_query[1]
+print(q)
+#s.concat(q)
+
+#s.handle_concat(_query, '$')
 
 
