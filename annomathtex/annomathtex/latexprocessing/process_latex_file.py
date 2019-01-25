@@ -68,7 +68,7 @@ def extract_identifiers(line_chunk, endline):
 
     for identifier in identifier_tokens:
 
-        wikidata_result = mathsparql.broad_search(identifier)
+        wikidata_result = json.dumps(mathsparql.broad_search(identifier))
         #print('wikidata results: ', wikidata_result)
         #if len(wikidata_result)>0:
         #    wikidata_result = {'0': {'01':'test01'}}
@@ -80,7 +80,8 @@ def extract_identifiers(line_chunk, endline):
                 highlight='pink',
                 content=identifier,
                 endline=False,
-                wikidata_result= json.dumps({'wikidata_result':wikidata_result})
+                #wikidata_result= json.dumps({'wikidata_result':wikidata_result})
+                wikidata_result = wikidata_result
             )
         )
 

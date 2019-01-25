@@ -137,8 +137,8 @@ class MathSparql(Sparql):
         self.sparql.setReturnFormat(JSON)
         query_results = self.sparql.query().convert()
         results = query_results['results']['bindings']#[0]
-        #results_cleaned = []
-        results_dict = {}
+        results_cleaned = []
+        #results_dict = {}
         for i, r in enumerate(results):
             item_description = None
             if 'itemDescription' in r:
@@ -148,7 +148,7 @@ class MathSparql(Sparql):
             found_string = r['searchSpace']['value']
             item_label = r['itemLabel']['value']
 
-            results_dict[i] = {
+            results_dict = {
                 'qid': qid,
                 'link': url,
                 'found_string': found_string,
@@ -156,7 +156,7 @@ class MathSparql(Sparql):
                 'item_description': item_description
             }
 
-            #results_cleaned.append(results_dict)
-        #return results_cleaned
-        return results_dict
+            results_cleaned.append(results_dict)
+        return results_cleaned
+        #return results_dict
 
