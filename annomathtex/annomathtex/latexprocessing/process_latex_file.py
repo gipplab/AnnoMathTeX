@@ -69,6 +69,8 @@ def extract_identifiers(line_chunk, endline):
 
         wikidata_result = mathsparql.broad_search(identifier)
         #print('wikidata results: ', wikidata_result)
+        if len(wikidata_result)>0:
+            wikidata_result = 'TESTESTTESTESTE'
 
         identifiers.append(
             Identifier(
@@ -77,7 +79,7 @@ def extract_identifiers(line_chunk, endline):
                 highlight='pink',
                 content=identifier,
                 endline=False,
-                wikidata_result=None
+                wikidata_result=wikidata_result
             )
         )
 
