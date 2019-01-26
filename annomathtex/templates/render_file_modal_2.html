@@ -50,24 +50,33 @@
     cursor: pointer;
     }
 
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+
   </style>
 
 </head>
 
 <body>
-
-
-
-
 <form method="POST" id="post-form">
     {% csrf_token %}
     <div name="tested" id="tested">Testesteste</div>
     <input type="submit" class="tiny button" name="post-form-submit">
     <button type="submit" name="post-form-submit2">Upload</button>
 </form>
-
-
-
 
 <div id="foo" class="modal">
   <!-- Modal content -->
@@ -77,6 +86,34 @@
     <button id="highlightBtn" onclick="highlightToken()">HIGHLIGHT</button>
     <button id="unHighlightBtn" onclick="unHighlightToken()">UNHIGHLIGHT</button>
     <p id="placeholder"></p>
+    <table>
+      <tr>
+        <th>foo</th>
+        <th>bar</th>
+        <th>foobar</th>
+      </tr>
+      <tr>
+        <td>Alfreds Futterkiste</td>
+        <td>Maria Anders</td>
+        <td>Germany</td>
+      </tr>
+      <tr>
+        <td>Centro comercial Moctezuma</td>
+        <td>Francisco Chang</td>
+        <td>Mexico</td>
+      </tr>
+      <tr>
+        <td>Ernst Handel</td>
+        <td>Roland Mendel</td>
+        <td>Austria</td>
+      </tr>
+      <tr>
+        <td>Island Trading</td>
+        <td>Helen Bennett</td>
+        <td>UK</td>
+      </tr>
+
+    </table>
   </div>
 </div>
 
@@ -97,9 +134,21 @@
 
     if (wikidata_result != "None") {
       var json = JSON.parse(wikidata_result);
-      alert(json['w'][0]['qid']);
-    }
-    //alert(wikidata_result != "None");
+      var w = json['w'];
+      console.log(toType(w));
+      var myTable= "<table><tr><td style='width: 100px; color: red;'>Col Head 1</td>";
+      myTable+= "<td style='width: 100px; color: red; text-align: right;'>Col Head 2</td>";
+      myTable+="<td style='width: 100px; color: red; text-align: right;'>Col Head 3</td></tr>";
+
+      myTable+="<tr><td style='width: 100px;                   '>---------------</td>";
+      myTable+="<td     style='width: 100px; text-align: right;'>---------------</td>";
+      myTable+="<td     style='width: 100px; text-align: right;'>---------------</td></tr>";
+
+      for (var key in w){
+        var attrName = key;
+        var attrValue = w[key];
+        //console.log(attrValue);
+      }
 
     var modal = document.getElementById("foo");
     modal.style.display = "block";
