@@ -125,7 +125,7 @@ class MathSparql(Sparql):
         return results_dict
 
 
-    def broad_search(self, search_string):
+    def broad_search(self, search_string, limit=5):
         """
         Use concatenaed properties to query
         :param search_string: string from latex doc that is being search for
@@ -140,6 +140,7 @@ class MathSparql(Sparql):
         #results_cleaned = []
         results_dict = {}
         for i, r in enumerate(results):
+            if i == 5: break
             item_description = None
             if 'itemDescription' in r:
                 item_description = r['itemDescription']['value']

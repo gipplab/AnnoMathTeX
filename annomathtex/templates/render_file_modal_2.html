@@ -85,35 +85,8 @@
     <!--<p>Put information about the identifier here!</p>-->
     <button id="highlightBtn" onclick="highlightToken()">HIGHLIGHT</button>
     <button id="unHighlightBtn" onclick="unHighlightToken()">UNHIGHLIGHT</button>
-    <p id="placeholder"></p>
-    <table>
-      <tr>
-        <th>foo</th>
-        <th>bar</th>
-        <th>foobar</th>
-      </tr>
-      <tr>
-        <td>Alfreds Futterkiste</td>
-        <td>Maria Anders</td>
-        <td>Germany</td>
-      </tr>
-      <tr>
-        <td>Centro comercial Moctezuma</td>
-        <td>Francisco Chang</td>
-        <td>Mexico</td>
-      </tr>
-      <tr>
-        <td>Ernst Handel</td>
-        <td>Roland Mendel</td>
-        <td>Austria</td>
-      </tr>
-      <tr>
-        <td>Island Trading</td>
-        <td>Helen Bennett</td>
-        <td>UK</td>
-      </tr>
-
-    </table>
+    <!-- todo: make hidden -->
+    <div id="tableholder"></div>
   </div>
 </div>
 
@@ -135,20 +108,28 @@
     if (wikidata_result != "None") {
       var json = JSON.parse(wikidata_result);
       var w = json['w'];
-      console.log(toType(w));
+      //console.log(toType(w));
+
       var myTable= "<table><tr><td style='width: 100px; color: red;'>Col Head 1</td>";
       myTable+= "<td style='width: 100px; color: red; text-align: right;'>Col Head 2</td>";
       myTable+="<td style='width: 100px; color: red; text-align: right;'>Col Head 3</td></tr>";
 
-      myTable+="<tr><td style='width: 100px;                   '>---------------</td>";
-      myTable+="<td     style='width: 100px; text-align: right;'>---------------</td>";
-      myTable+="<td     style='width: 100px; text-align: right;'>---------------</td></tr>";
+      for (var i in w){
+        //var attrName = item;
+        var item = w[i];
+        var qid = item['qid'];
+        var link = item['link'];
+        var foundString = item['found_string'];
+        var itemLabel = item['itemLabel'];
+        var itemDescription = item['item_description'];
 
-      for (var key in w){
-        var attrName = key;
-        var attrValue = w[key];
-        //console.log(attrValue);
+        myTable+="<tr><td style='width: 100px;'>" + qid + "</td>";
+        myTable+="<td style='width: 100px;>" + itemLabel + "</td>";
+        myTable+="<td style='width: 100px;>" + link + "</td></tr>";
+        console.log(item);
       }
+      document.getElementById('tableholder').innerHTML = myTable;
+    }
 
     var modal = document.getElementById("foo");
     modal.style.display = "block";
