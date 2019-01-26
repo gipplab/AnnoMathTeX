@@ -24,6 +24,7 @@
     overflow: auto; /* Enable scroll if needed */
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    overflow: scroll;
     }
 
     /* Modal Content */
@@ -33,6 +34,7 @@
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
+    overflow: scroll;
     }
 
     /* The Close Button */
@@ -92,6 +94,16 @@
 
 <script>
 
+  //helper function to format strings
+  //https://coderwall.com/p/flonoa/simple-string-format-in-javascript
+  String.prototype.format = function() {
+    a = this;
+    for (k in arguments) {
+      a = a.replace("{" + k + "}", arguments[k])
+    }
+    return a
+  }
+
   //better way to get the type of object
   var toType = function(obj) {
     return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
@@ -110,9 +122,9 @@
       var w = json['w'];
       //console.log(toType(w));
 
-      var myTable= "<table><tr><td style='width: 100px; color: red;'>Col Head 1</td>";
-      myTable+= "<td style='width: 100px; color: red; text-align: right;'>Col Head 2</td>";
-      myTable+="<td style='width: 100px; color: red; text-align: right;'>Col Head 3</td></tr>";
+      var myTable= "<table><tr><td style='width: 100px; color: red;'>Wikidata Qid</td>";
+      myTable+= "<td style='width: 100px; color: red; text-align: right;'>Name</td>";
+      //myTable+="<td style='width: 100px; color: red; text-align: right;'>Col Head 3</td></tr>";
 
       for (var i in w){
         //var attrName = item;
@@ -120,12 +132,16 @@
         var qid = item['qid'];
         var link = item['link'];
         var foundString = item['found_string'];
-        var itemLabel = item['itemLabel'];
+        var itemLabel = item['item_label'];
         var itemDescription = item['item_description'];
 
-        myTable+="<tr><td style='width: 100px;'>" + qid + "</td>";
-        myTable+="<td style='width: 100px;>" + itemLabel + "</td>";
-        myTable+="<td style='width: 100px;>" + link + "</td></tr>";
+        var qidString = qid.toString();
+
+        //must be enclosed like this, because qid is a string value
+        myTable+="<tr><td style='width: 100px;' onclick='selectQid(\"" + qid + "\")'>" + qid + "</td>";
+        //myTable+="<td style='width: 100px; text-align: right;'>" + qid + "</td>";
+        myTable+="<td style='width: 100px; text-align: right;'>" + itemLabel + "</td></tr>";
+
         console.log(item);
       }
       document.getElementById('tableholder').innerHTML = myTable;
@@ -145,6 +161,10 @@
       }
     }
     return;
+  }
+
+  function selectQid(qid){
+    alert(qid);
   }
 
   function highlightToken() {
