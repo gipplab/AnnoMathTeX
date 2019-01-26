@@ -82,6 +82,11 @@
 
 <script>
 
+  //better way to get the type of object
+  var toType = function(obj) {
+    return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
+  }
+
   var highlightedIDs = [];
 
   function alertthis(unique_id, wikidata_result) {
@@ -89,7 +94,15 @@
     //https://stackoverflow.com/questions/5786851/define-global-variable-in-a-javascript-function
     window.uniqueID = unique_id;
     //highlightedIDs.push(unique_id);
-    alert(wikidata_result);
+
+    //alert(toType(JSON.parse(wikidata_result)));
+    //var j = JSON.parse(wikidata_result);
+    //alert(j.0);
+    //var json = '{"result":true,"count":1}',
+    //obj = JSON.parse(json);
+    var json = JSON.parse(wikidata_result);
+    alert(json['w'][0]['qid']);
+
     var modal = document.getElementById("foo");
     modal.style.display = "block";
 
