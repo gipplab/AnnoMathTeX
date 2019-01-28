@@ -34,7 +34,7 @@ class FileUploadView(View):
                 #TODO add check to see whether file is .tex
                 latex_file = get_processed_file(request.FILES['file'])
                 return render(request,
-                              'render_file_modal_2.html',
+                              'render_file.html',
                               {'TexFile': latex_file})
 
             return render(request, "file_upload_template.html", self.save_annotation_form)
