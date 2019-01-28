@@ -111,10 +111,11 @@
 
   var highlightedIDs = [];
   var highlightedTokenContent = [];
+  var highlighted = {};
   //all wikidata items are added to this dictionary
   //for those items, whose ids are selected, the item will be returned to django
   var wikidataReference = {};
-  var wikidataSelectedItems = {};
+  var annotated = {};
 
 
   function alertthis(uniqueId, tokenContent, wikidataResult) {
@@ -131,7 +132,6 @@
 
       var myTable= "<table><tr><td style='width: 100px; color: red;'>Wikidata Qid</td>";
       myTable+= "<td style='width: 100px; color: red; text-align: right;'>Name</td>";
-      //myTable+="<td style='width: 100px; color: red; text-align: right;'>Col Head 3</td></tr>";
       var $dtable = $("<table><tr><td style='width: 100px; color: red;'>Wikidata Qid</td>");
       $dtable.append($("<td style='width: 100px; color: red; text-align: right;'>Name</td>"));
 
@@ -145,7 +145,7 @@
         var itemLabel = item['item_label'];
         var itemDescription = item['item_description'];
 
-        //add the wikidata items to wikidataSelectedItems
+        //add the wikidata items to wikidataReference
         wikidataReference[qid] = item
 
         let inf = {'qid': qid};
@@ -153,31 +153,10 @@
 
         //must be enclosed like this, because qid is a string value
         myTable+="<tr><td style='width: 100px;' onclick='selectQid(\"" + qid + "\")'>" + qid + "</td>";
-        //myTable+="<tr><td id = '\"" + qid + "\"' style='width: 100px;'>" + qid + "</td>";
-        //myTable+="<td style='width: 100px; text-align: right;'>" + qid + "</td>";
         myTable+="<td style='width: 100px; text-align: right;'>" + itemLabel + "</td></tr>";
 
-        /*var $qid = $("<tr><td style='width: 100px;'" + qid + "</td>");
-        $qid.on('click', function() {
-          alert(item)
-        });
-        var $itemLabel = $("<td style='width: 100px; text-align: right;'>" + itemLabel + "</td></tr>");
-
-        $dtable.append($qid);
-        $dtable.append($itemLabel);*/
-
-
-
-
-
-
-
-
-        //console.log(item);
       }
       document.getElementById('tableholder').innerHTML = myTable;
-      //$('#tableholder').append($dtable);
-
 
     }
 
@@ -198,8 +177,9 @@
   }
 
   function selectQid(wikidataQid){
-    wikidataSelectedItems[wikidataQid] = {
+    annotated[wikidataQid] = {
       'token': tokenContent,
+      'uniqueID': uniqueID,
       'wikidataInf': wikidataReference[wikidataQid]
     };
     console.log(tokenContent + ' assigned ' + wikidataQid);
@@ -207,21 +187,13 @@
 
   function highlightToken() {
     document.getElementById(uniqueID).style.color = 'blue';
-    highlightedIDs.push(uniqueID);
-    highlightedTokenContent.push(tokenContent);
-    //document.getElementById("placeholder").innerHTML += uniqueID;
-    //console.log(highlightedIDs);
+    highlightedIDs[uniqueID] = tokenContent;
     return;
   }
 
   function unHighlightToken() {
-    var index = highlightedIDs.indexOf(uniqueID);
-    if (index > -1) {
-      highlightedIDs.splice(index, 1);
-      highlightedTokenContent.splice(index, 1);
-      document.getElementById(uniqueID).style.color = 'black';
-    }
-    //console.log(highlightedIDs);
+    delete highlighted[uniqueID];
+    document.getElementById(uniqueID).style.color = 'black';
     return
   }
 
@@ -231,10 +203,10 @@
       //console.log("create post is working!") // sanity check
       let data_dict = { the_post : $('#post-text').val(),
                         'csrfmiddlewaretoken': '{{ csrf_token }}',
-                        'highlighted': $.param({'IDs': highlightedIDs,
+                        'highlighted': $.param({'IDs': highlighted,
                                                 'TokenContent': highlightedTokenContent
                                                }),
-                        'wikidataSelectedItems': $.param(wikidataSelectedItems)
+                        'annotated': $.param(annotated)
                         };
 
 

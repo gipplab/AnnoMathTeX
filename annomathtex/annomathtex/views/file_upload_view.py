@@ -12,7 +12,7 @@ import json
 
 
 
-__HIGHLIGHT__ = {}
+__HIGHLIGHTED__ = {}
 __ANNOTATED__ = {}
 
 
@@ -27,18 +27,11 @@ class FileUploadView(View):
         return render(request, self.template_name, {'form': form})
 
     def post(self, request, *args, **kwargs):
-        print('in post')
-        for key, value in request.POST.items():
-            print('key: ', key)
-            print('value: ', jquery_unparam(value))
-            print()
         if 'file_submit' in request.POST:
             print('in file submit')
             form = UploadFileForm(request.POST, request.FILES)
             if form.is_valid():
                 #TODO add check to see whether file is .tex
-                #latexprocessor = LaTeXProcessor(request.FILES['file'])
-                #latex_file = latexprocessor.get_latex_file()
                 latex_file = get_processed_file(request.FILES['file'])
                 return render(request,
                               'render_file_modal_2.html',
@@ -47,8 +40,17 @@ class FileUploadView(View):
             return render(request, "file_upload_template.html", self.save_annotation_form)
 
         elif 'highlighted' in request.POST:
-            items = request.POST.items()
-            print('in data sub')
+            items = {k:jquery_unparam(v) for (k,v) in request.POST.items()}
+            highlighted = items['highlighted']
+            annotated = items['annotated']
+
+
+            #write to database
+            __HIGHLIGHTED__.update(highlighted)
+            __ANNOTATED__.update(annotated)
+
+
+
 
             return HttpResponse(
                 json.dumps({'testkey': 'testvalue'}),
