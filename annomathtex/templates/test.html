@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AnnoMathTex</title>
+
+
+  <script
+    src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+  </script>
+
+  <link rel="stylesheet" type="text/css" href="mystyle.css">
+
+  <script src="js/myjs.js"></script>
+
+
+
+</head>
+
+
+<body>
+<form method="POST" id="post-form">
+    {% csrf_token %}
+    <!--<input type="submit" class="tiny button" name="post-form-submit">-->
+    <button type="submit" name="post-form-submit2">Save</button>
+</form>
+
+<div id="foo" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close" id="span">&times;</span>
+    <!--<p>Put information about the identifier here!</p>-->
+    <button id="highlightBtn" onclick="highlightToken()">HIGHLIGHT</button>
+    <button id="unHighlightBtn" onclick="unHighlightToken()">UNHIGHLIGHT</button>
+    <!-- todo: make hidden -->
+    <div id="tableholder"></div>
+  </div>
+</div>
+
+
+
+{% for Line in TexFile.body %}
+    <div>
+        {% for Token in Line %}
+          {% if not Token.content == None %}
+            <span
+              class="inline"
+              id="{{ Token.unique_id }}"
+              style="color: {{ Token.highlight }};"
+              onclick="alertthis('{{ Token.unique_id }}', '{{ Token.content }}' , '{{ Token.wikidata_result|escapejs }}')"
+            >
+                {{ Token.content }}
+            </span>
+          {% endif %}
+          {% if Token.endline %}
+              </br>
+          {% endif %}
+        {% endfor %}
+    </div>
+{% endfor %}
+
+</body>
+</html>
+

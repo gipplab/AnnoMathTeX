@@ -37,7 +37,7 @@ class FileUploadView(View):
                               'render_file.html',
                               {'TexFile': latex_file})
 
-            return render(request, "file_upload_template.html", self.save_annotation_form)
+            return render(request, "test.html", self.save_annotation_form)
 
         elif 'highlighted' in request.POST:
             items = {k:jquery_unparam(v) for (k,v) in request.POST.items()}
