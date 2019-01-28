@@ -110,15 +110,17 @@
   }
 
   var highlightedIDs = [];
+  var stringID = "";
+  let testAr = [];
 
-  function alertthis(unique_id, wikidata_result) {
+  function alertthis(uniqueId, tokenContent, wikidataResult) {
     //Not the best way of doing this
     //https://stackoverflow.com/questions/5786851/define-global-variable-in-a-javascript-function
-    window.uniqueID = unique_id;
+    window.uniqueID = uniqueId;
     //highlightedIDs.push(unique_id);
 
-    if (wikidata_result != "None") {
-      var json = JSON.parse(wikidata_result);
+    if (wikidataResult != "None") {
+      var json = JSON.parse(wikidataResult);
       var w = json['w'];
       //console.log(toType(w));
 
@@ -170,9 +172,11 @@
   function highlightToken() {
     document.getElementById(uniqueID).style.color = 'blue';
     highlightedIDs.push(uniqueID);
+    stringID += '-';
+    stringID += uniqueID;
+    testAr.push(uniqueID);
     //document.getElementById("placeholder").innerHTML += uniqueID;
-    console.log(highlightedIDs);
-    updateData();
+    //console.log(highlightedIDs);
     return;
   }
 
@@ -182,21 +186,40 @@
       highlightedIDs.splice(index, 1);
       document.getElementById(uniqueID).style.color = 'black';
     }
-    console.log(highlightedIDs);
-    updateData();
+    //console.log(highlightedIDs);
     return
   }
 
+  /*
   function updateData(){
     //TODO
     document.getElementById("test").innerHTML = highlightedIDs;
     return;
+  }*/
+
+  function getIDs(){
+    console.log('getIDs CALLED');
+    return testAr;
   }
+
 
   // AJAX for posting
   function create_post() {
-      console.log("create post is working!") // sanity check
-      var data_dict = { the_post : $('#post-text').val(), 'csrfmiddlewaretoken': '{{ csrf_token }}', 'valuepass':42 };
+      //console.log("create post is working!") // sanity check
+      let data_dict = { the_post : $('#post-text').val(),
+                        'csrfmiddlewaretoken': '{{ csrf_token }}',
+                        //for some reason the array only holds the first highlighted ID
+                        //if the same is done with a string holding the IDs, it behaves as expected
+                        'highlightedIDs': $.param({'item': highlightedIDs}),
+                        'stringIDs': stringID,
+                        'testAr': getIDs()
+                        };
+
+
+      //console.log('In AJAX');
+      //console.log(highlightedIDs);
+      //console.log(stringID);
+
       $.ajax({
           url : "file_upload/", // the endpoint
           type : "POST", // http method
@@ -205,8 +228,8 @@
           // handle a successful response
           success : function(json) {
               $('#post-text').val(''); // remove the value from the input
-              console.log(json); // log the returned json to the console
-              console.log("success"); // another sanity check
+              //console.log(json); // log the returned json to the console
+              //console.log("success"); // another sanity check
           },
 
           // handle a non-successful response
@@ -220,7 +243,7 @@
 
   $('#post-form').on('submit', function(event){
     event.preventDefault();
-    console.log('form submitted');
+    //console.log('form submitted');
     create_post();
   });
 
@@ -235,7 +258,7 @@
               class="inline"
               id="{{ Token.unique_id }}"
               style="color: {{ Token.highlight }};"
-              onclick="alertthis('{{ Token.unique_id }}', '{{ Token.wikidata_result|escapejs }}')"
+              onclick="alertthis('{{ Token.unique_id }}', '{{ Token.content }}' , '{{ Token.wikidata_result|escapejs }}')"
             >
                 {{ Token.content }}
             </span>
