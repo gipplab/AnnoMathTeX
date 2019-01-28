@@ -1,10 +1,14 @@
-/*var jQueryScript = document.createElement('script');
-jQueryScript.setAttribute('src','https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js');
-document.head.appendChild(jQueryScript);*/
+/*
+This file contains all the necessary js functions that are used to render the file
+ */
 
 
 
-//helper function to format strings
+/*
+HELPER FUNCTIONS
+ */
+
+//function to format strings
 //https://coderwall.com/p/flonoa/simple-string-format-in-javascript
 String.prototype.format = function() {
     a = this;
@@ -17,14 +21,7 @@ String.prototype.format = function() {
 //better way to get the type of object
 var toType = function(obj) {
     return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
-}
-
-var highlighted = {};
-//all wikidata items are added to this dictionary
-//for those items, whose ids are selected, the item will be returned to django
-var wikidataReference = {};
-var annotated = {};
-
+};
 
 //https://stackoverflow.com/questions/6506897/csrf-token-missing-or-incorrect-while-post-parameter-via-ajax-in-django
 function getCookie(c_name)
@@ -41,7 +38,19 @@ function getCookie(c_name)
         }
     }
     return "";
- }
+ };
+
+
+/*
+FUNCTIONALITY
+ */
+
+
+var highlighted = {};
+//all wikidata items are added to this dictionary
+//for those items, whose ids are selected, the item will be returned to django
+var wikidataReference = {};
+var annotated = {};
 
 
 function alertthis(uniqueId, tokenContent, wikidataResult) {
@@ -98,30 +107,34 @@ function alertthis(uniqueId, tokenContent, wikidataResult) {
       }
     }
     return;
-    }
+};
 
 function selectQid(wikidataQid){
-annotated[wikidataQid] = {
-  'token': tokenContent,
-  'uniqueID': uniqueID,
-  'wikidataInf': wikidataReference[wikidataQid]
+    annotated[wikidataQid] = {
+      'token': tokenContent,
+      'uniqueID': uniqueID,
+      'wikidataInf': wikidataReference[wikidataQid]
+    };
+    console.log(tokenContent + ' assigned ' + wikidataQid);
 };
-console.log(tokenContent + ' assigned ' + wikidataQid);
-}
 
 function highlightToken() {
     document.getElementById(uniqueID).style.color = 'blue';
     highlighted[uniqueID] = tokenContent;
     console.log('highlighted ' + tokenContent);
     return;
-}
+};
 
 function unHighlightToken() {
     delete highlighted[uniqueID];
     document.getElementById(uniqueID).style.color = 'black';
     return
-}
+};
 
+
+/*
+AJAX FUNCTIONS USED TO POST
+ */
 
 $(document).ready(function () {
     $('#post-form').on('submit', function(event){
@@ -163,15 +176,3 @@ $(document).ready(function () {
     };
 
 });
-
-
-
-
-function test() {
-    alert('TESTALERT');
-};
-
-
-
-
-

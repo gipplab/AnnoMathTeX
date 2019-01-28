@@ -42,10 +42,10 @@ class FileUploadView(View):
                 latex_file = get_processed_file(request.FILES['file'])
                 return render(request,
                               #'render_file_old.html',
-                              'test.html',
+                              'render_file_template.html',
                               {'TexFile': latex_file})
 
-            return render(request, "test.html", self.save_annotation_form)
+            return render(request, "render_file_template.html", self.save_annotation_form)
 
         elif 'highlighted' in request.POST:
             print('in highlighted')
