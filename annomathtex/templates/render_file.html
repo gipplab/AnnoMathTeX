@@ -75,9 +75,8 @@
 <body>
 <form method="POST" id="post-form">
     {% csrf_token %}
-    <div name="tested" id="tested">Testesteste</div>
-    <input type="submit" class="tiny button" name="post-form-submit">
-    <button type="submit" name="post-form-submit2">Upload</button>
+    <!--<input type="submit" class="tiny button" name="post-form-submit">-->
+    <button type="submit" name="post-form-submit2">Save</button>
 </form>
 
 <div id="foo" class="modal">
@@ -109,8 +108,6 @@
     return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
   }
 
-  var highlightedIDs = [];
-  var highlightedTokenContent = [];
   var highlighted = {};
   //all wikidata items are added to this dictionary
   //for those items, whose ids are selected, the item will be returned to django
@@ -123,7 +120,6 @@
     //https://stackoverflow.com/questions/5786851/define-global-variable-in-a-javascript-function
     window.uniqueID = uniqueId;
     window.tokenContent = tokenContent;
-    //highlightedIDs.push(unique_id);
 
     if (wikidataResult != "None") {
       var json = JSON.parse(wikidataResult);
@@ -187,7 +183,8 @@
 
   function highlightToken() {
     document.getElementById(uniqueID).style.color = 'blue';
-    highlightedIDs[uniqueID] = tokenContent;
+    highlighted[uniqueID] = tokenContent;
+    console.log('highlighted ' + tokenContent);
     return;
   }
 
@@ -203,9 +200,7 @@
       //console.log("create post is working!") // sanity check
       let data_dict = { the_post : $('#post-text').val(),
                         'csrfmiddlewaretoken': '{{ csrf_token }}',
-                        'highlighted': $.param({'IDs': highlighted,
-                                                'TokenContent': highlightedTokenContent
-                                               }),
+                        'highlighted': $.param(highlighted),
                         'annotated': $.param(annotated)
                         };
 

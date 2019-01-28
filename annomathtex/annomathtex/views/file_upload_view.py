@@ -49,6 +49,9 @@ class FileUploadView(View):
             __HIGHLIGHTED__.update(highlighted)
             __ANNOTATED__.update(annotated)
 
+            print('__HIGHLIGHTED__: ', __HIGHLIGHTED__)
+            print('__ANNOTATED__: ', __ANNOTATED__)
+
 
 
 
