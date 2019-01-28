@@ -12,6 +12,7 @@ from django.shortcuts import redirect
 from ..views.render_file_view import RenderFileView
 from django.core import serializers
 from ..forms.testform import TestForm
+from jquery_unparam import jquery_unparam
 import json
 
 
@@ -58,7 +59,7 @@ class FileUploadView(View):
         print('in post')
         for key, value in request.POST.items():
             print('key: ', key)
-            print('value: ', value)
+            print('value: ', jquery_unparam(value))
             print()
         if 'file_submit' in request.POST:
             print('in file submit')

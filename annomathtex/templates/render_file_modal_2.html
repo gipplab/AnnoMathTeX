@@ -110,8 +110,7 @@
   }
 
   var highlightedIDs = [];
-  var stringID = "";
-  let testAr = [];
+
 
   function alertthis(uniqueId, tokenContent, wikidataResult) {
     //Not the best way of doing this
@@ -190,18 +189,6 @@
     return
   }
 
-  /*
-  function updateData(){
-    //TODO
-    document.getElementById("test").innerHTML = highlightedIDs;
-    return;
-  }*/
-
-  function getIDs(){
-    console.log('getIDs CALLED');
-    return testAr;
-  }
-
 
   // AJAX for posting
   function create_post() {
@@ -211,14 +198,8 @@
                         //for some reason the array only holds the first highlighted ID
                         //if the same is done with a string holding the IDs, it behaves as expected
                         'highlightedIDs': $.param({'item': highlightedIDs}),
-                        'stringIDs': stringID,
-                        'testAr': getIDs()
                         };
 
-
-      //console.log('In AJAX');
-      //console.log(highlightedIDs);
-      //console.log(stringID);
 
       $.ajax({
           url : "file_upload/", // the endpoint
