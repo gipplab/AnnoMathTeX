@@ -20,8 +20,6 @@ class Tagger(object, metaclass=ABCMeta):
     Abstract base class for all NE taggers
     todo: implement
     """
-    tag_list = ['NN', 'NNS', 'NNP', 'NNPS']
-
 
     @abstractmethod
     def get_tags(self, line_chunk):
@@ -61,35 +59,15 @@ class NLTK_NER_1(Tagger):
     method tag called from abstract base class
     """
 
+    def __init__(self):
+        super().__init__()
+        self.tag_list = ['NN', 'NNS', 'NNP', 'NNPS']
+
     def get_tags(self, line_chunk):
         word_tokens = nltk.word_tokenize(line_chunk)
         word_tokens = nltk.pos_tag(word_tokens)
         return word_tokens
 
-    """def tag(self, line_chunk, endline):
-        word_tokens = nltk.word_tokenize(line_chunk)
-        word_tokens = nltk.pos_tag(word_tokens)
-
-        words = []
-
-        #print(word_tokens)
-        tag_list = ['NN', 'NNS', 'NNP', 'NNPS']
-        for word, tag in word_tokens:
-            is_ne = True if tag in tag_list else False
-            words.append(
-                 Word(str(uuid1()),
-                 type='Word',
-                 highlight="black" if is_ne else "green",
-                 content=word,
-                 endline=False,
-                 named_entity=is_ne,
-                 wikidata_result=None)
-            )
-
-        if endline:
-            words[-1].endline = True
-
-        return words"""
 
 
 
@@ -175,10 +153,17 @@ class StanfordCoreNLP_NER:
         return words
 
 
-class Spacy_NER:
+class Spacy_NER(Tagger):
 
     def __init__(self):
+        super().__init__()
         self.nlp = en_core_web_sm.load()
+
+
+    def get_tags(self, line_chunk):
+        words = []
+        word_tokens = self.nlp(line_chunk)
+        return_tokens = []
 
     def tag(self, line_chunk, endline):
         words = []
