@@ -54,12 +54,12 @@ class FileUploadView(View):
             annotated = items['annotated']
 
 
-            #write to database
+            #todo: write to database
             __HIGHLIGHTED__.update(highlighted)
             __ANNOTATED__.update(annotated)
 
-            print('__HIGHLIGHTED__: ', __HIGHLIGHTED__)
-            print('__ANNOTATED__: ', __ANNOTATED__)
+            #print('__HIGHLIGHTED__: ', __HIGHLIGHTED__)
+            #print('__ANNOTATED__: ', __ANNOTATED__)
 
 
 

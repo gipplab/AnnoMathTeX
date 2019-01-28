@@ -7,6 +7,7 @@ from .model.empty_line import EmptyLine
 from .model.latexfile import LaTeXFile
 from .named_entity_handling import NESparql
 from .math_environment_handling import MathSparql
+from .named_entity_recognition import NLTK_NER_1
 import json
 
 
@@ -29,12 +30,12 @@ def extract_words(line_chunk, endline):
     :param endline: Boolean. True if the line_chunk ends the line.
     :return: List of the words fom line_chunk as Word() objects.
     """
-    # todo: use NECKAR NER to evaluate later, evaluation can be done in different file (independent of Django)
+    # todo: evaluate against NecKAr
 
-    words = []
+
+    """words = []
     word_tokens = nltk.word_tokenize(line_chunk)
-
-    #print(word_tokens)
+    print(word_tokens)
 
     for _, word in enumerate(word_tokens):
         words.append(
@@ -50,9 +51,11 @@ def extract_words(line_chunk, endline):
         )
 
     if endline:
-        words[-1].endline = True
+        words[-1].endline = True"""
 
-    return words
+    tagged_words = tagger.tag(line_chunk, endline)
+
+    return tagged_words
 
 
 def extract_identifiers(line_chunk, endline):
@@ -62,7 +65,7 @@ def extract_identifiers(line_chunk, endline):
     :param endline: Boolean. True if the line_chunk ends the line.
     :return: List of the words fom line_chunk as Identifier() objects.
     """
-    # todo: implement
+    # todo: different method of splitting
     identifiers = []
     identifier_tokens = nltk.word_tokenize(line_chunk)
 
@@ -81,8 +84,6 @@ def extract_identifiers(line_chunk, endline):
                 highlight='pink',
                 content=identifier,
                 endline=False,
-                #wikidata_result= json.dumps({'wikidata_result':wikidata_result})
-                #wikidata_result = wikidata_result
                 wikidata_result = json.dumps({'w': wikidata_result})
             )
         )
@@ -139,6 +140,15 @@ def get_processed_file(request_file):
     :param request_file:
     :return:
     """
+
+    #possible taggers
+    #tagger_names = ['NLTK_NER_1', 'NLTK_NER_2', 'StanfordCoreNLP_NER', 'Spacy_NER']
+
+    global tagger
+    tagger = NLTK_NER_1()
+
+
+
     processed_lines = process_lines(request_file)
     return LaTeXFile(processed_lines)
 

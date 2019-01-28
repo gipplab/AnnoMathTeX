@@ -1,3 +1,9 @@
+"""
+This file contains several named entity taggers, that can be used to find NEs in the TeX file
+"""
+
+
+
 import nltk
 from .model.word import Word
 from uuid import uuid1
@@ -6,11 +12,20 @@ from stanfordcorenlp import StanfordCoreNLP
 from .__latex_processing_config__ import __SCNLP_PATH__
 import os
 
+from abc import ABCMeta, abstractmethod
+
+
+class Tagger(object, metaclass=ABCMeta):
+    """
+    Abstract base class for all NE taggers
+    todo: implement
+    """
+    pass
+
 
 def own_tagger(line_chunk):
     #use https://en.wikipedia.org/wiki/List_of_physical_quantities
     pass
-
 
 
 class NLTK_NER_1:
@@ -20,11 +35,18 @@ class NLTK_NER_1:
 
         words = []
 
+        #print(word_tokens)
         tag_list = ['NN', 'NNS', 'NNP', 'NNPS']
-        for _, word in enumerate(word_tokens):
-            is_ne = True if word[1] in tag_list else False
+        for word, tag in word_tokens:
+            is_ne = True if tag in tag_list else False
             words.append(
-                Word(str(uuid1()), type='Word', highlight="black", content=word, endline=False, named_entity=is_ne)
+                 Word(str(uuid1()),
+                 type='Word',
+                 highlight="black" if is_ne else "green",
+                 content=word,
+                 endline=False,
+                 named_entity=is_ne,
+                 wikidata_result=None)
             )
 
         if endline:
@@ -53,7 +75,7 @@ class NLTK_NER_2:
 
 
 
-class StanfordCoreNLPNER:
+class StanfordCoreNLP_NER:
 
     def __init__(self):
         self.start_corenlp()
@@ -70,6 +92,10 @@ class StanfordCoreNLPNER:
         path_to_libs = __SCNLP_PATH__
         command = "cd " + path_to_libs + "; java -mx4g -cp '*' edu.stanford.nlp.pipeline.StanfordCoreNLPServer -annotators 'tokenize,ssplit,pos,lemma,parse,sentiment' -port 9000 -timeout 30000 -props edu/stanford/nlp/coref/properties/neural-english.properties"
         os.system(command)
+
+    def kill_corenlp(self):
+        self.nlp.close()
+        return
 
 
     class SCNLP:
