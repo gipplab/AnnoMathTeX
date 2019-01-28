@@ -31,8 +31,8 @@ class FileUploadView(View):
 
         print('IN POST')
 
-        for k, v in request.POST.items():
-            print(k, v)
+        #for k, v in request.POST.items():
+        #    print(k, v)
 
         if 'file_submit' in request.POST:
             print('in file submit')
@@ -52,6 +52,9 @@ class FileUploadView(View):
             items = {k:jquery_unparam(v) for (k,v) in request.POST.items()}
             highlighted = items['highlighted']
             annotated = items['annotated']
+
+            print(highlighted)
+            print(annotated)
 
 
             #todo: write to database

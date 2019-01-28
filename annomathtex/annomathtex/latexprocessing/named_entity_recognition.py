@@ -20,7 +20,35 @@ class Tagger(object, metaclass=ABCMeta):
     Abstract base class for all NE taggers
     todo: implement
     """
-    pass
+    tag_list = ['NN', 'NNS', 'NNP', 'NNPS']
+
+
+    @abstractmethod
+    def get_tags(self, line_chunk):
+        raise NotImplementedError('must be implemented')
+
+    def tag(self, line_chunk, endline):
+        word_tokens = self.get_tags(line_chunk)
+
+        words = []
+
+        for word, tag in word_tokens:
+            is_ne = True if tag in self.tag_list else False
+            words.append(
+                 Word(str(uuid1()),
+                 type='Word',
+                 highlight="black" if is_ne else "green",
+                 content=word,
+                 endline=False,
+                 named_entity=is_ne,
+                 wikidata_result=None)
+            )
+
+        if endline:
+            words[-1].endline = True
+
+        return words
+
 
 
 def own_tagger(line_chunk):
@@ -28,8 +56,17 @@ def own_tagger(line_chunk):
     pass
 
 
-class NLTK_NER_1:
-    def tag(self, line_chunk, endline):
+class NLTK_NER_1(Tagger):
+    """
+    method tag called from abstract base class
+    """
+
+    def get_tags(self, line_chunk):
+        word_tokens = nltk.word_tokenize(line_chunk)
+        word_tokens = nltk.pos_tag(word_tokens)
+        return word_tokens
+
+    """def tag(self, line_chunk, endline):
         word_tokens = nltk.word_tokenize(line_chunk)
         word_tokens = nltk.pos_tag(word_tokens)
 
@@ -52,7 +89,7 @@ class NLTK_NER_1:
         if endline:
             words[-1].endline = True
 
-        return words
+        return words"""
 
 
 
