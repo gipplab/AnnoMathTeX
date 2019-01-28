@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from ..forms.testform import TestForm
 from jquery_unparam import jquery_unparam
 import json
-
+from django.views.decorators.csrf import csrf_protect
 
 
 
@@ -26,7 +26,14 @@ class FileUploadView(View):
         form = TestForm()
         return render(request, self.template_name, {'form': form})
 
+    #@csrf_protect
     def post(self, request, *args, **kwargs):
+
+        print('IN POST')
+
+        for k, v in request.POST.items():
+            print(k, v)
+
         if 'file_submit' in request.POST:
             print('in file submit')
             form = UploadFileForm(request.POST, request.FILES)
@@ -34,12 +41,14 @@ class FileUploadView(View):
                 #TODO add check to see whether file is .tex
                 latex_file = get_processed_file(request.FILES['file'])
                 return render(request,
-                              'render_file.html',
+                              #'render_file_old.html',
+                              'test.html',
                               {'TexFile': latex_file})
 
             return render(request, "test.html", self.save_annotation_form)
 
         elif 'highlighted' in request.POST:
+            print('in highlighted')
             items = {k:jquery_unparam(v) for (k,v) in request.POST.items()}
             highlighted = items['highlighted']
             annotated = items['annotated']

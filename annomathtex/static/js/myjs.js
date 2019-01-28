@@ -1,6 +1,7 @@
-var jQueryScript = document.createElement('script');
+/*var jQueryScript = document.createElement('script');
 jQueryScript.setAttribute('src','https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js');
-document.head.appendChild(jQueryScript);
+document.head.appendChild(jQueryScript);*/
+
 
 
 //helper function to format strings
@@ -23,6 +24,24 @@ var highlighted = {};
 //for those items, whose ids are selected, the item will be returned to django
 var wikidataReference = {};
 var annotated = {};
+
+
+//https://stackoverflow.com/questions/6506897/csrf-token-missing-or-incorrect-while-post-parameter-via-ajax-in-django
+function getCookie(c_name)
+{
+    if (document.cookie.length > 0)
+    {
+        c_start = document.cookie.indexOf(c_name + "=");
+        if (c_start != -1)
+        {
+            c_start = c_start + c_name.length + 1;
+            c_end = document.cookie.indexOf(";", c_start);
+            if (c_end == -1) c_end = document.cookie.length;
+            return unescape(document.cookie.substring(c_start,c_end));
+        }
+    }
+    return "";
+ }
 
 
 function alertthis(uniqueId, tokenContent, wikidataResult) {
@@ -104,40 +123,55 @@ function unHighlightToken() {
 }
 
 
-// AJAX for posting
-function create_post() {
-  //console.log("create post is working!") // sanity check
-  let data_dict = { the_post : $('#post-text').val(),
-                    'csrfmiddlewaretoken': '{{ csrf_token }}',
-                    'highlighted': $.param(highlighted),
-                    'annotated': $.param(annotated)
-                    };
-
-
-  $.ajax({
-      url : "file_upload/", // the endpoint
-      type : "POST", // http method
-      data : data_dict, // data sent with the post request
-
-      // handle a successful response
-      success : function(json) {
-          $('#post-text').val(''); // remove the value from the input
-          //console.log(json); // log the returned json to the console
-          //console.log("success"); // another sanity check
-      },
-
-      // handle a non-successful response
-      error : function(xhr,errmsg,err) {
-          $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-              " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-          console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-      }
+$(document).ready(function () {
+    $('#post-form').on('submit', function(event){
+        event.preventDefault();
+        console.log('form submitted');
+        create_post();
   });
+
+    // AJAX for posting
+    function create_post() {
+      console.log("create post is working!") // sanity check
+      let data_dict = { the_post : $('#post-text').val(),
+                        //'csrfmiddlewaretoken': '{{ csrf_token }}',
+                        'csrfmiddlewaretoken': getCookie("csrftoken"),
+                        'highlighted': $.param(highlighted),
+                        'annotated': $.param(annotated)
+                        };
+
+
+      $.ajax({
+          url : "file_upload/", // the endpoint
+          type : "POST", // http method
+          data : data_dict, // data sent with the post request
+
+          // handle a successful response
+          success : function(json) {
+              $('#post-text').val(''); // remove the value from the input
+              //console.log(json); // log the returned json to the console
+              console.log("success"); // another sanity check
+          },
+
+          // handle a non-successful response
+          error : function(xhr,errmsg,err) {
+              $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+                  " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+              console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+          }
+      });
+    };
+
+});
+
+
+
+
+function test() {
+    alert('TESTALERT');
 };
 
-$('#post-form').on('submit', function(event){
-    event.preventDefault();
-    console.log('form submitted');
-    create_post();
-});
+
+
+
 

@@ -1,29 +1,28 @@
+{% load staticfiles %}
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>AnnoMathTex</title>
-
-
-  <script
-    src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
-  </script>
-
-  <link rel="stylesheet" type="text/css" href="mystyle.css">
-
-  <script src="js/myjs.js"></script>
-
-
-
+  <meta charset="UTF-8">
+  <title>AnnoMathTex</title>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script type="text/javascript" src="{% static 'js/myjs.js' %}"></script>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/mystyle.css' %}">
 </head>
 
 
 <body>
+
+
 <form method="POST" id="post-form">
     {% csrf_token %}
     <!--<input type="submit" class="tiny button" name="post-form-submit">-->
-    <button type="submit" name="post-form-submit2">Save</button>
+    <button type="submit" name="post-form-submit2" >Save</button>
 </form>
+
+<button id="test">TESTBUTTON</button>
+
 
 <div id="foo" class="modal">
   <!-- Modal content -->
@@ -36,7 +35,6 @@
     <div id="tableholder"></div>
   </div>
 </div>
-
 
 
 {% for Line in TexFile.body %}
@@ -58,6 +56,7 @@
         {% endfor %}
     </div>
 {% endfor %}
+
 
 </body>
 </html>
