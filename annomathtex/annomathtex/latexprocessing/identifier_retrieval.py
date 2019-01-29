@@ -18,7 +18,10 @@ https://textminingonline.com/getting-started-with-word2vec-and-glove-in-python
 """
 from .model.word import Word
 from uuid import uuid1
+from nltk.tokenize import wordpunct_tokenize
+from itertools import chain, groupby, product
 import nltk
+from string import punctuation
 
 
 ######### RAKE ##########
@@ -30,6 +33,7 @@ should try to access that
 
 # https://github.com/csurfer/rake-nltk
 from rake_nltk import Rake
+from nltk.corpus import stopwords
 
 
 class RakeIdentifier:
@@ -47,66 +51,56 @@ class RakeIdentifier:
 
         #phrases sorted highest to lowest
         ranked_phrases_with_scores = self.r.get_ranked_phrases_with_scores()
-
-        rank_dict = {}
-        rank_string = ''
-        for rank, phrase in ranked_phrases_with_scores:
-            rank_dict[phrase] = rank
-            rank_string += phrase
-        #rank_dict = {phrase:rank for (rank, phrase) in ranked_phrases_with_scores}
-
-        #contains the phrases that have been ranked by RAKE
-        #can then check which phrases are not contained, and assign 0.0 to them
-        #rank_string = '-'.join(rank_dict[k] for k in rank_dict)
-
-
-        #words not returned by ranking (too low score)
-        #left_over = {word:0 for word in nltk.word_tokenize(line_chunk) if word not in rank_string}
-        print([w for w in nltk.word_tokenize(line_chunk)])
-        #concatenate the 2 dictionaries
-        #return dict(rank_dict, **left_over)
+        rank_dict = {phrase:rank for (rank, phrase) in ranked_phrases_with_scores}
         return rank_dict
 
     def extract_identifiers(self, line_chunk, endline, cutoff):
         """
-
+        loading the stopwords takes quite long I think
         :param line_chunk:
         :param endline:
         :param cutoff: minimum value for rank, in order for the word to be highlighted
         :return:
         """
         rank_dict = self.get_ranks(line_chunk)
-        print(rank_dict)
 
-        #print(len(rank_dict.keys()), print(len(nltk.word_tokenize(line_chunk))))
-        #print(nltk.word_tokenize(line_chunk))
-        #for w in nltk.word_tokenize(line_chunk):
-        #    print(w, rank_dict[w])
+        # All things which act as sentence breaks during keyword extraction.
+        stopWords = set(stopwords.words('english'))
 
-        #print('\n##############\n')
+        to_ignore = set(chain(stopWords, punctuation))
 
-        """for word in nltk.word_tokenize(line_chunk):
-            if rank_dict[word] > cutoff:
-                print(True, rank_dict[word], word)
-            else:
-                print(False, rank_dict[word], word)"""
+        #this part is adapted from the rake_nltk source code, to get the same grouping of the sentences
+        #the word.lower() part not is necessary, becasue the scoring part uses this
+        #word_list = [(word.lower(), True if word.lower() != word else False)
+        #             for word in wordpunct_tokenize(line_chunk)]
+        #groups = groupby(word_list, lambda x: x[0] not in to_ignore)
 
-        words = [
-            Word(str(uuid1()),
-                 type='Word',
-                 highlight='green' if rank_dict[word]>cutoff else 'black',
-                 content=word,
-                 endline=False,
-                 named_entity=False,
-                 wikidata_result=None)
-            for word in nltk.word_tokenize(line_chunk)
-        ]
+        word_list = [word for word in wordpunct_tokenize(line_chunk)]
+        # maybe just: wordpunct_tokenize(line_chunk)
+        groups = groupby(word_list, lambda x: x not in to_ignore)
+        phrases = [tuple(group[1]) for group in groups]
+
+
+        processed_phrases = []
+        for t_phrase in phrases:
+            phrase = ' '.join(w for w in t_phrase)
+            rank = rank_dict[phrase.lower()] if phrase.lower() in rank_dict else 0.0
+            processed_phrases.append(
+                Word(str(uuid1()),
+                     type='Word',
+                     highlight='green' if rank > cutoff else 'black',
+                     content=phrase,
+                     endline=False,
+                     named_entity=False,
+                     wikidata_result=None)
+            )
+
+
+
 
         if endline:
-            words[-1].endline = True
+            processed_phrases[-1].endline = True
 
-        #for w in nltk.word_tokenize(line_chunk):
-        #    print(w)
 
-        return words
+        return processed_phrases
 
