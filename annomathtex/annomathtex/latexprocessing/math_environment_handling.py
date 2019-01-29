@@ -131,16 +131,27 @@ class MathSparql(Sparql):
         :param search_string: string from latex doc that is being search for
         :return:
         """
-        entire_query = self.formulate_query(concat_query, search_string)
 
-        self.sparql.setQuery(entire_query)
-        self.sparql.setReturnFormat(JSON)
-        query_results = self.sparql.query().convert()
-        results = query_results['results']['bindings']#[0]
-        #results_cleaned = []
+        entire_query = self.formulate_query(
+                                            concat_query,
+                                            self.remove_special_characters(search_string)
+                                            )
+
+        print(search_string)
+
+        results = []
+        try:
+            self.sparql.setQuery(entire_query)
+            self.sparql.setReturnFormat(JSON)
+            query_results = self.sparql.query().convert()
+            results = query_results['results']['bindings']#[0]
+            #results_cleaned = []
+        except Exception as e:
+            print(e, 'Search string: ', search_string)
+
         results_dict = {}
         for i, r in enumerate(results):
-            if i == 5: break
+            if i == limit: break
             item_description = None
             if 'itemDescription' in r:
                 item_description = r['itemDescription']['value']

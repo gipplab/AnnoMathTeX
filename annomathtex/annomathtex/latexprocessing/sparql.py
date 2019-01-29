@@ -13,6 +13,18 @@ class Sparql(object, metaclass=ABCMeta):
         self.sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
 
 
+    def remove_special_characters(self, search_string):
+        """
+        Right now: only removing backslash.
+        Also: don't search for strings like "1/2"
+        :param search_string:
+        :return:
+        """
+        search_string = search_string.replace('\\', '')
+        return search_string
+
+
+
     @classmethod
     def formulate_query(self, query, search_string):
         """

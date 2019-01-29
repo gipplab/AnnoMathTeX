@@ -72,8 +72,15 @@ def extract_identifiers(line_chunk, endline):
 
     for identifier in identifier_tokens:
 
+        if identifier not in wikidata_search_results:
+            wikidata_result = mathsparql.broad_search(identifier)
+            wikidata_search_results[identifier] = wikidata_result
+
+        else:
+            wikidata_result = wikidata_search_results[identifier]
+
         #wikidata_result = json.dumps(mathsparql.broad_search(identifier))
-        wikidata_result = mathsparql.broad_search(identifier)
+
         #print('wikidata results: ', wikidata_result)
         #if len(wikidata_result)>0:
         #    wikidata_result = {'0': {'01':'test01'}}
@@ -104,9 +111,10 @@ def process_lines(request_file):
     :return:
     """
 
-    global nesparql, mathsparql
+    global nesparql, mathsparql, wikidata_search_results
     nesparql = NESparql()
     mathsparql = MathSparql()
+    wikidata_search_results = {} #equal search strings don't have to be repeated
 
 
     lines = decode(request_file)
