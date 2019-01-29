@@ -18,7 +18,19 @@ from abc import ABCMeta, abstractmethod
 #these commands sometimes get recognized as NEs (or nouns,...)
 #don't highlight these
 #add others
-latex_cmds_ignore = ['\\subsection', '\\item', '\\begin', 'enumerate']
+latex_cmds_ignore = ['\\subsection',
+                     '\\item',
+                     '\\begin',
+                     'enumerate',
+                     '\\documentclass',
+                     '\\usepackage',
+                     '\\author',
+                     '\\inputenc',
+                     'babel',
+                     'graphicx',
+                     'amssymb',
+                     'amsfonts',
+                     'fontenc']
 
 
 class Tagger(object, metaclass=ABCMeta):
@@ -40,7 +52,7 @@ class Tagger(object, metaclass=ABCMeta):
 
             for word, tag in word_tokens:
                 is_ne = True if tag in self.tag_list and word not in latex_cmds_ignore else False
-                print(word, tag, is_ne)
+                #print(word, tag, is_ne)
                 words.append(
                      Word(str(uuid1()),
                      type='Word',
@@ -77,6 +89,7 @@ class NLTK_NER(Tagger):
 
     def get_tags(self, line_chunk):
         word_tokens = nltk.word_tokenize(line_chunk)
+        #print(word_tokens)
         word_tokens = nltk.pos_tag(word_tokens)
         return word_tokens
 

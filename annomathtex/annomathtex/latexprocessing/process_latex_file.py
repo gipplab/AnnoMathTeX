@@ -8,6 +8,7 @@ from .model.latexfile import LaTeXFile
 from .named_entity_handling import NESparql
 from .math_environment_handling import MathSparql
 from .named_entity_recognition import NLTK_NER, StanfordCoreNLP_NER, Spacy_NER
+from .identifier_retrieval import RakeIdentifier
 import json
 import time
 
@@ -27,13 +28,19 @@ def extract_words(line_chunk, endline):
     """
     This method extracts the words that are contained in a line.
     If a named entity is contained, mark that.
+    todo: some kind of metric as to how far in the document the nearest math environment is
     :param line_chunk: Part of line that is being processed (list of words).
     :param endline: Boolean. True if the line_chunk ends the line.
     :return: List of the words fom line_chunk as Word() objects.
     """
 
-    tagged_words = tagger.tag(line_chunk, endline)
 
+
+
+
+    #tagged_words = tagger.tag(line_chunk, endline)
+    cutoff = 7.0
+    tagged_words = identifier_retriever.extract_identifiers(line_chunk, endline, cutoff)
     return tagged_words
 
 
@@ -131,8 +138,9 @@ def get_processed_file(request_file):
     #possible taggers
     #tagger_names = ['NLTK_NER_1', 'NLTK_NER_2', 'StanfordCoreNLP_NER', 'Spacy_NER']
 
-    global tagger
+    global tagger, identifier_retriever
     tagger = NLTK_NER()
+    identifier_retriever = RakeIdentifier()
     #tagger = Spacy_NER()
     #tagger = StanfordCoreNLP_NER()
 
