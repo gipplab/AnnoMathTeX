@@ -15,6 +15,12 @@ import os
 from abc import ABCMeta, abstractmethod
 
 
+#these commands sometimes get recognized as NEs (or nouns,...)
+#don't highlight these
+#add others
+latex_cmds_ignore = ['\\subsection', '\\item', '\\begin', 'enumerate']
+
+
 class Tagger(object, metaclass=ABCMeta):
     """
     Abstract base class for all NE taggers
@@ -33,11 +39,12 @@ class Tagger(object, metaclass=ABCMeta):
         try:
 
             for word, tag in word_tokens:
-                is_ne = True if tag in self.tag_list else False
+                is_ne = True if tag in self.tag_list and word not in latex_cmds_ignore else False
+                print(word, tag, is_ne)
                 words.append(
                      Word(str(uuid1()),
                      type='Word',
-                     highlight="black" if is_ne else "green",
+                     highlight="green" if is_ne else "black",
                      content=word,
                      endline=False,
                      named_entity=is_ne,
@@ -72,26 +79,6 @@ class NLTK_NER(Tagger):
         word_tokens = nltk.word_tokenize(line_chunk)
         word_tokens = nltk.pos_tag(word_tokens)
         return word_tokens
-
-
-
-
-"""class NLTK_NER_2(Tagger):
-
-
-    def __init__(self):
-        super().__init__()
-        self.tag_list = ['NN', 'NNS', 'NNP', 'NNPS']
-
-
-    def get_tags(self, line_chunk):
-        word_tokens = nltk.word_tokenize(line_chunk)
-        word_tokens = nltk.pos_tag(word_tokens)
-        print(word_tokens)
-        word_tokens = nltk.ne_chunk(word_tokens)
-        print(word_tokens)
-        return word_tokens"""
-
 
 
 
@@ -161,6 +148,9 @@ class Spacy_NER(Tagger):
     https://towardsdatascience.com/named-entity-recognition-with-nltk-and-spacy-8c4a7d88e7da
     """
 
+    #Spacey has the feature of recognizing multiple words that belong together. todo: implement this
+
+
     def __init__(self):
         super().__init__()
         self.nlp = en_core_web_sm.load()
@@ -173,25 +163,3 @@ class Spacy_NER(Tagger):
         #test = [(word.text, word.ent_type_) for word in self.nlp(line_chunk) if word.ent_type_ in s]
         #if test: print(test)
         return word_tokens
-
-    """def tag(self, line_chunk, endline):
-        words = []
-
-        word_tokens = self.nlp(line_chunk)
-        tag_list = ['NOUN', 'PROPN']
-        for word in word_tokens:
-            is_ne = True if word.pos_ in tag_list else False
-            words.append(
-                Word(str(uuid1()), type='Word', highlight="black", content=word, endline=False, named_entity=is_ne)
-            )
-
-        if endline:
-            words[-1].endline = True
-
-        return words"""
-
-
-
-
-
-

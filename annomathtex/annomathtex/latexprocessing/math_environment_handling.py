@@ -70,7 +70,7 @@ class MathSparql(Sparql):
         :param search_item:
         :return:
         """
-        #todo: mathML to latex
+        #(todo: mathML to latex) propably not really necessary
         entire_query = self.formulate_query(defining_formula_query, search_item)
 
         self.sparql.setQuery(entire_query)
@@ -137,7 +137,7 @@ class MathSparql(Sparql):
                                             self.remove_special_characters(search_string)
                                             )
 
-        print(search_string)
+        #print(search_string)
 
         results = []
         try:

@@ -31,28 +31,6 @@ def extract_words(line_chunk, endline):
     :param endline: Boolean. True if the line_chunk ends the line.
     :return: List of the words fom line_chunk as Word() objects.
     """
-    # todo: evaluate against NecKAr
-
-
-    """words = []
-    word_tokens = nltk.word_tokenize(line_chunk)
-    print(word_tokens)
-
-    for _, word in enumerate(word_tokens):
-        words.append(
-            Word(
-                str(uuid1()),
-                type='Word',
-                highlight="black",
-                content=word,
-                endline=False,
-                named_entity=False,
-                wikidata_result = None
-            )
-        )
-
-    if endline:
-        words[-1].endline = True"""
 
     tagged_words = tagger.tag(line_chunk, endline)
 
@@ -154,8 +132,8 @@ def get_processed_file(request_file):
     #tagger_names = ['NLTK_NER_1', 'NLTK_NER_2', 'StanfordCoreNLP_NER', 'Spacy_NER']
 
     global tagger
-    #tagger = NLTK_NER()
-    tagger = Spacy_NER()
+    tagger = NLTK_NER()
+    #tagger = Spacy_NER()
     #tagger = StanfordCoreNLP_NER()
 
 

@@ -44,7 +44,11 @@
               class="inline"
               id="{{ Token.unique_id }}"
               style="color: {{ Token.highlight }};"
-              onclick="alertthis('{{ Token.unique_id }}', '{{ Token.content }}' , '{{ Token.wikidata_result|escapejs }}')"
+              onclick="alertthis(
+                                 '{{ Token.unique_id }}',
+                                 '{{ Token.content }}' ,
+                                 '{{ Token.wikidata_result|escapejs }}'
+                                )"
             >
                 {{ Token.content }}
             </span>
