@@ -7,8 +7,9 @@ from .model.empty_line import EmptyLine
 from .model.latexfile import LaTeXFile
 from .named_entity_handling import NESparql
 from .math_environment_handling import MathSparql
-from .named_entity_recognition import NLTK_NER_1
+from .named_entity_recognition import NLTK_NER, StanfordCoreNLP_NER, Spacy_NER
 import json
+import time
 
 
 def decode(request_file):
@@ -145,7 +146,9 @@ def get_processed_file(request_file):
     #tagger_names = ['NLTK_NER_1', 'NLTK_NER_2', 'StanfordCoreNLP_NER', 'Spacy_NER']
 
     global tagger
-    tagger = NLTK_NER_1()
+    #tagger = NLTK_NER()
+    tagger = Spacy_NER()
+    #tagger = StanfordCoreNLP_NER()
 
 
 

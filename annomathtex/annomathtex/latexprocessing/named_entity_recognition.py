@@ -30,20 +30,25 @@ class Tagger(object, metaclass=ABCMeta):
 
         words = []
 
-        for word, tag in word_tokens:
-            is_ne = True if tag in self.tag_list else False
-            words.append(
-                 Word(str(uuid1()),
-                 type='Word',
-                 highlight="black" if is_ne else "green",
-                 content=word,
-                 endline=False,
-                 named_entity=is_ne,
-                 wikidata_result=None)
-            )
+        try:
 
-        if endline:
-            words[-1].endline = True
+            for word, tag in word_tokens:
+                is_ne = True if tag in self.tag_list else False
+                words.append(
+                     Word(str(uuid1()),
+                     type='Word',
+                     highlight="black" if is_ne else "green",
+                     content=word,
+                     endline=False,
+                     named_entity=is_ne,
+                     wikidata_result=None)
+                )
+
+            if endline:
+                words[-1].endline = True
+
+        except Exception as e:
+            print(e)
 
         return words
 
@@ -54,7 +59,7 @@ def own_tagger(line_chunk):
     pass
 
 
-class NLTK_NER_1(Tagger):
+class NLTK_NER(Tagger):
     """
     method tag called from abstract base class
     """
@@ -71,26 +76,30 @@ class NLTK_NER_1(Tagger):
 
 
 
-class NLTK_NER_2:
-    def tag(self, line_chunk, endline):
-        #Not sure if necessary
-        words = []
+"""class NLTK_NER_2(Tagger):
+
+
+    def __init__(self):
+        super().__init__()
+        self.tag_list = ['NN', 'NNS', 'NNP', 'NNPS']
+
+
+    def get_tags(self, line_chunk):
         word_tokens = nltk.word_tokenize(line_chunk)
         word_tokens = nltk.pos_tag(word_tokens)
+        print(word_tokens)
         word_tokens = nltk.ne_chunk(word_tokens)
-
-        tag_list = ['NN', 'NNS', 'NNP', 'NNPS']
-        for _, word in enumerate(word_tokens):
-            # if word[1] in tag_list:
-            #    print(word)
-            print(word, type(word))
-
-        if endline:
-            words[-1].endline = True
+        print(word_tokens)
+        return word_tokens"""
 
 
 
-class StanfordCoreNLP_NER:
+
+class StanfordCoreNLP_NER(Tagger):
+    """
+    has to be started in different terminal...
+    """
+
 
     def __init__(self):
         self.start_corenlp()
@@ -136,36 +145,36 @@ class StanfordCoreNLP_NER:
         def ner(self, sentence):
             return self.nlp.ner(sentence)
 
-    def tag(self, line_chunk, endline):
 
-        words = []
+    def get_tags(self, line_chunk):
         word_tokens = self.nlp.pos(line_chunk)
-        tag_list = ['NN', 'NNS', 'NNP', 'NNPS']
-        for _, word in enumerate(word_tokens):
-            is_ne = True if word[1] in tag_list else False
-            words.append(
-                Word(str(uuid1()), type='Word', highlight="black", content=word, endline=False, named_entity=is_ne)
-            )
+        self.kill_corenlp()
+        return word_tokens
 
-        if endline:
-            words[-1].endline = True
-
-        return words
 
 
 class Spacy_NER(Tagger):
+    """
+    Looks quite promising, as it has several 'types' that words are tagged with, one of which is 'QUANTITY'
+    These can be accessed through word.ent_type
+
+    https://towardsdatascience.com/named-entity-recognition-with-nltk-and-spacy-8c4a7d88e7da
+    """
 
     def __init__(self):
         super().__init__()
         self.nlp = en_core_web_sm.load()
+        self.tag_list = ['NOUN', 'PROPN']
 
 
     def get_tags(self, line_chunk):
-        words = []
-        word_tokens = self.nlp(line_chunk)
-        return_tokens = []
+        word_tokens = [(word.text, word.pos_) for word in self.nlp(line_chunk)]
+        #s = ["QUANTITY", "ORDINAL", "CARDINAL"]
+        #test = [(word.text, word.ent_type_) for word in self.nlp(line_chunk) if word.ent_type_ in s]
+        #if test: print(test)
+        return word_tokens
 
-    def tag(self, line_chunk, endline):
+    """def tag(self, line_chunk, endline):
         words = []
 
         word_tokens = self.nlp(line_chunk)
@@ -179,7 +188,7 @@ class Spacy_NER(Tagger):
         if endline:
             words[-1].endline = True
 
-        return words
+        return words"""
 
 
 
