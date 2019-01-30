@@ -25,18 +25,13 @@ from string import punctuation
 
 
 ######### RAKE ##########
-"""
-The phrases are generated in the method _generate_phrases()
-should try to access that
-"""
-
-
 # https://github.com/csurfer/rake-nltk
 from rake_nltk import Rake
 from nltk.corpus import stopwords
 
 
 class RakeIdentifier:
+    #todo: add wikidata query check to see whether the found keywords are e.g. part of science
 
     r = Rake()
     test_text = "The case could escalate tensions between China and the US."
@@ -70,13 +65,7 @@ class RakeIdentifier:
         to_ignore = set(chain(stopWords, punctuation))
 
         #this part is adapted from the rake_nltk source code, to get the same grouping of the sentences
-        #the word.lower() part not is necessary, becasue the scoring part uses this
-        #word_list = [(word.lower(), True if word.lower() != word else False)
-        #             for word in wordpunct_tokenize(line_chunk)]
-        #groups = groupby(word_list, lambda x: x[0] not in to_ignore)
-
-        word_list = [word for word in wordpunct_tokenize(line_chunk)]
-        # maybe just: wordpunct_tokenize(line_chunk)
+        word_list = wordpunct_tokenize(line_chunk)
         groups = groupby(word_list, lambda x: x not in to_ignore)
         phrases = [tuple(group[1]) for group in groups]
 
@@ -95,12 +84,49 @@ class RakeIdentifier:
                      wikidata_result=None)
             )
 
-
-
-
         if endline:
             processed_phrases[-1].endline = True
 
 
         return processed_phrases
+
+
+
+########### Spacey ##############
+import en_core_web_sm
+
+
+class SpaceyIdentifier:
+    """
+    Right now uses named entities, maybe it would be better to use pos tags (e.g. PNOUN)
+    """
+    nlp = en_core_web_sm.load()
+    test_text = "The case could escalate tensions between China and the US says Donald Trump."
+
+    def extract_identifiers(self, line_chunk, endline):
+        nlp_line_chunk = self.nlp(line_chunk)
+        named_entities = set(str(ne) for ne in nlp_line_chunk.ents)
+
+
+        words = [
+            Word(str(uuid1()),
+                 type='Word',
+                 highlight='green' if str(w) in named_entities else 'black',
+                 content=w,
+                 endline=False,
+                 named_entity=True if str(w) in named_entities else False,
+                 wikidata_result=None)
+
+            for w in nlp_line_chunk
+        ]
+
+        if endline:
+            words[-1].endline = True
+
+
+        return words
+
+
+
+
 

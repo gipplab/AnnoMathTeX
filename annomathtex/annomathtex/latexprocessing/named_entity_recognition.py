@@ -159,10 +159,10 @@ class Spacy_NER(Tagger):
     These can be accessed through word.ent_type
 
     https://towardsdatascience.com/named-entity-recognition-with-nltk-and-spacy-8c4a7d88e7da
+
+    Spacey has the feature of recognizing multiple words that belong together.
+    Implemented this in identifier retrieval.
     """
-
-    #Spacey has the feature of recognizing multiple words that belong together. todo: implement this
-
 
     def __init__(self):
         super().__init__()
