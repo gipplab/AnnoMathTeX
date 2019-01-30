@@ -41,9 +41,9 @@ def extract_words(line_chunk, endline):
     #tagged_words = tagger.tag(line_chunk, endline)
     cutoff = 7.0
     #for RAKE
-    #tagged_words = identifier_retriever.extract_identifiers(line_chunk, endline, cutoff)
+    tagged_words = identifier_retriever.extract_identifiers(line_chunk, endline, cutoff)
     #for Spacey
-    tagged_words = identifier_retriever.extract_identifiers(line_chunk, endline)
+    #tagged_words = identifier_retriever.extract_identifiers(line_chunk, endline)
     return tagged_words
 
 
@@ -143,8 +143,8 @@ def get_processed_file(request_file):
 
     global tagger, identifier_retriever
     tagger = NLTK_NER()
-    #identifier_retriever = RakeIdentifier()
-    identifier_retriever = SpaceyIdentifier()
+    identifier_retriever = RakeIdentifier()
+    #identifier_retriever = SpaceyIdentifier()
     #tagger = Spacy_NER()
     #tagger = StanfordCoreNLP_NER()
 

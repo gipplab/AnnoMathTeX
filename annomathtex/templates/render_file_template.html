@@ -44,14 +44,25 @@
               class="inline"
               id="{{ Token.unique_id }}"
               style="color: {{ Token.highlight }};"
-              onclick="alertthis(
-                                 '{{ Token.unique_id }}',
-                                 '{{ Token.content }}' ,
-                                 '{{ Token.wikidata_result|escapejs }}'
-                                )"
             >
                 {{ Token.content }}
             </span>
+
+            <script>
+              $("#{{ Token.unique_id }}").select(function() {
+                alertthis(
+                         '{{ Token.unique_id }}',
+                         '{{ Token.content }}' ,
+                         '{{ Token.wikidata_result|escapejs }}'
+                        );
+              });
+
+              $("#{{ Token.unique_id }}").click(function() {
+                $("#{{ Token.unique_id }}").select();
+              });
+            </script>
+
+
           {% endif %}
           {% if Token.endline %}
               </br>
