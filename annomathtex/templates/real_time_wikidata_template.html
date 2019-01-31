@@ -7,7 +7,10 @@
   <meta charset="UTF-8">
   <title>AnnoMathTex</title>
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script type="text/javascript" src="{% static 'js/realtimewd.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/helperFunctions.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/storedInformation.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/saveInformation.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/wikidataQuery.js' %}"></script>
   <link rel="stylesheet" type="text/css" href="{% static 'css/mystyle.css' %}">
 </head>
 
@@ -20,7 +23,7 @@
 
 
 
-<div id="foo" class="modal">
+<div id="popupModal" class="modal">
   <!-- Modal content -->
   <div class="modal-content">
     <span class="close" id="span">&times;</span>
@@ -46,6 +49,7 @@
             </span>
 
             <script>
+              //this part of js has to be in the loop, otherwise the unique_id will be lost
               $("#{{ Token.unique_id }}").on('click', function(event){
                 event.preventDefault();
                 console.log('wikidata query sent out');

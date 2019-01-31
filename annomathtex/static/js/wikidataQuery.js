@@ -1,23 +1,3 @@
-
-//https://stackoverflow.com/questions/6506897/csrf-token-missing-or-incorrect-while-post-parameter-via-ajax-in-django
-function getCookie(c_name)
-{
-    if (document.cookie.length > 0)
-    {
-        c_start = document.cookie.indexOf(c_name + "=");
-        if (c_start != -1)
-        {
-            c_start = c_start + c_name.length + 1;
-            c_end = document.cookie.indexOf(";", c_start);
-            if (c_end == -1) c_end = document.cookie.length;
-            return unescape(document.cookie.substring(c_start,c_end));
-        }
-    }
-    return "";
- };
-
-
-
 function populateTable(wikidataResult) {
     console.log('in populate table');
     //console.log(wikidataResult);
@@ -35,11 +15,6 @@ function populateTable(wikidataResult) {
         var itemLabel = item['item_label'];
         var itemDescription = item['item_description'];
 
-        //add the wikidata items to wikidataReference
-        //wikidataReference[qid] = item
-
-        let inf = {'qid': qid};
-
 
         //must be enclosed like this, because qid is a string value
         myTable+="<tr><td style='width: 100px;' onclick='selectQid(\"" + qid + "\")'>" + qid + "</td>";
@@ -49,16 +24,13 @@ function populateTable(wikidataResult) {
       document.getElementById('tableholder').innerHTML = myTable;
     }
 
-    var modal = document.getElementById("foo");
+    var modal = document.getElementById("popupModal");
     modal.style.display = "block";
 
     var span = document.getElementById("span");
     span.onclick = function () {
       modal.style.display = "none";
     };
-
-    //Display the highlighted text
-    //document.getElementById("highlightedText").innerHTML = tokenContent;
 
     window.onclick = function(event) {
       if (event.target == modal) {
@@ -71,7 +43,7 @@ function populateTable(wikidataResult) {
 
 
 /*
-AJAX FUNCTIONS USED TO POST
+AJAX FUNCTIONS USED TO POST THE REQUEST BACK TO DJANGO, WHERE THE WIKIDATA SPARQL QUERY IS EXECUTED
  */
 
 
@@ -101,8 +73,6 @@ function wikidataQuery(tokenContent, tokenUniqueId) {
       // handle a successful response
       success : function(json) {
           $("#" + tokenUniqueId).val(''); // remove the value from the input
-          console.log(json['wikidataResults'][0]); // log the returned json to the console
-          console.log("success"); // another sanity check
           populateTable(json['wikidataResults']);
       },
 
@@ -113,7 +83,4 @@ function wikidataQuery(tokenContent, tokenUniqueId) {
           console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
       }
   });
-
-
-};
-
+}
