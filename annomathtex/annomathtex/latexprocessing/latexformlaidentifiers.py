@@ -8,6 +8,9 @@ import re
 from sympy.parsing.latex import parse_latex
 from sympy.core.sympify import sympify
 from sympy import Number, NumberSymbol, Symbol
+from sympy.printing.latex import latex
+from sympy.printing.mathml import mathml
+from sympy import *
 
 # import scipy.constants
 contant = {'pi': '3.141592653589793', 'golden': '1.618033988749895', 'golden_ratio': '1.618033988749895',
@@ -73,7 +76,7 @@ def evalformula(formula):
     l = sympify(latexformula)
     symbol = l.atoms(Symbol)
     #print('symbol: {} , l: {}'.format(symbol, l))
-    return {'symbol': symbol, 'formula': l}
+    return symbol, l
     #return symbol
 
 
@@ -111,37 +114,36 @@ def formuladivision(formula):
         return None
 
 
-class Formulacalculation:
+class FormulaSplitter:
 
     def __init__(self, request):
         self.formula = request
         ##print(self.formula)
 
-    def answer(self):
-        #try:
-
-        formula = self.formula
+    def split(self):
         global seprator
-        seprator = formuladivision(formula)
-        #print('seprator: ', seprator)
+        seprator = formuladivision(self.formula)
+        symbol, formula = evalformula(self.formula)
 
-        result_dict = evalformula(formula)
+        print(latex(symbol))
+
+
+        result_dict = {
+            'symbol': symbol,
+            'formula': {
+                'string': str(formula),
+                'latex': latex(formula),
+                'mathml': mathml(formula)
+            }
+        }
+
         return result_dict
 
-        """if seprator is not None:
-            print('seprator: {} , formula: {}'.format(seprator, formula))
-            symbol = equality(formula, seprator)
-        else:
-            symbol = evalformula(formula)
-        return symbol"""
-
-        #except Exception as e:
-        #    #print(e)
 
 
 
-f = "\\frac{d}{dx} x^{2}"
+f = "y=\\frac{d}{dx} x^{2}"
 #f = "x=2+3"
-c = Formulacalculation(f).answer()
-print(c)
-
+c = FormulaSplitter(f).split()
+#s = c['formula']
+#print(mathml(s), type(s))

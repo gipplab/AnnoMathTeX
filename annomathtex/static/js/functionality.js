@@ -27,7 +27,7 @@ function populateTable(wikidataResult) {
         var itemDescription = item['item_description'];
 
         //add the wikidata items to wikidataReference
-        wikidataReference[qid] = item
+        wikidataReference[qid] = item;
 
         //must be enclosed like this, because qid is a string value
         myTable+="<tr><td style='width: 100px;' onclick='selectQid(\"" + qid + "\")'>" + qid + "</td>";
