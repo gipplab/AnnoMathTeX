@@ -1,4 +1,5 @@
-#from https://github.com/ag-gipp/MathQa/blob/master/latexformlaidentifiers.py
+#taken from https://github.com/ag-gipp/MathQa/blob/master/latexformlaidentifiers.py
+#made some changes
 
 
 import ast
@@ -71,17 +72,21 @@ def evalformula(formula):
     #print('latexformula: {}'.format(latexformula))
     l = sympify(latexformula)
     symbol = l.atoms(Symbol)
-    print('symbol: {} , l: {}'.format(symbol, l))
-    return symbol
+    #print('symbol: {} , l: {}'.format(symbol, l))
+    return {'symbol': symbol, 'formula': l}
+    #return symbol
 
 
-def equality(formula, ext):
+"""def equality(formula, ext):
     global lhs
     global rhs
     lhs, rhs = formula.split(ext, 1)
     #print('lhs: {} , rhs: {}'.format(lhs, rhs))
     value = evalformula(rhs)
-    return value
+    
+    return {'lhs': lhs}
+    
+    #return value"""
 
 
 def formuladivision(formula):
@@ -119,12 +124,16 @@ class Formulacalculation:
         global seprator
         seprator = formuladivision(formula)
         #print('seprator: ', seprator)
-        if seprator is not None:
-            #print('seprator: {} , formula: {}'.format(seprator, formula))
+
+        result_dict = evalformula(formula)
+        return result_dict
+
+        """if seprator is not None:
+            print('seprator: {} , formula: {}'.format(seprator, formula))
             symbol = equality(formula, seprator)
         else:
             symbol = evalformula(formula)
-        return symbol
+        return symbol"""
 
         #except Exception as e:
         #    #print(e)
