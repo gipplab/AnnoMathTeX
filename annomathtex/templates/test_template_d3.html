@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+
+  <script src='https://d3js.org/d3.v4.min.js'></script>
+</head>
+<body>
+
+
+
+<script>
+  var jsonObject = JSON.parse("{{ TexFile | escapejs }}");
+  //alert(jsonObject['sentences'][0][0]);
+  var sentences = jsonObject['sentences'];
+
+  for (var sentence in sentences) {
+
+  }
+
+  d3.select("body").selectAll("div")
+    .data(sentences)
+    .enter().append("span")
+
+
+      .selectAll('span')
+      .data(sentence)
+      .enter()
+      .append('span')
+      .text(function(d) { return d; });
+</script>
+
+</body>
+</html>

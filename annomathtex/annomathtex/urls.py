@@ -9,7 +9,7 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from .views.file_upload_view import FileUploadView
 from .views.render_file_view import RenderFileView
-from .views.test_view import TestView
+from .views.test_view import test_view
 
 urlpatterns = [
     # Examples:
@@ -24,6 +24,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^file_upload/', FileUploadView.as_view()),
     url(r'^render_file/', RenderFileView.as_view()),
-    url(r'^test/', TestView.as_view())
+    url(r'^test/', test_view)
 
 ]

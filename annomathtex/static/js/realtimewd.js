@@ -4,24 +4,6 @@ This file contains all the necessary js functions that are used to render the fi
 
 
 
-/*
-HELPER FUNCTIONS
- */
-
-//function to format strings
-//https://coderwall.com/p/flonoa/simple-string-format-in-javascript
-String.prototype.format = function() {
-    a = this;
-    for (k in arguments) {
-      a = a.replace("{" + k + "}", arguments[k])
-    }
-    return a
-}
-
-//better way to get the type of object
-var toType = function(obj) {
-    return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
-};
 
 //https://stackoverflow.com/questions/6506897/csrf-token-missing-or-incorrect-while-post-parameter-via-ajax-in-django
 function getCookie(c_name)
@@ -51,6 +33,16 @@ var highlighted = {};
 //for those items, whose ids are selected, the item will be returned to django
 var wikidataReference = {};
 var annotated = {};
+
+
+function wordClicked(uniqueId, tokenContent) {
+
+    //make post request with tokenContent
+    //populate <tableholder> with the results
+    //rest remains unchanged
+
+
+}
 
 
 function alertthis(uniqueId, tokenContent, wikidataResult) {
@@ -140,6 +132,27 @@ AJAX FUNCTIONS USED TO POST
  */
 
 $(document).ready(function () {
+
+    function wikidataQuery(tokenContent) {
+        //take the tokenContent of the word that was clicked
+        //make a post request to django with this information
+        //django does a sparql query search and returns the results
+        //populate <tableholder> with the information
+        console.log('in wikidataQuery');
+
+        let data_dict = { the_post : $("#" + tokenContent).val(),
+                        //'csrfmiddlewaretoken': '{{ csrf_token }}',
+                        'csrfmiddlewaretoken': getCookie("csrftoken"),
+                        'queryString': $.param(tokenContent)
+                        };
+
+        console.log('data_dict formed');
+        console.log(data_dict);
+
+
+    };
+
+
     $('#post-form').on('submit', function(event){
         event.preventDefault();
         console.log('form submitted');

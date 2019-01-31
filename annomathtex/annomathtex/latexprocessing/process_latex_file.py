@@ -38,10 +38,10 @@ def extract_words(line_chunk, endline):
     #select between NE tagging and keyword extraction
 
 
-    #tagged_words = tagger.tag(line_chunk, endline)
-    cutoff = 7.0
+    tagged_words = tagger.tag(line_chunk, endline)
+    #cutoff = 7.0
     #for RAKE
-    tagged_words = identifier_retriever.extract_identifiers(line_chunk, endline, cutoff)
+    #tagged_words = identifier_retriever.extract_identifiers(line_chunk, endline, cutoff)
     #for Spacey
     #tagged_words = identifier_retriever.extract_identifiers(line_chunk, endline)
     return tagged_words
@@ -137,13 +137,12 @@ def get_processed_file(request_file):
     :param request_file:
     :return:
     """
-
     #possible taggers
     #tagger_names = ['NLTK_NER_1', 'NLTK_NER_2', 'StanfordCoreNLP_NER', 'Spacy_NER']
 
     global tagger, identifier_retriever
     tagger = NLTK_NER()
-    identifier_retriever = RakeIdentifier()
+    #identifier_retriever = RakeIdentifier()
     #identifier_retriever = SpaceyIdentifier()
     #tagger = Spacy_NER()
     #tagger = StanfordCoreNLP_NER()

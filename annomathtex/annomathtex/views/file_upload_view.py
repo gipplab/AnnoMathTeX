@@ -3,6 +3,7 @@ from django.views.generic import View
 from ..forms.uploadfileform import UploadFileForm
 from ..forms.save_annotation_form import SaveAnnotationForm
 from ..latexprocessing.process_latex_file import get_processed_file
+from ..latexprocessing.math_environment_handling import MathSparql
 from django.http import HttpResponse
 from ..forms.testform import TestForm
 from jquery_unparam import jquery_unparam
@@ -42,7 +43,9 @@ class FileUploadView(View):
                 latex_file = get_processed_file(request.FILES['file'])
                 return render(request,
                               #'render_file_old.html',
-                              'render_file_template.html',
+                              #'render_file_template.html',
+                              #'test_template_d3.html',
+                              'real_time_wikidata_template.html',
                               {'TexFile': latex_file})
 
             return render(request, "render_file_template.html", self.save_annotation_form)
@@ -71,6 +74,25 @@ class FileUploadView(View):
                 json.dumps({'testkey': 'testvalue'}),
                 content_type='application/json'
             )
+
+
+        #make wikidata queries in real time
+        elif 'queryDict' in request.POST:
+            print('Wikidata Query made')
+            items = {k: jquery_unparam(v) for (k, v) in request.POST.items()}
+            for k in items:
+                print(k, items[k])
+            query_dict = items['queryDict']
+            search_string = [k for k in query_dict][0]
+            #print('SEARCH STRING: ', search_string)
+            wikidata_results = MathSparql().broad_search(search_string)
+            print(wikidata_results)
+
+            return HttpResponse(
+                json.dumps({'wikidataResults': wikidata_results}),
+                content_type='application/json'
+            )
+
 
 
         return render(request, "file_upload_template.html", self.initial)

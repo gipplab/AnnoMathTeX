@@ -1,0 +1,106 @@
+{% load staticfiles %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AnnoMathTex</title>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script type="text/javascript" src="{% static 'js/realtimewd.js' %}"></script>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/mystyle.css' %}">
+</head>
+
+
+<body>
+<form method="POST" id="post-form">
+    {% csrf_token %}
+    <button type="submit" name="post-form-submit2" >Save</button>
+</form>
+
+
+
+<div id="foo" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close" id="span">&times;</span>
+    <p id="highlightedText"></p>
+    <button id="highlightBtn" onclick="highlightToken()">HIGHLIGHT</button>
+    <button id="unHighlightBtn" onclick="unHighlightToken()">UNHIGHLIGHT</button>
+    <!-- todo: make hidden -->
+    <div id="tableholder"></div>
+  </div>
+</div>
+
+
+{% for Line in TexFile.body %}
+    <div>
+        {% for Token in Line %}
+          {% if not Token.content == None %}
+            <span
+              class="inline"
+              id="{{ Token.unique_id }}"
+              style="color: {{ Token.highlight }};"
+            >
+                {{ Token.content }}
+            </span>
+
+            <script>
+              $("#{{ Token.unique_id }}").on('click', function(event){
+                event.preventDefault();
+                console.log('wikidata query sent out');
+                wikidataQuery("{{ Token.content }}");
+              });
+
+              function wikidataQuery(tokenContent) {
+                  //take the tokenContent of the word that was clicked
+                  //make a post request to django with this information
+                  //django does a sparql query search and returns the results
+                  //populate <tableholder> with the information
+                  console.log('in wikidataQuery');
+                  console.log(tokenContent);
+
+                  let data_dict = { the_post : $("#" + "{{ Token.unique_id }}").val(),
+                                  'csrfmiddlewaretoken': '{{ csrf_token }}',
+                                  //'csrfmiddlewaretoken': getCookie("csrftoken"),
+                                  'queryDict': tokenContent
+                                  };
+
+                  console.log('data_dict formed');
+                  console.log(data_dict);
+
+
+                  $.ajax({
+                      url : "file_upload/", // the endpoint
+                      type : "POST", // http method
+                      data : data_dict, // data sent with the post request
+
+                      // handle a successful response
+                      success : function(json) {
+                          $("#" + "{{ Token.unique_id }}").val(''); // remove the value from the input
+                          console.log(json['wikidataResults'][0]); // log the returned json to the console
+                          console.log("success"); // another sanity check
+                      },
+
+                      // handle a non-successful response
+                      error : function(xhr,errmsg,err) {
+                          $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+                              " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+                          console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                      }
+                  });
+
+
+              };
+
+            </script>
+          {% endif %}
+          {% if Token.endline %}
+              </br>
+          {% endif %}
+        {% endfor %}
+    </div>
+{% endfor %}
+</body>
+</html>
+
