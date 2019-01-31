@@ -6,7 +6,7 @@ from .model.identifier import Identifier
 from .model.empty_line import EmptyLine
 from .model.latexfile import LaTeXFile
 from .named_entity_handling import NESparql
-from .math_environment_handling import MathSparql
+#from .math_environment_handling import MathSparql
 from .named_entity_recognition import NLTK_NER, StanfordCoreNLP_NER, Spacy_NER
 from .identifier_retrieval import RakeIdentifier, SpaceyIdentifier
 import json
@@ -60,12 +60,15 @@ def extract_identifiers(line_chunk, endline):
 
     for identifier in identifier_tokens:
 
-        if identifier not in wikidata_search_results:
+        """if identifier not in wikidata_search_results:
             wikidata_result = mathsparql.broad_search(identifier)
             wikidata_search_results[identifier] = wikidata_result
 
         else:
-            wikidata_result = wikidata_search_results[identifier]
+            wikidata_result = wikidata_search_results[identifier]"""
+
+
+        wikidata_result = None
 
         #wikidata_result = json.dumps(mathsparql.broad_search(identifier))
 
@@ -101,7 +104,7 @@ def process_lines(request_file):
 
     global nesparql, mathsparql, wikidata_search_results
     nesparql = NESparql()
-    mathsparql = MathSparql()
+    #mathsparql = MathSparql()
     wikidata_search_results = {} #equal search strings don't have to be repeated
 
 

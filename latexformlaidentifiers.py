@@ -131,8 +131,8 @@ class Formulacalculation:
 
 
 
-f = "x=\\frac{d}{dx} x^{2}"
+f = "\\frac{d}{dx} x^{2}"
 #f = "x=2+3"
 c = Formulacalculation(f).answer()
-#print(c)
+print(c)
 

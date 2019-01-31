@@ -96,6 +96,9 @@ function wordClicked(tokenContent, tokenUniqueId) {
   console.log('in wikidataQuery');
   console.log(tokenContent);
 
+  //Display the highlighted text
+  document.getElementById("highlightedText").innerHTML = tokenContent;
+
   //Not the best way of doing this
   //https://stackoverflow.com/questions/5786851/define-global-variable-in-a-javascript-function
   window.uniqueID = tokenUniqueId;
