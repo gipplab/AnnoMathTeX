@@ -49,49 +49,9 @@
               $("#{{ Token.unique_id }}").on('click', function(event){
                 event.preventDefault();
                 console.log('wikidata query sent out');
-                wikidataQuery("{{ Token.content }}");
+                test("{{ Token.content }}", "{{ Token.unique_id }}");
+
               });
-
-              function wikidataQuery(tokenContent) {
-                  //take the tokenContent of the word that was clicked
-                  //make a post request to django with this information
-                  //django does a sparql query search and returns the results
-                  //populate <tableholder> with the information
-                  console.log('in wikidataQuery');
-                  console.log(tokenContent);
-
-                  let data_dict = { the_post : $("#" + "{{ Token.unique_id }}").val(),
-                                  'csrfmiddlewaretoken': '{{ csrf_token }}',
-                                  //'csrfmiddlewaretoken': getCookie("csrftoken"),
-                                  'queryDict': tokenContent
-                                  };
-
-                  console.log('data_dict formed');
-                  console.log(data_dict);
-
-
-                  $.ajax({
-                      url : "file_upload/", // the endpoint
-                      type : "POST", // http method
-                      data : data_dict, // data sent with the post request
-
-                      // handle a successful response
-                      success : function(json) {
-                          $("#" + "{{ Token.unique_id }}").val(''); // remove the value from the input
-                          console.log(json['wikidataResults'][0]); // log the returned json to the console
-                          console.log("success"); // another sanity check
-                      },
-
-                      // handle a non-successful response
-                      error : function(xhr,errmsg,err) {
-                          $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-                              " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-                          console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-                      }
-                  });
-
-
-              };
 
             </script>
           {% endif %}
