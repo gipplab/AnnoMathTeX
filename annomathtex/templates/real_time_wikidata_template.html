@@ -49,8 +49,7 @@
               $("#{{ Token.unique_id }}").on('click', function(event){
                 event.preventDefault();
                 console.log('wikidata query sent out');
-                test("{{ Token.content }}", "{{ Token.unique_id }}");
-
+                wikidataQuery("{{ Token.content }}", "{{ Token.unique_id }}");
               });
 
             </script>

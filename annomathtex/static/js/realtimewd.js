@@ -18,19 +18,56 @@ function getCookie(c_name)
 
 
 
+function populateTable(wikidataResult) {
+    console.log('in populate table');
+    //console.log(wikidataResult);
+    if (wikidataResult != "None") {
 
-function wordClicked(uniqueId, tokenContent) {
+      var myTable= "<table><tr><td style='width: 100px; color: red;'>Wikidata Qid</td>";
+      myTable+= "<td style='width: 100px; color: red; text-align: right;'>Name</td>";
 
-    //make post request with tokenContent
-    //populate <tableholder> with the results
-    //rest remains unchanged
+      for (var i in wikidataResult){
+        //var attrName = item;
+        var item = wikidataResult[i];
+        var qid = item['qid'];
+        var link = item['link'];
+        var foundString = item['found_string'];
+        var itemLabel = item['item_label'];
+        var itemDescription = item['item_description'];
+
+        //add the wikidata items to wikidataReference
+        //wikidataReference[qid] = item
+
+        let inf = {'qid': qid};
 
 
-};
+        //must be enclosed like this, because qid is a string value
+        myTable+="<tr><td style='width: 100px;' onclick='selectQid(\"" + qid + "\")'>" + qid + "</td>";
+        myTable+="<td style='width: 100px; text-align: right;'>" + itemLabel + "</td></tr>";
 
-function test(tokenContent, tokenUniqueId) {
-    wikidataQuery(tokenContent, tokenUniqueId);
-};
+      }
+      document.getElementById('tableholder').innerHTML = myTable;
+    }
+
+    var modal = document.getElementById("foo");
+    modal.style.display = "block";
+
+    var span = document.getElementById("span");
+    span.onclick = function () {
+      modal.style.display = "none";
+    };
+
+    //Display the highlighted text
+    //document.getElementById("highlightedText").innerHTML = tokenContent;
+
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    };
+    return;
+}
+
 
 
 /*
@@ -66,6 +103,7 @@ function wikidataQuery(tokenContent, tokenUniqueId) {
           $("#" + tokenUniqueId).val(''); // remove the value from the input
           console.log(json['wikidataResults'][0]); // log the returned json to the console
           console.log("success"); // another sanity check
+          populateTable(json['wikidataResults']);
       },
 
       // handle a non-successful response

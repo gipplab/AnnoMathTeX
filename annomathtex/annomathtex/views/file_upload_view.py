@@ -86,7 +86,7 @@ class FileUploadView(View):
             search_string = [k for k in query_dict][0]
             #print('SEARCH STRING: ', search_string)
             wikidata_results = MathSparql().broad_search(search_string)
-            print(wikidata_results)
+            #print(wikidata_results)
 
             return HttpResponse(
                 json.dumps({'wikidataResults': wikidata_results}),
