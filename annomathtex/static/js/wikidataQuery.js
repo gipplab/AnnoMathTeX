@@ -15,7 +15,6 @@ function populateTable(wikidataResult) {
         var itemLabel = item['item_label'];
         var itemDescription = item['item_description'];
 
-
         //must be enclosed like this, because qid is a string value
         myTable+="<tr><td style='width: 100px;' onclick='selectQid(\"" + qid + "\")'>" + qid + "</td>";
         myTable+="<td style='width: 100px; text-align: right;'>" + itemLabel + "</td></tr>";

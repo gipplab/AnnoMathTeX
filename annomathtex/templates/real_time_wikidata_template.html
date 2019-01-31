@@ -8,9 +8,7 @@
   <title>AnnoMathTex</title>
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script type="text/javascript" src="{% static 'js/helperFunctions.js' %}"></script>
-  <script type="text/javascript" src="{% static 'js/storedInformation.js' %}"></script>
-  <script type="text/javascript" src="{% static 'js/saveInformation.js' %}"></script>
-  <script type="text/javascript" src="{% static 'js/wikidataQuery.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/functionality.js' %}"></script>
   <link rel="stylesheet" type="text/css" href="{% static 'css/mystyle.css' %}">
 </head>
 
@@ -53,7 +51,7 @@
               $("#{{ Token.unique_id }}").on('click', function(event){
                 event.preventDefault();
                 console.log('wikidata query sent out');
-                wikidataQuery("{{ Token.content }}", "{{ Token.unique_id }}");
+                wordClicked("{{ Token.content }}", "{{ Token.unique_id }}");
               });
 
             </script>

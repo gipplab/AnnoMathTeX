@@ -8,3 +8,5 @@ var highlighted = {};
 //for those items, whose ids are selected, the item will be returned to django
 var wikidataReference = {};
 var annotated = {};
+
+var allWikidataQueryResults = {};

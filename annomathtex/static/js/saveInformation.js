@@ -4,9 +4,6 @@ FUNCTIONALITY USED TO SEND THE INFORMATION ABOUT ANNOTATIONS AND HIGHLIGHTING BA
  */
 
 
-
-
-
 function selectQid(wikidataQid){
     annotated[wikidataQid] = {
       'token': tokenContent,
@@ -14,20 +11,20 @@ function selectQid(wikidataQid){
       'wikidataInf': wikidataReference[wikidataQid]
     };
     console.log(tokenContent + ' assigned ' + wikidataQid);
-};
+}
 
 function highlightToken() {
     document.getElementById(uniqueID).style.color = 'blue';
     highlighted[uniqueID] = tokenContent;
     console.log('highlighted ' + tokenContent);
     return;
-};
+}
 
 function unHighlightToken() {
     delete highlighted[uniqueID];
     document.getElementById(uniqueID).style.color = 'black';
     return
-};
+}
 
 
 /*
@@ -71,6 +68,6 @@ $(document).ready(function () {
               console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
           }
       });
-    };
+    }
 
 });
