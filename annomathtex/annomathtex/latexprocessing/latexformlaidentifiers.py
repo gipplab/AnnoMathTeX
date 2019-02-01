@@ -11,6 +11,7 @@ from sympy import Number, NumberSymbol, Symbol
 from sympy.printing.latex import latex
 from sympy.printing.mathml import mathml
 from sympy import *
+from collections import OrderedDict
 
 # import scipy.constants
 contant = {'pi': '3.141592653589793', 'golden': '1.618033988749895', 'golden_ratio': '1.618033988749895',
@@ -118,32 +119,52 @@ class FormulaSplitter:
 
     def __init__(self, request):
         self.formula = request
-        ##print(self.formula)
-
-    def split(self):
         global seprator
         seprator = formuladivision(self.formula)
-        symbol, formula = evalformula(self.formula)
-
-        print(latex(symbol))
 
 
-        result_dict = {
-            'symbol': symbol,
-            'formula': {
-                'string': str(formula),
-                'latex': latex(formula),
-                'mathml': mathml(formula)
+    def get_identifiers(self):
+        symbols, _ = evalformula(self.formula)
+        return symbols
+
+    def get_formula(self):
+        _, formula = evalformula(self.formula)
+        formula_dict = {
+                    'string': str(formula),
+                    'latex': latex(formula),
+                    'mathml': mathml(formula)
+                }
+        return formula_dict
+
+
+    """def split(self):
+        global seprator
+
+        try:
+
+            seprator = formuladivision(self.formula)
+            symbol, formula = evalformula(self.formula)
+
+            result_dict = {
+                'symbol': symbol,
+                'formula': {
+                    'string': str(formula),
+                    'latex': latex(formula),
+                    'mathml': mathml(formula)
+                }
             }
-        }
+        except Exception as e:
+            result_dict = None
+            print(e)
 
-        return result_dict
+        return result_dict"""
 
 
 
 
-f = "y=\\frac{d}{dx} x^{2}"
+#f = "\\frac{d}{dx} x^{2}"
+#f = "v_s=(\gamma kT/\mu m_H)"
 #f = "x=2+3"
-c = FormulaSplitter(f).split()
-#s = c['formula']
-#print(mathml(s), type(s))
+#c = FormulaSplitter(f).split()
+#for k in c:
+#    print(k, c[k])
