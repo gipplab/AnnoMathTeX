@@ -86,6 +86,17 @@ WHERE {
 
 named_entity_query = ("""
 SELECT 
+?item ?itemLabel ?itemDescription
+WHERE{  
+  ?item ?label """,
+"""@en.  
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }    
+}
+""")
+
+
+named_entity_query2 = ("""
+SELECT 
 distinct ?item ?itemLabel ?itemDescription
 WHERE{  
   ?item ?label """,

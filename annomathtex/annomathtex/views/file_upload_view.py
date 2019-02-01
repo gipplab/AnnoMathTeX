@@ -4,6 +4,7 @@ from ..forms.uploadfileform import UploadFileForm
 from ..forms.save_annotation_form import SaveAnnotationForm
 from ..latexprocessing.process_latex_file import get_processed_file
 from ..latexprocessing.math_environment_handling import MathSparql
+from ..latexprocessing.named_entity_handling import NESparql
 from django.http import HttpResponse
 from ..forms.testform import TestForm
 from jquery_unparam import jquery_unparam
@@ -80,13 +81,22 @@ class FileUploadView(View):
         elif 'queryDict' in request.POST:
             print('Wikidata Query made')
             items = {k: jquery_unparam(v) for (k, v) in request.POST.items()}
-            for k in items:
-                print(k, items[k])
+            #for k in items:
+            #    print(k, items[k])
             query_dict = items['queryDict']
             search_string = [k for k in query_dict][0]
+            token_type_dict = items['tokenType']
+            token_type = [k for k in token_type_dict][0]
             #print('SEARCH STRING: ', search_string)
-            wikidata_results = MathSparql().broad_search(search_string)
-            #print(wikidata_results)
+
+            if token_type == 'Identifier':
+                wikidata_results = MathSparql().broad_search(search_string)
+            #could change this to only allow named entitiy searches
+            elif token_type == 'Word':
+                wikidata_results = NESparql().named_entity_search(search_string)
+                #print(wikidata_results)
+            else:
+                wikidata_results = None
 
             return HttpResponse(
                 json.dumps({'wikidataResults': wikidata_results}),

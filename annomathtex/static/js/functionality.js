@@ -11,11 +11,12 @@ var annotated = {};
 
 function populateTable(wikidataResult) {
     console.log('in populate table');
-    //console.log(wikidataResult);
+    console.log(wikidataResult);
     if (wikidataResult != "None") {
 
       var myTable= "<table><tr><td style='width: 100px; color: red;'>Wikidata Qid</td>";
       myTable+= "<td style='width: 100px; color: red; text-align: right;'>Name</td>";
+
 
       for (var i in wikidataResult){
         //var attrName = item;
@@ -88,13 +89,14 @@ AJAX FUNCTIONS USED TO POST THE REQUEST BACK TO DJANGO, WHERE THE WIKIDATA SPARQ
  */
 
 
-function wordClicked(tokenContent, tokenUniqueId) {
+function wordClicked(tokenContent, tokenUniqueId, tokenType) {
   //take the tokenContent of the word that was clicked
   //make a post request to django with this information
   //django does a sparql query search and returns the results
   //populate <tableholder> with the information
   console.log('in wikidataQuery');
   console.log(tokenContent);
+  console.log(tokenType);
 
   //Display the highlighted text
   document.getElementById("highlightedText").innerHTML = tokenContent;
@@ -107,7 +109,8 @@ function wordClicked(tokenContent, tokenUniqueId) {
   let data_dict = { the_post : $("#" + tokenUniqueId).val(),
                   'csrfmiddlewaretoken': getCookie("csrftoken"),
                   //'csrfmiddlewaretoken': getCookie("csrftoken"),
-                  'queryDict': tokenContent
+                  'queryDict': tokenContent,
+                  'tokenType': tokenType,
                   };
 
   console.log('data_dict formed');

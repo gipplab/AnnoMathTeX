@@ -106,7 +106,7 @@ def extract_identifiers(line_chunk, endline):
                 wikidata_result = None
             )
 
-    identifiers = [dollar] + processed_maths_env + [dollar]
+    processed_maths_env = [dollar] + processed_maths_env + [dollar]
 
     if endline:
         processed_maths_env[-1].endline = True
