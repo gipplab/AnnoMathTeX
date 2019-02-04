@@ -89,7 +89,7 @@ AJAX FUNCTIONS USED TO POST THE REQUEST BACK TO DJANGO, WHERE THE WIKIDATA SPARQ
  */
 
 
-function wordClicked(tokenContent, tokenUniqueId, tokenType) {
+function wordClicked(tokenContent, tokenUniqueId, tokenType, wordWindow) {
   //take the tokenContent of the word that was clicked
   //make a post request to django with this information
   //django does a sparql query search and returns the results
@@ -97,6 +97,7 @@ function wordClicked(tokenContent, tokenUniqueId, tokenType) {
   console.log('in wikidataQuery');
   console.log(tokenContent);
   console.log(tokenType);
+  console.log(wordWindow);
 
   //Display the highlighted text
   document.getElementById("highlightedText").innerHTML = tokenContent;
