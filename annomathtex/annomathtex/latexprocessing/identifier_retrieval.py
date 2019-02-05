@@ -103,7 +103,7 @@ class SpaceyIdentifier:
     nlp = en_core_web_sm.load()
     test_text = "The case could escalate tensions between China and the US says Donald Trump."
 
-    def extract_identifiers(self, line_chunk, endline):
+    def extract_identifiers(self, line_chunk):
         nlp_line_chunk = self.nlp(line_chunk)
         named_entities = set(str(ne) for ne in nlp_line_chunk.ents)
 
@@ -113,15 +113,15 @@ class SpaceyIdentifier:
                  type='Word',
                  highlight='green' if str(w) in named_entities else 'black',
                  content=str(w),
-                 endline=False,
+                 endline=True if str(w) == '\n' else False,
                  named_entity=True if str(w) in named_entities else False,
                  wikidata_result=None)
 
             for w in nlp_line_chunk
         ]
 
-        if endline:
-            words[-1].endline = True
+        #if endline:
+        #    words[-1].endline = True
 
 
         return words

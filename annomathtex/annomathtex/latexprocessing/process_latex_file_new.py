@@ -38,15 +38,15 @@ def extract_words(sentence, line_num):
     :return: List of the words fom line_chunk as Word() objects.
     """
     #select between NE tagging and keyword extraction
-
+    #todo: adjust newline in all taggers and identifier retrievers
 
     #tagged_words = tagger.tag(line_chunk, endline)
     #cutoff = 7.0
     #for RAKE
     #tagged_words = identifier_retriever.extract_identifiers(line_chunk, endline, cutoff)
     #for Spacey
-    endline = True if '\n' in sentence else False
-    tagged_words = identifier_retriever.extract_identifiers(sentence, endline)
+    #endline = True if '\n' in sentence else False
+    tagged_words = identifier_retriever.extract_identifiers(sentence)
 
     #add named entities from this line to __line_dict
     #__line_dict[line_num] = [word for word in tagged_words if word.named_entity]
@@ -69,17 +69,10 @@ def extract_identifiers(math_env, line_num):
 
     identifiers = FormulaSplitter(math_env).get_identifiers()
 
-
-    word_window = None
-
     split_regex = "|".join(str(i) for i in identifiers)
     split_regex = r"({})".format(split_regex)
 
     split_math_env = re.split(split_regex, math_env)
-
-    #print(split_regex)
-    #print(math_env)
-    #print(identifiers)
 
     processed_maths_env = []
     for symbol in split_math_env:
@@ -98,28 +91,9 @@ def extract_identifiers(math_env, line_num):
                 content=symbol,
                 endline=endline,
                 wikidata_result=json.dumps({'w': wikidata_result}),
-                word_window=word_window
-            )
-        )
-
-
-
-    #add the dollar signs back again
-    """dollar = Identifier(
-                str(uuid1()),
-                type='Identifier',
-                highlight='yellow',
-                content='$',
-                endline=False,
-                wikidata_result = None,
                 word_window=None
             )
-
-    processed_maths_env = [dollar] + processed_maths_env + [dollar]
-
-    if endline:
-        processed_maths_env[-1].endline = True"""
-
+        )
 
     return processed_maths_env
 
@@ -130,7 +104,6 @@ def get_math_envs(file):
     align = list(tex_soup.find_all('align'))
     dollar = list(tex_soup.find_all('$'))
     math_envs = equation + align + dollar
-    #print('Math envs: ', math_envs)
     return list(map(lambda m: str(m), math_envs))
 
 
@@ -144,57 +117,41 @@ def process_lines(request_file):
 
     file = decode(request_file)
     math_envs = get_math_envs(file)
-    """for m in math_envs:
-        try:
-            file = file.replace(m, '')
-        except:
-            continue"""
-
-    #split file on math_envs
-    #split_string = '|'.join(m for m in math_envs)
-    #split_string = r'({})'.format(split_string)
-    #split_file = re.split(split_string, file)
 
 
     for i, m in enumerate(math_envs):
         try:
-            #m = re.compile(m)
             file = re.sub(m, '__MATH_ENV__', file, 1)
-            #file = file.replace(m, '__MATH_ENV__')
         except Exception as e:
-            #print(e , m)
             continue
 
-    sentences = nltk.sent_tokenize(file)
-    #for s in sentences:
-    #    print(s)
-    processed_sentences = [extract_words(s, i) for i,s in enumerate(sentences)]
+    #print('\n' in file)
+    split_at = r'(\n|\.|\?|!)'
+    lines = [p for p in file.split('\n')]
+    #sentences = [nltk.sent_tokenize(s) for s in paragraphs]
+    #def add_to_list(p):
+    #    return p if len(p) else '\n'
+    #sentences = list(map(add_to_list(), paragraphs))
 
-    all_sentences = []
-    for ps in processed_sentences:
 
-        ps_new = []
-        for w in ps:
-            #print(w.content, type(str(w.content)))
+    #sentences = nltk.sent_tokenize(file)
+    #l = filter(lambda x: '\n' in x, sentences)
+    processed_lines = [extract_words(s, i) for i,s in enumerate(lines)]
+
+    processed_sentences_including_maths = []
+    for line in processed_lines:
+        line_new = []
+        if len(line) < 1:
+            line_new.append(EmptyLine(uuid1()))
+        for w in line:
             if re.search(r'__MATH_ENV__', w.content):
-            #if re.search(r'__MATH_ENV__', 'test __MATH_ENV test test'):
-                ps_new.append(extract_identifiers(w.content, 3))
+                line_new.append(extract_identifiers(w.content, 3))
             else:
-                ps_new.append(w)
-
-        all_sentences.append(ps_new)
-
-
-    return all_sentences
+                line_new.append(w)
+        processed_sentences_including_maths.append(line_new)
 
 
-
-
-
-
-
-
-
+    return processed_sentences_including_maths
 
 
 def get_processed_file(request_file):
@@ -217,6 +174,8 @@ def get_processed_file(request_file):
     #tagger = StanfordCoreNLP_NER()
 
     processed_lines = process_lines(request_file)
+    #for p in processed_lines:
+    #    print(p)
 
     return LaTeXFile(processed_lines)
 
