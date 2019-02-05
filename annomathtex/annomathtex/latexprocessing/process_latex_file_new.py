@@ -77,6 +77,9 @@ def extract_identifiers(math_env, line_num):
 
     split_math_env = re.split(split_regex, math_env)
 
+    #print(split_regex)
+    #print(math_env)
+    #print(identifiers)
 
     processed_maths_env = []
     for symbol in split_math_env:
@@ -123,8 +126,12 @@ def extract_identifiers(math_env, line_num):
 
 def get_math_envs(file):
     tex_soup = TexSoup(file)
-    math_envs = list((tex_soup.find_all('equation'), tex_soup.find_all('align'), list(tex_soup.find_all('$'))))
-    return math_envs
+    equation = list(tex_soup.find_all('equation'))
+    align = list(tex_soup.find_all('align'))
+    dollar = list(tex_soup.find_all('$'))
+    math_envs = equation + align + dollar
+    #print('Math envs: ', math_envs)
+    return list(map(lambda m: str(m), math_envs))
 
 
 def process_lines(request_file):
@@ -150,9 +157,17 @@ def process_lines(request_file):
 
 
     for i, m in enumerate(math_envs):
-        file = re.sub(m, '__MATH_ENV__{}'.format(i), 1)
+        try:
+            #m = re.compile(m)
+            file = re.sub(m, '__MATH_ENV__', file, 1)
+            #file = file.replace(m, '__MATH_ENV__')
+        except Exception as e:
+            #print(e , m)
+            continue
 
     sentences = nltk.sent_tokenize(file)
+    #for s in sentences:
+    #    print(s)
     processed_sentences = [extract_words(s, i) for i,s in enumerate(sentences)]
 
     all_sentences = []
@@ -160,9 +175,12 @@ def process_lines(request_file):
 
         ps_new = []
         for w in ps:
-            if re.search(r'__MATH_ENV__[0-9]+', w.content):
-                ps_new.append(extract_identifiers(w.content))
-            else:ps_new.append(w)
+            #print(w.content, type(str(w.content)))
+            if re.search(r'__MATH_ENV__', w.content):
+            #if re.search(r'__MATH_ENV__', 'test __MATH_ENV test test'):
+                ps_new.append(extract_identifiers(w.content, 3))
+            else:
+                ps_new.append(w)
 
         all_sentences.append(ps_new)
 

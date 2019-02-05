@@ -112,7 +112,7 @@ class SpaceyIdentifier:
             Word(str(uuid1()),
                  type='Word',
                  highlight='green' if str(w) in named_entities else 'black',
-                 content=w,
+                 content=str(w),
                  endline=False,
                  named_entity=True if str(w) in named_entities else False,
                  wikidata_result=None)

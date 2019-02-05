@@ -2,7 +2,8 @@ from django.shortcuts import render
 from django.views.generic import View
 from ..forms.uploadfileform import UploadFileForm
 from ..forms.save_annotation_form import SaveAnnotationForm
-from ..latexprocessing.process_latex_file import get_processed_file
+#from ..latexprocessing.process_latex_file import get_processed_file
+from ..latexprocessing.process_latex_file_new import get_processed_file
 from ..latexprocessing.math_environment_handling import MathSparql
 from ..latexprocessing.named_entity_handling import NESparql
 from django.http import HttpResponse
@@ -41,6 +42,7 @@ class FileUploadView(View):
             form = UploadFileForm(request.POST, request.FILES)
             if form.is_valid():
                 #TODO add check to see whether file is .tex
+                #latex_file = get_processed_file(request.FILES['file'])
                 latex_file = get_processed_file(request.FILES['file'])
                 return render(request,
                               #'render_file_old.html',

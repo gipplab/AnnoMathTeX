@@ -117,6 +117,7 @@ def formuladivision(formula):
 
 class FormulaSplitter:
 
+    #todo: remove special symbols
     def __init__(self, request):
         self.formula = request
         global seprator
@@ -124,7 +125,10 @@ class FormulaSplitter:
 
 
     def get_identifiers(self):
-        symbols, _ = evalformula(self.formula)
+        try:
+            symbols, _ = evalformula(self.formula)
+        except:
+            symbols = ('X')
         return symbols
 
     def get_formula(self):
