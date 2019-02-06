@@ -16,6 +16,8 @@ from collections import OrderedDict
 from TexSoup import TexSoup
 
 
+__line_dict = {}
+
 
 def decode(request_file):
     """
@@ -39,18 +41,24 @@ def extract_words(sentence, line_num):
     """
     #select between NE tagging and keyword extraction
     #todo: adjust newline in all taggers and identifier retrievers
-
-    #tagged_words = tagger.tag(line_chunk, endline)
-    #cutoff = 7.0
-    #for RAKE
-    #tagged_words = identifier_retriever.extract_identifiers(line_chunk, endline, cutoff)
-    #for Spacey
-    #endline = True if '\n' in sentence else False
+    #tagged_words = tagger.tag(line_chunk)
+    #for RAKE & Spacey
     tagged_words = identifier_retriever.extract_identifiers(sentence)
 
+
     #add named entities from this line to __line_dict
-    #__line_dict[line_num] = [word for word in tagged_words if word.named_entity]
+    __line_dict[line_num] = [word for word in tagged_words if word.named_entity]
     return tagged_words
+
+
+def get_word_window(line_num):
+    #word_window = [__line_dict[n] for ]
+    word_window = []
+    for n in [line_num, line_num-1, line_num+1, line_num-2, line_num+2]:
+        if n in __line_dict:
+            word_window += __line_dict[n]
+
+    return word_window
 
 
 def entire_formula(line_chunck, endline):
@@ -91,7 +99,7 @@ def extract_identifiers(math_env, line_num):
                 content=symbol,
                 endline=endline,
                 wikidata_result=json.dumps({'w': wikidata_result}),
-                word_window=None
+                word_window=get_word_window(line_num)
             )
         )
 
@@ -125,27 +133,19 @@ def process_lines(request_file):
         except Exception as e:
             continue
 
-    #print('\n' in file)
-    split_at = r'(\n|\.|\?|!)'
+
     lines = [p for p in file.split('\n')]
-    #sentences = [nltk.sent_tokenize(s) for s in paragraphs]
-    #def add_to_list(p):
-    #    return p if len(p) else '\n'
-    #sentences = list(map(add_to_list(), paragraphs))
 
-
-    #sentences = nltk.sent_tokenize(file)
-    #l = filter(lambda x: '\n' in x, sentences)
     processed_lines = [extract_words(s, i) for i,s in enumerate(lines)]
 
     processed_sentences_including_maths = []
-    for line in processed_lines:
+    for line_num, line in enumerate(processed_lines):
         line_new = []
         if len(line) < 1:
             line_new.append(EmptyLine(uuid1()))
         for w in line:
             if re.search(r'__MATH_ENV__', w.content):
-                line_new.append(extract_identifiers(w.content, 3))
+                line_new.append(extract_identifiers(w.content, line_num))
             else:
                 line_new.append(w)
         processed_sentences_including_maths.append(line_new)
@@ -168,8 +168,8 @@ def get_processed_file(request_file):
     nesparql = NESparql()
     # mathsparql = MathSparql()
     tagger = NLTK_NER()
-    #identifier_retriever = RakeIdentifier()
-    identifier_retriever = SpaceyIdentifier()
+    identifier_retriever = RakeIdentifier()
+    #identifier_retriever = SpaceyIdentifier()
     #tagger = Spacy_NER()
     #tagger = StanfordCoreNLP_NER()
 

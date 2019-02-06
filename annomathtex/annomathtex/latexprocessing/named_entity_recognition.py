@@ -43,7 +43,7 @@ class Tagger(object, metaclass=ABCMeta):
     def get_tags(self, line_chunk):
         raise NotImplementedError('must be implemented')
 
-    def tag(self, line_chunk, endline):
+    def tag(self, line_chunk):
         word_tokens = self.get_tags(line_chunk)
 
         words = []
@@ -58,13 +58,11 @@ class Tagger(object, metaclass=ABCMeta):
                      type='Word',
                      highlight="green" if is_ne else "black",
                      content=word,
-                     endline=False,
+                     endline=True if str(word) == '\n' else False,
                      named_entity=is_ne,
                      wikidata_result=None)
                 )
 
-            if endline:
-                words[-1].endline = True
 
         except Exception as e:
             print(e)

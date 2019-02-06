@@ -49,7 +49,7 @@ class RakeIdentifier:
         rank_dict = {phrase:rank for (rank, phrase) in ranked_phrases_with_scores}
         return rank_dict
 
-    def extract_identifiers(self, line_chunk, endline, cutoff):
+    def extract_identifiers(self, line_chunk, cutoff=7.0):
         """
         loading the stopwords takes quite long I think
         :param line_chunk:
@@ -79,13 +79,11 @@ class RakeIdentifier:
                      type='Word',
                      highlight='green' if rank > cutoff else 'black',
                      content=phrase,
-                     endline=False,
+                     endline=True if str(w) == '\n' else False,
                      named_entity=False,
                      wikidata_result=None)
             )
 
-        if endline:
-            processed_phrases[-1].endline = True
 
 
         return processed_phrases
