@@ -15,7 +15,6 @@ from .latexformlaidentifiers import FormulaSplitter
 from collections import OrderedDict
 from TexSoup import TexSoup
 
-
 __line_dict = {}
 
 
@@ -58,6 +57,8 @@ def get_word_window(line_num):
         if n in __line_dict:
             word_window += __line_dict[n]
 
+    #print(word_window)
+
     return word_window
 
 
@@ -75,7 +76,11 @@ def extract_identifiers(math_env, line_num):
     :return: List of the words fom line_chunk as Identifier() objects.
     """
 
+    #todo: for all math environemnt markers
+    math_env = math_env.replace('$', '')
+
     identifiers = FormulaSplitter(math_env).get_identifiers()
+    #print(identifiers)
 
     split_regex = "|".join(str(i) for i in identifiers)
     split_regex = r"({})".format(split_regex)
@@ -103,6 +108,19 @@ def extract_identifiers(math_env, line_num):
             )
         )
 
+    # add the dollar signs back again
+    dollar = Identifier(
+        str(uuid1()),
+        type='Identifier',
+        highlight='yellow',
+        content='$',
+        endline=False,
+        wikidata_result=None,
+        word_window=None
+        )
+
+    processed_maths_env = [dollar] + processed_maths_env + [dollar]
+
     return processed_maths_env
 
 
@@ -127,14 +145,17 @@ def process_lines(request_file):
     math_envs = get_math_envs(file)
 
 
+
     for i, m in enumerate(math_envs):
         try:
-            file = re.sub(m, '__MATH_ENV__', file, 1)
+            file = file.replace(m, '__MATH_ENV__', 1)
         except Exception as e:
+            print('Line 137: ', e)
             continue
 
 
     lines = [p for p in file.split('\n')]
+    #print(lines)
 
     processed_lines = [extract_words(s, i) for i,s in enumerate(lines)]
 
@@ -144,8 +165,16 @@ def process_lines(request_file):
         if len(line) < 1:
             line_new.append(EmptyLine(uuid1()))
         for w in line:
+            #print(w.content)
             if re.search(r'__MATH_ENV__', w.content):
-                line_new.append(extract_identifiers(w.content, line_num))
+                #print(w.content)
+                #print('extracting identifers', w.content)
+                math_env = math_envs[0]
+                math_envs.pop(0)
+                #line_new.append(extract_identifiers(math_env, line_num))
+                foo = extract_identifiers(math_env, line_num)
+                #print(foo)
+                line_new += foo
             else:
                 line_new.append(w)
         processed_sentences_including_maths.append(line_new)
@@ -174,9 +203,6 @@ def get_processed_file(request_file):
     #tagger = StanfordCoreNLP_NER()
 
     processed_lines = process_lines(request_file)
-    #for p in processed_lines:
-    #    print(p)
-
     return LaTeXFile(processed_lines)
 
 

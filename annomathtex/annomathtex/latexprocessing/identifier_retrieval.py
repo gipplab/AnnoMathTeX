@@ -22,6 +22,7 @@ from nltk.tokenize import wordpunct_tokenize
 from itertools import chain, groupby, product
 import nltk
 from string import punctuation
+import re
 
 
 ######### RAKE ##########
@@ -63,9 +64,17 @@ class RakeIdentifier:
         stopWords = set(stopwords.words('english'))
 
         to_ignore = set(chain(stopWords, punctuation))
+        to_ignore.add('__MATH_ENV__')
 
         #this part is adapted from the rake_nltk source code, to get the same grouping of the sentences
         word_list = wordpunct_tokenize(line_chunk)
+        print(word_list)
+        #print('MATH ENV IS IN TO IGNORE', '__MATH_ENV__' in to_ignore)
+
+        foo = ' '.join(word_list)
+
+        #print(word_list)
+
         groups = groupby(word_list, lambda x: x not in to_ignore)
         phrases = [tuple(group[1]) for group in groups]
 
@@ -73,17 +82,24 @@ class RakeIdentifier:
         processed_phrases = []
         for t_phrase in phrases:
             phrase = ' '.join(w for w in t_phrase)
-            rank = rank_dict[phrase.lower()] if phrase.lower() in rank_dict else 0.0
-            processed_phrases.append(
-                Word(str(uuid1()),
-                     type='Word',
-                     highlight='green' if rank > cutoff else 'black',
-                     content=phrase,
-                     endline=True if str(w) == '\n' else False,
-                     named_entity=False,
-                     wikidata_result=None)
-            )
+            phrase_split = re.split(r'(__MATH_ENV__)', phrase)
+            for chunk in phrase_split:
+                #phrase = ' '.join(w for w in chunk)
+                rank = rank_dict[chunk.lower()] if chunk.lower() in rank_dict else 0.0
+                processed_phrases.append(
+                    Word(str(uuid1()),
+                         type='Word',
+                         highlight='green' if rank > cutoff else 'black',
+                         content=chunk,
+                         endline=True if str(chunk) == '\n' else False,
+                         named_entity=True if rank > cutoff else False,
+                         wikidata_result=None
+                         )
+                )
 
+
+        words = [p.content for p in processed_phrases]
+        print(words)
 
 
         return processed_phrases
