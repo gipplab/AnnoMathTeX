@@ -68,13 +68,6 @@ class RakeIdentifier:
 
         #this part is adapted from the rake_nltk source code, to get the same grouping of the sentences
         word_list = wordpunct_tokenize(line_chunk)
-        print(word_list)
-        #print('MATH ENV IS IN TO IGNORE', '__MATH_ENV__' in to_ignore)
-
-        foo = ' '.join(word_list)
-
-        #print(word_list)
-
         groups = groupby(word_list, lambda x: x not in to_ignore)
         phrases = [tuple(group[1]) for group in groups]
 
@@ -98,8 +91,7 @@ class RakeIdentifier:
                 )
 
 
-        words = [p.content for p in processed_phrases]
-        print(words)
+        #words = [p.content for p in processed_phrases]
 
 
         return processed_phrases

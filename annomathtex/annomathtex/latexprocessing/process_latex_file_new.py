@@ -46,6 +46,11 @@ def extract_words(sentence, line_num):
 
 
     #add named entities from this line to __line_dict
+
+    #for w in tagged_words:
+    #    if w.named_entity:
+    #        print(w)
+
     __line_dict[line_num] = [word for word in tagged_words if word.named_entity]
     return tagged_words
 
@@ -55,9 +60,18 @@ def get_word_window(line_num):
     word_window = []
     for n in [line_num, line_num-1, line_num+1, line_num-2, line_num+2]:
         if n in __line_dict:
-            word_window += __line_dict[n]
+            for word in __line_dict[n]:
+                #print(word.content)
+                word_window.append({
+                    'content': word.content,
+                    'unique_id': word.unique_id
+                })
 
-    #print(word_window)
+
+    if not word_window:
+        word_window = [{}]
+
+    print(word_window)
 
     return word_window
 
@@ -104,7 +118,9 @@ def extract_identifiers(math_env, line_num):
                 content=symbol,
                 endline=endline,
                 wikidata_result=json.dumps({'w': wikidata_result}),
-                word_window=get_word_window(line_num)
+                word_window=json.dumps({'word_window': get_word_window(line_num)})
+                #word_window=json.dumps({'word_window': wikidata_result})
+                ##word_window=json.dumps({'wordWindow': 'test'})
             )
         )
 
@@ -202,7 +218,10 @@ def get_processed_file(request_file):
     #tagger = Spacy_NER()
     #tagger = StanfordCoreNLP_NER()
 
+
     processed_lines = process_lines(request_file)
+
+
     return LaTeXFile(processed_lines)
 
 

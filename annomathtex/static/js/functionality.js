@@ -89,6 +89,7 @@ AJAX FUNCTIONS USED TO POST THE REQUEST BACK TO DJANGO, WHERE THE WIKIDATA SPARQ
  */
 
 
+
 function wordClicked(tokenContent, tokenUniqueId, tokenType, wordWindow) {
   //take the tokenContent of the word that was clicked
   //make a post request to django with this information
@@ -97,7 +98,13 @@ function wordClicked(tokenContent, tokenUniqueId, tokenType, wordWindow) {
   console.log('in wikidataQuery');
   console.log(tokenContent);
   console.log(tokenType);
-  console.log(wordWindow);
+  //console.log(wordWindow);
+
+  var wordWindowJson = wordWindow;
+  console.log(wordWindowJson);
+  //alert(wordWindowJson);
+
+
 
   //Display the highlighted text
   document.getElementById("highlightedText").innerHTML = tokenContent;

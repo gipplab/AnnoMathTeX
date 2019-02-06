@@ -23,7 +23,7 @@ class Token(object, metaclass=ABCMeta):
         self.endline = endline
         self.type = type
         self.wikidata_result = wikidata_result
-        self.word_window = None
+        self.word_window = word_window
 
 
     @abstractmethod

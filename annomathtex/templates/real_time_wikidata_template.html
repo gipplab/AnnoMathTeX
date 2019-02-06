@@ -56,7 +56,7 @@
                   wordClicked("{{ Token.content }}",
                               "{{ Token.unique_id }}",
                               "{{ Token.type }}",
-                              "{{ Token.word_window }}"
+                              "{{ Token.word_window|escapejs }}"
                               );
                 });
               }
