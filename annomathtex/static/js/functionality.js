@@ -56,9 +56,64 @@ function populateTable(wikidataResult) {
 
 
 
+function populateTableWordWindow(wordWindow) {
+    console.log('in populate table word window');
+    var recommendations = JSON.parse(wordWindow)['word_window'];
+    if (recommendations != "None") {
+
+
+      var myTable= "<table><tr><td style='width: 100px; color: red;'>Named Entity</td></tr>";
+      //myTable+= "<td style='width: 100px; color: red; text-align: right;'>Name</td>";
+
+      for (var i in recommendations){
+        console.log('looping');
+        //var attrName = item;
+        var item = recommendations[i];
+        var content = item['content'];
+        var unique_id = item['unique_id'];
+        console.log(content);
+
+        //add the wikidata items to wikidataReference
+        //wikidataReference[qid] = item;
+
+        //must be enclosed like this, because qid is a string value
+        //myTable+="<tr><td style='width: 100px;' onclick='selectQid(\"" + qid + "\")'>" + qid + "</td>";
+        //myTable+="<td style='width: 100px; text-align: right;'>" + itemLabel + "</td></tr>";
+        myTable+="<tr><td style='width: 100px;' onclick='selectQid(\"" + unique_id + "\")'>" + content + "</td></tr>";
+
+      }
+      document.getElementById('tableholder').innerHTML = myTable;
+    }
+
+
+
+    var modal = document.getElementById("popupModal");
+    modal.style.display = "block";
+
+    var span = document.getElementById("span");
+    span.onclick = function () {
+      modal.style.display = "none";
+    };
+
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    };
+    return;
+}
+
+
+
+
+
 /*
 FUNCTIONALITY USED TO SEND THE INFORMATION ABOUT ANNOTATIONS AND HIGHLIGHTING BACK TO DJANGO
  */
+
+function selectWordWindowNE(unique_id) {
+    console.log(tokenContent + ' assigned ' + unique_id)
+}
 
 
 function selectQid(wikidataQid){
@@ -84,11 +139,31 @@ function unHighlightToken() {
 }
 
 
+
+
+
+function radioButtonClicked(option) {
+    switch (String(option)) {
+        case 'Wikidata':
+            populateTable(wikidataResults);
+            console.log('OPTION: WIKDIATA');
+            break;
+        case 'WordWindow':
+            populateTableWordWindow(wordWindowJson);
+            console.log('OPTION: WORD WINDOW');
+            break;
+        case 'Presaved':
+            console.log('Presaved');
+            console.log('OPTION: PRESAVED');
+            break;
+    }
+}
+
+
+
 /*
 AJAX FUNCTIONS USED TO POST THE REQUEST BACK TO DJANGO, WHERE THE WIKIDATA SPARQL QUERY IS EXECUTED
  */
-
-
 
 function wordClicked(tokenContent, tokenUniqueId, tokenType, wordWindow) {
   //take the tokenContent of the word that was clicked
@@ -100,7 +175,7 @@ function wordClicked(tokenContent, tokenUniqueId, tokenType, wordWindow) {
   console.log(tokenType);
   //console.log(wordWindow);
 
-  var wordWindowJson = wordWindow;
+  var wordWindowJson = wordWindow;//['word_window'];
   console.log(wordWindowJson);
   //alert(wordWindowJson);
 
@@ -113,6 +188,7 @@ function wordClicked(tokenContent, tokenUniqueId, tokenType, wordWindow) {
   //https://stackoverflow.com/questions/5786851/define-global-variable-in-a-javascript-function
   window.uniqueID = tokenUniqueId;
   window.tokenContent = tokenContent;
+  window.wordWindowJson = wordWindowJson
 
   let data_dict = { the_post : $("#" + tokenUniqueId).val(),
                   'csrfmiddlewaretoken': getCookie("csrftoken"),
@@ -134,6 +210,7 @@ function wordClicked(tokenContent, tokenUniqueId, tokenType, wordWindow) {
       success : function(json) {
           $("#" + tokenUniqueId).val(''); // remove the value from the input
           populateTable(json['wikidataResults']);
+          window.wikidataResults = json['wikidataResults'];
       },
 
       // handle a non-successful response
