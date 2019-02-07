@@ -16,7 +16,8 @@ from django.views.decorators.csrf import csrf_protect
 
 
 __HIGHLIGHTED__ = {}
-__ANNOTATED__ = {}
+__ANNOTATED_QID__ = {}
+__ANNOTATED_NE__ = {}
 
 
 class FileUploadView(View):
@@ -57,15 +58,18 @@ class FileUploadView(View):
             print('in highlighted')
             items = {k:jquery_unparam(v) for (k,v) in request.POST.items()}
             highlighted = items['highlighted']
-            annotated = items['annotated']
+            annotatedQID = items['annotatedQID']
+            annotatedNE = items['annotatedNE']
 
             print(highlighted)
-            print(annotated)
+            print(annotatedQID)
+            print(annotatedNE)
 
 
             #todo: write to database
             __HIGHLIGHTED__.update(highlighted)
-            __ANNOTATED__.update(annotated)
+            __ANNOTATED_QID__.update(annotatedQID)
+            __ANNOTATED_NE__.update(annotatedNE)
 
             #print('__HIGHLIGHTED__: ', __HIGHLIGHTED__)
             #print('__ANNOTATED__: ', __ANNOTATED__)

@@ -5,13 +5,17 @@ var highlighted = {};
 var wikidataReference = {};
 //the words that are annotated with a certain wikidata qid are added to this dictionary
 //which is returned to Django
-var annotated = {};
+var annotatedWQID = {};
+//the words that are annotated with a certain NE from surrounding text are added to this dictionary
+//which is returned to Django
+var annotatedNE = {}
 
 
 
 function populateTable(wikidataResult) {
     console.log('in populate table');
     console.log(wikidataResult);
+    //todo: change
     if (wikidataResult != "None") {
 
       var myTable= "<table><tr><td style='width: 100px; color: red;'>Wikidata Qid</td>";
@@ -79,7 +83,7 @@ function populateTableWordWindow(wordWindow) {
         //must be enclosed like this, because qid is a string value
         //myTable+="<tr><td style='width: 100px;' onclick='selectQid(\"" + qid + "\")'>" + qid + "</td>";
         //myTable+="<td style='width: 100px; text-align: right;'>" + itemLabel + "</td></tr>";
-        myTable+="<tr><td style='width: 100px;' onclick='selectQid(\"" + unique_id + "\")'>" + content + "</td></tr>";
+        myTable+="<tr><td style='width: 100px;' onclick='selectQid(\"" + content + "\")'>" + content + "</td></tr>";
 
       }
       document.getElementById('tableholder').innerHTML = myTable;
@@ -117,12 +121,20 @@ function selectWordWindowNE(unique_id) {
 
 
 function selectQid(wikidataQid){
-    annotated[wikidataQid] = {
+    annotatedWQID[wikidataQid] = {
       'token': tokenContent,
       'uniqueID': uniqueID,
       'wikidataInf': wikidataReference[wikidataQid]
     };
     console.log(tokenContent + ' assigned ' + wikidataQid);
+}
+
+//select named entity from surrounding text
+function selectNE(content){
+    annotatedNE[content] = {
+        'content': content
+    };
+    console.log(tokenContent + ' assigned ' + content );
 }
 
 function highlightToken() {
@@ -241,7 +253,8 @@ $(document).ready(function () {
                         //'csrfmiddlewaretoken': '{{ csrf_token }}',
                         'csrfmiddlewaretoken': getCookie("csrftoken"),
                         'highlighted': $.param(highlighted),
-                        'annotated': $.param(annotated)
+                        'annotatedQID': $.param(annotatedWQID),
+                        'annotatedNE': $.param(annotatedNE)
                         };
 
 
