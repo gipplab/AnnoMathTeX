@@ -15,7 +15,16 @@ class Word(Token):
     #todo: add colouring for named entity is this class
     #todo: differentiate between named entity and NNS
 
-    def __init__(self, unique_id, type, highlight, content, endline, wikidata_result, named_entity):
+    def __init__(
+        self,
+        unique_id,
+        type,
+        highlight,
+        content,
+        endline,
+        wikidata_result,
+        named_entity
+    ):
         """
         Constructor of superclass Token is called for highlight and content
 
@@ -26,7 +35,14 @@ class Word(Token):
         :param endline: Boolean, needed for page rendering
         :param named_entity: Boolean, whether the Word is a named entity.
         """
-        super().__init__(unique_id, type, highlight, content, endline, wikidata_result)
+        super().__init__(
+            unique_id,
+            type,
+            highlight,
+            content,
+            endline,
+            wikidata_result
+        )
         self.named_entity = named_entity
 
     def get_unique_id(self):

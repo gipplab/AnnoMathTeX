@@ -4,7 +4,18 @@ from .token import Token
 class Identifier(Token):
     #todo: method: find wikidata quid
 
-    def __init__(self, unique_id, type, highlight, content, endline, wikidata_result, word_window, evaluation_items):
+    def __init__(
+        self,
+        unique_id,
+        type,
+        highlight,
+        content,
+        endline,
+        wikidata_result,
+        word_window,
+        arXiv_evaluation_items,
+        wikipedia_evaluation_items
+    ):
         """
         Constructor of superclass Token is called for highlight and content
 
@@ -16,7 +27,17 @@ class Identifier(Token):
         :param qid: String, the Wikidata Quid corresponding to the identifier.
                     REPLACED BY WIKIDATA RESULTS
         """
-        super().__init__(unique_id, type, highlight, content, endline, wikidata_result, word_window, evaluation_items)
+        super().__init__(
+            unique_id,
+            type,
+            highlight,
+            content,
+            endline,
+            wikidata_result,
+            word_window,
+            arXiv_evaluation_items,
+            wikipedia_evaluation_items
+        )
         #word_window: named entities from surrounding text
         #evaluation_list: items from evaluation list that match identifiers
 

@@ -16,7 +16,8 @@ class Token(object, metaclass=ABCMeta):
                  endline,
                  wikidata_result,
                  word_window=None,
-                 evaluation_items=None
+                 arXiv_evaluation_items=None,
+                 wikipedia_evaluation_items=None
                  ):
         """
         :param unique_id: uuid.uuid1 object, converted to a string. Needed in template for rendering.
@@ -34,7 +35,8 @@ class Token(object, metaclass=ABCMeta):
         self.type = type
         self.wikidata_result = wikidata_result
         self.word_window = word_window
-        self.evaluation_items = evaluation_items
+        self.arXiv_evaluation_items = arXiv_evaluation_items
+        self.wikipedia_evaluation_items = wikipedia_evaluation_items
 
 
     @abstractmethod

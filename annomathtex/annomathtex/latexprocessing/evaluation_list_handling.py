@@ -1,10 +1,31 @@
 import os
+import json
+
+
+class WikipediaEvaluationListHandler:
+
+    def __init__(self):
+        self.identifier_dict = self.read_file()
+
+
+    def read_file(self):
+        path = os.getcwd() + '/annomathtex/latexprocessing/evaluation_files/wikipedia_list.json'
+        with open(path, 'r') as json_file:
+            identifier_dict = json.load(json_file)
+
+        return identifier_dict
+
+
+    def check_identifiers(self, symbol):
+        if symbol in self.identifier_dict:
+            return self.identifier_dict[symbol]
+        return None
 
 
 
 
 
-class EvaluationListHandler:
+class ArXivEvaluationListHandler:
 
     def __init__(self):
         self.evaluation_file = self.read_file()

@@ -177,7 +177,7 @@ function radioButtonClicked(option) {
 AJAX FUNCTIONS USED TO POST THE REQUEST BACK TO DJANGO, WHERE THE WIKIDATA SPARQL QUERY IS EXECUTED
  */
 
-function wordClicked(tokenContent, tokenUniqueId, tokenType, wordWindow, evaluationItems) {
+function wordClicked(tokenContent, tokenUniqueId, tokenType, wordWindow, arXivEvaluationItems, wikipediaEvaluationItems) {
   //take the tokenContent of the word that was clicked
   //make a post request to django with this information
   //django does a sparql query search and returns the results
@@ -185,7 +185,9 @@ function wordClicked(tokenContent, tokenUniqueId, tokenType, wordWindow, evaluat
   console.log('in wikidataQuery');
   console.log(tokenContent);
   console.log(tokenType);
-  console.log(evaluationItems);
+  console.log(arXivEvaluationItems);
+  console.log(wikipediaEvaluationItems);
+
 
   var wordWindowJson = wordWindow;//['word_window'];
   console.log(wordWindowJson);

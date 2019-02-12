@@ -9,7 +9,7 @@ from .named_entity_handling import NESparql
 #from .math_environment_handling import MathSparql
 from .named_entity_recognition import NLTK_NER, StanfordCoreNLP_NER, Spacy_NER
 from .identifier_retrieval import RakeIdentifier, SpaceyIdentifier
-from .evaluation_list_handling import EvaluationListHandler
+from .evaluation_list_handling import ArXivEvaluationListHandler, WikipediaEvaluationListHandler
 import json
 import time
 from .latexformlaidentifiers import FormulaSplitter
@@ -111,11 +111,13 @@ def extract_identifiers(math_env, line_num):
         print(symbol)
         if symbol in identifiers:
             wikidata_result = mathsparql.broad_search(symbol)
-            evaluation_items = evaluation_list_handler.check_identifiers(symbol)
-            print(symbol)
+            arXiv_evaluation_items = arXiv_evaluation_list_handler.check_identifiers(symbol)
+            wikipedia_evaluation_items = wikipedia_evaluation_list_handler.check_identifiers(symbol)
+            #print(symbol)
         else:
             wikidata_result = None
-            evaluation_items =None
+            arXiv_evaluation_items =None
+            wikipedia_evaluation_items =None
 
         endline = True if symbol == '\n' else False
 
@@ -130,7 +132,8 @@ def extract_identifiers(math_env, line_num):
                 word_window=json.dumps({'word_window': get_word_window(line_num)}),
                 #word_window=json.dumps({'word_window': wikidata_result})
                 ##word_window=json.dumps({'wordWindow': 'test'})
-                evaluation_items=json.dumps({'evaluation_items': evaluation_items})
+                arXiv_evaluation_items=json.dumps({'arXiv_evaluation_items': arXiv_evaluation_items}),
+                wikipedia_evaluation_items=json.dumps({'wikipedia_evaluation_items': wikipedia_evaluation_items})
             )
         )
 
@@ -144,7 +147,8 @@ def extract_identifiers(math_env, line_num):
         endline=False,
         wikidata_result=None,
         word_window=None,
-        evaluation_items=None,
+        arXiv_evaluation_items=None,
+        wikipedia_evaluation_items=None
         )
 
     processed_maths_env = [dollar] + processed_maths_env + [dollar]
@@ -221,12 +225,17 @@ def get_processed_file(request_file):
     #tagger_names = ['NLTK_NER_1', 'NLTK_NER_2', 'StanfordCoreNLP_NER', 'Spacy_NER']
 
 
-    global tagger, identifier_retriever, nesparql, mathsparql, evaluation_list_handler
+    global tagger, \
+        identifier_retriever, \
+        nesparql, mathsparql, \
+        arXiv_evaluation_list_handler, \
+        wikipedia_evaluation_list_handler
     nesparql = NESparql()
     # mathsparql = MathSparql()
     tagger = NLTK_NER()
     identifier_retriever = RakeIdentifier()
-    evaluation_list_handler = EvaluationListHandler()
+    arXiv_evaluation_list_handler = ArXivEvaluationListHandler()
+    wikipedia_evaluation_list_handler = WikipediaEvaluationListHandler()
     #identifier_retriever = SpaceyIdentifier()
     #tagger = Spacy_NER()
     #tagger = StanfordCoreNLP_NER()
