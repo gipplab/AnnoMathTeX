@@ -44,7 +44,7 @@ class LaTeXProcessor:
 
     def decode(self):
         """
-        TeX files are in bytes and have to be converted to string in utf-8
+        TeX evaluation_files are in bytes and have to be converted to string in utf-8
         :return: list of lines (string)
         """
         bytes = self.requestFile.read()

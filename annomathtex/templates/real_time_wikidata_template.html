@@ -32,7 +32,7 @@
       <input type="radio" name="recommendationOptions" onclick="radioButtonClicked('WordWindow');"> Word Window
     </label>
     <label>
-      <input type="radio" name="recommendationOptions" onclick="radioButtonClicked('Presaved');"> Presaved
+      <input type="radio" name="recommendationOptions" onclick="radioButtonClicked('arXiv');"> arXiv
     </label>
     <p id="highlightedText"></p>
     <button id="highlightBtn" onclick="highlightToken()">HIGHLIGHT</button>
@@ -65,7 +65,8 @@
                   wordClicked("{{ Token.content }}",
                               "{{ Token.unique_id }}",
                               "{{ Token.type }}",
-                              "{{ Token.word_window|escapejs }}"
+                              "{{ Token.word_window|escapejs }}",
+                              "{{ Token.evaluation_items|escapejs }}"
                               );
                 });
               }

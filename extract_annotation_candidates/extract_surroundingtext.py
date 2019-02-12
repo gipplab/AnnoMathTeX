@@ -92,7 +92,7 @@ def extract_annotations (file,filename,annotation_catalog):
 
 # filenumber
 flnr = 0
-# excluded files
+# excluded evaluation_files
 excl = 0
 
 for dir in listdir(mypath + "\\NTCIR12"):

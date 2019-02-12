@@ -18,7 +18,7 @@ function populateTable(wikidataResult) {
     //todo: change
     if (wikidataResult != "None") {
 
-      var myTable= "<table><tr><td style='width: 100px; color: red;'>Wikidata Qid</td>";
+      var myTable= "<table><tr><td style='width: 100px; color: red;'>Wikidata QID</td>";
       myTable+= "<td style='width: 100px; color: red; text-align: right;'>Name</td>";
 
 
@@ -164,8 +164,8 @@ function radioButtonClicked(option) {
             populateTableWordWindow(wordWindowJson);
             console.log('OPTION: WORD WINDOW');
             break;
-        case 'Presaved':
-            console.log('Presaved');
+        case 'arXiv':
+            console.log('arXiv');
             console.log('OPTION: PRESAVED');
             break;
     }
@@ -177,7 +177,7 @@ function radioButtonClicked(option) {
 AJAX FUNCTIONS USED TO POST THE REQUEST BACK TO DJANGO, WHERE THE WIKIDATA SPARQL QUERY IS EXECUTED
  */
 
-function wordClicked(tokenContent, tokenUniqueId, tokenType, wordWindow) {
+function wordClicked(tokenContent, tokenUniqueId, tokenType, wordWindow, evaluationItems) {
   //take the tokenContent of the word that was clicked
   //make a post request to django with this information
   //django does a sparql query search and returns the results
@@ -185,7 +185,7 @@ function wordClicked(tokenContent, tokenUniqueId, tokenType, wordWindow) {
   console.log('in wikidataQuery');
   console.log(tokenContent);
   console.log(tokenType);
-  //console.log(wordWindow);
+  console.log(evaluationItems);
 
   var wordWindowJson = wordWindow;//['word_window'];
   console.log(wordWindowJson);

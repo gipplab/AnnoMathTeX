@@ -1,5 +1,5 @@
 /*
-This file contains data structures that are used by other js files
+This file contains data structures that are used by other js evaluation_files
  */
 
 

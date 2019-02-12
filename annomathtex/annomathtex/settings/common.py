@@ -14,10 +14,10 @@ PROJECT_ROOT = dirname(DJANGO_ROOT)
 # the name of the whole site
 SITE_NAME = basename(DJANGO_ROOT)
 
-# collect static files here
+# collect static evaluation_files here
 STATIC_ROOT = join(PROJECT_ROOT, 'run', 'static')
 
-# collect media files here
+# collect media evaluation_files here
 MEDIA_ROOT = join(PROJECT_ROOT, 'run', 'media')
 
 # look for static assets here
@@ -104,10 +104,10 @@ WSGI_APPLICATION = '%s.wsgi.application' % SITE_NAME
 # the root URL configuration
 ROOT_URLCONF = '%s.urls' % SITE_NAME
 
-# the URL for static files
+# the URL for static evaluation_files
 STATIC_URL = '/static/'
 
-# the URL for media files
+# the URL for media evaluation_files
 MEDIA_URL = '/media/'
 
 

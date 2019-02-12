@@ -9,6 +9,7 @@ from .named_entity_handling import NESparql
 #from .math_environment_handling import MathSparql
 from .named_entity_recognition import NLTK_NER, StanfordCoreNLP_NER, Spacy_NER
 from .identifier_retrieval import RakeIdentifier, SpaceyIdentifier
+from .evaluation_list_handling import EvaluationListHandler
 import json
 import time
 from .latexformlaidentifiers import FormulaSplitter
@@ -20,7 +21,7 @@ __line_dict = {}
 
 def decode(request_file):
     """
-    TeX files are in bytes and have to be converted to string in utf-8
+    TeX evaluation_files are in bytes and have to be converted to string in utf-8
     :return: list of lines (string)
     """
     bytes = request_file.read()
@@ -56,6 +57,7 @@ def extract_words(sentence, line_num):
 
 
 def get_word_window(line_num):
+    #todo: make class, to be consistent
     #word_window = [__line_dict[n] for ]
     word_window = []
     for n in [line_num, line_num-1, line_num+1, line_num-2, line_num+2]:
@@ -71,13 +73,16 @@ def get_word_window(line_num):
     if not word_window:
         word_window = [{}]
 
-    print(word_window)
+    #print(word_window)
 
     return word_window
 
 
 def entire_formula(line_chunck, endline):
     pass
+
+
+
 
 
 def extract_identifiers(math_env, line_num):
@@ -103,10 +108,14 @@ def extract_identifiers(math_env, line_num):
 
     processed_maths_env = []
     for symbol in split_math_env:
+        print(symbol)
         if symbol in identifiers:
             wikidata_result = mathsparql.broad_search(symbol)
+            evaluation_items = evaluation_list_handler.check_identifiers(symbol)
+            print(symbol)
         else:
             wikidata_result = None
+            evaluation_items =None
 
         endline = True if symbol == '\n' else False
 
@@ -118,13 +127,15 @@ def extract_identifiers(math_env, line_num):
                 content=symbol,
                 endline=endline,
                 wikidata_result=json.dumps({'w': wikidata_result}),
-                word_window=json.dumps({'word_window': get_word_window(line_num)})
+                word_window=json.dumps({'word_window': get_word_window(line_num)}),
                 #word_window=json.dumps({'word_window': wikidata_result})
                 ##word_window=json.dumps({'wordWindow': 'test'})
+                evaluation_items=json.dumps({'evaluation_items': evaluation_items})
             )
         )
 
     # add the dollar signs back again
+    #todo: not an identifier
     dollar = Identifier(
         str(uuid1()),
         type='Identifier',
@@ -132,7 +143,8 @@ def extract_identifiers(math_env, line_num):
         content='$',
         endline=False,
         wikidata_result=None,
-        word_window=None
+        word_window=None,
+        evaluation_items=None,
         )
 
     processed_maths_env = [dollar] + processed_maths_env + [dollar]
@@ -209,11 +221,12 @@ def get_processed_file(request_file):
     #tagger_names = ['NLTK_NER_1', 'NLTK_NER_2', 'StanfordCoreNLP_NER', 'Spacy_NER']
 
 
-    global tagger, identifier_retriever, nesparql, mathsparql
+    global tagger, identifier_retriever, nesparql, mathsparql, evaluation_list_handler
     nesparql = NESparql()
     # mathsparql = MathSparql()
     tagger = NLTK_NER()
     identifier_retriever = RakeIdentifier()
+    evaluation_list_handler = EvaluationListHandler()
     #identifier_retriever = SpaceyIdentifier()
     #tagger = Spacy_NER()
     #tagger = StanfordCoreNLP_NER()
