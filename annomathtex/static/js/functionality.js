@@ -6,9 +6,15 @@ var wikidataReference = {};
 //the words that are annotated with a certain wikidata qid are added to this dictionary
 //which is returned to Django
 var annotatedWQID = {};
-//the words that are annotated with a certain NE from surrounding text are added to this dictionary
+//the words that are annotated with a certain NE from surrounding text (word window) are added to this dictionary
 //which is returned to Django
-var annotatedNE = {}
+var annotatedWW = {};
+//the words that are annotated with a certain item from the arXiv evaluation list are added to this dictionary
+//which is returned to Django
+var annotatedArXiv = {};
+//the words that are annotated with a certain item from the wikipedia evaluation list are added to this dictionary
+//which is returned to Django
+var annotatedWikipedia = {};
 
 
 
@@ -83,7 +89,56 @@ function populateTableWordWindow(wordWindow) {
         //must be enclosed like this, because qid is a string value
         //myTable+="<tr><td style='width: 100px;' onclick='selectQid(\"" + qid + "\")'>" + qid + "</td>";
         //myTable+="<td style='width: 100px; text-align: right;'>" + itemLabel + "</td></tr>";
-        myTable+="<tr><td style='width: 100px;' onclick='selectQid(\"" + content + "\")'>" + content + "</td></tr>";
+        myTable+="<tr><td style='width: 100px;' onclick='selectWW(\"" + content + "\")'>" + content + "</td></tr>";
+
+      }
+      document.getElementById('tableholder').innerHTML = myTable;
+    }
+
+
+
+    var modal = document.getElementById("popupModal");
+    modal.style.display = "block";
+
+    var span = document.getElementById("span");
+    span.onclick = function () {
+      modal.style.display = "none";
+    };
+
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    };
+    return;
+}
+
+
+
+function populateTableArXiv(arXivEvaluationItems) {
+    console.log('in populate table arXivEvaluationItems');
+    var evaluationItems = JSON.parse(arXivEvaluationItems)['arXiv_evaluation_items'];
+    if (evaluationItems != "None") {
+
+
+      var myTable= "<table><tr><td style='width: 100px; color: red;'>Item</td>";
+      myTable+= "<td style='width: 100px; color: red; text-align: right;'>Description</td></tr>";
+
+      for (var i in evaluationItems){
+        console.log('looping');
+        //var attrName = item;
+        var item = evaluationItems[i];
+        var identifier = item['identifier'];
+        var description = item['description'];
+        console.log(content);
+
+        //add the wikidata items to wikidataReference
+        //wikidataReference[qid] = item;
+
+        //must be enclosed like this, because qid is a string value
+        //myTable+="<tr><td style='width: 100px;' onclick='selectQid(\"" + qid + "\")'>" + qid + "</td>";
+        //myTable+="<td style='width: 100px; text-align: right;'>" + itemLabel + "</td></tr>";
+        myTable+="<tr><td style='width: 100px;' onclick='selectWW(\"" + content + "\")'>" + content + "</td></tr>";
 
       }
       document.getElementById('tableholder').innerHTML = myTable;
@@ -115,9 +170,10 @@ function populateTableWordWindow(wordWindow) {
 FUNCTIONALITY USED TO SEND THE INFORMATION ABOUT ANNOTATIONS AND HIGHLIGHTING BACK TO DJANGO
  */
 
-function selectWordWindowNE(unique_id) {
+/*function selectWordWindowNE(unique_id) {
+    anno
     console.log(tokenContent + ' assigned ' + unique_id)
-}
+}*/
 
 
 function selectQid(wikidataQid){
@@ -130,8 +186,8 @@ function selectQid(wikidataQid){
 }
 
 //select named entity from surrounding text
-function selectNE(content){
-    annotatedNE[content] = {
+function selectWW(content){
+    annotatedWW[content] = {
         'content': content
     };
     console.log(tokenContent + ' assigned ' + content );
@@ -166,7 +222,11 @@ function radioButtonClicked(option) {
             break;
         case 'arXiv':
             console.log('arXiv');
-            console.log('OPTION: PRESAVED');
+            console.log('OPTION: arXiv');
+            break;
+        case 'Wikipedia':
+            console.log('Wikipedia');
+            console.log('OPTION: Wikipedia');
             break;
     }
 }
@@ -202,7 +262,9 @@ function wordClicked(tokenContent, tokenUniqueId, tokenType, wordWindow, arXivEv
   //https://stackoverflow.com/questions/5786851/define-global-variable-in-a-javascript-function
   window.uniqueID = tokenUniqueId;
   window.tokenContent = tokenContent;
-  window.wordWindowJson = wordWindowJson
+  window.wordWindowJson = wordWindowJson;
+  window.arXivEvaluationItems = arXivEvaluationItems;
+  window.wikipediaEvaluationItems = wikipediaEvaluationItems;
 
   let data_dict = { the_post : $("#" + tokenUniqueId).val(),
                   'csrfmiddlewaretoken': getCookie("csrftoken"),
@@ -256,7 +318,7 @@ $(document).ready(function () {
                         'csrfmiddlewaretoken': getCookie("csrftoken"),
                         'highlighted': $.param(highlighted),
                         'annotatedQID': $.param(annotatedWQID),
-                        'annotatedNE': $.param(annotatedNE)
+                        'annotatedWW': $.param(annotatedWW)
                         };
 
 

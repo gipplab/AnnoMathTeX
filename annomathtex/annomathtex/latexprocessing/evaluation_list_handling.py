@@ -62,6 +62,7 @@ class ArXivEvaluationListHandler:
                 #item_dict[item_parts[0]] = [tuple(x[:-1] for x in i.split()) for i in item_parts[1:]]
                 #identifier = item_parts
 
+        print(item_dict)
         return item_dict
 
 
