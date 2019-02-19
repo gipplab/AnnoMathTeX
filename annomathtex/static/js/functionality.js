@@ -122,14 +122,14 @@ function populateTableArXiv(arXivEvaluationItems) {
 
 
       var myTable= "<table><tr><td style='width: 100px; color: red;'>Item</td>";
-      myTable+= "<td style='width: 100px; color: red; text-align: right;'>Description</td></tr>";
+      myTable+= "<td style='width: 100px; color: red; text-align: right;'>Value</td></tr>";
 
       for (var i in evaluationItems){
         console.log('looping');
         //var attrName = item;
         var item = evaluationItems[i];
-        var identifier = item['identifier'];
-        var description = item['description'];
+        var name = item['name'];
+        var value = item['value'];
         console.log(content);
 
         //add the wikidata items to wikidataReference
@@ -138,7 +138,60 @@ function populateTableArXiv(arXivEvaluationItems) {
         //must be enclosed like this, because qid is a string value
         //myTable+="<tr><td style='width: 100px;' onclick='selectQid(\"" + qid + "\")'>" + qid + "</td>";
         //myTable+="<td style='width: 100px; text-align: right;'>" + itemLabel + "</td></tr>";
-        myTable+="<tr><td style='width: 100px;' onclick='selectWW(\"" + content + "\")'>" + content + "</td></tr>";
+        myTable+="<tr><td style='width: 100px;' onclick='selectArXiv(\"" + name + "\")'>" + name + "</td>";
+        myTable+="<td style='width: 100px; text-align: right;'>" + value + "</td></tr>";
+
+      }
+      document.getElementById('tableholder').innerHTML = myTable;
+    }
+
+
+
+    var modal = document.getElementById("popupModal");
+    modal.style.display = "block";
+
+    var span = document.getElementById("span");
+    span.onclick = function () {
+      modal.style.display = "none";
+    };
+
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    };
+    return;
+}
+
+
+
+
+function populateTableWikipedia(wikipediaEvaluationItems) {
+    console.log('in populate table wikipediaEvaluationItems');
+    var evaluationItems = JSON.parse(wikipediaEvaluationItems)['wikipedia_evaluation_items'];
+    if (evaluationItems != "None") {
+
+
+      var myTable= "<table><tr><td style='width: 100px; color: red;'>Item</td>";
+      myTable+= "<td style='width: 100px; color: red; text-align: right;'>Value</td></tr>";
+
+      for (var i in evaluationItems){
+        console.log('looping');
+        //var attrName = item;
+        var item = evaluationItems[i];
+        var value = item['value'];
+        var identifier = item['identifier'];
+        var description = item['description'];
+        var wikimiediaLink = item['wikimedia_link'];
+
+        //add the wikidata items to wikidataReference
+        //wikidataReference[qid] = item;
+
+        //must be enclosed like this, because qid is a string value
+        //myTable+="<tr><td style='width: 100px;' onclick='selectQid(\"" + qid + "\")'>" + qid + "</td>";
+        //myTable+="<td style='width: 100px; text-align: right;'>" + itemLabel + "</td></tr>";
+        myTable+="<tr><td style='width: 100px;' onclick='selectWikipedia(\"" + i + "\")'>" + identifier + "</td>";
+        myTable+="<td style='width: 100px; text-align: right;'>" + description + "</td></tr>";
 
       }
       document.getElementById('tableholder').innerHTML = myTable;
@@ -193,6 +246,22 @@ function selectWW(content){
     console.log(tokenContent + ' assigned ' + content );
 }
 
+function selectArXiv(name){
+    annotatedArXiv[name] = {
+        'name': name
+    };
+    console.log(tokenContent + ' assigned ' + name );
+}
+
+function selectWikipedia(name){
+    annotatedWikipedia[name] = {
+        'name': name
+    };
+    console.log(tokenContent + ' assigned ' + name );
+}
+
+
+
 function highlightToken() {
     document.getElementById(uniqueID).style.color = 'blue';
     highlighted[uniqueID] = tokenContent;
@@ -221,11 +290,11 @@ function radioButtonClicked(option) {
             console.log('OPTION: WORD WINDOW');
             break;
         case 'arXiv':
-            console.log('arXiv');
+            populateTableArXiv(arXivEvaluationItems);
             console.log('OPTION: arXiv');
             break;
         case 'Wikipedia':
-            console.log('Wikipedia');
+            populateTableWikipedia(wikipediaEvaluationItems);
             console.log('OPTION: Wikipedia');
             break;
     }
@@ -318,7 +387,9 @@ $(document).ready(function () {
                         'csrfmiddlewaretoken': getCookie("csrftoken"),
                         'highlighted': $.param(highlighted),
                         'annotatedQID': $.param(annotatedWQID),
-                        'annotatedWW': $.param(annotatedWW)
+                        'annotatedWW': $.param(annotatedWW),
+                        'annotatedArXiv': $.param(annotatedArXiv),
+                        'annotatedWikipedia': $.param(annotatedWikipedia)
                         };
 
 

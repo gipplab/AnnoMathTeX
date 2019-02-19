@@ -99,21 +99,23 @@ def extract_identifiers(math_env, line_num):
     math_env = math_env.replace('$', '')
 
     identifiers = FormulaSplitter(math_env).get_identifiers()
-    #print(identifiers)
+    print(identifiers)
 
     split_regex = "|".join(str(i) for i in identifiers)
     split_regex = r"({})".format(split_regex)
 
+    #todo: not working right
     split_math_env = re.split(split_regex, math_env)
+    print(split_math_env)
 
     processed_maths_env = []
     for symbol in split_math_env:
-        print(symbol)
+        #print(symbol)
         if symbol in identifiers:
             wikidata_result = mathsparql.broad_search(symbol)
             arXiv_evaluation_items = arXiv_evaluation_list_handler.check_identifiers(symbol)
             wikipedia_evaluation_items = wikipedia_evaluation_list_handler.check_identifiers(symbol)
-            #print(symbol)
+            print(symbol)
         else:
             wikidata_result = None
             arXiv_evaluation_items =None
@@ -245,6 +247,3 @@ def get_processed_file(request_file):
 
 
     return LaTeXFile(processed_lines)
-
-
-
