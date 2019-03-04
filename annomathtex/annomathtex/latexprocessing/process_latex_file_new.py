@@ -41,9 +41,9 @@ def extract_words(sentence, line_num):
     """
     #select between NE tagging and keyword extraction
     #todo: adjust newline in all taggers and identifier retrievers
-    #tagged_words = tagger.tag(line_chunk)
+    tagged_words = tagger.tag(sentence)
     #for RAKE & Spacey
-    tagged_words = identifier_retriever.extract_identifiers(sentence)
+    #tagged_words = identifier_retriever.extract_identifiers(sentence)
 
 
     #add named entities from this line to __line_dict
@@ -73,7 +73,6 @@ def get_word_window(line_num):
     if not word_window:
         word_window = [{}]
 
-    #print(word_window)
 
     return word_window
 
@@ -98,25 +97,30 @@ def extract_identifiers(math_env, line_num):
     #todo: for all math environemnt markers
     math_env = math_env.replace('$', '')
 
+    print(math_env)
+
     identifiers = FormulaSplitter(math_env).get_identifiers()
-    print(identifiers)
+    print('Identifiers:', identifiers, type(identifiers))
+    for i in identifiers:
+        print(i, type(i))
 
     split_regex = "|".join(str(i) for i in identifiers)
     split_regex = r"({})".format(split_regex)
 
     #todo: not working right
     split_math_env = re.split(split_regex, math_env)
-    print(split_math_env)
+    print('Spit math env:', split_math_env)
 
     processed_maths_env = []
     for symbol in split_math_env:
-        #print(symbol)
+        print('Symbol:', symbol)
         if symbol in identifiers:
-            wikidata_result = mathsparql.broad_search(symbol)
+            #wikidata_result = mathsparql.broad_search(symbol)
+            wikidata_result=None
             arXiv_evaluation_items = arXiv_evaluation_list_handler.check_identifiers(symbol)
             wikipedia_evaluation_items = wikipedia_evaluation_list_handler.check_identifiers(symbol)
-            print(symbol)
         else:
+            print('symbol {} not in identifiers'.format(symbol))
             wikidata_result = None
             arXiv_evaluation_items =None
             wikipedia_evaluation_items =None
@@ -160,10 +164,12 @@ def extract_identifiers(math_env, line_num):
 
 def get_math_envs(file):
     tex_soup = TexSoup(file)
+    print(tex_soup)
     equation = list(tex_soup.find_all('equation'))
     align = list(tex_soup.find_all('align'))
     dollar = list(tex_soup.find_all('$'))
     math_envs = equation + align + dollar
+    print(math_envs)
     return list(map(lambda m: str(m), math_envs))
 
 

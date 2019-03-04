@@ -127,6 +127,7 @@ class FormulaSplitter:
     def get_identifiers(self):
         try:
             symbols, _ = evalformula(self.formula)
+            symbols = {str(s) for s in symbols}
         except Exception as e:
             print('Error in Formula Splitter: ', e)
             symbols = None

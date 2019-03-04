@@ -68,7 +68,9 @@ function populateTable(wikidataResult) {
 
 function populateTableWordWindow(wordWindow) {
     console.log('in populate table word window');
+    console.log(wordWindow);
     var recommendations = JSON.parse(wordWindow)['word_window'];
+    //var recommendations = wordWindow;
     if (recommendations != "None") {
 
 
@@ -130,7 +132,7 @@ function populateTableArXiv(arXivEvaluationItems) {
         var item = evaluationItems[i];
         var name = item['name'];
         var value = item['value'];
-        console.log(content);
+        //console.log(content);
 
         //add the wikidata items to wikidataReference
         //wikidataReference[qid] = item;

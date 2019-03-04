@@ -33,6 +33,7 @@ class ArXivEvaluationListHandler:
     def __init__(self):
         self.evaluation_file = self.read_file()
         self.evaluation_dict = self.create_item_dict()
+        print('ArXivEvaluationListHandler')
         #print(self.evaluation_dict)
 
     def read_file(self):
@@ -72,7 +73,6 @@ class ArXivEvaluationListHandler:
 
 
     def check_identifiers(self, symbol):
-        #print(self.evaluation_dict)
         if symbol in self.evaluation_dict:
             print(True)
             return self.evaluation_dict[symbol]
