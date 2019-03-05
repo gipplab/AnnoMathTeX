@@ -66,51 +66,6 @@ function populateTable(wikidataResult) {
 
 
 
-
-function populateTableWord(wikidataResult) {
-    console.log('in populate table Word');
-    console.log(wikidataResult);
-    //todo: change
-    if (wikidataResult != "None") {
-
-      var myTable= "<table><tr><td style='width: 100px; color: red;'>Wikidata QID</td>";
-      myTable+= "<td style='width: 100px; color: red; text-align: right;'>Name</td>";
-
-
-      for (var i in wikidataResult){
-        var item = wikidataResult[i];
-        var qid = item['qid'];
-        var itemLabel = item['item_label'];
-
-        //add the wikidata items to wikidataReference
-        wikidataReference[qid] = item;
-
-        //must be enclosed like this, because qid is a string value
-        myTable+="<tr><td style='width: 100px;' onclick='selectQid(\"" + qid + "\")'>" + qid + "</td>";
-        myTable+="<td style='width: 100px; text-align: right;'>" + itemLabel + "</td></tr>";
-
-      }
-      document.getElementById('tableholder').innerHTML = myTable;
-    }
-
-    var modal = document.getElementById("popupModal");
-    modal.style.display = "block";
-
-    var span = document.getElementById("span");
-    span.onclick = function () {
-      modal.style.display = "none";
-    };
-
-    window.onclick = function(event) {
-      if (event.target == modal) {
-        modal.style.display = "none";
-      }
-    };
-    return;
-}
-
-
-
 function populateTableWordWindow(wordWindow) {
     console.log('in populate table word window');
     console.log(wordWindow);
@@ -364,6 +319,8 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, wordWindow, arXivEva
 
     //Display the highlighted text
     document.getElementById("highlightedText").innerHTML = tokenContent;
+    //check wikidata option (default)
+    document.getElementById("wikidataButton").checked = true;
 
     //Not the best way of doing this
     //https://stackoverflow.com/questions/5786851/define-global-variable-in-a-javascript-function
@@ -372,6 +329,8 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, wordWindow, arXivEva
     window.arXivEvaluationItems = arXivEvaluationItems;
     window.wikipediaEvaluationItems = wikipediaEvaluationItems;
     window.tokenType = tokenType;
+
+
 
     let data_dict = { the_post : $("#" + tokenUniqueId).val(),
                   'csrfmiddlewaretoken': getCookie("csrftoken"),
@@ -424,125 +383,6 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, wordWindow, arXivEva
 }
 
 
-
-function wordClicked(tokenContent, tokenUniqueId, tokenType, wordWindow, arXivEvaluationItems, wikipediaEvaluationItems) {
-  //take the tokenContent of the word that was clicked
-  //make a post request to django with this information
-  //django does a sparql query search and returns the results
-  //populate <tableholder> with the information
-  console.log('in word clicked');
-  console.log(tokenContent);
-  console.log(arXivEvaluationItems);
-  console.log(wikipediaEvaluationItems);
-
-
-
-
-  //Display the highlighted text
-  document.getElementById("highlightedTextWord").innerHTML = tokenContent;
-
-  //Not the best way of doing this
-  //https://stackoverflow.com/questions/5786851/define-global-variable-in-a-javascript-function
-  window.uniqueID = tokenUniqueId;
-  window.tokenContent = tokenContent;
-  window.arXivEvaluationItems = arXivEvaluationItems;
-  window.wikipediaEvaluationItems = wikipediaEvaluationItems;
-
-  let data_dict = { the_post : $("#" + tokenUniqueId).val(),
-                  'csrfmiddlewaretoken': getCookie("csrftoken"),
-                  //'csrfmiddlewaretoken': getCookie("csrftoken"),
-                  'queryDict': tokenContent,
-                  'tokenType': 'Word',
-                  };
-
-  console.log('data_dict formed');
-  console.log(data_dict);
-
-
-  //todo: different Sparql query for NEs
-  $.ajax({
-      url : "file_upload/", // the endpoint
-      type : "POST", // http method
-      data : data_dict, // data sent with the post request
-
-      // handle a successful response
-      success : function(json) {
-          $("#" + tokenUniqueId).val(''); // remove the value from the input
-          populateTableWord(json['wikidataResults']);
-          window.wikidataResults = json['wikidataResults'];
-      },
-
-      // handle a non-successful response
-      error : function(xhr,errmsg,err) {
-          $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-              " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-          console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-      }
-  });
-}
-
-
-
-/*function wordClicked(tokenContent, tokenUniqueId, tokenType, wordWindow, arXivEvaluationItems, wikipediaEvaluationItems) {
-  //take the tokenContent of the word that was clicked
-  //make a post request to django with this information
-  //django does a sparql query search and returns the results
-  //populate <tableholder> with the information
-  console.log('in wikidataQuery');
-  console.log(tokenContent);
-  console.log(tokenType);
-  console.log(arXivEvaluationItems);
-  console.log(wikipediaEvaluationItems);
-
-
-  var wordWindowJson = wordWindow;//['word_window'];
-  console.log(wordWindowJson);
-  //alert(wordWindowJson);
-
-
-
-  //Display the highlighted text
-  document.getElementById("highlightedText").innerHTML = tokenContent;
-
-  //Not the best way of doing this
-  //https://stackoverflow.com/questions/5786851/define-global-variable-in-a-javascript-function
-  window.uniqueID = tokenUniqueId;
-  window.tokenContent = tokenContent;
-  window.wordWindowJson = wordWindowJson;
-  window.arXivEvaluationItems = arXivEvaluationItems;
-  window.wikipediaEvaluationItems = wikipediaEvaluationItems;
-
-  let data_dict = { the_post : $("#" + tokenUniqueId).val(),
-                  'csrfmiddlewaretoken': getCookie("csrftoken"),
-                  //'csrfmiddlewaretoken': getCookie("csrftoken"),
-                  'queryDict': tokenContent,
-                  'tokenType': tokenType,
-                  };
-
-  console.log('data_dict formed');
-  console.log(data_dict);
-
-
-  $.ajax({
-      url : "file_upload/", // the endpoint
-      type : "POST", // http method
-      data : data_dict, // data sent with the post request
-
-      // handle a successful response
-      success : function(json) {
-          $("#" + tokenUniqueId).val(''); // remove the value from the input
-          populateTable(json['wikidataResults']);
-          window.wikidataResults = json['wikidataResults'];
-      },
-
-      // handle a non-successful response
-      error : function(xhr,errmsg,err) {
-          $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-              " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-          console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-      }
-  });
-}*/
 
 
 /*
