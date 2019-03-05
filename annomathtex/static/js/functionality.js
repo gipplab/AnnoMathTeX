@@ -69,12 +69,13 @@ function populateTable(wikidataResult) {
 function populateTableWordWindow(wordWindow) {
     console.log('in populate table word window');
     console.log(wordWindow);
-    var recommendations = JSON.parse(wordWindow)['word_window'];
     //var recommendations = wordWindow;
-    if (recommendations != "None") {
+    var myTable= "<table><tr><td style='width: 100px; color: red;'>Named Entity</td></tr>";
+    if (wordWindow != "None") {
+
+      var recommendations = JSON.parse(wordWindow)['word_window'];
 
 
-      var myTable= "<table><tr><td style='width: 100px; color: red;'>Named Entity</td></tr>";
       //myTable+= "<td style='width: 100px; color: red; text-align: right;'>Name</td>";
 
       for (var i in recommendations){
@@ -94,10 +95,9 @@ function populateTableWordWindow(wordWindow) {
         myTable+="<tr><td style='width: 100px;' onclick='selectWW(\"" + content + "\")'>" + content + "</td></tr>";
 
       }
-      document.getElementById('tableholder').innerHTML = myTable;
     }
 
-
+    document.getElementById('tableholder').innerHTML = myTable;
 
     var modal = document.getElementById("popupModal");
     modal.style.display = "block";
@@ -119,13 +119,15 @@ function populateTableWordWindow(wordWindow) {
 
 function populateTableArXiv(arXivEvaluationItems) {
     console.log('in populate table arXivEvaluationItems');
-    var evaluationItems = JSON.parse(arXivEvaluationItems)['arXiv_evaluation_items'];
+    var myTable= "<table><tr><td style='width: 100px; color: red;'>Item</td>";
+    myTable+= "<td style='width: 100px; color: red; text-align: right;'>Value</td></tr>";
     //var evaluationItems = arXivEvaluationItems;
-    if (evaluationItems != "None") {
+    if (arXivEvaluationItems != "None") {
+
+      var evaluationItems = JSON.parse(arXivEvaluationItems)['arXiv_evaluation_items'];
 
 
-      var myTable= "<table><tr><td style='width: 100px; color: red;'>Item</td>";
-      myTable+= "<td style='width: 100px; color: red; text-align: right;'>Value</td></tr>";
+
 
       for (var i in evaluationItems){
         console.log('looping');
@@ -145,10 +147,9 @@ function populateTableArXiv(arXivEvaluationItems) {
         myTable+="<td style='width: 100px; text-align: right;'>" + value + "</td></tr>";
 
       }
-      document.getElementById('tableholder').innerHTML = myTable;
     }
 
-
+    document.getElementById('tableholder').innerHTML = myTable;
 
     var modal = document.getElementById("popupModal");
     modal.style.display = "block";
@@ -171,13 +172,16 @@ function populateTableArXiv(arXivEvaluationItems) {
 
 function populateTableWikipedia(wikipediaEvaluationItems) {
     console.log('in populate table wikipediaEvaluationItems');
-    var evaluationItems = JSON.parse(wikipediaEvaluationItems)['wikipedia_evaluation_items'];
+
+    //console.log(wikipediaEvaluationItems == "None");
+
+    var myTable= "<table><tr><td style='width: 100px; color: red;'>Item</td>";
+    myTable+= "<td style='width: 100px; color: red; text-align: right;'>Value</td></tr>";
+
     //var evaluationItems = wikipediaEvaluationItems;
-    if (evaluationItems != "None") {
+    if (wikipediaEvaluationItems != "None") {
 
-
-      var myTable= "<table><tr><td style='width: 100px; color: red;'>Item</td>";
-      myTable+= "<td style='width: 100px; color: red; text-align: right;'>Value</td></tr>";
+      var evaluationItems = JSON.parse(wikipediaEvaluationItems)['wikipedia_evaluation_items'];
 
       for (var i in evaluationItems){
         console.log('looping');
@@ -196,11 +200,10 @@ function populateTableWikipedia(wikipediaEvaluationItems) {
         //myTable+="<td style='width: 100px; text-align: right;'>" + itemLabel + "</td></tr>";
         myTable+="<tr><td style='width: 100px;' onclick='selectWikipedia(\"" + i + "\")'>" + identifier + "</td>";
         myTable+="<td style='width: 100px; text-align: right;'>" + description + "</td></tr>";
-
       }
-      document.getElementById('tableholder').innerHTML = myTable;
     }
 
+    document.getElementById('tableholder').innerHTML = myTable;
 
 
     var modal = document.getElementById("popupModal");
