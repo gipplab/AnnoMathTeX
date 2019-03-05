@@ -1,7 +1,7 @@
 from .token import Token
 
 
-class Identifier(Token):
+class Formula(Token):
 
     def __init__(
         self,
@@ -13,7 +13,8 @@ class Identifier(Token):
         wikidata_result,
         word_window,
         arXiv_evaluation_items,
-        wikipedia_evaluation_items
+        wikipedia_evaluation_items,
+        math_env
     ):
         """
         Constructor of superclass Token is called for highlight and content
@@ -35,7 +36,8 @@ class Identifier(Token):
             wikidata_result,
             word_window,
             arXiv_evaluation_items,
-            wikipedia_evaluation_items
+            wikipedia_evaluation_items,
+            math_env
         )
         #word_window: named entities from surrounding text
         #evaluation_list: items from evaluation list that match identifiers
@@ -83,9 +85,3 @@ class Identifier(Token):
         """
         self.endline = new_endline_val
 
-    def get_qid(self):
-        """
-        Get the Wikidata Quid for the identifier
-        :return: Wikidata Quid
-        """
-        return self.qid

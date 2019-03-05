@@ -314,14 +314,22 @@ function radioButtonClicked(option) {
 AJAX FUNCTIONS USED TO POST THE REQUEST BACK TO DJANGO, WHERE THE WIKIDATA SPARQL QUERY IS EXECUTED
  */
 
-function clickToken(tokenContent, tokenUniqueId, tokenType, wordWindow, arXivEvaluationItems, wikipediaEvaluationItems) {
+function clickToken(tokenContent, tokenUniqueId, tokenType, wordWindow, arXivEvaluationItems, wikipediaEvaluationItems, mathEnv) {
     console.log(tokenContent);
     console.log(arXivEvaluationItems);
     console.log(wikipediaEvaluationItems);
 
 
     //Display the highlighted text
-    document.getElementById("highlightedText").innerHTML = tokenContent;
+    if (mathEnv == 'None') {
+        var fillText = tokenContent;
+    }
+    else {
+        var fillText = mathEnv;
+    }
+
+    document.getElementById("highlightedText").innerHTML = fillText;
+
     //check wikidata option (default)
     document.getElementById("wikidataButton").checked = true;
 
@@ -334,12 +342,12 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, wordWindow, arXivEva
     window.tokenType = tokenType;
 
 
-
     let data_dict = { the_post : $("#" + tokenUniqueId).val(),
                   'csrfmiddlewaretoken': getCookie("csrftoken"),
                   //'csrfmiddlewaretoken': getCookie("csrftoken"),
                   'queryDict': tokenContent,
                   'tokenType': tokenType,
+                  'mathEnv': mathEnv,
                   };
 
     console.log('data_dict formed');
@@ -369,7 +377,13 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, wordWindow, arXivEva
                   document.getElementById("wordWindowButton").hidden = true;
                   populateTable(json['wikidataResults']);
                   window.wordWindow = [];
-              break;
+                  break;
+              case 'Formula':
+                  console.log('Formula');
+                  document.getElementById("wordWindowButton").hidden = false;
+                  populateTable(json['wikidataResults']);
+                  window.wordWindow = wordWindow;
+                  break;
           }
           window.wikidataResults = json['wikidataResults'];
       },

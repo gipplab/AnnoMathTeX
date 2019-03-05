@@ -89,8 +89,8 @@ class FileUploadView(View):
             items = {k: jquery_unparam(v) for (k, v) in request.POST.items()}
             #for k in items:
             #    print(k, items[k])
-            query_dict = items['queryDict']
-            search_string = [k for k in query_dict][0]
+            #todo: clean up
+            search_string = [k for k in items['queryDict']][0]
             token_type_dict = items['tokenType']
             token_type = [k for k in token_type_dict][0]
             #print('SEARCH STRING: ', search_string)
@@ -101,6 +101,23 @@ class FileUploadView(View):
             elif token_type == 'Word':
                 wikidata_results = NESparql().named_entity_search(search_string)
                 #print(wikidata_results)
+            elif token_type == 'Formula':
+                #math_env = [k for k in items['mathEnv']][0]
+                #print(items['mathEnv'].keys())
+                m = items['mathEnv']
+                #k = [k for k in m.keys()][0]
+                k = list(m.keys())[0]
+                if m[k]:
+                    math_env = k + '=' + m[k]
+                else:
+                    math_env = k
+
+                print(math_env)
+
+
+                #math_env = math_env.replace('__EQUALS__', '=')
+                #todo: optimize search strings
+                wikidata_results = MathSparql().broad_search(math_env)
             else:
                 wikidata_results = None
 

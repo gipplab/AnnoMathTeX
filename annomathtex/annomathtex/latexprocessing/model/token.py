@@ -6,7 +6,6 @@ Punctuation are excluded.
 """
 
 class Token(object, metaclass=ABCMeta):
-    #todo: add recommendation as field, so that it can be accessed in render_file_template.html
     def __init__(
                  self,
                  unique_id,
@@ -17,7 +16,8 @@ class Token(object, metaclass=ABCMeta):
                  wikidata_result,
                  word_window=None,
                  arXiv_evaluation_items=None,
-                 wikipedia_evaluation_items=None
+                 wikipedia_evaluation_items=None,
+                 math_env=None
                  ):
         """
         :param unique_id: uuid.uuid1 object, converted to a string. Needed in template for rendering.
@@ -37,6 +37,7 @@ class Token(object, metaclass=ABCMeta):
         self.word_window = word_window
         self.arXiv_evaluation_items = arXiv_evaluation_items
         self.wikipedia_evaluation_items = wikipedia_evaluation_items
+        self.math_env=math_env
 
 
     @abstractmethod

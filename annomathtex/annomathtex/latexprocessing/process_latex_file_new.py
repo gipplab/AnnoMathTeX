@@ -3,6 +3,7 @@ import nltk
 from uuid import uuid1
 from .model.word import Word
 from .model.identifier import Identifier
+from .model.formula import Formula
 from .model.empty_line import EmptyLine
 from .model.latexfile import LaTeXFile
 from .named_entity_handling import NESparql
@@ -77,8 +78,42 @@ def get_word_window(line_num):
     return word_window
 
 
-def entire_formula(line_chunck, endline):
-    pass
+def entire_formula(math_env):
+
+    #for some reason django
+    #math_env = math_env.replace('=', '__EQUALS__')
+
+    formula1 = Formula(
+        str(uuid1()),
+        type='Formula',
+        highlight='yellow',
+        content='$',
+        endline=False,
+        wikidata_result=None,
+        word_window=None,
+        arXiv_evaluation_items=None,
+        wikipedia_evaluation_items=None,
+        math_env=math_env
+    )
+
+    formula2 = Formula(
+        str(uuid1()),
+        type='Formula',
+        highlight='yellow',
+        content='$',
+        endline=False,
+        wikidata_result=None,
+        word_window=None,
+        arXiv_evaluation_items=None,
+        wikipedia_evaluation_items=None,
+        math_env=math_env
+    )
+
+
+    return formula1, formula2
+
+
+
 
 
 
@@ -97,7 +132,7 @@ def extract_identifiers(math_env, line_num):
     #todo: for all math environemnt markers
     math_env = math_env.replace('$', '')
 
-    print(math_env)
+    print('MATH_ENV:', math_env)
 
     identifiers = FormulaSplitter(math_env).get_identifiers()
     print('Identifiers:', identifiers, type(identifiers))
@@ -144,8 +179,7 @@ def extract_identifiers(math_env, line_num):
         )
 
     # add the dollar signs back again
-    #todo: not an identifier
-    dollar = Identifier(
+    """dollar = Identifier(
         str(uuid1()),
         type='Identifier',
         highlight='yellow',
@@ -157,7 +191,10 @@ def extract_identifiers(math_env, line_num):
         wikipedia_evaluation_items=None
         )
 
-    processed_maths_env = [dollar] + processed_maths_env + [dollar]
+    processed_maths_env = [dollar] + processed_maths_env + [dollar]"""
+
+    formula1, formula2 = entire_formula(str(math_env))
+    processed_maths_env = [formula1] + processed_maths_env + [formula2]
 
     return processed_maths_env
 
@@ -169,7 +206,7 @@ def get_math_envs(file):
     align = list(tex_soup.find_all('align'))
     dollar = list(tex_soup.find_all('$'))
     math_envs = equation + align + dollar
-    print(math_envs)
+    print('MATH_ENVS:', math_envs)
     return list(map(lambda m: str(m), math_envs))
 
 
