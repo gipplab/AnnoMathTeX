@@ -28,7 +28,7 @@
     <label>
       <input type="radio" name="recommendationOptions" onclick="radioButtonClicked('Wikidata');" checked> Wikidata
     </label>
-    <label>
+    <label id="wordWindowButton">
       <input type="radio" name="recommendationOptions" onclick="radioButtonClicked('WordWindow');"> Word Window
     </label>
     <label>
@@ -61,17 +61,22 @@
             <script>
               //this part of js has to be in the loop, otherwise the unique_id will be lost
               //try catch not working yet, error happens when a backslash is in the text part
-              $("#{{ Token.unique_id }}").on('click', function (event) {
-                event.preventDefault();
-                console.log('wikidata query sent out');
-                wordClicked("{{ Token.content }}",
-                            "{{ Token.unique_id }}",
-                            "{{ Token.type }}",
-                            "{{ Token.word_window|escapejs }}",
-                            "{{ Token.arXiv_evaluation_items|escapejs }}",
-                            "{{ Token.wikipedia_evaluation_items|escapejs }}"
-                            );
-              });
+              try {
+                $("#{{ Token.unique_id }}").on('click', function (event) {
+                  event.preventDefault();
+                  console.log('wikidata query sent out');
+                  clickToken("{{ Token.content }}",
+                              "{{ Token.unique_id }}",
+                              "{{ Token.type }}",
+                              "{{ Token.word_window|escapejs }}",
+                              "{{ Token.arXiv_evaluation_items|escapejs }}",
+                              "{{ Token.wikipedia_evaluation_items|escapejs }}"
+                              );
+                });
+              }
+              catch(err) {
+                console.log('error ' + "{{ Token.content }}")
+              }
 
             </script>
           {% endif %}

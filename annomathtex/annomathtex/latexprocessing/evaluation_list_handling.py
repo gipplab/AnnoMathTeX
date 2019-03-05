@@ -21,7 +21,8 @@ class WikipediaEvaluationListHandler:
 
     def check_identifiers(self, symbol):
         if symbol in self.identifier_dict:
-            return self.identifier_dict[symbol]
+            # limit to the first 5 entries
+            return self.identifier_dict[symbol][:5]
         return None
 
 
@@ -74,8 +75,8 @@ class ArXivEvaluationListHandler:
 
     def check_identifiers(self, symbol):
         if symbol in self.evaluation_dict:
-            print(True)
-            return self.evaluation_dict[symbol]
+            # limit to the first 5 entries
+            return self.evaluation_dict[symbol][:5]
         return None
 
 
