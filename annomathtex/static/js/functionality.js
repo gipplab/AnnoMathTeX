@@ -284,6 +284,8 @@ function unHighlightToken() {
 
 function rejectHighlight() {
     console.log("REJECT");
+    document.getElementById(uniqueID).style.color = 'grey';
+    rejectedHighlight[uniqueID] = tokenContent;
 }
 
 
@@ -440,7 +442,8 @@ $(document).ready(function () {
                         'annotatedQID': $.param(annotatedWQID),
                         'annotatedWW': $.param(annotatedWW),
                         'annotatedArXiv': $.param(annotatedArXiv),
-                        'annotatedWikipedia': $.param(annotatedWikipedia)
+                        'annotatedWikipedia': $.param(annotatedWikipedia),
+                        'rejectedHighlight': $.param(rejectedHighlight)
                         };
 
 
