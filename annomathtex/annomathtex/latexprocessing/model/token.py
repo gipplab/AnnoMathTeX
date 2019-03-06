@@ -18,6 +18,7 @@ class Token(object, metaclass=ABCMeta):
                  arXiv_evaluation_items=None,
                  wikipedia_evaluation_items=None,
                  math_env=None
+
                  ):
         """
         :param unique_id: uuid.uuid1 object, converted to a string. Needed in template for rendering.

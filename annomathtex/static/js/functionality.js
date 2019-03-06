@@ -1,5 +1,7 @@
 //those words that are highlighted are added to this dictionary
 var highlighted = {};
+//those tokens, that were highlighted, but user rejected the highlighting
+var rejectedHighlight = {};
 //all wikidata items are added to this dictionary
 //for those items, whose ids are selected, the item will be returned to django
 var wikidataReference = {};
@@ -273,13 +275,15 @@ function highlightToken() {
     document.getElementById(uniqueID).style.color = 'blue';
     highlighted[uniqueID] = tokenContent;
     console.log('highlighted ' + tokenContent);
-    return;
 }
 
 function unHighlightToken() {
     delete highlighted[uniqueID];
     document.getElementById(uniqueID).style.color = 'black';
-    return;
+}
+
+function rejectHighlight() {
+    console.log("REJECT");
 }
 
 
@@ -314,18 +318,31 @@ function radioButtonClicked(option) {
 AJAX FUNCTIONS USED TO POST THE REQUEST BACK TO DJANGO, WHERE THE WIKIDATA SPARQL QUERY IS EXECUTED
  */
 
-function clickToken(tokenContent, tokenUniqueId, tokenType, wordWindow, arXivEvaluationItems, wikipediaEvaluationItems, mathEnv) {
+function clickToken(tokenContent, tokenUniqueId, tokenType, wordWindow, arXivEvaluationItems, wikipediaEvaluationItems, mathEnv, tokenHighlight) {
     console.log(tokenContent);
     console.log(arXivEvaluationItems);
     console.log(wikipediaEvaluationItems);
 
+    console.log(typeof(tokenHighlight));
 
     //Display the highlighted text
     if (mathEnv == 'None') {
+        console.log('MATH ENV IS NONE');
         var fillText = tokenContent;
     }
     else {
+        console.log('MATH ENV IS NOT NONE');
         var fillText = mathEnv;
+    }
+
+    //make reject button hidden if the token is not highlighted
+    if (tokenHighlight == "black") {
+        console.log("tokenHighlight is black " + tokenHighlight);
+        document.getElementById("rejectHighlightBtn").hidden = true;
+    }
+    else {
+        console.log("tokenHighlight is NOT black " + tokenHighlight);
+        document.getElementById("rejectHighlightBtn").hidden = false;
     }
 
     document.getElementById("highlightedText").innerHTML = fillText;

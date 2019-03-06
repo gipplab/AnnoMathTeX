@@ -40,6 +40,7 @@
     <p id="highlightedText"></p>
     <button id="highlightBtn" onclick="highlightToken()">HIGHLIGHT</button>
     <button id="unHighlightBtn" onclick="unHighlightToken()">UNHIGHLIGHT</button>
+    <button id="rejectHighlightBtn" onclick="rejectHighlight()" hidden="true">REJECT</button>
     <!-- todo: make hidden -->
     <div id="tableholder"></div>
   </div>
@@ -71,7 +72,8 @@
                               "{{ Token.word_window|escapejs }}",
                               "{{ Token.arXiv_evaluation_items|escapejs }}",
                               "{{ Token.wikipedia_evaluation_items|escapejs }}",
-                              "{{ Token.math_env }}"
+                              "{{ Token.math_env }}",
+                              "{{ Token.highlight }}"
                               );
                 });
               }
