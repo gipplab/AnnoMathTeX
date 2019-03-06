@@ -78,6 +78,19 @@ WHERE {
 )
 
 
+formula_alias_query = (
+    """
+    SELECT DISTINCT ?item ?itemLabel ?itemDescription WHERE {
+    ?item skos:altLabel ?alias.
+    FILTER(CONTAINS(?alias, """,
+    """@en))
+    ?item wdt:P2534 ?dummy0 .
+    SERVICE wikibase:label { bd:serviceParam wikibase:language "en" .}
+    }
+    """
+)
+
+
 
 ################## Named Entities / Nouns ###################
 

@@ -96,6 +96,7 @@ class FileUploadView(View):
             #print('SEARCH STRING: ', search_string)
 
             if token_type == 'Identifier':
+                #todo: different query?
                 wikidata_results = MathSparql().broad_search(search_string)
             #could change this to only allow named entitiy searches
             elif token_type == 'Word':
@@ -116,8 +117,8 @@ class FileUploadView(View):
 
 
                 #math_env = math_env.replace('__EQUALS__', '=')
-                #todo: optimize search strings
-                wikidata_results = MathSparql().broad_search(math_env)
+                #wikidata_results = MathSparql().broad_search(math_env)
+                wikidata_results = MathSparql().aliases_search(math_env)
             else:
                 wikidata_results = None
 

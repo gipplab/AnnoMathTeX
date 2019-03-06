@@ -1,5 +1,6 @@
 from SPARQLWrapper import SPARQLWrapper
 from abc import ABCMeta, abstractmethod
+import re
 
 
 class Sparql(object, metaclass=ABCMeta):
@@ -13,6 +14,7 @@ class Sparql(object, metaclass=ABCMeta):
         self.sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
 
 
+    @classmethod
     def remove_special_characters(self, search_string):
         """
         Right now: only removing backslash.
@@ -23,6 +25,11 @@ class Sparql(object, metaclass=ABCMeta):
         search_string = search_string.replace('\\', '')
         return search_string
 
+
+    @classmethod
+    def remove_whitespaces(self, search_string):
+        search_string = re.sub(r'\s', '', search_string)
+        return search_string
 
 
     @classmethod
