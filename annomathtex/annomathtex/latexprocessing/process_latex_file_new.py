@@ -17,7 +17,11 @@ from .latexformlaidentifiers import FormulaSplitter
 from collections import OrderedDict
 from TexSoup import TexSoup
 
-__line_dict = {}
+__line_dict__ = {}
+#contains all the NEs and Identifiers that have been found
+#used to reference annotated items, so that they only have to be annotated once for whole document
+__linked_words__ = {}
+__linked_math_symbols__ = {}
 
 
 def decode(request_file):
@@ -31,11 +35,36 @@ def decode(request_file):
     return string
 
 
+def form_word_links(tagged_words):
+    for word in tagged_words:
+        if word.named_entity and word.content:
+            if word.content in __linked_words__:
+                __linked_words__[word.content].append(word.unique_id)
+            else:
+                __linked_words__[word.content] = [word.unique_id]
+
+
+def form_symbol_links(symbol):
+    if symbol.content:
+        if symbol.content in __linked_math_symbols__:
+            __linked_math_symbols__[symbol.content].append(symbol.unique_id)
+        else:
+            __linked_math_symbols__[symbol.content] = [symbol.unique_id]
+
+
+def form_formula_links(formula1, formula2):
+    math_env = formula1.math_env
+    if math_env:
+        if math_env in __linked_math_symbols__:
+            __linked_math_symbols__[math_env] += [formula1.unique_id, formula2.unique_id]
+        else:
+            __linked_math_symbols__[math_env] = [formula1.unique_id, formula2.unique_id]
+
+
 def extract_words(sentence, line_num):
     """
     This method extracts the words that are contained in a line.
     If a named entity is contained, mark that.
-    todo: some kind of metric as to how far in the document the nearest math environment is
     :param line_chunk: Part of line that is being processed (list of words).
     :param endline: Boolean. True if the line_chunk ends the line.
     :return: List of the words fom line_chunk as Word() objects.
@@ -46,25 +75,20 @@ def extract_words(sentence, line_num):
     #for RAKE & Spacey
     #tagged_words = identifier_retriever.extract_identifiers(sentence)
 
+    form_word_links(tagged_words)
 
-    #add named entities from this line to __line_dict
 
-    #for w in tagged_words:
-    #    if w.named_entity:
-    #        print(w)
-
-    __line_dict[line_num] = [word for word in tagged_words if word.named_entity]
+    __line_dict__[line_num] = [word for word in tagged_words if word.named_entity]
     return tagged_words
 
 
 def get_word_window(line_num):
     #todo: make class, to be consistent
-    #word_window = [__line_dict[n] for ]
+    #word_window = [__line_dict__[n] for ]
     word_window = []
     for n in [line_num, line_num-1, line_num+1, line_num-2, line_num+2]:
-        if n in __line_dict:
-            for word in __line_dict[n]:
-                #print(word.content)
+        if n in __line_dict__:
+            for word in __line_dict__[n]:
                 word_window.append({
                     'content': word.content,
                     'unique_id': word.unique_id
@@ -110,12 +134,9 @@ def entire_formula(math_env):
     )
 
 
+    form_formula_links(formula1, formula2)
+
     return formula1, formula2
-
-
-
-
-
 
 
 
@@ -132,38 +153,30 @@ def extract_identifiers(math_env, line_num):
     #todo: for all math environemnt markers
     math_env = math_env.replace('$', '')
 
-    print('MATH_ENV:', math_env)
 
     identifiers = FormulaSplitter(math_env).get_identifiers()
-    print('Identifiers:', identifiers, type(identifiers))
-    for i in identifiers:
-        print(i, type(i))
 
     split_regex = "|".join(str(i) for i in identifiers)
     split_regex = r"({})".format(split_regex)
 
-    #todo: not working right
     split_math_env = re.split(split_regex, math_env)
-    print('Spit math env:', split_math_env)
 
     processed_maths_env = []
     for symbol in split_math_env:
-        print('Symbol:', symbol)
+
         if symbol in identifiers:
             #wikidata_result = mathsparql.broad_search(symbol)
             wikidata_result=None
             arXiv_evaluation_items = arXiv_evaluation_list_handler.check_identifiers(symbol)
             wikipedia_evaluation_items = wikipedia_evaluation_list_handler.check_identifiers(symbol)
         else:
-            print('symbol {} not in identifiers'.format(symbol))
             wikidata_result = None
             arXiv_evaluation_items =None
             wikipedia_evaluation_items =None
 
         endline = True if symbol == '\n' else False
 
-        processed_maths_env.append(
-            Identifier(
+        id_symbol = Identifier(
                 str(uuid1()),
                 type='Identifier',
                 highlight='pink',
@@ -171,28 +184,14 @@ def extract_identifiers(math_env, line_num):
                 endline=endline,
                 wikidata_result=json.dumps({'w': wikidata_result}),
                 word_window=json.dumps({'word_window': get_word_window(line_num)}),
-                #word_window=json.dumps({'word_window': wikidata_result})
-                ##word_window=json.dumps({'wordWindow': 'test'})
                 arXiv_evaluation_items=json.dumps({'arXiv_evaluation_items': arXiv_evaluation_items}),
                 wikipedia_evaluation_items=json.dumps({'wikipedia_evaluation_items': wikipedia_evaluation_items})
             )
-        )
+
+        processed_maths_env.append(id_symbol)
+        form_symbol_links(id_symbol)
 
     # add the dollar signs back again
-    """dollar = Identifier(
-        str(uuid1()),
-        type='Identifier',
-        highlight='yellow',
-        content='$',
-        endline=False,
-        wikidata_result=None,
-        word_window=None,
-        arXiv_evaluation_items=None,
-        wikipedia_evaluation_items=None
-        )
-
-    processed_maths_env = [dollar] + processed_maths_env + [dollar]"""
-
     formula1, formula2 = entire_formula(str(math_env))
     processed_maths_env = [formula1] + processed_maths_env + [formula2]
 
@@ -201,19 +200,16 @@ def extract_identifiers(math_env, line_num):
 
 def get_math_envs(file):
     tex_soup = TexSoup(file)
-    print(tex_soup)
     equation = list(tex_soup.find_all('equation'))
     align = list(tex_soup.find_all('align'))
     dollar = list(tex_soup.find_all('$'))
     math_envs = equation + align + dollar
-    print('MATH_ENVS:', math_envs)
     return list(map(lambda m: str(m), math_envs))
 
 
 def process_lines(request_file):
     """
     processes the file
-    todo: check runtime with multiprocessing
     :param request_file: request.FILES['file'], the file that the user uploaded
     :return:
     """
@@ -227,12 +223,11 @@ def process_lines(request_file):
         try:
             file = file.replace(m, '__MATH_ENV__', 1)
         except Exception as e:
-            print('Line 137: ', e)
+            print(e)
             continue
 
 
     lines = [p for p in file.split('\n')]
-    #print(lines)
 
     processed_lines = [extract_words(s, i) for i,s in enumerate(lines)]
 
@@ -242,15 +237,11 @@ def process_lines(request_file):
         if len(line) < 1:
             line_new.append(EmptyLine(uuid1()))
         for w in line:
-            #print(w.content)
             if re.search(r'__MATH_ENV__', w.content):
-                #print(w.content)
-                #print('extracting identifers', w.content)
                 math_env = math_envs[0]
                 math_envs.pop(0)
                 #line_new.append(extract_identifiers(math_env, line_num))
                 foo = extract_identifiers(math_env, line_num)
-                #print(foo)
                 line_new += foo
             else:
                 line_new.append(w)
@@ -288,5 +279,13 @@ def get_processed_file(request_file):
 
     processed_lines = process_lines(request_file)
 
+    #for line in processed_lines:
+    #    for word in line:
+    #        if word.content in __linked_words__:
+    #            print(word.content, __linked_words__[word.content])
 
-    return LaTeXFile(processed_lines)
+    sun0 = __linked_words__['Sun'][0]
+    print('SUN0', sun0)
+
+
+    return LaTeXFile(processed_lines, __linked_words__, __linked_math_symbols__)

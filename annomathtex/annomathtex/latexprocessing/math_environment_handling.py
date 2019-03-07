@@ -50,7 +50,6 @@ class MathSparql(Sparql):
     """
     import queries from separate file
     todo: remove redundancy
-    todo: regex in query, to ignore whitespaces
     """
     #sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
 

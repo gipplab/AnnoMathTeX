@@ -19,10 +19,12 @@ var annotatedArXiv = {};
 var annotatedWikipedia = {};
 
 
+var linkedWords;
+var linkedMathSymbols;
+
 
 function populateTable(wikidataResult) {
-    console.log('in populate table');
-    console.log(wikidataResult);
+    console.log('Function: populateTable');
     //todo: change
     if (wikidataResult != "None") {
 
@@ -63,37 +65,23 @@ function populateTable(wikidataResult) {
         modal.style.display = "none";
       }
     };
-    return;
 }
 
 
 
 function populateTableWordWindow(wordWindow) {
-    console.log('in populate table word window');
-    console.log(wordWindow);
+    console.log('Function: populateTableWordWindow');
     //var recommendations = wordWindow;
     var myTable= "<table><tr><td style='width: 100px; color: red;'>Named Entity</td></tr>";
     if (wordWindow != "None") {
 
       var recommendations = JSON.parse(wordWindow)['word_window'];
 
-
-      //myTable+= "<td style='width: 100px; color: red; text-align: right;'>Name</td>";
-
       for (var i in recommendations){
-        console.log('looping');
-        //var attrName = item;
         var item = recommendations[i];
         var content = item['content'];
         var unique_id = item['unique_id'];
-        console.log(content);
 
-        //add the wikidata items to wikidataReference
-        //wikidataReference[qid] = item;
-
-        //must be enclosed like this, because qid is a string value
-        //myTable+="<tr><td style='width: 100px;' onclick='selectQid(\"" + qid + "\")'>" + qid + "</td>";
-        //myTable+="<td style='width: 100px; text-align: right;'>" + itemLabel + "</td></tr>";
         myTable+="<tr><td style='width: 100px;' onclick='selectWW(\"" + content + "\")'>" + content + "</td></tr>";
 
       }
@@ -114,13 +102,12 @@ function populateTableWordWindow(wordWindow) {
         modal.style.display = "none";
       }
     };
-    return;
 }
 
 
 
 function populateTableArXiv(arXivEvaluationItems) {
-    console.log('in populate table arXivEvaluationItems');
+    console.log('Function: populateTableArXiv');
     var myTable= "<table><tr><td style='width: 100px; color: red;'>Item</td>";
     myTable+= "<td style='width: 100px; color: red; text-align: right;'>Value</td></tr>";
     //var evaluationItems = arXivEvaluationItems;
@@ -132,19 +119,10 @@ function populateTableArXiv(arXivEvaluationItems) {
 
 
       for (var i in evaluationItems){
-        console.log('looping');
-        //var attrName = item;
         var item = evaluationItems[i];
         var name = item['name'];
         var value = item['value'];
-        //console.log(content);
 
-        //add the wikidata items to wikidataReference
-        //wikidataReference[qid] = item;
-
-        //must be enclosed like this, because qid is a string value
-        //myTable+="<tr><td style='width: 100px;' onclick='selectQid(\"" + qid + "\")'>" + qid + "</td>";
-        //myTable+="<td style='width: 100px; text-align: right;'>" + itemLabel + "</td></tr>";
         myTable+="<tr><td style='width: 100px;' onclick='selectArXiv(\"" + name + "\")'>" + name + "</td>";
         myTable+="<td style='width: 100px; text-align: right;'>" + value + "</td></tr>";
 
@@ -166,16 +144,13 @@ function populateTableArXiv(arXivEvaluationItems) {
         modal.style.display = "none";
       }
     };
-    return;
 }
 
 
 
 
 function populateTableWikipedia(wikipediaEvaluationItems) {
-    console.log('in populate table wikipediaEvaluationItems');
-
-    //console.log(wikipediaEvaluationItems == "None");
+    console.log('Function: populateTableWikipedia');
 
     var myTable= "<table><tr><td style='width: 100px; color: red;'>Item</td>";
     myTable+= "<td style='width: 100px; color: red; text-align: right;'>Value</td></tr>";
@@ -186,20 +161,12 @@ function populateTableWikipedia(wikipediaEvaluationItems) {
       var evaluationItems = JSON.parse(wikipediaEvaluationItems)['wikipedia_evaluation_items'];
 
       for (var i in evaluationItems){
-        console.log('looping');
-        //var attrName = item;
         var item = evaluationItems[i];
         var value = item['value'];
         var identifier = item['identifier'];
         var description = item['description'];
         var wikimiediaLink = item['wikimedia_link'];
 
-        //add the wikidata items to wikidataReference
-        //wikidataReference[qid] = item;
-
-        //must be enclosed like this, because qid is a string value
-        //myTable+="<tr><td style='width: 100px;' onclick='selectQid(\"" + qid + "\")'>" + qid + "</td>";
-        //myTable+="<td style='width: 100px; text-align: right;'>" + itemLabel + "</td></tr>";
         myTable+="<tr><td style='width: 100px;' onclick='selectWikipedia(\"" + i + "\")'>" + identifier + "</td>";
         myTable+="<td style='width: 100px; text-align: right;'>" + description + "</td></tr>";
       }
@@ -221,7 +188,6 @@ function populateTableWikipedia(wikipediaEvaluationItems) {
         modal.style.display = "none";
       }
     };
-    return;
 }
 
 
@@ -231,11 +197,6 @@ function populateTableWikipedia(wikipediaEvaluationItems) {
 /*
 FUNCTIONALITY USED TO SEND THE INFORMATION ABOUT ANNOTATIONS AND HIGHLIGHTING BACK TO DJANGO
  */
-
-/*function selectWordWindowNE(unique_id) {
-    anno
-    console.log(tokenContent + ' assigned ' + unique_id)
-}*/
 
 
 function selectQid(wikidataQid){
@@ -271,6 +232,8 @@ function selectWikipedia(name){
 
 
 
+
+
 function highlightToken() {
     document.getElementById(uniqueID).style.color = 'blue';
     highlighted[uniqueID] = tokenContent;
@@ -280,12 +243,13 @@ function highlightToken() {
 function unHighlightToken() {
     delete highlighted[uniqueID];
     document.getElementById(uniqueID).style.color = 'black';
+    console.log('un highlighted ' + tokenContent);
 }
 
 function rejectHighlight() {
-    console.log("REJECT");
     document.getElementById(uniqueID).style.color = 'grey';
     rejectedHighlight[uniqueID] = tokenContent;
+    console.log('rejected ' + tokenContent);
 }
 
 
@@ -315,35 +279,59 @@ function radioButtonClicked(option) {
 }
 
 
+//store the linked tokens in a variable, to enable only having to
+//annotate a symbol, word, formula once for entire doc
+function linkTokens(linked_words, linked_math_symbols) {
+    //JSON.parse(wordWindow)['word_window'];
+    //console.log(linkedWords);
+    //console.log(linkedMathSymbols);
+    linkedWords = JSON.parse(linked_words)['linked_words'];
+    linkedMathSymbols = JSON.parse(linked_math_symbols)['linked_math_symbols'];
+
+    //console.log(linkedWords['Sun']);
+
+    var sun = linkedWords['Sun'];
+
+    console.log(sun[0]);
+
+    //console.log(i);
+
+    //document.getElementById(sun[0]).style.color = 'blue';
+    //document.getElementById(sun[1]).style.color = 'blue';
+
+    /*for (var i in sun) {
+        //document.getElementById(sun[i]).style.color = "blue";
+        console.log(typeof(sun[i]));
+    }*/
+
+
+}
+
 
 /*
 AJAX FUNCTIONS USED TO POST THE REQUEST BACK TO DJANGO, WHERE THE WIKIDATA SPARQL QUERY IS EXECUTED
  */
 
 function clickToken(tokenContent, tokenUniqueId, tokenType, wordWindow, arXivEvaluationItems, wikipediaEvaluationItems, mathEnv, tokenHighlight) {
-    console.log(tokenContent);
-    console.log(arXivEvaluationItems);
-    console.log(wikipediaEvaluationItems);
 
-    console.log(typeof(tokenHighlight));
+    /*console.log(typeof(linkedWords));
+    console.log(typeof(linkedMathSymbols));
+    console.log(testVal)
+    console.log(wikipediaEvaluationItems);*/
 
     //Display the highlighted text
     if (mathEnv == 'None') {
-        console.log('MATH ENV IS NONE');
         var fillText = tokenContent;
     }
     else {
-        console.log('MATH ENV IS NOT NONE');
         var fillText = mathEnv;
     }
 
     //make reject button hidden if the token is not highlighted
     if (tokenHighlight == "black") {
-        console.log("tokenHighlight is black " + tokenHighlight);
         document.getElementById("rejectHighlightBtn").hidden = true;
     }
     else {
-        console.log("tokenHighlight is NOT black " + tokenHighlight);
         document.getElementById("rejectHighlightBtn").hidden = false;
     }
 
@@ -369,11 +357,6 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, wordWindow, arXivEva
                   'mathEnv': mathEnv,
                   };
 
-    console.log('data_dict formed');
-    console.log(data_dict);
-
-
-    //todo: different Sparql query for NEs
     $.ajax({
       url : "file_upload/", // the endpoint
       type : "POST", // http method
@@ -428,13 +411,11 @@ AJAX FUNCTIONS USED TO POST
 $(document).ready(function () {
     $('#post-form').on('submit', function(event){
         event.preventDefault();
-        console.log('form submitted');
         create_post();
   });
 
     // AJAX for posting
     function create_post() {
-      console.log("create post is working!"); // sanity check
       let data_dict = { the_post : $('#post-text').val(),
                         //'csrfmiddlewaretoken': '{{ csrf_token }}',
                         'csrfmiddlewaretoken': getCookie("csrftoken"),
@@ -455,8 +436,6 @@ $(document).ready(function () {
           // handle a successful response
           success : function(json) {
               $('#post-text').val(''); // remove the value from the input
-              console.log(json['testkey']); // log the returned json to the console
-              console.log("success"); // another sanity check
           },
 
           // handle a non-successful response
