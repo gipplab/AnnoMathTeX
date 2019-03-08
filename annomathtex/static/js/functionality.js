@@ -192,7 +192,7 @@ function populateTableWikipedia(wikipediaEvaluationItems) {
 
 
 
-function linkedTokens(f) {
+function handleLinkedTokens(f) {
     /*
     This function is used to annotate, highlight the identical tokens in the document.
     i.e. if a word, identifier, formula is highlighted by the user, then all other
@@ -201,12 +201,19 @@ function linkedTokens(f) {
     functionality.
      */
 
-    if (tokenContent in linkedWords) {
-        var word = linkedWords[tokenContent];
+    if (tokenType == 'Word') {
+        dicToCheck = linkedWords;
+    }
+    else {
+        dicToCheck = linkedMathSymbols;
+    }
+
+    if (tokenContent in dicToCheck) {
+        var word = dicToCheck[tokenContent];
         for (i in word) {
             var id = word[i]
             f(id)
-            document.getElementById(id).style.color = 'blue';
+            //document.getElementById(id).style.color = 'blue';
         }
     }
 
@@ -221,33 +228,80 @@ FUNCTIONALITY USED TO SEND THE INFORMATION ABOUT ANNOTATIONS AND HIGHLIGHTING BA
 
 
 function selectQid(wikidataQid){
-    annotatedWQID[wikidataQid] = {
-      'token': tokenContent,
-      'uniqueID': uniqueID,
-      'wikidataInf': wikidataReference[wikidataQid]
-    };
+    function qid(id) {
+        if (wikidataQid in annotatedWQID) {
+            annotatedWQID[wikidataQid]['uniqueIDs'].push(id);
+        }
+        else {
+            annotatedWQID[wikidataQid] = {
+            'token': tokenContent,
+            'uniqueIDs': [id],
+            'wikidataInf': wikidataReference[wikidataQid]
+            };
+        }
+    }
+    qid(uniqueID);
+    handleLinkedTokens(qid);
     console.log(tokenContent + ' assigned ' + wikidataQid);
 }
 
 //select named entity from surrounding text
 function selectWW(content){
-    annotatedWW[content] = {
-        'content': content
-    };
+    function ww(id) {
+        if (content in annotatedWW) {
+            annotatedWW[content]['uniqueIDs'].push(id);
+        }
+        else {
+            annotatedWW[content] = {
+            'token': tokenContent,
+            'content': content,
+            'uniqueIDs': [id]
+            };
+        }
+    }
+    ww(uniqueID);
+    handleLinkedTokens(ww);
     console.log(tokenContent + ' assigned ' + content );
 }
 
 function selectArXiv(name){
-    annotatedArXiv[name] = {
-        'name': name
-    };
+
+    function arXiv(id) {
+        if (name in annotatedArXiv) {
+            annotatedArXiv[name]['uniqueIDs'].push(id);
+        }
+        else {
+            annotatedArXiv[name] = {
+            'token': tokenContent,
+            'name': name,
+            'uniqueIDs': [id]
+            };
+        }
+    }
+
+    arXiv(uniqueID);
+    handleLinkedTokens(arXiv);
+
     console.log(tokenContent + ' assigned ' + name );
 }
 
 function selectWikipedia(name){
-    annotatedWikipedia[name] = {
-        'name': name
-    };
+
+    function wikipedia(id) {
+        if (name in annotatedWikipedia) {
+            annotatedWikipedia[name]['uniqueIDs'].push(id);
+        }
+        else {
+            annotatedWikipedia[name] = {
+            'token': tokenContent,
+            'name': name,
+            'uniqueIDs': id
+            };
+        }
+    }
+
+    wikipedia(uniqueID);
+    handleLinkedTokens(wikipedia);
     console.log(tokenContent + ' assigned ' + name );
 }
 
@@ -256,30 +310,39 @@ function selectWikipedia(name){
 
 
 function highlightToken() {
-    document.getElementById(uniqueID).style.color = 'blue';
 
-    highlighted[uniqueID] = tokenContent;
-    console.log('highlighted ' + tokenContent);
-
-    if (tokenContent in linkedWords) {
-        var word = linkedWords[tokenContent];
-        for (i in word) {
-            var id = word[i]
-            document.getElementById(id).style.color = 'blue';
-        }
+    function highlight(id) {
+        document.getElementById(id).style.color = 'blue';
+        highlighted[id] = tokenContent;
     }
+
+    highlight(uniqueID);
+    handleLinkedTokens(highlight);
+    console.log('highlighted ' + tokenContent);
 
 }
 
 function unHighlightToken() {
-    delete highlighted[uniqueID];
-    document.getElementById(uniqueID).style.color = 'black';
+
+    function unhighlight(id) {
+        document.getElementById(id).style.color = 'black';
+        delete highlighted[id];
+    }
+
+    unhighlight(uniqueID);
+    handleLinkedTokens(unhighlight);
     console.log('un highlighted ' + tokenContent);
 }
 
 function rejectHighlight() {
-    document.getElementById(uniqueID).style.color = 'grey';
-    rejectedHighlight[uniqueID] = tokenContent;
+
+    function reject(id) {
+        document.getElementById(id).style.color = 'grey';
+        rejectedHighlight[id] = tokenContent;
+    }
+
+    reject(uniqueID);
+    handleLinkedTokens(reject);
     console.log('rejected ' + tokenContent);
 }
 
