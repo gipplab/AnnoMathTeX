@@ -295,7 +295,7 @@ function selectWikipedia(name){
             annotatedWikipedia[name] = {
             'token': tokenContent,
             'name': name,
-            'uniqueIDs': id
+            'uniqueIDs': [id]
             };
         }
     }
