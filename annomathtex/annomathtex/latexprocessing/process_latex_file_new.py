@@ -77,6 +77,15 @@ def extract_words(sentence, line_num):
 
     form_word_links(tagged_words)
 
+    """sun = list(filter(lambda x: x.content=='Sun', tagged_words))
+
+    if len(sun) > 0:
+        sun = sun[0]
+        i = tagged_words.index(sun)
+        sun.unique_id = 'SUNID'
+        tagged_words[i] = sun"""
+
+
 
     __line_dict__[line_num] = [word for word in tagged_words if word.named_entity]
     return tagged_words

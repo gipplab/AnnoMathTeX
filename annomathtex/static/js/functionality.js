@@ -192,6 +192,27 @@ function populateTableWikipedia(wikipediaEvaluationItems) {
 
 
 
+function linkedTokens(f) {
+    /*
+    This function is used to annotate, highlight the identical tokens in the document.
+    i.e. if a word, identifier, formula is highlighted by the user, then all other
+    occurences of the same token are highlighted accross the entire document.
+    This function takes a function f as argument, since a lot of differnen functions need this
+    functionality.
+     */
+
+    if (tokenContent in linkedWords) {
+        var word = linkedWords[tokenContent];
+        for (i in word) {
+            var id = word[i]
+            f(id)
+            document.getElementById(id).style.color = 'blue';
+        }
+    }
+
+
+}
+
 
 
 /*
@@ -231,13 +252,23 @@ function selectWikipedia(name){
 }
 
 
-
+//function highlightLinkedTokens()
 
 
 function highlightToken() {
     document.getElementById(uniqueID).style.color = 'blue';
+
     highlighted[uniqueID] = tokenContent;
     console.log('highlighted ' + tokenContent);
+
+    if (tokenContent in linkedWords) {
+        var word = linkedWords[tokenContent];
+        for (i in word) {
+            var id = word[i]
+            document.getElementById(id).style.color = 'blue';
+        }
+    }
+
 }
 
 function unHighlightToken() {
@@ -289,13 +320,10 @@ function linkTokens(linked_words, linked_math_symbols) {
     linkedMathSymbols = JSON.parse(linked_math_symbols)['linked_math_symbols'];
 
     //console.log(linkedWords['Sun']);
-
-    var sun = linkedWords['Sun'];
-
-    console.log(sun[0]);
-
+    //var sun = linkedWords['Sun'][0];
+    //console.log(linked_words);
+    //document.getElementById("SUNID").style.color = 'blue';
     //console.log(i);
-
     //document.getElementById(sun[0]).style.color = 'blue';
     //document.getElementById(sun[1]).style.color = 'blue';
 
@@ -318,6 +346,8 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, wordWindow, arXivEva
     console.log(typeof(linkedMathSymbols));
     console.log(testVal)
     console.log(wikipediaEvaluationItems);*/
+
+    //console.log(tokenUniqueId);
 
     //Display the highlighted text
     if (mathEnv == 'None') {
