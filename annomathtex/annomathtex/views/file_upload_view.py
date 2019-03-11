@@ -101,7 +101,7 @@ class FileUploadView(View):
 
             if token_type == 'Identifier':
                 #todo: different query?
-                wikidata_results = MathSparql().broad_search(search_string)
+                wikidata_results = MathSparql().identifier_search(search_string)
             #could change this to only allow named entitiy searches
             elif token_type == 'Word':
                 wikidata_results = NESparql().named_entity_search(search_string)

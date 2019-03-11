@@ -1,5 +1,5 @@
 from SPARQLWrapper import SPARQLWrapper, JSON
-from .sparql_queries import tex_string_query, defining_formula_query, concat_query, formula_alias_query
+from .sparql_queries import tex_string_query, defining_formula_query, concat_query, formula_alias_query, identifier_query
 from .sparql import Sparql
 
 
@@ -238,6 +238,45 @@ class MathSparql(Sparql):
         )
 
         pass
+
+    def identifier_search(self, identifier_string, limit=5):
+
+        entire_query = self.formulate_query(
+            identifier_query,
+            identifier_string
+        )
+
+        results = []
+        try:
+            self.sparql.setQuery(entire_query)
+            self.sparql.setReturnFormat(JSON)
+            query_results = self.sparql.query().convert()
+            results = query_results['results']['bindings']  # [0]
+            # results_cleaned = []
+        except Exception as e:
+            print(e, 'Search string: ', identifier_string)
+
+        results_dict = {}
+        for i, r in enumerate(results):
+            if i == limit: break
+            item_description = None
+            if 'itemDescription' in r:
+                item_description = r['itemDescription']['value']
+            url = r['item']['value']
+            qid = url.split('/')[-1]
+            item_label = r['itemLabel']['value']
+
+            results_dict[i] = {
+                'qid': qid,
+                'link': url,
+                'found_string': None,
+                'item_label': item_label,
+                'item_description': item_description
+            }
+
+            # results_cleaned.append(results_dict)
+        # return results_cleaned
+        return results_dict
 
 
 
