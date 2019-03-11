@@ -30,19 +30,21 @@
     <label>
       <input type="radio" name="recommendationOptions" id="wikidataButton" onclick="radioButtonClicked('Wikidata');" checked> Wikidata
     </label>
-    <label id="wordWindowButton">
+    <label id="wordWindowBtn">
       <input type="radio" name="recommendationOptions" onclick="radioButtonClicked('WordWindow');"> Word Window
     </label>
-    <label>
+    <label id="arXivBtn">
       <input type="radio" name="recommendationOptions" onclick="radioButtonClicked('arXiv');"> arXiv
     </label>
-    <label>
+    <label id="wikipediaBtn">
       <input type="radio" name="recommendationOptions" onclick="radioButtonClicked('Wikipedia');"> Wikipedia
     </label>
     <p id="highlightedText"></p>
-    <button id="highlightBtn" onclick="highlightToken()">HIGHLIGHT</button>
+    <!--<button id="highlightBtn" onclick="highlightToken()">HIGHLIGHT</button>
     <button id="unHighlightBtn" onclick="unHighlightToken()">UNHIGHLIGHT</button>
-    <button id="rejectHighlightBtn" onclick="rejectHighlight()" hidden="true">REJECT</button>
+    <button id="rejectHighlightBtn" onclick="rejectHighlight()" hidden="true">REJECT</button>-->
+    <button id="markBtn" onclick="markAsNE()">MARK</button>
+    <button id="unmarkBtn" onclick="unMarkAsNE()">UNMARK</button>
     <div id="tableholder"></div>
   </div>
 </div>

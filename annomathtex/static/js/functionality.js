@@ -1,7 +1,7 @@
-//those words that are highlighted are added to this dictionary
-var highlighted = {};
-//those tokens, that were highlighted, but user rejected the highlighting
-var rejectedHighlight = {};
+//those words that are marked as NE are added to this dictionary
+var marked = {};
+//those tokens, that were marked by the system, but user rejected the suggestion
+var unmarked = {};
 //all wikidata items are added to this dictionary
 //for those items, whose ids are selected, the item will be returned to django
 var wikidataReference = {};
@@ -194,9 +194,9 @@ function populateTableWikipedia(wikipediaEvaluationItems) {
 
 function handleLinkedTokens(f) {
     /*
-    This function is used to annotate, highlight the identical tokens in the document.
-    i.e. if a word, identifier, formula is highlighted by the user, then all other
-    occurences of the same token are highlighted accross the entire document.
+    This function is used to annotate, mark the identical tokens in the document.
+    i.e. if a word, identifier, formula is marked by the user, then all other
+    occurences of the same token are marked accross the entire document.
     This function takes a function f as argument, since a lot of differnen functions need this
     functionality.
      */
@@ -306,47 +306,32 @@ function selectWikipedia(name){
 }
 
 
-//function highlightLinkedTokens()
 
 
-function highlightToken() {
+function markAsNE() {
 
-    function highlight(id) {
+    function mark(id) {
         document.getElementById(id).style.color = 'blue';
-        highlighted[id] = tokenContent;
+        marked[id] = tokenContent;
     }
 
-    highlight(uniqueID);
-    handleLinkedTokens(highlight);
-    console.log('highlighted ' + tokenContent);
+    mark(uniqueID);
+    handleLinkedTokens(mark);
+    console.log('marked ' + tokenContent);
 
 }
 
-function unHighlightToken() {
+function unMarkAsNE() {
 
-    function unhighlight(id) {
-        document.getElementById(id).style.color = 'black';
-        delete highlighted[id];
-    }
-
-    unhighlight(uniqueID);
-    handleLinkedTokens(unhighlight);
-    console.log('un highlighted ' + tokenContent);
-}
-
-function rejectHighlight() {
-
-    function reject(id) {
+    function unmark(id) {
         document.getElementById(id).style.color = 'grey';
-        rejectedHighlight[id] = tokenContent;
+        unmarked[id] = tokenContent;
     }
 
-    reject(uniqueID);
-    handleLinkedTokens(reject);
-    console.log('rejected ' + tokenContent);
+    unmark(uniqueID);
+    handleLinkedTokens(unmark);
+    console.log('unmarked ' + tokenContent);
 }
-
-
 
 
 
@@ -412,7 +397,7 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, wordWindow, arXivEva
 
     //console.log(tokenUniqueId);
 
-    //Display the highlighted text
+    //Display the selected tokens
     if (mathEnv == 'None') {
         var fillText = tokenContent;
     }
@@ -420,12 +405,18 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, wordWindow, arXivEva
         var fillText = mathEnv;
     }
 
-    //make reject button hidden if the token is not highlighted
-    if (tokenHighlight == "black") {
-        document.getElementById("rejectHighlightBtn").hidden = true;
+    //hide both buttons for math environments
+    if (tokenType == 'Identifier' || tokenType == 'Formula') {
+        document.getElementById("unmarkBtn").hidden = true;
+        document.getElementById("markBtn").hidden = true;
+    }
+    else if (tokenHighlight == "black") {
+        document.getElementById("unmarkBtn").hidden = true;
+        document.getElementById("markBtn").hidden = false;
     }
     else {
-        document.getElementById("rejectHighlightBtn").hidden = false;
+        document.getElementById("markBtn").hidden = true;
+        document.getElementById("unmarkBtn").hidden = false;
     }
 
     document.getElementById("highlightedText").innerHTML = fillText;
@@ -450,6 +441,19 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, wordWindow, arXivEva
                   'mathEnv': mathEnv,
                   };
 
+
+    function hideAllBtns() {
+          document.getElementById("wordWindowBtn").hidden = false;
+          document.getElementById("arXivBtn").hidden = false;
+          document.getElementById("wikipediaBtn").hidden = false;
+    }
+
+    function showAllBtns() {
+          document.getElementById("wordWindowBtn").hidden = true;
+          document.getElementById("arXivBtn").hidden = true;
+          document.getElementById("wikipediaBtn").hidden = true;
+    }
+
     $.ajax({
       url : "file_upload/", // the endpoint
       type : "POST", // http method
@@ -463,19 +467,19 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, wordWindow, arXivEva
           switch (tokenType) {
               case 'Identifier':
                   console.log('Identifier');
-                  document.getElementById("wordWindowButton").hidden = false;
+                  hideAllBtns();
                   populateTable(json['wikidataResults']);
                   window.wordWindow = wordWindow;
                   break;
               case 'Word':
                   console.log('Word');
-                  document.getElementById("wordWindowButton").hidden = true;
+                  showAllBtns();
                   populateTable(json['wikidataResults']);
                   window.wordWindow = [];
                   break;
               case 'Formula':
                   console.log('Formula');
-                  document.getElementById("wordWindowButton").hidden = false;
+                  hideAllBtns();
                   populateTable(json['wikidataResults']);
                   window.wordWindow = wordWindow;
                   break;
@@ -512,12 +516,12 @@ $(document).ready(function () {
       let data_dict = { the_post : $('#post-text').val(),
                         //'csrfmiddlewaretoken': '{{ csrf_token }}',
                         'csrfmiddlewaretoken': getCookie("csrftoken"),
-                        'highlighted': $.param(highlighted),
+                        'marked': $.param(marked),
                         'annotatedQID': $.param(annotatedWQID),
                         'annotatedWW': $.param(annotatedWW),
                         'annotatedArXiv': $.param(annotatedArXiv),
                         'annotatedWikipedia': $.param(annotatedWikipedia),
-                        'rejectedHighlight': $.param(rejectedHighlight)
+                        'unmarked': $.param(unmarked)
                         };
 
 

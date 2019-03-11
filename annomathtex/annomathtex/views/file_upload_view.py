@@ -15,10 +15,10 @@ from django.views.decorators.csrf import csrf_protect
 
 
 
-__HIGHLIGHTED__ = {}
+__MARKED__ = {}
 __ANNOTATED_QID__ = {}
 __ANNOTATED_WW__ = {}
-__REJECTED_HIGHLIGHT__ = {}
+__UNMARKED__ = {}
 
 
 class FileUploadView(View):
@@ -55,25 +55,24 @@ class FileUploadView(View):
 
             return render(request, "render_file_template.html", self.save_annotation_form)
 
-        elif 'highlighted' in request.POST:
-            print('in highlighted')
+        elif 'marked' in request.POST:
             items = {k:jquery_unparam(v) for (k,v) in request.POST.items()}
-            highlighted = items['highlighted']
+            marked = items['marked']
             annotatedQID = items['annotatedQID']
             annotatedWW = items['annotatedWW']
-            rejectedHighlight = items['rejectedHighlight']
+            unmarked = items['unmarked']
 
-            print(highlighted)
+            print(marked)
             print(annotatedQID)
             print(annotatedWW)
-            print(rejectedHighlight)
+            print(unmarked)
 
 
             #todo: write to database
-            __HIGHLIGHTED__.update(highlighted)
+            __MARKED__.update(marked)
             __ANNOTATED_QID__.update(annotatedQID)
             __ANNOTATED_WW__.update(annotatedWW)
-            __REJECTED_HIGHLIGHT__.update(rejectedHighlight)
+            __UNMARKED__.update(unmarked)
 
             #print('__HIGHLIGHTED__: ', __HIGHLIGHTED__)
             #print('__ANNOTATED__: ', __ANNOTATED__)
