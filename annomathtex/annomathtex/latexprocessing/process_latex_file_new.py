@@ -16,6 +16,7 @@ import time
 from .latexformlaidentifiers import FormulaSplitter
 from collections import OrderedDict
 from TexSoup import TexSoup
+from .config import *
 
 __line_dict__ = {}
 #contains all the NEs and Identifiers that have been found
@@ -95,13 +96,30 @@ def get_word_window(line_num):
     #todo: make class, to be consistent
     #word_window = [__line_dict__[n] for ]
     word_window = []
-    for n in [line_num, line_num-1, line_num+1, line_num-2, line_num+2]:
+    limit = int(recommendations_limit/2)
+    line_nums = range(line_num-limit,line_num+limit)
+    #print('LINENUMS: ', list(line_nums), ' LINE: ', line_num)
+    #for n in [line_num, line_num-1, line_num+1, line_num-2, line_num+2]:
+    for n in line_nums:
         if n in __line_dict__:
             for word in __line_dict__[n]:
                 word_window.append({
                     'content': word.content,
                     'unique_id': word.unique_id
                 })
+
+    """def get_words(line_num):
+        words_line = []
+        if line_num in __line_dict__:
+            for word in __line_dict__[line_num]:
+                words_line.append({
+                        'content': word.content,
+                        'unique_id': word.unique_id
+                    })
+        return words_line
+    
+    while len(word_window < recommendations_limit):"""
+
 
 
     if not word_window:

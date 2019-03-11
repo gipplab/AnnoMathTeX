@@ -1,6 +1,7 @@
 from SPARQLWrapper import SPARQLWrapper, JSON
 from .sparql_queries import tex_string_query, defining_formula_query, concat_query, formula_alias_query, identifier_query
 from .sparql import Sparql
+from .config import recommendations_limit
 
 
 
@@ -54,7 +55,7 @@ class MathSparql(Sparql):
     #sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
 
 
-    def aliases_search(self, search_string, limit=5):
+    def aliases_search(self, search_string):
 
 
         search_string_processed = self.remove_special_characters(search_string)
@@ -80,7 +81,7 @@ class MathSparql(Sparql):
 
         results_dict = {}
         for i, r in enumerate(results):
-            if i == limit: break
+            if i == recommendations_limit: break
             item_description = None
             if 'itemDescription' in r:
                 item_description = r['itemDescription']['value']
@@ -180,7 +181,7 @@ class MathSparql(Sparql):
         return results_dict
 
 
-    def broad_search(self, search_string, limit=5):
+    def broad_search(self, search_string):
         """
         Use concatenaed properties to query
         :param search_string: string from latex doc that is being search for
@@ -206,7 +207,7 @@ class MathSparql(Sparql):
 
         results_dict = {}
         for i, r in enumerate(results):
-            if i == limit: break
+            if i == recommendations_limit: break
             item_description = None
             if 'itemDescription' in r:
                 item_description = r['itemDescription']['value']
@@ -239,7 +240,7 @@ class MathSparql(Sparql):
 
         pass
 
-    def identifier_search(self, identifier_string, limit=5):
+    def identifier_search(self, identifier_string):
 
         entire_query = self.formulate_query(
             identifier_query,
@@ -258,7 +259,7 @@ class MathSparql(Sparql):
 
         results_dict = {}
         for i, r in enumerate(results):
-            if i == limit: break
+            if i == recommendations_limit: break
             item_description = None
             if 'itemDescription' in r:
                 item_description = r['itemDescription']['value']

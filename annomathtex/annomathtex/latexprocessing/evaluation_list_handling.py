@@ -1,6 +1,7 @@
 import os
 import json
 import pprint
+from .config import recommendations_limit
 
 
 class WikipediaEvaluationListHandler:
@@ -21,8 +22,8 @@ class WikipediaEvaluationListHandler:
 
     def check_identifiers(self, symbol):
         if symbol in self.identifier_dict:
-            # limit to the first 5 entries
-            return self.identifier_dict[symbol][:5]
+            # limit to the specified number few entries (in config file)
+            return self.identifier_dict[symbol][:recommendations_limit]
         return None
 
 
@@ -75,8 +76,8 @@ class ArXivEvaluationListHandler:
 
     def check_identifiers(self, symbol):
         if symbol in self.evaluation_dict:
-            # limit to the first 5 entries
-            return self.evaluation_dict[symbol][:5]
+            # limit to the specified number few entries (in config file)
+            return self.evaluation_dict[symbol][:recommendations_limit]
         return None
 
 
