@@ -28,8 +28,8 @@ function populateTable(wikidataResult) {
     //todo: change
     if (wikidataResult != "None") {
 
-      var myTable= "<table><tr><td style='width: 100px; color: red;'>Wikidata QID</td>";
-      myTable+= "<td style='width: 100px; color: red; text-align: right;'>Name</td>";
+      var myTable= "<table><tr><td style='width: 100px; color: red;'>Name</td>";
+      myTable+= "<td style='width: 100px; color: red; text-align: right;'>Wikidata QID</td>";
 
 
       for (var i in wikidataResult){
@@ -45,8 +45,8 @@ function populateTable(wikidataResult) {
         wikidataReference[qid] = item;
 
         //must be enclosed like this, because qid is a string value
-        myTable+="<tr><td style='width: 100px;' onclick='selectQid(\"" + qid + "\")'>" + qid + "</td>";
-        myTable+="<td style='width: 100px; text-align: right;'>" + itemLabel + "</td></tr>";
+        myTable+="<tr><td style='width: 100px;' onclick='selectQid(\"" + qid + "\")'>" + itemLabel + "</td>";
+        myTable+="<td style='width: 100px; text-align: right;'>" + qid + "</td></tr>";
 
       }
       document.getElementById('tableholder').innerHTML = myTable;
@@ -108,7 +108,7 @@ function populateTableWordWindow(wordWindow) {
 
 function populateTableArXiv(arXivEvaluationItems) {
     console.log('Function: populateTableArXiv');
-    var myTable= "<table><tr><td style='width: 100px; color: red;'>Item</td>";
+    var myTable= "<table><tr><td style='width: 100px; color: red;'>Name</td>";
     myTable+= "<td style='width: 100px; color: red; text-align: right;'>Value</td></tr>";
     //var evaluationItems = arXivEvaluationItems;
     if (arXivEvaluationItems != "None") {
@@ -152,7 +152,7 @@ function populateTableArXiv(arXivEvaluationItems) {
 function populateTableWikipedia(wikipediaEvaluationItems) {
     console.log('Function: populateTableWikipedia');
 
-    var myTable= "<table><tr><td style='width: 100px; color: red;'>Item</td>";
+    var myTable= "<table><tr><td style='width: 100px; color: red;'>Name</td>";
     myTable+= "<td style='width: 100px; color: red; text-align: right;'>Value</td></tr>";
 
     //var evaluationItems = wikipediaEvaluationItems;
