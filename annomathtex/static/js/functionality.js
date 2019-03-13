@@ -75,6 +75,8 @@ function populateTableWordWindow(wordWindow) {
     var myTable= "<table><tr><td style='width: 100px; color: red;'>Named Entity</td></tr>";
     if (wordWindow != "None") {
 
+      console.log(wordWindow);
+
       var recommendations = JSON.parse(wordWindow)['word_window'];
 
       for (var i in recommendations){
@@ -442,18 +444,6 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, wordWindow, arXivEva
                   };
 
 
-    function hideAllBtns() {
-          document.getElementById("wordWindowBtn").hidden = false;
-          document.getElementById("arXivBtn").hidden = false;
-          document.getElementById("wikipediaBtn").hidden = false;
-    }
-
-    function showAllBtns() {
-          document.getElementById("wordWindowBtn").hidden = true;
-          document.getElementById("arXivBtn").hidden = true;
-          document.getElementById("wikipediaBtn").hidden = true;
-    }
-
     $.ajax({
       url : "file_upload/", // the endpoint
       type : "POST", // http method
@@ -468,19 +458,25 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, wordWindow, arXivEva
               //todo: clean up
               case 'Identifier':
                   console.log('Identifier');
-                  hideAllBtns();
+                  document.getElementById("wordWindowBtn").hidden = false;
+                  document.getElementById("arXivBtn").hidden = false;
+                  document.getElementById("wikipediaBtn").hidden = false;
                   populateTable(json['wikidataResults']);
                   window.wordWindow = wordWindow;
                   break;
               case 'Word':
                   console.log('Word');
-                  showAllBtns();
+                  document.getElementById("wordWindowBtn").hidden = true;
+                  document.getElementById("arXivBtn").hidden = true;
+                  document.getElementById("wikipediaBtn").hidden = true;
                   populateTable(json['wikidataResults']);
                   window.wordWindow = [];
                   break;
               case 'Formula':
                   console.log('Formula');
-                  hideAllBtns();
+                  document.getElementById("wordWindowBtn").hidden = false;
+                  document.getElementById("arXivBtn").hidden = true;
+                  document.getElementById("wikipediaBtn").hidden = true;
                   populateTable(json['wikidataResults']);
                   window.wordWindow = wordWindow;
                   break;

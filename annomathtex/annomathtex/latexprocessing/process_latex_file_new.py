@@ -161,10 +161,13 @@ def get_word_window(line_num):
     return word_window[:10]
 
 
-def entire_formula(math_env):
+def entire_formula(math_env, line_num):
+
+    #todo: put this in external class -> consistency
 
     #for some reason django
     #math_env = math_env.replace('=', '__EQUALS__')
+
 
     formula1 = Formula(
         str(uuid1()),
@@ -173,7 +176,7 @@ def entire_formula(math_env):
         content='$',
         endline=False,
         wikidata_result=None,
-        word_window=None,
+        word_window=json.dumps({'word_window': get_word_window(line_num)}),
         arXiv_evaluation_items=None,
         wikipedia_evaluation_items=None,
         math_env=math_env
@@ -186,7 +189,7 @@ def entire_formula(math_env):
         content='$',
         endline=False,
         wikidata_result=None,
-        word_window=None,
+        word_window=json.dumps({'word_window': get_word_window(line_num)}),
         arXiv_evaluation_items=None,
         wikipedia_evaluation_items=None,
         math_env=math_env
@@ -251,7 +254,7 @@ def extract_identifiers(math_env, line_num):
         form_symbol_links(id_symbol)
 
     # add the dollar signs back again
-    formula1, formula2 = entire_formula(str(math_env))
+    formula1, formula2 = entire_formula(str(math_env), line_num)
     processed_maths_env = [formula1] + processed_maths_env + [formula2]
 
     return processed_maths_env
