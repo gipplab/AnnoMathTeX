@@ -23,6 +23,8 @@ __line_dict__ = {}
 #used to reference annotated items, so that they only have to be annotated once for whole document
 __linked_words__ = {}
 __linked_math_symbols__ = {}
+__line_dict__2 = {}
+__index__ = 0
 
 
 def decode(request_file):
@@ -62,6 +64,10 @@ def form_formula_links(formula1, formula2):
             __linked_math_symbols__[math_env] = [formula1.unique_id, formula2.unique_id]
 
 
+
+
+
+
 def extract_words(sentence, line_num):
     """
     This method extracts the words that are contained in a line.
@@ -89,6 +95,16 @@ def extract_words(sentence, line_num):
 
 
     __line_dict__[line_num] = [word for word in tagged_words if word.named_entity]
+
+    #for word in tagged_words:
+    #    if word.named_entity:
+    #        __line_dict__2[__index__] == (word.content, word.unique_id)
+    #    __index__ += 1
+
+
+
+
+
     return tagged_words
 
 
@@ -100,33 +116,49 @@ def get_word_window(line_num):
     line_nums = range(line_num-limit,line_num+limit)
     #print('LINENUMS: ', list(line_nums), ' LINE: ', line_num)
     #for n in [line_num, line_num-1, line_num+1, line_num-2, line_num+2]:
-    for n in line_nums:
+    """for n in line_nums:
         if n in __line_dict__:
             for word in __line_dict__[n]:
                 word_window.append({
                     'content': word.content,
                     'unique_id': word.unique_id
-                })
+                })"""
 
-    """def get_words(line_num):
-        words_line = []
-        if line_num in __line_dict__:
-            for word in __line_dict__[line_num]:
-                words_line.append({
+    i = 0
+    while i < recommendations_limit:
+        #lines before
+        b = line_num - i
+        #lines after
+        a = line_num + i
+
+        if b in __line_dict__:
+            for word in reversed(__line_dict__[b]):
+                #value not yet in word window
+                if not list(filter(lambda d: d['content'] == word.content, word_window)):
+                    print('YEP')
+                    word_window.append({
                         'content': word.content,
                         'unique_id': word.unique_id
                     })
-        return words_line
-    
-    while len(word_window < recommendations_limit):"""
+                    i+=1
+        if a in __line_dict__:
+            for word in reversed(__line_dict__[a]):
+                #value not yet in word window
+                if not list(filter(lambda d: d['content'] in word.content, word_window)):
+                    word_window.append({
+                        'content': word.content,
+                        'unique_id': word.unique_id
+                    })
+        i+=1
+
+
 
 
 
     if not word_window:
         word_window = [{}]
 
-
-    return word_window
+    return word_window[:10]
 
 
 def entire_formula(math_env):

@@ -167,8 +167,8 @@ function populateTableWikipedia(wikipediaEvaluationItems) {
         var description = item['description'];
         var wikimiediaLink = item['wikimedia_link'];
 
-        myTable+="<tr><td style='width: 100px;' onclick='selectWikipedia(\"" + i + "\")'>" + identifier + "</td>";
-        myTable+="<td style='width: 100px; text-align: right;'>" + description + "</td></tr>";
+        myTable+="<tr><td style='width: 100px;' onclick='selectWikipedia(\"" + i + "\")'>" + description + "</td>";
+        myTable+="<td style='width: 100px; text-align: right;'>" + value + "</td></tr>";
       }
     }
 
@@ -422,7 +422,7 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, wordWindow, arXivEva
     document.getElementById("highlightedText").innerHTML = fillText;
 
     //check wikidata option (default)
-    document.getElementById("wikidataButton").checked = true;
+    document.getElementById("wikidataBtn").checked = true;
 
     //Not the best way of doing this
     //https://stackoverflow.com/questions/5786851/define-global-variable-in-a-javascript-function
@@ -465,6 +465,7 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, wordWindow, arXivEva
 
 
           switch (tokenType) {
+              //todo: clean up
               case 'Identifier':
                   console.log('Identifier');
                   hideAllBtns();

@@ -1,6 +1,7 @@
 from .sparql import Sparql
 from SPARQLWrapper import JSON
 from .sparql_queries import named_entity_query
+from .config import recommendations_limit
 
 
 class NESparql(Sparql):
@@ -9,7 +10,7 @@ class NESparql(Sparql):
     """
 
 
-    def named_entity_search(self, search_string, limit=5):
+    def named_entity_search(self, search_string):
         """
         Doesn't use fuzzy search
         :param search_string:
@@ -34,7 +35,7 @@ class NESparql(Sparql):
 
         results_dict = {}
         for i, r in enumerate(results):
-            if i == limit: break
+            if i == recommendations_limit: break
             item_description = None
             if 'itemDescription' in r:
                 item_description = r['itemDescription']['value']
