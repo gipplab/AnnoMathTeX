@@ -1,7 +1,7 @@
-from SPARQLWrapper import SPARQLWrapper, JSON
-from .sparql_queries import tex_string_query, defining_formula_query, concat_query, formula_alias_query, identifier_query
+from SPARQLWrapper import JSON
+from .sparql_queries import tex_string_query, concat_query, formula_alias_query, identifier_query
 from .sparql import Sparql
-from .config import recommendations_limit
+from ..config import recommendations_limit
 
 
 

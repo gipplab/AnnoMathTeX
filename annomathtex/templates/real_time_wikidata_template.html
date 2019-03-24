@@ -40,9 +40,6 @@
       <input type="radio" name="recommendationOptions" onclick="radioButtonClicked('Wikipedia');"> Wikipedia
     </label>
     <p id="highlightedText"></p>
-    <!--<button id="highlightBtn" onclick="highlightToken()">HIGHLIGHT</button>
-    <button id="unHighlightBtn" onclick="unHighlightToken()">UNHIGHLIGHT</button>
-    <button id="rejectHighlightBtn" onclick="rejectHighlight()" hidden="true">REJECT</button>-->
     <button id="markBtn" onclick="markAsNE()">MARK</button>
     <button id="unmarkBtn" onclick="unMarkAsNE()">UNMARK</button>
     <div id="tableholder"></div>
@@ -51,14 +48,14 @@
 
 
 <script>
-  var linked_words = "{{ TexFile.linked_words|escapejs }}";
+  var linked_words = "{{ File.linked_words|escapejs }}";
   var linked_math_symbols = "{{ TexFile.linked_math_symbols|escapejs }}";
   linkTokens(linked_words, linked_math_symbols);
 </script>
 
 
 
-{% for Line in TexFile.body %}
+{% for Line in File.body %}
     <div>
         {% for Token in Line %}
           {% if not Token.content == None %}

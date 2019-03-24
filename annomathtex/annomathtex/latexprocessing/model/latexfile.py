@@ -20,11 +20,11 @@ class LaTeXFile(models.Model):
         self.linked_words = json.dumps({'linked_words': linked_words})
         self.linked_math_symbols = json.dumps({'linked_math_symbols': linked_math_symbols})
 
-        for k in linked_math_symbols:
-            print(k, len(linked_math_symbols[k]), len(list(set(linked_math_symbols[k]))))
+        #for k in linked_math_symbols:
+        #    print(k, len(linked_math_symbols[k]), len(list(set(linked_math_symbols[k]))))
 
-        for k in linked_words:
-            print(k, len(linked_words[k]), len(list(set(linked_words[k]))))
+        #for k in linked_words:
+        #    print(k, len(linked_words[k]), len(list(set(linked_words[k]))))
 
 
         #self.test_val = json.dumps({'test': [linked_words]})

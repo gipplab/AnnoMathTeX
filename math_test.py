@@ -1,10 +1,10 @@
-#taken from https://github.com/ag-gipp/MathQa/blob/master/latexformlaidentifiers.py
-#made some changes
+# taken from https://github.com/ag-gipp/MathQa/blob/master/latexformlaidentifiers.py
+# made some changes
 
 
 import ast
 import parser
-import re
+import re as regexes
 from sympy.parsing.latex import parse_latex
 from sympy.utilities.mathml import c2p
 from sympy.core.sympify import sympify
@@ -62,24 +62,24 @@ def replace_all(text, dic):
 
 def getlatexformula(formula):
     pformula = prepformula(formula)
-    #print('In getlatexformula, pformula: {}'.format(pformula))
+    # print('In getlatexformula, pformula: {}'.format(pformula))
     f = parse_latex(pformula)
-    #print('In getlatexformula, f: {}'.format(f))
+    # print('In getlatexformula, f: {}'.format(f))
     global latexformula
     latexformula = sympify(f)
-    #print('formula: {} , latexformula: {} , pformula: {} , f: {}'.format(formula, latexformula, pformula, f))
+    # print('formula: {} , latexformula: {} , pformula: {} , f: {}'.format(formula, latexformula, pformula, f))
     return latexformula
 
 
 def evalformula(formula):
-    #print('in Latexformula')
+    # print('in Latexformula')
     latexformula = getlatexformula(formula)
-    #print('latexformula: {}'.format(latexformula))
+    # print('latexformula: {}'.format(latexformula))
     l = sympify(latexformula)
     symbol = l.atoms(Symbol)
-    #print('symbol: {} , l: {}'.format(symbol, l))
+    # print('symbol: {} , l: {}'.format(symbol, l))
     return symbol, l
-    #return symbol
+    # return symbol
 
 
 """def equality(formula, ext):
@@ -88,9 +88,9 @@ def evalformula(formula):
     lhs, rhs = formula.split(ext, 1)
     #print('lhs: {} , rhs: {}'.format(lhs, rhs))
     value = evalformula(rhs)
-    
+
     return {'lhs': lhs}
-    
+
     #return value"""
 
 
@@ -118,12 +118,30 @@ def formuladivision(formula):
 
 class FormulaSplitter:
 
-    #todo: remove special symbols
+    # todo: remove special symbols
     def __init__(self, request):
         self.formula = request
+        self.remove_special_character()
         global seprator
         seprator = formuladivision(self.formula)
 
+
+    def remove_special_character(self):
+
+        special_characters_or_patterns = [
+            '^\s\s*',
+            '\s\s*$',
+            '%',
+            #'\\s*',
+            '\\\s*'
+        ]
+
+        regex = r'|'.join(scop for scop in special_characters_or_patterns)
+        regex = '(' + regex + ')'
+
+        print('REGEX: ', regex)
+
+        self.formula = regexes.sub(regex, '', self.formula)
 
     def get_identifiers(self):
         try:
@@ -135,44 +153,13 @@ class FormulaSplitter:
         return symbols
 
     def get_formula(self):
+        print('FORMULA: ', self.formula)
         _, formula = evalformula(self.formula)
         formula_dict = {
-                    'string': str(formula),
-                    'latex': latex(formula),
-                    'mathml': mathml(formula)
-                }
-        #print('MATHML: ', formula_dict['mathml'])
+            'string': str(formula),
+            'latex': latex(formula),
+            'mathml': mathml(formula)
+        }
         return formula_dict
 
 
-    """def split(self):
-        global seprator
-
-        try:
-
-            seprator = formuladivision(self.formula)
-            symbol, formula = evalformula(self.formula)
-
-            result_dict = {
-                'symbol': symbol,
-                'formula': {
-                    'string': str(formula),
-                    'latex': latex(formula),
-                    'mathml': mathml(formula)
-                }
-            }
-        except Exception as e:
-            result_dict = None
-            print(e)
-
-        return result_dict"""
-
-
-
-
-#f = "\\frac{d}{dx} x^{2}"
-#f = "v_s=(\gamma kT/\mu m_H)"
-#f = "x=2+3"
-#c = FormulaSplitter(f).split()
-#for k in c:
-#    print(k, c[k])

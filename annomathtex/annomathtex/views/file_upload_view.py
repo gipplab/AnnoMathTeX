@@ -11,6 +11,15 @@ from ..forms.testform import TestForm
 from jquery_unparam import jquery_unparam
 import json
 from django.views.decorators.csrf import csrf_protect
+from ..latexprocessing.html_parser import foo, preprocess
+import logging
+from logging.config import dictConfig
+from ..config import logging_config_path
+import os
+
+logging.basicConfig(level=logging.DEBUG)
+#dictConfig(logging_config_path)
+__LOGGER__ = logging.getLogger(__name__)
 
 
 
@@ -27,31 +36,42 @@ class FileUploadView(View):
     save_annotation_form = {'form': SaveAnnotationForm()}
     template_name = 'file_upload_template.html'
 
+    def decode(self, request_file):
+        """
+        TeX evaluation_files are in bytes and have to be converted to string in utf-8
+        :return: list of lines (string)
+        """
+        bytes = request_file.read()
+        string = bytes.decode('utf-8')
+        return string
+
     def get(self, request, *args, **kwargs):
         form = TestForm()
         return render(request, self.template_name, {'form': form})
 
-    #@csrf_protect
     def post(self, request, *args, **kwargs):
-
-        print('IN POST')
-
-        #for k, v in request.POST.items():
-        #    print(k, v)
-
+        __LOGGER__.debug('in post')
         if 'file_submit' in request.POST:
-            print('in file submit')
+            __LOGGER__.debug('file submit')
             form = UploadFileForm(request.POST, request.FILES)
             if form.is_valid():
-                #TODO add check to see whether file is .tex
-                #latex_file = get_processed_file(request.FILES['file'])
-                latex_file = get_processed_file(request.FILES['file'])
+                file = request.FILES['file']
+                file_name = str(file)
+                if file_name.endswith('.tex'):
+                    decoded_file = self.decode(file)
+                    processed_file = get_processed_file(decoded_file)
+                    #processed_file = get_processed_file(file)
+                elif file_name.endswith('.html'):
+                    decoded_file = self.decode(file)
+                    preprocessed_file = preprocess(decoded_file)
+                    processed_file = get_processed_file(preprocessed_file)
+                else:
+                    #assuming it's a txt file
+                    pass
+
                 return render(request,
-                              #'render_file_old.html',
-                              #'render_file_template.html',
-                              #'test_template_d3.html',
                               'real_time_wikidata_template.html',
-                              {'TexFile': latex_file})
+                              {'File': processed_file})
 
             return render(request, "render_file_template.html", self.save_annotation_form)
 
@@ -62,22 +82,16 @@ class FileUploadView(View):
             annotatedWW = items['annotatedWW']
             unmarked = items['unmarked']
 
-            print(marked)
-            print(annotatedQID)
-            print(annotatedWW)
-            print(unmarked)
-
+            __LOGGER__.debug('marked {}'.format(marked))
+            __LOGGER__.debug('marked {}'.format(annotatedQID))
+            __LOGGER__.debug('marked {}'.format(annotatedWW))
+            __LOGGER__.debug('marked {}'.format(unmarked))
 
             #todo: write to database
             __MARKED__.update(marked)
             __ANNOTATED_QID__.update(annotatedQID)
             __ANNOTATED_WW__.update(annotatedWW)
             __UNMARKED__.update(unmarked)
-
-            #print('__HIGHLIGHTED__: ', __HIGHLIGHTED__)
-            #print('__ANNOTATED__: ', __ANNOTATED__)
-
-
 
 
             return HttpResponse(
@@ -88,39 +102,27 @@ class FileUploadView(View):
 
         #make wikidata queries in real time
         elif 'queryDict' in request.POST:
-            print('Wikidata Query made')
+            __LOGGER__.debug('making wikidata query...')
             items = {k: jquery_unparam(v) for (k, v) in request.POST.items()}
-            #for k in items:
-            #    print(k, items[k])
             #todo: clean up
             search_string = [k for k in items['queryDict']][0]
             token_type_dict = items['tokenType']
             token_type = [k for k in token_type_dict][0]
-            #print('SEARCH STRING: ', search_string)
 
             if token_type == 'Identifier':
-                #todo: different query?
                 wikidata_results = MathSparql().identifier_search(search_string)
-            #could change this to only allow named entitiy searches
             elif token_type == 'Word':
                 wikidata_results = NESparql().named_entity_search(search_string)
-                #print(wikidata_results)
             elif token_type == 'Formula':
-                #math_env = [k for k in items['mathEnv']][0]
-                #print(items['mathEnv'].keys())
                 m = items['mathEnv']
-                #k = [k for k in m.keys()][0]
                 k = list(m.keys())[0]
                 if m[k]:
                     math_env = k + '=' + m[k]
                 else:
                     math_env = k
 
-                print(math_env)
+                __LOGGER__.debug('math_env: {}'.format(math_env))
 
-
-                #math_env = math_env.replace('__EQUALS__', '=')
-                #wikidata_results = MathSparql().broad_search(math_env)
                 wikidata_results = MathSparql().aliases_search(math_env)
             else:
                 wikidata_results = None
@@ -129,7 +131,5 @@ class FileUploadView(View):
                 json.dumps({'wikidataResults': wikidata_results}),
                 content_type='application/json'
             )
-
-
 
         return render(request, "file_upload_template.html", self.initial)

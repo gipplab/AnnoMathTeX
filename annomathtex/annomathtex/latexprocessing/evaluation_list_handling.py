@@ -1,7 +1,6 @@
 import os
 import json
-import pprint
-from .config import recommendations_limit
+from ..config import recommendations_limit
 
 
 class WikipediaEvaluationListHandler:
@@ -35,7 +34,6 @@ class ArXivEvaluationListHandler:
     def __init__(self):
         self.evaluation_file = self.read_file()
         self.evaluation_dict = self.create_item_dict()
-        print('ArXivEvaluationListHandler')
         #print(self.evaluation_dict)
 
     def read_file(self):

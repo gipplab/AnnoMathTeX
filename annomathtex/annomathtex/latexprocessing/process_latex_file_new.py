@@ -1,22 +1,17 @@
 import re
-import nltk
 from uuid import uuid1
-from .model.word import Word
 from .model.identifier import Identifier
 from .model.formula import Formula
 from .model.empty_line import EmptyLine
 from .model.latexfile import LaTeXFile
 from .named_entity_handling import NESparql
-from .math_environment_handling import MathSparql as mathsparql
-from .named_entity_recognition import NLTK_NER, StanfordCoreNLP_NER, Spacy_NER
+from .named_entity_recognition import NLTK_NER
 from .identifier_retrieval import RakeIdentifier
 from .evaluation_list_handling import ArXivEvaluationListHandler, WikipediaEvaluationListHandler
 import json
-import time
 from .latexformlaidentifiers import FormulaSplitter
-from collections import OrderedDict
 from TexSoup import TexSoup
-from .config import *
+from ..config import recommendations_limit
 
 __line_dict__ = {}
 #contains all the NEs and Identifiers that have been found
@@ -24,8 +19,6 @@ __line_dict__ = {}
 __linked_words__ = {}
 __linked_math_symbols__ = {}
 __line_dict__2 = {}
-__index__ = 0
-
 
 def decode(request_file):
     """
@@ -98,7 +91,7 @@ def extract_words(sentence, line_num):
 
     #for word in tagged_words:
     #    if word.named_entity:
-    #        __line_dict__2[__index__] == (word.content, word.unique_id)
+    #        __line_dict__2[__index__] = (word.content, word.unique_id)
     #    __index__ += 1
 
 
@@ -106,6 +99,10 @@ def extract_words(sentence, line_num):
 
 
     return tagged_words
+
+
+def get_word_window_2():
+    pass
 
 
 def get_word_window(line_num):
@@ -135,7 +132,6 @@ def get_word_window(line_num):
             for word in reversed(__line_dict__[b]):
                 #value not yet in word window
                 if not list(filter(lambda d: d['content'] == word.content, word_window)):
-                    print('YEP')
                     word_window.append({
                         'content': word.content,
                         'unique_id': word.unique_id
@@ -218,15 +214,18 @@ def extract_identifiers(math_env, line_num):
 
     identifiers = FormulaSplitter(math_env).get_identifiers()
 
-    split_regex = "|".join(str(i) for i in identifiers)
-    split_regex = r"({})".format(split_regex)
+    try:
+        split_regex = "|".join(str(i) for i in identifiers)
+        split_regex = r"({})".format(split_regex)
+        split_math_env = re.split(split_regex, math_env)
+    except Exception:
+        split_math_env = math_env
 
-    split_math_env = re.split(split_regex, math_env)
 
     processed_maths_env = []
     for symbol in split_math_env:
 
-        if symbol in identifiers:
+        if identifiers and symbol in identifiers:
             #wikidata_result = mathsparql.broad_search(symbol)
             wikidata_result=None
             arXiv_evaluation_items = arXiv_evaluation_list_handler.check_identifiers(symbol)
@@ -276,7 +275,8 @@ def process_lines(request_file):
     :return:
     """
 
-    file = decode(request_file)
+    #file = decode(request_file)
+    file = request_file
     math_envs = get_math_envs(file)
 
 
@@ -327,27 +327,19 @@ def get_processed_file(request_file):
         identifier_retriever, \
         nesparql, mathsparql, \
         arXiv_evaluation_list_handler, \
-        wikipedia_evaluation_list_handler
+        wikipedia_evaluation_list_handler, \
+        __index__
     nesparql = NESparql()
     # mathsparql = MathSparql()
     tagger = NLTK_NER()
     identifier_retriever = RakeIdentifier()
     arXiv_evaluation_list_handler = ArXivEvaluationListHandler()
     wikipedia_evaluation_list_handler = WikipediaEvaluationListHandler()
+    __index__ = 0
     #identifier_retriever = SpaceyIdentifier()
     #tagger = Spacy_NER()
     #tagger = StanfordCoreNLP_NER()
 
 
     processed_lines = process_lines(request_file)
-
-    #for line in processed_lines:
-    #    for word in line:
-    #        if word.content in __linked_words__:
-    #            print(word.content, __linked_words__[word.content])
-
-    sun0 = __linked_words__['Sun'][0]
-    print('SUN0', sun0)
-
-
     return LaTeXFile(processed_lines, __linked_words__, __linked_math_symbols__)

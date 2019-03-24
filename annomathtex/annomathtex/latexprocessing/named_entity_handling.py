@@ -1,7 +1,8 @@
 from .sparql import Sparql
 from SPARQLWrapper import JSON
 from .sparql_queries import named_entity_query
-from .config import recommendations_limit
+#from annomathtex.annomathtex.config import recommendations_limit
+from ..config import recommendations_limit
 
 
 class NESparql(Sparql):
