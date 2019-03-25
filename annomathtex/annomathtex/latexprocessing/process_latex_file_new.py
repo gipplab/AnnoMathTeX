@@ -101,8 +101,6 @@ def extract_words(sentence, line_num):
     return tagged_words
 
 
-def get_word_window_2():
-    pass
 
 
 def get_word_window(line_num):

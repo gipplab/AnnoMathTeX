@@ -13,9 +13,7 @@ import json
 from django.views.decorators.csrf import csrf_protect
 from ..latexprocessing.html_parser import foo, preprocess
 import logging
-from logging.config import dictConfig
-from ..config import logging_config_path
-import os
+from ..latexprocessing.txt_parser import TXTParser
 
 logging.basicConfig(level=logging.DEBUG)
 #dictConfig(logging_config_path)
@@ -45,6 +43,10 @@ class FileUploadView(View):
         string = bytes.decode('utf-8')
         return string
 
+    def read(self, request_file):
+        string = request_file.read()
+        return string
+
     def get(self, request, *args, **kwargs):
         form = TestForm()
         return render(request, self.template_name, {'form': form})
@@ -55,19 +57,19 @@ class FileUploadView(View):
             __LOGGER__.debug('file submit')
             form = UploadFileForm(request.POST, request.FILES)
             if form.is_valid():
-                file = request.FILES['file']
-                file_name = str(file)
+                request_file = request.FILES['file']
+                file_name = str(request_file)
                 if file_name.endswith('.tex'):
-                    decoded_file = self.decode(file)
+                    decoded_file = self.decode(request_file)
                     processed_file = get_processed_file(decoded_file)
                     #processed_file = get_processed_file(file)
                 elif file_name.endswith('.html'):
-                    decoded_file = self.decode(file)
+                    decoded_file = self.decode(request_file)
                     preprocessed_file = preprocess(decoded_file)
                     processed_file = get_processed_file(preprocessed_file)
                 else:
                     #assuming it's a txt file
-                    pass
+                    processed_file = TXTParser(request_file)
 
                 return render(request,
                               'real_time_wikidata_template.html',
