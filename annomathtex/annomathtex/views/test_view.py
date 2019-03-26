@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from collections import OrderedDict
-from ..latexprocessing.process_latex_file import get_processed_file
 import json
 
 

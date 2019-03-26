@@ -19,7 +19,7 @@ class Parser(object, metaclass=ABCMeta):
     """
 
     def __init__(self, request_file):
-        logging.basicConfig(level=logging.DEBUG)
+        logging.basicConfig(level=logging.INFO)
         self.__LOGGER__ = logging.getLogger(__name__)
         self.tagger = NLTK_NER()
         self.file = self.decode(request_file)
@@ -209,6 +209,8 @@ class Parser(object, metaclass=ABCMeta):
 
 
     def process(self):
+
+        self.__LOGGER__.debug(' process ')
 
         self.remove_math_envs()
 

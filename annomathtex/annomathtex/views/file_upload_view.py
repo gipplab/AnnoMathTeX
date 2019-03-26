@@ -15,7 +15,7 @@ from ..latexprocessing.html_parser import foo, preprocess
 import logging
 from ..latexprocessing.txt_parser import TXTParser
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 #dictConfig(logging_config_path)
 __LOGGER__ = logging.getLogger(__name__)
 
@@ -60,17 +60,20 @@ class FileUploadView(View):
                 request_file = request.FILES['file']
                 file_name = str(request_file)
                 if file_name.endswith('.tex'):
-                    decoded_file = self.decode(request_file)
-                    processed_file = get_processed_file(decoded_file)
-                    #processed_file = get_processed_file(file)
+                    #decoded_file = self.decode(request_file)
+                    #processed_file = get_processed_file(decoded_file)
+                    processed_file = get_processed_file(request_file)
                 elif file_name.endswith('.html'):
                     decoded_file = self.decode(request_file)
                     preprocessed_file = preprocess(decoded_file)
                     processed_file = get_processed_file(preprocessed_file)
                 else:
                     #assuming it's a txt file
-                    processed_file = TXTParser(request_file)
+                    __LOGGER__.info(' text file ')
+                    processed_file = TXTParser(request_file).process()
+                    #processed_file = get_processed_file(request_file.read())
 
+                #print(processed_file)
                 return render(request,
                               'real_time_wikidata_template.html',
                               {'File': processed_file})

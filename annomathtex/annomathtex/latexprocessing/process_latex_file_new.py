@@ -28,6 +28,7 @@ def decode(request_file):
     bytes = request_file.read()
     string = bytes.decode('utf-8')
     #string_split = string.splitlines(1)
+    print('TYPE OF VARIABLE STRING IS {}'.format(type(string)))
     return string
 
 
@@ -273,11 +274,11 @@ def process_lines(request_file):
     :return:
     """
 
-    #file = decode(request_file)
-    file = request_file
+    file = decode(request_file)
+    #file = request_file
     math_envs = get_math_envs(file)
 
-
+    #math_envs = []
 
     for i, m in enumerate(math_envs):
         try:
