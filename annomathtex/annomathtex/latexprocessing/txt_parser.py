@@ -6,13 +6,19 @@ warnings.filterwarnings("ignore")
 
 class TXTParser(Parser):
 
+    def decode2(self, s, encoding="ascii", errors="ignore"):
+        return s.decode(encoding=encoding, errors=errors)
+
     def decode(self, request_file):
         #with open(request_file, 'rb') as f:
         #    bytes = request_file.read()
         #string = bytes.decode()
         #self.__LOGGER__.info('decode', type(string))
         file = request_file.read()
-        return file.decode('ascii')
+        #file = file.decode('ascii')
+        #file = file.decode('utf-8')
+        file = self.decode2(file)
+        return file
 
     def extract_math_envs(self):
         ignore = [r'\n', '', r'\s']

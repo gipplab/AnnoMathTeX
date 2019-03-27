@@ -29,8 +29,8 @@ function populateTable(wikidataResult) {
     if (wikidataResult != "None") {
 
       var myTable= "<table><tr><td style='width: 100px; color: red;'>Name</td>";
-      myTable+= "<td style='width: 100px; color: red; text-align: right;'>Wikidata QID</td>";
-
+      myTable+= "<td style='width: 100px; color: red; text-align: right;'>Wikidata QID</td></tr>";
+      //var myTable= "<table><tr><td style='width: 100px; color: red;'>Name</td></tr>";
 
       for (var i in wikidataResult){
         //var attrName = item;
@@ -47,6 +47,7 @@ function populateTable(wikidataResult) {
         //must be enclosed like this, because qid is a string value
         myTable+="<tr><td style='width: 100px;' onclick='selectQid(\"" + qid + "\")'>" + itemLabel + "</td>";
         myTable+="<td style='width: 100px; text-align: right;'>" + qid + "</td></tr>";
+        //myTable+="<tr><td style='width: 100px;' onclick='selectQid(\"" + qid + "\")'>" + itemLabel + "</td></tr>";
 
       }
       document.getElementById('tableholder').innerHTML = myTable;
@@ -110,8 +111,10 @@ function populateTableWordWindow(wordWindow) {
 
 function populateTableArXiv(arXivEvaluationItems) {
     console.log('Function: populateTableArXiv');
-    var myTable= "<table><tr><td style='width: 100px; color: red;'>Name</td>";
-    myTable+= "<td style='width: 100px; color: red; text-align: right;'>Value</td></tr>";
+    //var myTable= "<table><tr><td style='width: 100px; color: red;'>Name</td>";
+    //myTable+= "<td style='width: 100px; color: red; text-align: right;'>Value</td></tr>";
+    var myTable= "<table><tr><td style='width: 100px; color: red;'>Name</td></tr>";
+
     //var evaluationItems = arXivEvaluationItems;
     if (arXivEvaluationItems != "None") {
 
@@ -125,8 +128,10 @@ function populateTableArXiv(arXivEvaluationItems) {
         var name = item['name'];
         var value = item['value'];
 
-        myTable+="<tr><td style='width: 100px;' onclick='selectArXiv(\"" + name + "\")'>" + name + "</td>";
-        myTable+="<td style='width: 100px; text-align: right;'>" + value + "</td></tr>";
+        //myTable+="<tr><td style='width: 100px;' onclick='selectArXiv(\"" + name + "\")'>" + name + "</td>";
+        //myTable+="<td style='width: 100px; text-align: right;'>" + value + "</td></tr>";
+
+        myTable+="<tr><td style='width: 100px;' onclick='selectArXiv(\"" + name + "\")'>" + name + "</td></tr>";
 
       }
     }
@@ -154,8 +159,10 @@ function populateTableArXiv(arXivEvaluationItems) {
 function populateTableWikipedia(wikipediaEvaluationItems) {
     console.log('Function: populateTableWikipedia');
 
-    var myTable= "<table><tr><td style='width: 100px; color: red;'>Name</td>";
-    myTable+= "<td style='width: 100px; color: red; text-align: right;'>Value</td></tr>";
+    //var myTable= "<table><tr><td style='width: 100px; color: red;'>Name</td>";
+    //myTable+= "<td style='width: 100px; color: red; text-align: right;'>Value</td></tr>";
+
+    var myTable= "<table><tr><td style='width: 100px; color: red;'>Name</td></tr>";
 
     //var evaluationItems = wikipediaEvaluationItems;
     if (wikipediaEvaluationItems != "None") {
@@ -169,8 +176,10 @@ function populateTableWikipedia(wikipediaEvaluationItems) {
         var description = item['description'];
         var wikimiediaLink = item['wikimedia_link'];
 
-        myTable+="<tr><td style='width: 100px;' onclick='selectWikipedia(\"" + i + "\")'>" + description + "</td>";
-        myTable+="<td style='width: 100px; text-align: right;'>" + value + "</td></tr>";
+        //myTable+="<tr><td style='width: 100px;' onclick='selectWikipedia(\"" + i + "\")'>" + description + "</td>";
+        //myTable+="<td style='width: 100px; text-align: right;'>" + value + "</td></tr>";
+
+        myTable+="<tr><td style='width: 100px;' onclick='selectWikipedia(\"" + i + "\")'>" + description + "</td></tr>";
       }
     }
 
@@ -213,13 +222,11 @@ function handleLinkedTokens(f) {
     if (tokenContent in dicToCheck) {
         var word = dicToCheck[tokenContent];
         for (i in word) {
-            var id = word[i]
+            var id = word[i];
             f(id)
             //document.getElementById(id).style.color = 'blue';
         }
     }
-
-
 }
 
 
@@ -540,5 +547,4 @@ $(document).ready(function () {
           }
       });
     }
-
 });

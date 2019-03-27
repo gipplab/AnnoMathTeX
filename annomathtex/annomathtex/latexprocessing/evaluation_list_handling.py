@@ -22,7 +22,16 @@ class WikipediaEvaluationListHandler:
     def check_identifiers(self, symbol):
         if symbol in self.identifier_dict:
             # limit to the specified number few entries (in config file)
-            return self.identifier_dict[symbol][:recommendations_limit]
+            #print(self.identifier_dict[symbol])
+            identifier_dict_symbol = self.identifier_dict[symbol]
+            new_d = []
+            found_descriptions = []
+            for d in identifier_dict_symbol:
+                if d['description'] not in found_descriptions:
+                    new_d.append(d)
+                    found_descriptions.append(d['description'])
+            return new_d
+            #return self.identifier_dict[symbol][:recommendations_limit]
         return None
 
 
