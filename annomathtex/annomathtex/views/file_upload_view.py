@@ -14,6 +14,7 @@ from django.views.decorators.csrf import csrf_protect
 from ..latexprocessing.html_parser import foo, preprocess
 import logging
 from ..latexprocessing.txt_parser import TXTParser
+from ..latexprocessing.tex_parser import TEXParser
 
 logging.basicConfig(level=logging.INFO)
 #dictConfig(logging_config_path)
@@ -62,7 +63,9 @@ class FileUploadView(View):
                 if file_name.endswith('.tex'):
                     #decoded_file = self.decode(request_file)
                     #processed_file = get_processed_file(decoded_file)
-                    processed_file = get_processed_file(request_file)
+                    #processed_file = get_processed_file(request_file)
+                    __LOGGER__.info(' tex file ')
+                    processed_file = TEXParser(request_file).process()
                 elif file_name.endswith('.html'):
                     decoded_file = self.decode(request_file)
                     preprocessed_file = preprocess(decoded_file)
