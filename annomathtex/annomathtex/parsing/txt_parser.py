@@ -1,4 +1,4 @@
-from .parser import Parser
+from ..parsing.parser import Parser
 from bs4 import BeautifulSoup
 import warnings
 warnings.filterwarnings("ignore")

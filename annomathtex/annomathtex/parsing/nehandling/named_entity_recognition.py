@@ -5,11 +5,11 @@ This file contains several named entity taggers, that can be used to find NEs in
 
 
 import nltk
-from .model.word import Word
+from ..model.word import Word
 from uuid import uuid1
 import en_core_web_sm
 from stanfordcorenlp import StanfordCoreNLP
-from .__latex_processing_config__ import __SCNLP_PATH__
+from ..__latex_processing_config__ import __SCNLP_PATH__
 import os
 
 from abc import ABCMeta, abstractmethod

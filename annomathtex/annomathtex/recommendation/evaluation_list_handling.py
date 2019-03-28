@@ -10,7 +10,7 @@ class WikipediaEvaluationListHandler:
 
 
     def read_file(self):
-        path = os.getcwd() + '/annomathtex/latexprocessing/evaluation_files/wikipedia_list.json'
+        path = os.getcwd() + '/annomathtex/recommendation/evaluation_files/wikipedia_list.json'
         with open(path, 'r') as json_file:
             identifier_dict = json.load(json_file)
 
@@ -46,7 +46,8 @@ class ArXivEvaluationListHandler:
         #print(self.evaluation_dict)
 
     def read_file(self):
-        path = os.getcwd() + '/annomathtex/latexprocessing/evaluation_files/Evaluation_list_all.rtf'
+        #path = os.getcwd() + '/annomathtex/latexprocessing/evaluation_files/Evaluation_list_all.rtf'
+        path = os.getcwd() + '/annomathtex/recommendation/evaluation_files/Evaluation_list_all.rtf'
         with open(path, 'r') as f:
             file = f.read()
 

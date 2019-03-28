@@ -28,24 +28,6 @@ Ideas:
     
 """
 
-#import pywikibot
-
-class WikidataQidPywikibot:
-    """
-    Useful properties:
-        - P527: has part. E.g. mass-energy equivalence (E=mc^2, Q35875) has part energy (E, Q11379)
-        - P361: part of. Inverse property of has part
-        - P2534: defining formula. E.g. defining formula of mass-energy equivalence: E=mc^2
-        - P1993: TeX string
-
-    Claim object useful properties:
-        - get_sources()
-        - get_target()
-
-    pywikibot.category - listify
-    """
-    pass
-
 
 class MathSparql(Sparql):
     """

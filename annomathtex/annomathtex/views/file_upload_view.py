@@ -2,19 +2,16 @@ from django.shortcuts import render
 from django.views.generic import View
 from ..forms.uploadfileform import UploadFileForm
 from ..forms.save_annotation_form import SaveAnnotationForm
-#from ..latexprocessing.process_latex_file import get_processed_file
-from ..latexprocessing.process_latex_file_new import get_processed_file
-from ..latexprocessing.math_environment_handling import MathSparql
-from ..latexprocessing.named_entity_handling import NESparql
+from ..recommendation.math_sparql import MathSparql
+from ..recommendation.ne_sparql import NESparql
 from django.http import HttpResponse
 from ..forms.testform import TestForm
 from jquery_unparam import jquery_unparam
 import json
-from django.views.decorators.csrf import csrf_protect
-from ..latexprocessing.html_parser import foo, preprocess
+from ..parsing.html_parser import preprocess
 import logging
-from ..latexprocessing.txt_parser import TXTParser
-from ..latexprocessing.tex_parser import TEXParser
+from ..parsing.txt_parser import TXTParser
+from ..parsing.tex_parser import TEXParser
 
 logging.basicConfig(level=logging.INFO)
 #dictConfig(logging_config_path)
