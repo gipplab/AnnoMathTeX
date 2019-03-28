@@ -8,7 +8,8 @@ from ..models.identifier import Identifier
 from ..models.formula import Formula
 from ..models.empty_line import EmptyLine
 from ..models.latexfile import LaTeXFile
-from ..recommendation.evaluation_list_handling import ArXivEvaluationListHandler, WikipediaEvaluationListHandler
+from ..recommendation.arxiv_evaluation_handler import ArXivEvaluationListHandler
+from ..recommendation.wikipedia_evaluation_handler import WikipediaEvaluationListHandler
 from ..parsing.mathhandling.latexformlaidentifiers import FormulaSplitter
 from ..config import recommendations_limit
 
