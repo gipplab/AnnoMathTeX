@@ -4,10 +4,10 @@ import json
 from uuid import uuid1
 from abc import ABCMeta, abstractmethod
 from ..parsing.nehandling.named_entity_recognition import NLTK_NER
-from ..parsing.model.identifier import Identifier
-from ..parsing.model.formula import Formula
-from ..parsing.model.empty_line import EmptyLine
-from ..parsing.model.latexfile import LaTeXFile
+from ..models.identifier import Identifier
+from ..models.formula import Formula
+from ..models.empty_line import EmptyLine
+from ..models.latexfile import LaTeXFile
 from ..recommendation.evaluation_list_handling import ArXivEvaluationListHandler, WikipediaEvaluationListHandler
 from ..parsing.mathhandling.latexformlaidentifiers import FormulaSplitter
 from ..config import recommendations_limit

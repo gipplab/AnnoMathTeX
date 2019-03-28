@@ -5,7 +5,7 @@ This file contains several named entity taggers, that can be used to find NEs in
 
 
 import nltk
-from ..model.word import Word
+from ...models.word import Word
 from uuid import uuid1
 import en_core_web_sm
 from stanfordcorenlp import StanfordCoreNLP

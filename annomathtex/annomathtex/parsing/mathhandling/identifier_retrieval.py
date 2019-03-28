@@ -16,7 +16,7 @@ https://textminingonline.com/training-word2vec-model-on-english-wikipedia-by-gen
 https://textminingonline.com/getting-started-with-word2vec-and-glove-in-python
 
 """
-from annomathtex.annomathtex.parsing.model.word import Word
+from annomathtex.annomathtex.models.word import Word
 from uuid import uuid1
 from nltk.tokenize import wordpunct_tokenize
 from itertools import chain, groupby
