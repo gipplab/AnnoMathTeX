@@ -121,6 +121,29 @@ def formuladivision(formula):
         return None
 
 
+
+class ErrorHandler:
+
+    def handle(self, error):
+        message, formula, position = str(error).split('\n')
+        position = len(position)
+        if 'I expected one of these:' in message:
+            expected_char = message[-2]
+            new_formula = formula[:position] + ' {}'.format(expected_char) + formula[position:]
+            __LOGGER__.info( 'ERROHANDLER, new formula: {}'.format(new_formula))
+
+        if 'I don\'t understand this' in message:
+            new_formula = formula[:position] + formula[position+1:]
+            __LOGGER__.info('ERROHANDLER, new formula: {}'.format(new_formula))
+
+        try:
+            symbols, _ = evalformula(new_formula)
+            symbols = {str(s) for s in symbols}
+            return symbols
+        except Exception as e:
+            return self.handle(e)
+
+
 class FormulaSplitter:
 
     #todo: remove special symbols
@@ -148,7 +171,10 @@ class FormulaSplitter:
             __LOGGER__.debug(' Symbols: {}'.format(symbols))
         except Exception as e:
             __LOGGER__.error(' Error in Formula Splitter: {}'.format(e))
+            #__LOGGER__.info(' errormessage type: {}'.format(str(e)))
+            #symbols = ErrorHandler().handle(e)
             symbols = None
+
         return symbols
 
     def get_formula(self):

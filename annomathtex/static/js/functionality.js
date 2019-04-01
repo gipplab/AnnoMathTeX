@@ -28,9 +28,9 @@ function populateTable(wikidataResult) {
     //todo: change
     if (wikidataResult != "None") {
 
-      var myTable= "<table><tr><td style='width: 100px; color: red;'>Name</td>";
-      myTable+= "<td style='width: 100px; color: red; text-align: right;'>Wikidata QID</td></tr>";
-      //var myTable= "<table><tr><td style='width: 100px; color: red;'>Name</td></tr>";
+      //var myTable= "<table><tr><td style='width: 100px; color: red;'>Name</td>";
+      //myTable+= "<td style='width: 100px; color: red; text-align: right;'>Wikidata QID</td></tr>";
+      var myTable= "<table><tr><td style='width: 100px; color: red;'>Name</td></tr>";
 
       for (var i in wikidataResult){
         //var attrName = item;
@@ -45,9 +45,9 @@ function populateTable(wikidataResult) {
         wikidataReference[qid] = item;
 
         //must be enclosed like this, because qid is a string value
-        myTable+="<tr><td style='width: 100px;' onclick='selectQid(\"" + qid + "\")'>" + itemLabel + "</td>";
-        myTable+="<td style='width: 100px; text-align: right;'>" + qid + "</td></tr>";
-        //myTable+="<tr><td style='width: 100px;' onclick='selectQid(\"" + qid + "\")'>" + itemLabel + "</td></tr>";
+        //myTable+="<tr><td style='width: 100px;' onclick='selectQid(\"" + qid + "\")'>" + itemLabel + "</td>";
+        //myTable+="<td style='width: 100px; text-align: right;'>" + qid + "</td></tr>";
+        myTable+="<tr><td style='width: 100px;' onclick='selectQid(\"" + qid + "\")'>" + itemLabel + "</td></tr>";
 
       }
       document.getElementById('tableholder').innerHTML = myTable;
@@ -73,7 +73,7 @@ function populateTable(wikidataResult) {
 function populateTableWordWindow(wordWindow) {
     console.log('Function: populateTableWordWindow');
     //var recommendations = wordWindow;
-    var myTable= "<table><tr><td style='width: 100px; color: red;'>Named Entity</td></tr>";
+    var myTable= "<table><tr><td style='width: 100px; color: red;'>Name</td></tr>";
     if (wordWindow != "None") {
 
       console.log(wordWindow);

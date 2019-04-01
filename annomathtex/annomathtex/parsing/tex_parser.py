@@ -11,6 +11,7 @@ class TEXParser(Parser):
     def decode2(self, s, encoding="ascii", errors="ignore"):
         return s.decode(encoding=encoding, errors=errors)
 
+
     def decode(self, request_file):
         """
         TeX evaluation_files are in bytes and have to be converted to string in utf-8

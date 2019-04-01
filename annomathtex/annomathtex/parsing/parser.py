@@ -39,6 +39,14 @@ class Parser(object, metaclass=ABCMeta):
     def extract_math_envs(self):
         raise NotImplementedError('must be impplemented')
 
+
+    def remove_special_chars(self):
+        """
+        remove things like <href ....>
+        :return:
+        """
+        pass
+
     def remove_math_envs(self):
         """
         remove all the math environments
