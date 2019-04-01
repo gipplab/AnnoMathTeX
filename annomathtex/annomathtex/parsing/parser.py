@@ -211,8 +211,6 @@ class Parser(object, metaclass=ABCMeta):
         formula1, formula2 = self.handle_entire_formula(str(math_env), line_num)
         processed_maths_env = [formula1] + processed_maths_env + [formula2]
 
-        self.__LOGGER__.debug(' processed_math_env: {}'.format(processed_maths_env))
-
         return processed_maths_env
 
 

@@ -125,10 +125,20 @@ class FormulaSplitter:
 
     #todo: remove special symbols
     def __init__(self, request):
-        self.formula = request
+        self.formula = self.remove_special_characters(request)
         global seprator
         seprator = formuladivision(self.formula)
 
+    def remove_special_characters(self, request):
+        #intab = ""
+        #outtab = ""
+        #trantab = maketrans(intab, outtab)
+        #request_special_chars_removed =  request.translate(string.maketrans("", "", ), special_characters)
+        special_characters = ['\{', '\}']
+        request_special_chars_removed = request
+        for special_char in special_characters:
+            request_special_chars_removed = request_special_chars_removed.replace(special_char, '')
+        return request_special_chars_removed
 
 
     def get_identifiers(self):
