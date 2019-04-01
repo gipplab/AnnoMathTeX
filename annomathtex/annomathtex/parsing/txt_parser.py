@@ -37,4 +37,8 @@ class TXTParser(Parser):
         )
         return math_envs
 
+    def remove_math_tags(self):
+        self.file = self.file.replace('<math>', '')
+        self.file = self.file.replace('</math>', '')
+
 

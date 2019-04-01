@@ -69,7 +69,7 @@ class FileUploadView(View):
                     processed_file=None
                 elif file_name.endswith('.txt'):
                     __LOGGER__.info(' text file ')
-                    processed_file = TXTParser(request_file).process()
+                    processed_file = TXTParser(request_file, 'txt').process()
 
                 return render(request,
                               'real_time_wikidata_template.html',

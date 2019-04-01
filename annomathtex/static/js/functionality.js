@@ -388,8 +388,6 @@ function linkTokens(linked_words, linked_math_symbols) {
         //document.getElementById(sun[i]).style.color = "blue";
         console.log(typeof(sun[i]));
     }*/
-
-
 }
 
 

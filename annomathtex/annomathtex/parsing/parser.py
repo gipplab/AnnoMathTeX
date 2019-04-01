@@ -12,6 +12,8 @@ from ..recommendation.arxiv_evaluation_handler import ArXivEvaluationListHandler
 from ..recommendation.wikipedia_evaluation_handler import WikipediaEvaluationListHandler
 from ..parsing.mathhandling.latexformlaidentifiers import FormulaSplitter
 from ..config import recommendations_limit
+#from .tex_parser import TEXParser
+#from .txt_parser import TXTParser
 
 
 class Parser(object, metaclass=ABCMeta):
@@ -19,12 +21,14 @@ class Parser(object, metaclass=ABCMeta):
     Abstract base class for classes that need parse different input formats
     """
 
-    def __init__(self, request_file):
+    def __init__(self, request_file, file_type='tex'):
         logging.basicConfig(level=logging.DEBUG)
         self.__LOGGER__ = logging.getLogger(__name__)
         self.tagger = NLTK_NER()
         self.file = self.decode(request_file)
         self.math_envs = self.extract_math_envs()
+        if file_type == 'txt':
+            self.remove_math_tags()
         self.arXiv_evaluation_list_handler = ArXivEvaluationListHandler()
         self.wikipedia_evaluation_list_handler = WikipediaEvaluationListHandler()
         self.linked_words = {}
@@ -38,6 +42,8 @@ class Parser(object, metaclass=ABCMeta):
     @abstractmethod
     def extract_math_envs(self):
         raise NotImplementedError('must be impplemented')
+
+
 
 
     def remove_special_chars(self):
