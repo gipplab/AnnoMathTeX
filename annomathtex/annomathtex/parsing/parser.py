@@ -28,7 +28,7 @@ class Parser(object, metaclass=ABCMeta):
         self.file = self.decode(request_file)
         self.math_envs = self.extract_math_envs()
         if file_type == 'txt':
-            self.remove_math_tags()
+            self.remove_tags()
         self.arXiv_evaluation_list_handler = ArXivEvaluationListHandler()
         self.wikipedia_evaluation_list_handler = WikipediaEvaluationListHandler()
         self.linked_words = {}

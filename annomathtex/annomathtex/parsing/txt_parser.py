@@ -37,8 +37,26 @@ class TXTParser(Parser):
         )
         return math_envs
 
-    def remove_math_tags(self):
+    def extract_tags_to_remove(self):
+        soup = BeautifulSoup(self.file)
+        #tag_list = ['ref', 'sub']
+        tag_list = ['ref']
+        tags = list(soup.find_all(tag_list))
+        return tags
+
+    def remove_tags(self):
+        """
+        remove <math> tags (content is encapsulated by $
+        remove tags like <ref> ... completely since they only mess up ne recognition and add no value to file
+        :return:
+        """
+        #todo: check time and use more efficient method
         self.file = self.file.replace('<math>', '')
         self.file = self.file.replace('</math>', '')
+        print('REMOVE TAGS: {}'.format([str(tag) for tag in self.extract_tags_to_remove()]))
+        for tag in self.extract_tags_to_remove():
+            print(str(tag))
+            self.file = self.file.replace(str(tag), '')
+
 
 
