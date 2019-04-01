@@ -123,7 +123,7 @@ class Parser(object, metaclass=ABCMeta):
             return Formula(
             str(uuid1()),
             type='Formula',
-            highlight='yellow',
+            highlight='#ffa500',
             content='$',
             endline=False,
             wikidata_result=None,
@@ -183,17 +183,19 @@ class Parser(object, metaclass=ABCMeta):
                 wikidata_result = None
                 arXiv_evaluation_items = self.arXiv_evaluation_list_handler.check_identifiers(symbol)
                 wikipedia_evaluation_items = self.wikipedia_evaluation_list_handler.check_identifiers(symbol)
+                colour = '#c94f0c'
             else:
                 wikidata_result = None
                 arXiv_evaluation_items = None
                 wikipedia_evaluation_items = None
+                colour = '#5c6670'
 
             endline = True if symbol == '\n' else False
 
             id_symbol = Identifier(
                 str(uuid1()),
                 type='Identifier',
-                highlight='pink',
+                highlight=colour,
                 content=symbol,
                 endline=endline,
                 wikidata_result=json.dumps({'w': wikidata_result}),

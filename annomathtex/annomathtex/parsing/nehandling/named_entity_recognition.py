@@ -45,7 +45,7 @@ class Tagger(object, metaclass=ABCMeta):
 
     def tag(self, line_chunk):
         word_tokens = self.get_tags(line_chunk)
-
+        colour = '#973c97'
         words = []
 
         try:
@@ -56,7 +56,7 @@ class Tagger(object, metaclass=ABCMeta):
                 words.append(
                      Word(str(uuid1()),
                      type='Word',
-                     highlight="green" if is_ne else "black",
+                     highlight=colour if is_ne else "black",
                      content=word,
                      endline=True if str(word) == '\n' else False,
                      named_entity=is_ne,
