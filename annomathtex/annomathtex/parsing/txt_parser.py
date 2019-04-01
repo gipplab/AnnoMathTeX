@@ -1,5 +1,6 @@
 from ..parsing.parser import Parser
 from bs4 import BeautifulSoup
+import logging
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -24,9 +25,13 @@ class TXTParser(Parser):
         ignore = [r'\n', '', r'\s']
         soup = BeautifulSoup(self.file)
         #might work without list()
+        #todo: handle special characters,
+        # tex parser returns tuple of old,
+        # and new math_env, which is why its also necessary here
         math_envs = list(
             map(
-                lambda math_env: ' '.join(chunk for chunk in math_env.contents if chunk not in ignore),
+                lambda math_env: (' '.join(chunk for chunk in math_env.contents if chunk not in ignore),
+                                  ' '.join(chunk for chunk in math_env.contents if chunk not in ignore)),
                 list(soup.find_all('math'))
             )
         )

@@ -12,6 +12,7 @@ from ..parsing.html_parser import preprocess
 import logging
 from ..parsing.txt_parser import TXTParser
 from ..parsing.tex_parser import TEXParser
+from .posthelper import PostHelper
 
 logging.basicConfig(level=logging.INFO)
 #dictConfig(logging_config_path)
@@ -49,6 +50,8 @@ class FileUploadView(View):
         form = TestForm()
         return render(request, self.template_name, {'form': form})
 
+
+
     def post(self, request, *args, **kwargs):
         __LOGGER__.debug('in post')
         if 'file_submit' in request.POST:
@@ -58,22 +61,16 @@ class FileUploadView(View):
                 request_file = request.FILES['file']
                 file_name = str(request_file)
                 if file_name.endswith('.tex'):
-                    #decoded_file = self.decode(request_file)
-                    #processed_file = get_processed_file(decoded_file)
-                    #processed_file = get_processed_file(request_file)
                     __LOGGER__.info(' tex file ')
                     processed_file = TEXParser(request_file).process()
                 elif file_name.endswith('.html'):
                     decoded_file = self.decode(request_file)
                     preprocessed_file = preprocess(decoded_file)
-                    processed_file = get_processed_file(preprocessed_file)
-                else:
-                    #assuming it's a txt file
+                    processed_file=None
+                elif file_name.endswith('.txt'):
                     __LOGGER__.info(' text file ')
                     processed_file = TXTParser(request_file).process()
-                    #processed_file = get_processed_file(request_file.read())
 
-                #print(processed_file)
                 return render(request,
                               'real_time_wikidata_template.html',
                               {'File': processed_file})
@@ -109,7 +106,6 @@ class FileUploadView(View):
         elif 'queryDict' in request.POST:
             __LOGGER__.debug('making wikidata query...')
             items = {k: jquery_unparam(v) for (k, v) in request.POST.items()}
-            #todo: clean up
             search_string = [k for k in items['queryDict']][0]
             token_type_dict = items['tokenType']
             token_type = [k for k in token_type_dict][0]

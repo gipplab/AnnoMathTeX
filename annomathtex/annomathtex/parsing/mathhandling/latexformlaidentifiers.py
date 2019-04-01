@@ -14,6 +14,11 @@ from sympy.printing.mathml import mathml
 from sympy import *
 from collections import OrderedDict
 
+
+import logging
+logging.basicConfig(level=logging.DEBUG)
+__LOGGER__ = logging.getLogger(__name__)
+
 # import scipy.constants
 contant = {'pi': '3.141592653589793', 'golden': '1.618033988749895', 'golden_ratio': '1.618033988749895',
            'c': '299792458.0', 'speed_of_light': '299792458.0', 'mu_0': '1.2566370614359173e-06', \
@@ -125,12 +130,14 @@ class FormulaSplitter:
         seprator = formuladivision(self.formula)
 
 
+
     def get_identifiers(self):
         try:
             symbols, _ = evalformula(self.formula)
             symbols = {str(s) for s in symbols}
+            __LOGGER__.debug(' Symbols: {}'.format(symbols))
         except Exception as e:
-            print('Error in Formula Splitter: ', e)
+            __LOGGER__.error(' Error in Formula Splitter: {}'.format(e))
             symbols = None
         return symbols
 
@@ -144,35 +151,3 @@ class FormulaSplitter:
         #print('MATHML: ', formula_dict['mathml'])
         return formula_dict
 
-
-    """def split(self):
-        global seprator
-
-        try:
-
-            seprator = formuladivision(self.formula)
-            symbol, formula = evalformula(self.formula)
-
-            result_dict = {
-                'symbol': symbol,
-                'formula': {
-                    'string': str(formula),
-                    'latex': latex(formula),
-                    'mathml': mathml(formula)
-                }
-            }
-        except Exception as e:
-            result_dict = None
-            print(e)
-
-        return result_dict"""
-
-
-
-
-#f = "\\frac{d}{dx} x^{2}"
-#f = "v_s=(\gamma kT/\mu m_H)"
-#f = "x=2+3"
-#c = FormulaSplitter(f).split()
-#for k in c:
-#    print(k, c[k])

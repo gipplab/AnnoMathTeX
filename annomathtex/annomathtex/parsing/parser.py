@@ -20,7 +20,7 @@ class Parser(object, metaclass=ABCMeta):
     """
 
     def __init__(self, request_file):
-        logging.basicConfig(level=logging.INFO)
+        logging.basicConfig(level=logging.DEBUG)
         self.__LOGGER__ = logging.getLogger(__name__)
         self.tagger = NLTK_NER()
         self.file = self.decode(request_file)
@@ -46,10 +46,12 @@ class Parser(object, metaclass=ABCMeta):
         :return: file without math environments
         """
         for i, m in enumerate(self.math_envs):
+            math_env_old, math_env_specieal_chars_handled = m
+            self.__LOGGER__.debug(' in remove_math_envs() current math_env: {}'.format(m))
             try:
-                self.file = self.file.replace(m, '__MATH_ENV__', 1)
+                self.file = self.file.replace(math_env_old, '__MATH_ENV__', 1)
             except Exception as e:
-                self.__LOGGER__.error('math_env {} couldnt be replaced: {}'.format(m, e))
+                self.__LOGGER__.error('math_env {} couldnt be replaced: {}'.format(math_env_old, e))
                 continue
 
 
@@ -163,11 +165,13 @@ class Parser(object, metaclass=ABCMeta):
         math_env = math_env.replace('$', '')
 
         identifiers = FormulaSplitter(math_env).get_identifiers()
+        self.__LOGGER__.debug(' process_math_env, identifiers: {} '.format(identifiers))
 
         try:
             split_regex = "|".join(str(i) for i in identifiers)
             split_regex = r"({})".format(split_regex)
             split_math_env = re.split(split_regex, math_env)
+            self.__LOGGER__.debug(' process_math_env, split_math_env: {} '.format(split_math_env))
         except Exception as e:
             self.__LOGGER__.error('math_env {} couldnt be split: {}'.format(math_env, e))
             split_math_env = math_env
@@ -205,6 +209,8 @@ class Parser(object, metaclass=ABCMeta):
         formula1, formula2 = self.handle_entire_formula(str(math_env), line_num)
         processed_maths_env = [formula1] + processed_maths_env + [formula2]
 
+        self.__LOGGER__.debug(' processed_math_env: {}'.format(processed_maths_env))
+
         return processed_maths_env
 
 
@@ -214,6 +220,8 @@ class Parser(object, metaclass=ABCMeta):
         self.__LOGGER__.debug(' process ')
 
         self.remove_math_envs()
+
+        self.__LOGGER__.debug(' file with math_envs removed: {}'.format(self.file))
 
         #necessary?
         lines = [p for p in self.file.split('\n')]
@@ -228,7 +236,7 @@ class Parser(object, metaclass=ABCMeta):
                 processed_line.append(EmptyLine(uuid1()))
             for w in line:
                 if re.search(r'__MATH_ENV__', w.content):
-                    math_env = self.math_envs[0]
+                    _, math_env = self.math_envs[0]
                     self.math_envs.pop(0)
                     processed_math_env = self.process_math_env(math_env, line_num)
                     processed_line += processed_math_env
