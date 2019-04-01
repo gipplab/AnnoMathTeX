@@ -10,6 +10,8 @@ from uuid import uuid1
 import en_core_web_sm
 from stanfordcorenlp import StanfordCoreNLP
 from ..__latex_processing_config__ import __SCNLP_PATH__
+from nltk.corpus import stopwords
+from string import punctuation
 import os
 
 from abc import ABCMeta, abstractmethod
@@ -30,7 +32,15 @@ latex_cmds_ignore = ['\\subsection',
                      'graphicx',
                      'amssymb',
                      'amsfonts',
-                     'fontenc']
+                     'fontenc',
+                     ]
+
+stopWords = list(set(stopwords.words('english')))
+punctuation = ['!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+',
+               ',', '-', '.', '/', ':', ';', '<', '=', '>', '?', '@',
+               '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~']
+
+ignore = latex_cmds_ignore + stopWords + punctuation
 
 
 class Tagger(object, metaclass=ABCMeta):
@@ -51,7 +61,7 @@ class Tagger(object, metaclass=ABCMeta):
         try:
 
             for word, tag in word_tokens:
-                is_ne = True if tag in self.tag_list and word not in latex_cmds_ignore else False
+                is_ne = True if tag in self.tag_list and word not in ignore else False
                 #print(word, tag, is_ne)
                 words.append(
                      Word(str(uuid1()),
