@@ -20,9 +20,6 @@ logging.basicConfig(level=logging.INFO)
 #dictConfig(logging_config_path)
 __LOGGER__ = logging.getLogger(__name__)
 
-
-
-
 __MARKED__ = {}
 __ANNOTATED_QID__ = {}
 __ANNOTATED_WW__ = {}
@@ -34,7 +31,7 @@ class FileUploadView(View):
     initial = {'key': 'value'}
     save_annotation_form = {'form': SaveAnnotationForm()}
     template_name = 'file_upload_template.html'
-    file = None
+    recommendations_limit = 10
 
     def decode(self, request_file):
         """
@@ -48,6 +45,49 @@ class FileUploadView(View):
     def read(self, request_file):
         string = request_file.read()
         return string
+
+
+    def get_word_window(self, unique_id):
+        word_window = []
+        limit = int(self.recommendations_limit / 2)
+
+        if unique_id in __IDENTIFIER_LINE_DICT__:
+            line_num = __IDENTIFIER_LINE_DICT__[unique_id]
+
+        else:
+            return []
+
+        i = 0
+        #todo: fix
+        while i < limit:
+            # lines before
+            b = line_num - i
+            # lines after
+            a = line_num + i
+
+            if b in __LINE__DICT__:
+                for word in reversed(__LINE__DICT__[b]):
+                    # value not yet in word window
+                    if not list(filter(lambda d: d['content'] == word.content, word_window)):
+                        word_window.append({
+                            'content': word.content,
+                            'unique_id': word.unique_id
+                        })
+                        i += 1
+            if a in __LINE__DICT__:
+                for word in reversed(__LINE__DICT__[a]):
+                    # value not yet in word window
+                    if not list(filter(lambda d: d['content'] in word.content, word_window)):
+                        word_window.append({
+                            'content': word.content,
+                            'unique_id': word.unique_id
+                        })
+            i += 1
+
+        if not word_window:
+            word_window = [{}]
+
+        return word_window[:10]
 
     def get(self, request, *args, **kwargs):
         form = TestForm()
@@ -65,16 +105,20 @@ class FileUploadView(View):
                 file_name = str(request_file)
                 if file_name.endswith('.tex'):
                     __LOGGER__.info(' tex file ')
-                    processed_file = TEXParser(request_file).process()
+                    line_dict, identifier_line_dict, processed_file = TEXParser(request_file).process()
+                    global __LINE__DICT__, __IDENTIFIER_LINE_DICT__
+                    __LINE__DICT__ = line_dict
+                    __IDENTIFIER_LINE_DICT__ = identifier_line_dict
                 elif file_name.endswith('.html'):
                     decoded_file = self.decode(request_file)
                     preprocessed_file = preprocess(decoded_file)
                     processed_file=None
                 elif file_name.endswith('.txt'):
                     __LOGGER__.info(' text file ')
-                    processed_file = TXTParser(request_file, 'txt').process()
+                    line_dict, identifier_line_dict, processed_file = TXTParser(request_file, 'txt').process()
+                    __LINE__DICT__ = line_dict
+                    __IDENTIFIER_LINE_DICT__ = identifier_line_dict
 
-                self.file = processed_file
                 return render(request,
                               'real_time_wikidata_template.html',
                               {'File': processed_file})
@@ -113,6 +157,8 @@ class FileUploadView(View):
             search_string = [k for k in items['queryDict']][0]
             token_type_dict = items['tokenType']
             token_type = [k for k in token_type_dict][0]
+            unique_id = [k for k in items['uniqueId']][0]
+
 
 
 
@@ -122,6 +168,7 @@ class FileUploadView(View):
                 wikipedia_evaluation_list_handler = WikipediaEvaluationListHandler()
                 arXiv_evaluation_items = arXiv_evaluation_list_handler.check_identifiers(search_string)
                 wikipedia_evaluation_items = wikipedia_evaluation_list_handler.check_identifiers(search_string)
+                word_window = self.get_word_window(unique_id)
             elif token_type == 'Word':
                 wikidata_results = NESparql().named_entity_search(search_string)
                 arXiv_evaluation_items = None
@@ -144,10 +191,13 @@ class FileUploadView(View):
                 arXiv_evaluation_items = None
                 wikipedia_evaluation_items = None
 
+            #__LOGGER__.debug(' WORD WINDOW: ', word_window)
+
             return HttpResponse(
                 json.dumps({'wikidataResults': wikidata_results,
                             'arXivEvaluationItems': arXiv_evaluation_items,
-                            'wikipediaEvaluationItems': wikipedia_evaluation_items}),
+                            'wikipediaEvaluationItems': wikipedia_evaluation_items,
+                            'wordWindow': word_window}),
                 content_type='application/json'
             )
 

@@ -22,7 +22,7 @@ class Parser(object, metaclass=ABCMeta):
     """
 
     def __init__(self, request_file, file_type='tex'):
-        logging.basicConfig(level=logging.DEBUG)
+        logging.basicConfig(level=logging.INFO)
         self.__LOGGER__ = logging.getLogger(__name__)
         self.tagger = NLTK_NER()
         self.file = self.decode(request_file)
@@ -34,6 +34,9 @@ class Parser(object, metaclass=ABCMeta):
         self.linked_words = {}
         self.linked_math_symbols = {}
         self.line_dict = {}
+        #dictionary identifier ids and the line they're on
+        #needed for word window in file_upload_view
+        self.identifier_line_dict = {}
 
     @abstractmethod
     def decode(self, request_file):
@@ -193,6 +196,7 @@ class Parser(object, metaclass=ABCMeta):
         processed_maths_env = []
         for symbol in split_math_env:
 
+
             if identifiers and symbol in identifiers:
                 wikidata_result = None
                 arXiv_evaluation_items = self.arXiv_evaluation_list_handler.check_identifiers(symbol)
@@ -217,6 +221,8 @@ class Parser(object, metaclass=ABCMeta):
                 arXiv_evaluation_items=json.dumps({'arXiv_evaluation_items': arXiv_evaluation_items}),
                 wikipedia_evaluation_items=json.dumps({'wikipedia_evaluation_items': wikipedia_evaluation_items})
             )
+
+            self.identifier_line_dict[id_symbol.unique_id] = line_num
 
             processed_maths_env.append(id_symbol)
             self.form_symbol_links(id_symbol)
@@ -258,5 +264,7 @@ class Parser(object, metaclass=ABCMeta):
                     processed_line.append(w)
             processed_lines_including_maths.append(processed_line)
 
-
-        return LaTeXFile(processed_lines_including_maths, self.linked_words, self.linked_math_symbols)
+        #print('PARSER LINE DICT: ', self.line_dict)
+        #print('PARSER IDENTIFIER_LINE_DICT: ', self.identifier_line_dict)
+        latex_file = LaTeXFile(processed_lines_including_maths, self.linked_words, self.linked_math_symbols)
+        return (self.line_dict, self.identifier_line_dict, latex_file)

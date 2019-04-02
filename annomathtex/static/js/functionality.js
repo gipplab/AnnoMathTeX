@@ -78,10 +78,10 @@ function populateTableWordWindow(wordWindow) {
 
       console.log(wordWindow);
 
-      var recommendations = JSON.parse(wordWindow)['word_window'];
+      //var recommendations = JSON.parse(wordWindow)['word_window'];
 
-      for (var i in recommendations){
-        var item = recommendations[i];
+      for (var i in wordWindow){
+        var item = wordWindow[i];
         var content = item['content'];
         var unique_id = item['unique_id'];
 
@@ -395,7 +395,7 @@ function linkTokens(linked_words, linked_math_symbols) {
 AJAX FUNCTIONS USED TO POST THE REQUEST BACK TO DJANGO, WHERE THE WIKIDATA SPARQL QUERY IS EXECUTED
  */
 
-function clickToken(tokenContent, tokenUniqueId, tokenType, wordWindow, mathEnv, tokenHighlight) {
+function clickToken(tokenContent, tokenUniqueId, tokenType, mathEnv, tokenHighlight) {
 
     /*console.log(typeof(linkedWords));
     console.log(typeof(linkedMathSymbols));
@@ -446,6 +446,7 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, wordWindow, mathEnv,
                   'queryDict': tokenContent,
                   'tokenType': tokenType,
                   'mathEnv': mathEnv,
+                  'uniqueId': tokenUniqueId
                   };
 
 
@@ -467,7 +468,7 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, wordWindow, mathEnv,
                   document.getElementById("arXivBtn").hidden = false;
                   document.getElementById("wikipediaBtn").hidden = false;
                   populateTable(json['wikidataResults']);
-                  window.wordWindow = wordWindow;
+                  //window.wordWindow = wordWindow;
                   break;
               case 'Word':
                   console.log('Word');
@@ -475,7 +476,7 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, wordWindow, mathEnv,
                   document.getElementById("arXivBtn").hidden = true;
                   document.getElementById("wikipediaBtn").hidden = true;
                   populateTable(json['wikidataResults']);
-                  window.wordWindow = [];
+                  //window.wordWindow = [];
                   break;
               case 'Formula':
                   console.log('Formula');
@@ -483,12 +484,14 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, wordWindow, mathEnv,
                   document.getElementById("arXivBtn").hidden = true;
                   document.getElementById("wikipediaBtn").hidden = true;
                   populateTable(json['wikidataResults']);
-                  window.wordWindow = wordWindow;
+                  //window.wordWindow = wordWindow;
                   break;
           }
           window.wikidataResults = json['wikidataResults'];
           window.arXivEvaluationItems = json['arXivEvaluationItems'];
           window.wikipediaEvaluationItems = json['wikipediaEvaluationItems'];
+          window.wordWindow = json['wordWindow'];
+          console.log('WORD WINDOW   ', json['wordWindow']);
 
           console.log('wikidata: ', json['wikidataResults']);
           console.log('arXiv: ', json['arXivEvaluationItems']);
