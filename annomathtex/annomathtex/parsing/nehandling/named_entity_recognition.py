@@ -36,11 +36,14 @@ latex_cmds_ignore = ['\\subsection',
                      ]
 
 stopWords = list(set(stopwords.words('english')))
-punctuation = ['!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+',
+punctuation_nums = ['!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+',
                ',', '-', '.', '/', ':', ';', '<', '=', '>', '?', '@',
-               '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~']
+               '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~',
+                '0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
-ignore = latex_cmds_ignore + stopWords + punctuation
+wikitext_cmds = ['sub', 'center', 'nbsp', 'ref', 'IEEE', 'ndash', 'Cite']
+
+ignore = latex_cmds_ignore + stopWords + punctuation_nums + wikitext_cmds
 
 
 class Tagger(object, metaclass=ABCMeta):
@@ -53,6 +56,21 @@ class Tagger(object, metaclass=ABCMeta):
     def get_tags(self, line_chunk):
         raise NotImplementedError('must be implemented')
 
+    def check_is_ne(self, word, tag):
+        max_word_length = 12
+        min_word_length = 3
+
+        #todo
+
+        is_ne = True if tag in self.tag_list and \
+                word not in ignore and \
+                len(word) <= max_word_length and \
+                len(word) >= min_word_length and \
+                not list(filter(lambda c: c in punctuation_nums, word)) else False
+
+        return is_ne
+
+
     def tag(self, line_chunk):
         word_tokens = self.get_tags(line_chunk)
         colour = '#973c97'
@@ -61,8 +79,7 @@ class Tagger(object, metaclass=ABCMeta):
         try:
 
             for word, tag in word_tokens:
-                is_ne = True if tag in self.tag_list and word not in ignore else False
-                #print(word, tag, is_ne)
+                is_ne = self.check_is_ne(word, tag)
                 words.append(
                      Word(str(uuid1()),
                      type='Word',

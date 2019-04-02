@@ -157,7 +157,7 @@ class FormulaSplitter:
         #outtab = ""
         #trantab = maketrans(intab, outtab)
         #request_special_chars_removed =  request.translate(string.maketrans("", "", ), special_characters)
-        special_characters = ['\{', '\}']
+        special_characters = ['\{', '\}', '\|']
         request_special_chars_removed = request
         for special_char in special_characters:
             request_special_chars_removed = request_special_chars_removed.replace(special_char, '')
