@@ -135,17 +135,17 @@ class Parser(object, metaclass=ABCMeta):
 
         def create_formula():
             return Formula(
-            str(uuid1()),
-            type='Formula',
-            highlight='#ffa500',
-            content='$',
-            endline=False,
-            wikidata_result=None,
-            word_window=json.dumps({'word_window': self.get_word_window(line_num)}),
-            arXiv_evaluation_items=None,
-            wikipedia_evaluation_items=None,
-            math_env=math_env
-        )
+                str(uuid1()),
+                type='Formula',
+                highlight='#ffa500',
+                content='$',
+                endline=False,
+                wikidata_result=None,
+                word_window=json.dumps({'word_window': self.get_word_window(line_num)}),
+                arXiv_evaluation_items=None,
+                wikipedia_evaluation_items=None,
+                math_env=math_env
+            )
 
         formula1, formula2 = create_formula(), create_formula()
         self.form_formula_links(formula1, formula2)

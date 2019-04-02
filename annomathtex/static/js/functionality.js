@@ -118,13 +118,13 @@ function populateTableArXiv(arXivEvaluationItems) {
     //var evaluationItems = arXivEvaluationItems;
     if (arXivEvaluationItems != "None") {
 
-      var evaluationItems = JSON.parse(arXivEvaluationItems)['arXiv_evaluation_items'];
+      //var evaluationItems = JSON.parse(arXivEvaluationItems)['arXiv_evaluation_items'];
 
 
 
 
-      for (var i in evaluationItems){
-        var item = evaluationItems[i];
+      for (var i in arXivEvaluationItems){
+        var item = arXivEvaluationItems[i];
         var name = item['name'];
         var value = item['value'];
 
@@ -167,10 +167,10 @@ function populateTableWikipedia(wikipediaEvaluationItems) {
     //var evaluationItems = wikipediaEvaluationItems;
     if (wikipediaEvaluationItems != "None") {
 
-      var evaluationItems = JSON.parse(wikipediaEvaluationItems)['wikipedia_evaluation_items'];
+      //var evaluationItems = JSON.parse(wikipediaEvaluationItems)['wikipedia_evaluation_items'];
 
-      for (var i in evaluationItems){
-        var item = evaluationItems[i];
+      for (var i in wikipediaEvaluationItems){
+        var item = wikipediaEvaluationItems[i];
         var value = item['value'];
         var identifier = item['identifier'];
         var description = item['description'];
@@ -395,7 +395,7 @@ function linkTokens(linked_words, linked_math_symbols) {
 AJAX FUNCTIONS USED TO POST THE REQUEST BACK TO DJANGO, WHERE THE WIKIDATA SPARQL QUERY IS EXECUTED
  */
 
-function clickToken(tokenContent, tokenUniqueId, tokenType, wordWindow, arXivEvaluationItems, wikipediaEvaluationItems, mathEnv, tokenHighlight) {
+function clickToken(tokenContent, tokenUniqueId, tokenType, wordWindow, mathEnv, tokenHighlight) {
 
     /*console.log(typeof(linkedWords));
     console.log(typeof(linkedMathSymbols));
@@ -435,8 +435,8 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, wordWindow, arXivEva
     //https://stackoverflow.com/questions/5786851/define-global-variable-in-a-javascript-function
     window.uniqueID = tokenUniqueId;
     window.tokenContent = tokenContent;
-    window.arXivEvaluationItems = arXivEvaluationItems;
-    window.wikipediaEvaluationItems = wikipediaEvaluationItems;
+    //window.arXivEvaluationItems = arXivEvaluationItems;
+    //window.wikipediaEvaluationItems = wikipediaEvaluationItems;
     window.tokenType = tokenType;
 
 
@@ -487,6 +487,12 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, wordWindow, arXivEva
                   break;
           }
           window.wikidataResults = json['wikidataResults'];
+          window.arXivEvaluationItems = json['arXivEvaluationItems'];
+          window.wikipediaEvaluationItems = json['wikipediaEvaluationItems'];
+
+          console.log('wikidata: ', json['wikidataResults']);
+          console.log('arXiv: ', json['arXivEvaluationItems']);
+          console.log('wikipedia: ', json['wikipediaEvaluationItems']);
       },
 
       // handle a non-successful response

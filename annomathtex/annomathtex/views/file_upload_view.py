@@ -12,6 +12,8 @@ from ..parsing.html_parser import preprocess
 import logging
 from ..parsing.txt_parser import TXTParser
 from ..parsing.tex_parser import TEXParser
+from ..recommendation.arxiv_evaluation_handler import ArXivEvaluationListHandler
+from ..recommendation.wikipedia_evaluation_handler import WikipediaEvaluationListHandler
 from .posthelper import PostHelper
 
 logging.basicConfig(level=logging.INFO)
@@ -32,6 +34,7 @@ class FileUploadView(View):
     initial = {'key': 'value'}
     save_annotation_form = {'form': SaveAnnotationForm()}
     template_name = 'file_upload_template.html'
+    file = None
 
     def decode(self, request_file):
         """
@@ -71,6 +74,7 @@ class FileUploadView(View):
                     __LOGGER__.info(' text file ')
                     processed_file = TXTParser(request_file, 'txt').process()
 
+                self.file = processed_file
                 return render(request,
                               'real_time_wikidata_template.html',
                               {'File': processed_file})
@@ -110,10 +114,18 @@ class FileUploadView(View):
             token_type_dict = items['tokenType']
             token_type = [k for k in token_type_dict][0]
 
+
+
             if token_type == 'Identifier':
                 wikidata_results = MathSparql().identifier_search(search_string)
+                arXiv_evaluation_list_handler = ArXivEvaluationListHandler()
+                wikipedia_evaluation_list_handler = WikipediaEvaluationListHandler()
+                arXiv_evaluation_items = arXiv_evaluation_list_handler.check_identifiers(search_string)
+                wikipedia_evaluation_items = wikipedia_evaluation_list_handler.check_identifiers(search_string)
             elif token_type == 'Word':
                 wikidata_results = NESparql().named_entity_search(search_string)
+                arXiv_evaluation_items = None
+                wikipedia_evaluation_items = None
             elif token_type == 'Formula':
                 m = items['mathEnv']
                 k = list(m.keys())[0]
@@ -125,11 +137,17 @@ class FileUploadView(View):
                 __LOGGER__.debug('math_env: {}'.format(math_env))
 
                 wikidata_results = MathSparql().aliases_search(math_env)
+                arXiv_evaluation_items = None
+                wikipedia_evaluation_items = None
             else:
                 wikidata_results = None
+                arXiv_evaluation_items = None
+                wikipedia_evaluation_items = None
 
             return HttpResponse(
-                json.dumps({'wikidataResults': wikidata_results}),
+                json.dumps({'wikidataResults': wikidata_results,
+                            'arXivEvaluationItems': arXiv_evaluation_items,
+                            'wikipediaEvaluationItems': wikipedia_evaluation_items}),
                 content_type='application/json'
             )
 
