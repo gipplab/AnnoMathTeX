@@ -33,19 +33,15 @@ function populateTable(wikidataResult) {
       //var myTable= "<table><tr><td style='width: 100px; color: red;'>Name</td></tr>";
 
       for (var i in wikidataResult){
-        //var attrName = item;
         var item = wikidataResult[i];
         var qid = item['qid'];
-        var link = item['link'];
-        var foundString = item['found_string'];
-        var itemLabel = item['item_label'];
-        var itemDescription = item['item_description'];
+        var name = item['name'];
 
         //add the wikidata items to wikidataReference
         wikidataReference[qid] = item;
 
         //must be enclosed like this, because qid is a string value
-        myTable+="<tr><td style='width: 100px;' onclick='selectQid(\"" + qid + "\")'>" + itemLabel + "</td>";
+        myTable+="<tr><td style='width: 100px;' onclick='selectQid(\"" + qid + "\")'>" + name + "</td>";
         myTable+="<td style='width: 100px; text-align: right;'>" + qid + "</td></tr>";
         //myTable+="<tr><td style='width: 100px;' onclick='selectQid(\"" + qid + "\")'>" + itemLabel + "</td></tr>";
 
@@ -82,10 +78,9 @@ function populateTableWordWindow(wordWindow) {
 
       for (var i in wordWindow){
         var item = wordWindow[i];
-        var content = item['content'];
-        var unique_id = item['unique_id'];
+        var name = item['name'];
 
-        myTable+="<tr><td style='width: 100px;' onclick='selectWW(\"" + content + "\")'>" + content + "</td></tr>";
+        myTable+="<tr><td style='width: 100px;' onclick='selectWW(\"" + name + "\")'>" + name + "</td></tr>";
 
       }
     }
@@ -126,7 +121,6 @@ function populateTableArXiv(arXivEvaluationItems) {
       for (var i in arXivEvaluationItems){
         var item = arXivEvaluationItems[i];
         var name = item['name'];
-        var value = item['value'];
 
         //myTable+="<tr><td style='width: 100px;' onclick='selectArXiv(\"" + name + "\")'>" + name + "</td>";
         //myTable+="<td style='width: 100px; text-align: right;'>" + value + "</td></tr>";
@@ -171,15 +165,12 @@ function populateTableWikipedia(wikipediaEvaluationItems) {
 
       for (var i in wikipediaEvaluationItems){
         var item = wikipediaEvaluationItems[i];
-        var value = item['value'];
-        var identifier = item['identifier'];
-        var description = item['description'];
-        var wikimiediaLink = item['wikimedia_link'];
+        var name = item['name'];
 
         //myTable+="<tr><td style='width: 100px;' onclick='selectWikipedia(\"" + i + "\")'>" + description + "</td>";
         //myTable+="<td style='width: 100px; text-align: right;'>" + value + "</td></tr>";
 
-        myTable+="<tr><td style='width: 100px;' onclick='selectWikipedia(\"" + i + "\")'>" + description + "</td></tr>";
+        myTable+="<tr><td style='width: 100px;' onclick='selectWikipedia(\"" + i + "\")'>" + name + "</td></tr>";
       }
     }
 

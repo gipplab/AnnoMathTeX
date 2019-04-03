@@ -211,18 +211,12 @@ class MathSparql(Sparql):
         return results_dict
 
 
-    def formula_search(self, search_string, limit=5):
-
-        search_string_without_space = self.remove_whitespaces(search_string)
-
-        entire_query = self.formulate_query(
-            concat_query,
-            self.remove_special_characters(search_string_without_space)
-        )
-
-        pass
-
     def identifier_search(self, identifier_string):
+        """
+        Mainly used module
+        :param identifier_string: string of the identifier that is queried
+        :return:
+        """
 
         entire_query = self.formulate_query(
             identifier_query,
@@ -251,14 +245,12 @@ class MathSparql(Sparql):
 
             results_dict[i] = {
                 'qid': qid,
-                'link': url,
-                'found_string': None,
-                'item_label': item_label,
-                'item_description': item_description
+                #'link': url,
+                #'found_string': None,
+                'name': item_label,
+                #'item_description': item_description
             }
 
-            # results_cleaned.append(results_dict)
-        # return results_cleaned
         return results_dict
 
 

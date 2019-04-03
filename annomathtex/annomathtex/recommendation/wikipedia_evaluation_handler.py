@@ -28,7 +28,11 @@ class WikipediaEvaluationListHandler:
             found_descriptions = []
             for d in identifier_dict_symbol:
                 if d['description'] not in found_descriptions:
-                    new_d.append(d)
+                    item_dict = {
+                        'name': d['description']
+                        #'qid': todo
+                    }
+                    new_d.append(item_dict)
                     found_descriptions.append(d['description'])
             return new_d[:recommendations_limit]
             #return self.identifier_dict[symbol][:recommendations_limit]

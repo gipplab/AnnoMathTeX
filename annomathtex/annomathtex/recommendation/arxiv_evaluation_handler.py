@@ -1,5 +1,9 @@
 import os
 from ..config import recommendations_limit
+#from ..recommendation.ne_sparql import NESparql
+
+
+
 
 
 class ArXivEvaluationListHandler:
@@ -19,13 +23,15 @@ class ArXivEvaluationListHandler:
 
         return file.split('\n\n\n\n')[1:]
 
-
+    #def get_wikidata_qid(self, name):
+    #    return NESparql().named_entity_search(name)
 
     def create_item_dict(self):
 
         #print(file)
 
         item_dict = {}
+        count = 0
         for item in self.evaluation_file:
             item_parts = item.split('\n\n')
             if len(item_parts) >= 11:
@@ -36,7 +42,12 @@ class ArXivEvaluationListHandler:
                 item_dict[identifier] = list(
                     map(
                         #lambda x: (x.split()[0][:-1], x.split()[1]), item_parts[1:]
-                        lambda x: {'name': x.split()[0][:-1], 'value': x.split()[1]}, item_parts[1:]
+                        lambda x: {
+                            'name': x.split()[0][:-1],
+                            #'value': x.split()[1]
+                            #'qid': self.get_wikidata_qid(x.split()[0][:-1])
+                        },
+                        item_parts[1:]
                     )
                 )
                 #item_dict[item_parts[0]] = [tuple(x[:-1] for x in i.split()) for i in item_parts[1:]]
@@ -49,6 +60,6 @@ class ArXivEvaluationListHandler:
     def check_identifiers(self, symbol):
         if symbol in self.evaluation_dict:
             # limit to the specified number few entries (in config file)
-            return self.evaluation_dict[symbol][:recommendations_limit]
+            return self.evaluation_dict[symbol]
         return None
 

@@ -47,6 +47,23 @@ class FileUploadView(View):
         return string
 
 
+    def get_concatenated_recommendations(self, wikidata_results, arXiv_evaluation_items,
+                                         wikipedia_evaluation_items, word_window):
+        """
+        Concatenate the recommendations and show them in the first column
+        #todo: active learner
+        :param wikidata_results:
+        :param arXiv_evaluation_items:
+        :param wikipedia_evaluation_items:
+        :param word_window:
+        :return:
+        """
+        print('WIKIDATA: ', wikidata_results)
+        print('ARXIV: ', arXiv_evaluation_items)
+        print('WIKIPEDIA: ', wikipedia_evaluation_items)
+        print('WORD WINDOW: ', word_window)
+        #pass
+
     def get_word_window(self, unique_id):
         word_window = []
         limit = int(self.recommendations_limit / 2)
@@ -68,19 +85,19 @@ class FileUploadView(View):
             if b in __LINE__DICT__:
                 for word in reversed(__LINE__DICT__[b]):
                     # value not yet in word window
-                    if not list(filter(lambda d: d['content'] == word.content, word_window)):
+                    if not list(filter(lambda d: d['name'] == word.content, word_window)):
                         word_window.append({
-                            'content': word.content,
-                            'unique_id': word.unique_id
+                            'name': word.content,
+                            #'unique_id': word.unique_id
                         })
                         i += 1
             if a in __LINE__DICT__:
                 for word in reversed(__LINE__DICT__[a]):
                     # value not yet in word window
-                    if not list(filter(lambda d: d['content'] in word.content, word_window)):
+                    if not list(filter(lambda d: d['name'] in word.content, word_window)):
                         word_window.append({
-                            'content': word.content,
-                            'unique_id': word.unique_id
+                            'name': word.content,
+                            #'unique_id': word.unique_id
                         })
             i += 1
 
@@ -116,8 +133,9 @@ class FileUploadView(View):
                 elif file_name.endswith('.txt'):
                     __LOGGER__.info(' text file ')
                     line_dict, identifier_line_dict, processed_file = TXTParser(request_file, 'txt').process()
-                    __LINE__DICT__ = line_dict
-                    __IDENTIFIER_LINE_DICT__ = identifier_line_dict
+                    #global __LINE__DICT__, __IDENTIFIER_LINE_DICT__
+                    #__LINE__DICT__ = line_dict
+                    #__IDENTIFIER_LINE_DICT__ = identifier_line_dict
 
                 return render(request,
                               'real_time_wikidata_template.html',
@@ -169,6 +187,7 @@ class FileUploadView(View):
                 arXiv_evaluation_items = arXiv_evaluation_list_handler.check_identifiers(search_string)
                 wikipedia_evaluation_items = wikipedia_evaluation_list_handler.check_identifiers(search_string)
                 word_window = self.get_word_window(unique_id)
+                self.get_concatenated_recommendations(wikidata_results, arXiv_evaluation_items, wikipedia_evaluation_items, word_window)
             elif token_type == 'Word':
                 wikidata_results = NESparql().named_entity_search(search_string)
                 arXiv_evaluation_items = None
