@@ -15,6 +15,8 @@ from ..parsing.tex_parser import TEXParser
 from ..recommendation.arxiv_evaluation_handler import ArXivEvaluationListHandler
 from ..recommendation.wikipedia_evaluation_handler import WikipediaEvaluationListHandler
 from .posthelper import PostHelper
+from ..config import recommendations_limit
+from itertools import zip_longest
 
 logging.basicConfig(level=logging.INFO)
 #dictConfig(logging_config_path)
@@ -58,7 +60,31 @@ class FileUploadView(View):
         :param word_window:
         :return:
         """
+        #print(wikidata_results)
+        #print(arXiv_evaluation_items)
+        #print(wikipedia_evaluation_items)
+        #print(word_window)
+        all_recommendations = zip_longest(
+                                              wikidata_results,
+                                              arXiv_evaluation_items,
+                                              wikipedia_evaluation_items,
+                                              word_window,
+                                              fillvalue={'name':'__FOO__'}
+                                          )
+        count = 0
+        seen = ['__FOO__']
+        concatenated_recommendations = []
+        for zip_r in all_recommendations:
+            for r in zip_r:
+                if count == recommendations_limit: break
+                if r['name'] not in seen:
+                    concatenated_recommendations.append(r)
+                    seen.append(r['name'])
+                    count += 1
 
+        print('CONCATENATED: ', len(concatenated_recommendations))
+
+        return concatenated_recommendations
 
     def get_word_window(self, unique_id):
         word_window = []
@@ -173,7 +199,8 @@ class FileUploadView(View):
             token_type = [k for k in token_type_dict][0]
             unique_id = [k for k in items['uniqueId']][0]
 
-
+            concatenated_results, wikidata_results, word_window, \
+                arXiv_evaluation_items, wikipedia_evaluation_items = None, None, None, None, None
 
 
             if token_type == 'Identifier':
@@ -183,11 +210,14 @@ class FileUploadView(View):
                 arXiv_evaluation_items = arXiv_evaluation_list_handler.check_identifiers(search_string)
                 wikipedia_evaluation_items = wikipedia_evaluation_list_handler.check_identifiers(search_string)
                 word_window = self.get_word_window(unique_id)
-                self.get_concatenated_recommendations(wikidata_results, arXiv_evaluation_items, wikipedia_evaluation_items, word_window)
+                concatenated_results = self.get_concatenated_recommendations(
+                                                                                wikidata_results,
+                                                                                arXiv_evaluation_items,
+                                                                                wikipedia_evaluation_items,
+                                                                                word_window
+                                                                            )
             elif token_type == 'Word':
                 wikidata_results = NESparql().named_entity_search(search_string)
-                arXiv_evaluation_items = None
-                wikipedia_evaluation_items = None
             elif token_type == 'Formula':
                 m = items['mathEnv']
                 k = list(m.keys())[0]
@@ -199,17 +229,10 @@ class FileUploadView(View):
                 __LOGGER__.debug('math_env: {}'.format(math_env))
 
                 wikidata_results = MathSparql().aliases_search(math_env)
-                arXiv_evaluation_items = None
-                wikipedia_evaluation_items = None
-            else:
-                wikidata_results = None
-                arXiv_evaluation_items = None
-                wikipedia_evaluation_items = None
-
-            #__LOGGER__.debug(' WORD WINDOW: ', word_window)
 
             return HttpResponse(
-                json.dumps({'wikidataResults': wikidata_results,
+                json.dumps({'concatenatedResults': concatenated_results,
+                            'wikidataResults': wikidata_results,
                             'arXivEvaluationItems': arXiv_evaluation_items,
                             'wikipediaEvaluationItems': wikipedia_evaluation_items,
                             'wordWindow': word_window}),
