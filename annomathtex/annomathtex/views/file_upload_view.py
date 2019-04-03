@@ -58,11 +58,7 @@ class FileUploadView(View):
         :param word_window:
         :return:
         """
-        print('WIKIDATA: ', wikidata_results)
-        print('ARXIV: ', arXiv_evaluation_items)
-        print('WIKIPEDIA: ', wikipedia_evaluation_items)
-        print('WORD WINDOW: ', word_window)
-        #pass
+
 
     def get_word_window(self, unique_id):
         word_window = []

@@ -233,7 +233,7 @@ class MathSparql(Sparql):
         except Exception as e:
             print(e, 'Search string: ', identifier_string)
 
-        results_dict = {}
+        results_list = []
         for i, r in enumerate(results):
             if i == recommendations_limit: break
             item_description = None
@@ -243,15 +243,15 @@ class MathSparql(Sparql):
             qid = url.split('/')[-1]
             item_label = r['itemLabel']['value']
 
-            results_dict[i] = {
+            results_list.append({
                 'qid': qid,
                 #'link': url,
                 #'found_string': None,
                 'name': item_label,
                 #'item_description': item_description
-            }
+            })
 
-        return results_dict
+        return results_list
 
 
 
