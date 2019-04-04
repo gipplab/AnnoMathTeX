@@ -159,6 +159,9 @@ class FileUploadView(View):
                     #__LINE__DICT__ = line_dict
                     #__IDENTIFIER_LINE_DICT__ = identifier_line_dict
 
+                print(processed_file.linked_words)
+                print(processed_file.linked_math_symbols)
+
                 return render(request,
                               'real_time_wikidata_template.html',
                               {'File': processed_file})

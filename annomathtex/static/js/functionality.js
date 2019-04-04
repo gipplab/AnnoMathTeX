@@ -20,8 +20,8 @@ var annotatedWikipedia = {};
 
 var annotated = {};
 
-var linkedWords;
-var linkedMathSymbols;
+//var linkedWords;
+//var linkedMathSymbols;
 
 
 
@@ -80,11 +80,11 @@ function selected(name, qid, source){
     }
     ww(uniqueID);
     handleLinkedTokens(ww);
-    console.log(tokenContent + ' assigned ' + content );
+    console.log(tokenContent + ' assigned ' + name );
 }
 
 
-function handleLinkedTokens(f) {
+function handleLinkedTokens(func) {
     /*
     This function is used to annotate, mark the identical tokens in the document.
     i.e. if a word, identifier, formula is marked by the user, then all other
@@ -92,6 +92,9 @@ function handleLinkedTokens(f) {
     This function takes a function f as argument, since a lot of differnen functions need this
     functionality.
      */
+
+    console.log('linkedWords: ', linkedWords);
+    console.log('linkedMathSymbols: ', linkedMathSymbols);
 
     if (tokenType == 'Word') {
         dicToCheck = linkedWords;
@@ -104,7 +107,7 @@ function handleLinkedTokens(f) {
         var word = dicToCheck[tokenContent];
         for (i in word) {
             var id = word[i];
-            f(id)
+            func(id)
             //document.getElementById(id).style.color = 'blue';
         }
     }
@@ -173,24 +176,8 @@ function radioButtonClicked(option) {
 //store the linked tokens in a variable, to enable only having to
 //annotate a symbol, word, formula once for entire doc
 function linkTokens(linked_words, linked_math_symbols) {
-    //JSON.parse(wordWindow)['word_window'];
-    //console.log(linkedWords);
-    //console.log(linkedMathSymbols);
-    linkedWords = JSON.parse(linked_words)['linked_words'];
-    linkedMathSymbols = JSON.parse(linked_math_symbols)['linked_math_symbols'];
-
-    //console.log(linkedWords['Sun']);
-    //var sun = linkedWords['Sun'][0];
-    //console.log(linked_words);
-    //document.getElementById("SUNID").style.color = 'blue';
-    //console.log(i);
-    //document.getElementById(sun[0]).style.color = 'blue';
-    //document.getElementById(sun[1]).style.color = 'blue';
-
-    /*for (var i in sun) {
-        //document.getElementById(sun[i]).style.color = "blue";
-        console.log(typeof(sun[i]));
-    }*/
+    window.linkedWords = JSON.parse(linked_words)['linkedWords'];
+    window.linkedMathSymbols = JSON.parse(linked_math_symbols)['linkedMathSymbols'];
 }
 
 

@@ -52,7 +52,7 @@
 
 <script>
   var linked_words = "{{ File.linked_words|escapejs }}";
-  var linked_math_symbols = "{{ TexFile.linked_math_symbols|escapejs }}";
+  var linked_math_symbols = "{{ File.linked_math_symbols|escapejs }}";
   linkTokens(linked_words, linked_math_symbols);
 </script>
 

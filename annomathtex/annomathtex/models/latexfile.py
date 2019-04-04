@@ -17,8 +17,8 @@ class LaTeXFile(models.Model):
             self.handle_linked_tokens, [__linked_words__, __linked_math_symbols__]
         )
         #linked_words['Sun'] = ["TESTID"] + linked_words['Sun']
-        self.linked_words = json.dumps({'linked_words': linked_words})
-        self.linked_math_symbols = json.dumps({'linked_math_symbols': linked_math_symbols})
+        self.linked_words = json.dumps({'linkedWords': linked_words})
+        self.linked_math_symbols = json.dumps({'linkedMathSymbols': linked_math_symbols})
 
         #for k in linked_math_symbols:
         #    print(k, len(linked_math_symbols[k]), len(list(set(linked_math_symbols[k]))))
