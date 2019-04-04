@@ -18,6 +18,7 @@ var annotatedArXiv = {};
 //which is returned to Django
 var annotatedWikipedia = {};
 
+var annotated = {};
 
 var linkedWords;
 var linkedMathSymbols;
@@ -31,24 +32,6 @@ function populateTable(results, source) {
 
     console.log('populateTable, source: ', source)
 
-    switch (source) {
-        case "concatenated":
-            selectedFunction = "selectConcatenated(";
-            break;
-        case "wikidata":
-            selectedFunction = "selectWikidata(";
-            break;
-        case "wordWindow":
-            selectedFunction = "selectWW(";
-            break;
-        case "arXiv":
-            selectedFunction = "selectArXiv(";
-            break;
-        case "wikipedia":
-            selectedFunction = "selectWikipedia(";
-            break;
-    }
-
 
     var myTable= "<table><tr><td style='width: 100px; color: red;'>Name</td></tr>";
     if (results != "None"){
@@ -56,8 +39,9 @@ function populateTable(results, source) {
             var item = results[i];
             var name = item['name'];
             //var qid = item['qid'];
-            //myTable+="<tr><td style='width: 100px;' onclick='selectWW(\"" + name + "\")'>" + name + "</td></tr>";
-            myTable+="<tr><td style='width: 100px;' onclick=\"" + selectedFunction + name + "\")'>" + name + "</td></tr>";
+            var qid = null;
+            myTable+="<tr><td style='width: 100px;' onclick='selected(\"" + name + "," + qid + "," + source + "\")'>" + name + "</td></tr>";
+            //myTable+="<tr><td style='width: 100px;' onclick=\"" + selectedFunction + name + "\")'>" + name + "</td></tr>";
 
       }
       document.getElementById('tableholder').innerHTML = myTable;
@@ -77,6 +61,26 @@ function populateTable(results, source) {
       }
     };
     
+}
+
+
+function selected(name, qid, source){
+    function ww(id) {
+        if (name in annotated) {
+            annotated[name]['uniqueIDs'].push(id);
+        }
+        else {
+            annotatedWW[name] = {
+            'token': tokenContent,
+            'content': name,
+            //'wikidataInf': wikidataReference[qid],
+            'uniqueIDs': [id]
+            };
+        }
+    }
+    ww(uniqueID);
+    handleLinkedTokens(ww);
+    console.log(tokenContent + ' assigned ' + content );
 }
 
 
@@ -111,95 +115,6 @@ function handleLinkedTokens(f) {
 /*
 FUNCTIONALITY USED TO SEND THE INFORMATION ABOUT ANNOTATIONS AND HIGHLIGHTING BACK TO DJANGO
  */
-
-function selectConcatenated(name){
-    function conc(id) {
-        if (true) {
-
-        }
-
-    }
-}
-
-function selectWikidata(wikidataQid){
-    function qid(id) {
-        if (wikidataQid in annotatedWQID) {
-            annotatedWQID[wikidataQid]['uniqueIDs'].push(id);
-        }
-        else {
-            annotatedWQID[wikidataQid] = {
-            'token': tokenContent,
-            'uniqueIDs': [id],
-            'wikidataInf': wikidataReference[wikidataQid]
-            };
-        }
-    }
-    qid(uniqueID);
-    handleLinkedTokens(qid);
-    console.log(tokenContent + ' assigned ' + wikidataQid);
-}
-
-//select named entity from surrounding text
-function selectWW(content){
-    function ww(id) {
-        if (content in annotatedWW) {
-            annotatedWW[content]['uniqueIDs'].push(id);
-        }
-        else {
-            annotatedWW[content] = {
-            'token': tokenContent,
-            'content': content,
-            'uniqueIDs': [id]
-            };
-        }
-    }
-    ww(uniqueID);
-    handleLinkedTokens(ww);
-    console.log(tokenContent + ' assigned ' + content );
-}
-
-function selectArXiv(name){
-
-    function arXiv(id) {
-        if (name in annotatedArXiv) {
-            annotatedArXiv[name]['uniqueIDs'].push(id);
-        }
-        else {
-            annotatedArXiv[name] = {
-            'token': tokenContent,
-            'name': name,
-            'uniqueIDs': [id]
-            };
-        }
-    }
-
-    arXiv(uniqueID);
-    handleLinkedTokens(arXiv);
-
-    console.log(tokenContent + ' assigned ' + name );
-}
-
-function selectWikipedia(name){
-
-    function wikipedia(id) {
-        if (name in annotatedWikipedia) {
-            annotatedWikipedia[name]['uniqueIDs'].push(id);
-        }
-        else {
-            annotatedWikipedia[name] = {
-            'token': tokenContent,
-            'name': name,
-            'uniqueIDs': [id]
-            };
-        }
-    }
-
-    wikipedia(uniqueID);
-    handleLinkedTokens(wikipedia);
-    console.log(tokenContent + ' assigned ' + name );
-}
-
-
 
 
 function markAsNE() {
