@@ -1,5 +1,6 @@
 from SPARQLWrapper import SPARQLWrapper
 from abc import ABCMeta, abstractmethod
+from ..config import recommendations_limit
 import re
 
 
@@ -33,7 +34,7 @@ class Sparql(object, metaclass=ABCMeta):
 
 
     @classmethod
-    def formulate_query(self, query, search_string):
+    def formulate_query(self, query, search_string, limit=recommendations_limit):
         """
 
         :param query: tuple of query parts
@@ -41,5 +42,6 @@ class Sparql(object, metaclass=ABCMeta):
         :return: entire query
         """
         #entire_query = search_string.join(p for p in query)
-        entire_query = "\'{}\'".format(search_string).join(p for p in query)
+        #entire_query = "\'{}\'".format(search_string).join(p for p in query)
+        entire_query = query.format(search_string, limit)
         return entire_query

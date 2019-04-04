@@ -315,10 +315,7 @@ $(document).ready(function () {
                         //'csrfmiddlewaretoken': '{{ csrf_token }}',
                         'csrfmiddlewaretoken': getCookie("csrftoken"),
                         'marked': $.param(marked),
-                        'annotatedQID': $.param(annotatedWQID),
-                        'annotatedWW': $.param(annotatedWW),
-                        'annotatedArXiv': $.param(annotatedArXiv),
-                        'annotatedWikipedia': $.param(annotatedWikipedia),
+                        'annotated': $.param(annotated),
                         'unmarked': $.param(unmarked)
                         };
 

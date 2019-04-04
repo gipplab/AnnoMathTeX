@@ -91,16 +91,14 @@ formula_alias_query = (
 )
 
 
-identifier_query = (
-    """
-    SELECT ?item ?itemLabel ?itemDescription WHERE {
+identifier_query ="""
+    SELECT ?item ?itemLabel ?itemDescription WHERE {{
       ?item wdt:P416 ?def.
-      FILTER(CONTAINS(?def, """,
-    """@en))
-      SERVICE wikibase:label { bd:serviceParam wikibase:language "en" .}
-    }    
+      FILTER(CONTAINS(?def, {} @en))
+      SERVICE wikibase:label {{ bd:serviceParam wikibase:language "en" .}}
+    }}    
+    LIMIT {}
     """
-)
 
 
 
@@ -110,15 +108,15 @@ identifier_query = (
 #improve by making search fuzzy (contains) and fidning some way of limiting found instances
 #to operators, symbols, science, ...
 
-named_entity_query = ("""
+named_entity_query = """
 SELECT 
 ?item ?itemLabel ?itemDescription
-WHERE{  
-  ?item ?label """,
-"""@en.  
-  SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }    
-}
-""")
+WHERE{{  
+  ?item ?label {} @en.  
+  SERVICE wikibase:label {{ bd:serviceParam wikibase:language "en". }}    
+}}
+LIMIT {}
+"""
 
 
 named_entity_query2 = ("""

@@ -1,9 +1,15 @@
-from string import punctuation
 
 
-def t(word):
-    contains = not list(filter(lambda c: c in punctuation, word)) #else False
-    print(contains)
+s = """
+SELECT 
+?item ?itemLabel ?itemDescription
+WHERE{{  
+  ?item ?label {} @en.  
+  SERVICE wikibase:label {{ bd:serviceParam wikibase:language "en". }}    
+}}
+"""
 
 
-t('tes/t')
+p = s.format(4)
+
+print(p)

@@ -23,9 +23,8 @@ logging.basicConfig(level=logging.INFO)
 __LOGGER__ = logging.getLogger(__name__)
 
 __MARKED__ = {}
-__ANNOTATED_QID__ = {}
-__ANNOTATED_WW__ = {}
 __UNMARKED__ = {}
+__ANNOTATED__ = {}
 
 
 class FileUploadView(View):
@@ -159,8 +158,8 @@ class FileUploadView(View):
                     #__LINE__DICT__ = line_dict
                     #__IDENTIFIER_LINE_DICT__ = identifier_line_dict
 
-                print(processed_file.linked_words)
-                print(processed_file.linked_math_symbols)
+                #print(processed_file.linked_words)
+                #print(processed_file.linked_math_symbols)
 
                 return render(request,
                               'real_time_wikidata_template.html',
@@ -171,21 +170,13 @@ class FileUploadView(View):
         elif 'marked' in request.POST:
             items = {k:jquery_unparam(v) for (k,v) in request.POST.items()}
             marked = items['marked']
-            annotatedQID = items['annotatedQID']
-            annotatedWW = items['annotatedWW']
             unmarked = items['unmarked']
-
-            __LOGGER__.debug('marked {}'.format(marked))
-            __LOGGER__.debug('marked {}'.format(annotatedQID))
-            __LOGGER__.debug('marked {}'.format(annotatedWW))
-            __LOGGER__.debug('marked {}'.format(unmarked))
+            annotated = items['annotated']
 
             #todo: write to database
             __MARKED__.update(marked)
-            __ANNOTATED_QID__.update(annotatedQID)
-            __ANNOTATED_WW__.update(annotatedWW)
             __UNMARKED__.update(unmarked)
-
+            __ANNOTATED__.update(annotated)
 
             return HttpResponse(
                 json.dumps({'testkey': 'testvalue'}),
