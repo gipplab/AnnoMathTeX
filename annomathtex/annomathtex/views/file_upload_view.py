@@ -64,6 +64,7 @@ class FileUploadView(View):
         #print(arXiv_evaluation_items)
         #print(wikipedia_evaluation_items)
         #print(word_window)
+
         all_recommendations = zip_longest(
                                               wikidata_results,
                                               arXiv_evaluation_items,
@@ -82,7 +83,6 @@ class FileUploadView(View):
                     seen.append(r['name'])
                     count += 1
 
-        print('CONCATENATED: ', len(concatenated_recommendations))
 
         return concatenated_recommendations
 

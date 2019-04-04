@@ -36,5 +36,5 @@ class WikipediaEvaluationListHandler:
                     found_descriptions.append(d['description'])
             return new_d[:recommendations_limit]
             #return self.identifier_dict[symbol][:recommendations_limit]
-        return None
+        return []
 

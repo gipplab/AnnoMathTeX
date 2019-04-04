@@ -61,5 +61,5 @@ class ArXivEvaluationListHandler:
         if symbol in self.evaluation_dict:
             # limit to the specified number few entries (in config file)
             return self.evaluation_dict[symbol]
-        return None
+        return []
 

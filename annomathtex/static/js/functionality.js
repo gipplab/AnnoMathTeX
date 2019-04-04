@@ -23,32 +23,46 @@ var linkedWords;
 var linkedMathSymbols;
 
 
-function populateTable(wikidataResult) {
-    console.log('Function: populateTable');
-    //todo: change
-    if (wikidataResult != "None") {
 
-      var myTable= "<table><tr><td style='width: 100px; color: red;'>Name</td>";
-      myTable+= "<td style='width: 100px; color: red; text-align: right;'>Wikidata QID</td></tr>";
-      //var myTable= "<table><tr><td style='width: 100px; color: red;'>Name</td></tr>";
+function populateTable(results, source) {
+    /*
+    possible sources: concatenated, wikidata, wordWindow, arXiv, wikipedia
+     */
 
-      for (var i in wikidataResult){
-        var item = wikidataResult[i];
-        var qid = item['qid'];
-        var name = item['name'];
+    console.log('populateTable, source: ', source)
 
-        //add the wikidata items to wikidataReference
-        wikidataReference[qid] = item;
+    switch (source) {
+        case "concatenated":
+            selectedFunction = "selectConcatenated(";
+            break;
+        case "wikidata":
+            selectedFunction = "selectWikidata(";
+            break;
+        case "wordWindow":
+            selectedFunction = "selectWW(";
+            break;
+        case "arXiv":
+            selectedFunction = "selectArXiv(";
+            break;
+        case "wikipedia":
+            selectedFunction = "selectWikipedia(";
+            break;
+    }
 
-        //must be enclosed like this, because qid is a string value
-        myTable+="<tr><td style='width: 100px;' onclick='selectQid(\"" + qid + "\")'>" + name + "</td>";
-        myTable+="<td style='width: 100px; text-align: right;'>" + qid + "</td></tr>";
-        //myTable+="<tr><td style='width: 100px;' onclick='selectQid(\"" + qid + "\")'>" + itemLabel + "</td></tr>";
+
+    var myTable= "<table><tr><td style='width: 100px; color: red;'>Name</td></tr>";
+    if (results != "None"){
+        for (var i in results){
+            var item = results[i];
+            var name = item['name'];
+            //var qid = item['qid'];
+            //myTable+="<tr><td style='width: 100px;' onclick='selectWW(\"" + name + "\")'>" + name + "</td></tr>";
+            myTable+="<tr><td style='width: 100px;' onclick=\"" + selectedFunction + name + "\")'>" + name + "</td></tr>";
 
       }
       document.getElementById('tableholder').innerHTML = myTable;
-    }
 
+    }
     var modal = document.getElementById("popupModal");
     modal.style.display = "block";
 
@@ -62,136 +76,8 @@ function populateTable(wikidataResult) {
         modal.style.display = "none";
       }
     };
+    
 }
-
-
-
-function populateTableWordWindow(wordWindow) {
-    console.log('Function: populateTableWordWindow');
-    //var recommendations = wordWindow;
-    var myTable= "<table><tr><td style='width: 100px; color: red;'>Name</td></tr>";
-    if (wordWindow != "None") {
-
-      console.log(wordWindow);
-
-      //var recommendations = JSON.parse(wordWindow)['word_window'];
-
-      for (var i in wordWindow){
-        var item = wordWindow[i];
-        var name = item['name'];
-
-        myTable+="<tr><td style='width: 100px;' onclick='selectWW(\"" + name + "\")'>" + name + "</td></tr>";
-
-      }
-    }
-
-    document.getElementById('tableholder').innerHTML = myTable;
-
-    var modal = document.getElementById("popupModal");
-    modal.style.display = "block";
-
-    var span = document.getElementById("span");
-    span.onclick = function () {
-      modal.style.display = "none";
-    };
-
-    window.onclick = function(event) {
-      if (event.target == modal) {
-        modal.style.display = "none";
-      }
-    };
-}
-
-
-
-function populateTableArXiv(arXivEvaluationItems) {
-    console.log('Function: populateTableArXiv');
-    //var myTable= "<table><tr><td style='width: 100px; color: red;'>Name</td>";
-    //myTable+= "<td style='width: 100px; color: red; text-align: right;'>Value</td></tr>";
-    var myTable= "<table><tr><td style='width: 100px; color: red;'>Name</td></tr>";
-
-    //var evaluationItems = arXivEvaluationItems;
-    if (arXivEvaluationItems != "None") {
-
-      //var evaluationItems = JSON.parse(arXivEvaluationItems)['arXiv_evaluation_items'];
-
-
-
-
-      for (var i in arXivEvaluationItems){
-        var item = arXivEvaluationItems[i];
-        var name = item['name'];
-
-        //myTable+="<tr><td style='width: 100px;' onclick='selectArXiv(\"" + name + "\")'>" + name + "</td>";
-        //myTable+="<td style='width: 100px; text-align: right;'>" + value + "</td></tr>";
-
-        myTable+="<tr><td style='width: 100px;' onclick='selectArXiv(\"" + name + "\")'>" + name + "</td></tr>";
-
-      }
-    }
-
-    document.getElementById('tableholder').innerHTML = myTable;
-
-    var modal = document.getElementById("popupModal");
-    modal.style.display = "block";
-
-    var span = document.getElementById("span");
-    span.onclick = function () {
-      modal.style.display = "none";
-    };
-
-    window.onclick = function(event) {
-      if (event.target == modal) {
-        modal.style.display = "none";
-      }
-    };
-}
-
-
-
-
-function populateTableWikipedia(wikipediaEvaluationItems) {
-    console.log('Function: populateTableWikipedia');
-
-    //var myTable= "<table><tr><td style='width: 100px; color: red;'>Name</td>";
-    //myTable+= "<td style='width: 100px; color: red; text-align: right;'>Value</td></tr>";
-
-    var myTable= "<table><tr><td style='width: 100px; color: red;'>Name</td></tr>";
-
-    //var evaluationItems = wikipediaEvaluationItems;
-    if (wikipediaEvaluationItems != "None") {
-
-      //var evaluationItems = JSON.parse(wikipediaEvaluationItems)['wikipedia_evaluation_items'];
-
-      for (var i in wikipediaEvaluationItems){
-        var item = wikipediaEvaluationItems[i];
-        var name = item['name'];
-
-        //myTable+="<tr><td style='width: 100px;' onclick='selectWikipedia(\"" + i + "\")'>" + description + "</td>";
-        //myTable+="<td style='width: 100px; text-align: right;'>" + value + "</td></tr>";
-
-        myTable+="<tr><td style='width: 100px;' onclick='selectWikipedia(\"" + i + "\")'>" + name + "</td></tr>";
-      }
-    }
-
-    document.getElementById('tableholder').innerHTML = myTable;
-
-
-    var modal = document.getElementById("popupModal");
-    modal.style.display = "block";
-
-    var span = document.getElementById("span");
-    span.onclick = function () {
-      modal.style.display = "none";
-    };
-
-    window.onclick = function(event) {
-      if (event.target == modal) {
-        modal.style.display = "none";
-      }
-    };
-}
-
 
 
 function handleLinkedTokens(f) {
@@ -226,8 +112,16 @@ function handleLinkedTokens(f) {
 FUNCTIONALITY USED TO SEND THE INFORMATION ABOUT ANNOTATIONS AND HIGHLIGHTING BACK TO DJANGO
  */
 
+function selectConcatenated(name){
+    function conc(id) {
+        if (true) {
 
-function selectQid(wikidataQid){
+        }
+
+    }
+}
+
+function selectWikidata(wikidataQid){
     function qid(id) {
         if (wikidataQid in annotatedWQID) {
             annotatedWQID[wikidataQid]['uniqueIDs'].push(id);
@@ -337,21 +231,24 @@ function unMarkAsNE() {
 
 function radioButtonClicked(option) {
     switch (String(option)) {
+        case 'Concatenated':
+            populateTable(concatenatedResults, 'concatenated');
+            console.log('OPTION: CONCATENATED')
+            break;
         case 'Wikidata':
-            //if ()
-            populateTable(wikidataResults);
+            populateTable(wikidataResults, 'wikidata');
             console.log('OPTION: WIKDIATA');
             break;
         case 'WordWindow':
-            populateTableWordWindow(wordWindow);
+            populateTable(wordWindow, 'wordWindow');
             console.log('OPTION: WORD WINDOW');
             break;
         case 'arXiv':
-            populateTableArXiv(arXivEvaluationItems);
+            populateTable(arXivEvaluationItems, 'arXiv');
             console.log('OPTION: arXiv');
             break;
         case 'Wikipedia':
-            populateTableWikipedia(wikipediaEvaluationItems);
+            populateTable(wikipediaEvaluationItems, 'wikipedia');
             console.log('OPTION: Wikipedia');
             break;
     }
@@ -458,35 +355,32 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, mathEnv, tokenHighli
                   document.getElementById("wordWindowBtn").hidden = false;
                   document.getElementById("arXivBtn").hidden = false;
                   document.getElementById("wikipediaBtn").hidden = false;
-                  populateTable(json['wikidataResults']);
-                  //window.wordWindow = wordWindow;
                   break;
               case 'Word':
                   console.log('Word');
                   document.getElementById("wordWindowBtn").hidden = true;
                   document.getElementById("arXivBtn").hidden = true;
                   document.getElementById("wikipediaBtn").hidden = true;
-                  populateTable(json['wikidataResults']);
-                  //window.wordWindow = [];
                   break;
               case 'Formula':
                   console.log('Formula');
                   document.getElementById("wordWindowBtn").hidden = false;
                   document.getElementById("arXivBtn").hidden = true;
                   document.getElementById("wikipediaBtn").hidden = true;
-                  populateTable(json['wikidataResults']);
-                  //window.wordWindow = wordWindow;
                   break;
           }
+          window.concatenatedResults = json['concatenatedResults'];
           window.wikidataResults = json['wikidataResults'];
           window.arXivEvaluationItems = json['arXivEvaluationItems'];
           window.wikipediaEvaluationItems = json['wikipediaEvaluationItems'];
           window.wordWindow = json['wordWindow'];
-          console.log('WORD WINDOW   ', json['wordWindow']);
 
-          console.log('wikidata: ', json['wikidataResults']);
-          console.log('arXiv: ', json['arXivEvaluationItems']);
-          console.log('wikipedia: ', json['wikipediaEvaluationItems']);
+          populateTable(json['concatenatedResults'], 'concatenated');
+
+          //console.log('WORD WINDOW   ', json['wordWindow']);
+          //console.log('wikidata: ', json['wikidataResults']);
+          //console.log('arXiv: ', json['arXivEvaluationItems']);
+          //console.log('wikipedia: ', json['wikipediaEvaluationItems']);
       },
 
       // handle a non-successful response

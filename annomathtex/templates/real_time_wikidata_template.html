@@ -27,8 +27,11 @@
   <!-- Modal content -->
   <div class="modal-content">
     <span class="close" id="span">&times;</span>
+    <label id="concatenatedLabel">
+      <input type="radio" name="recommendationOptions" id="concatenatedBtn" onclick="radioButtonClicked('Concatenated');" checked> Concatenated
+    </label>
     <label>
-      <input type="radio" name="recommendationOptions" id="wikidataBtn" onclick="radioButtonClicked('Wikidata');" checked> Wikidata
+      <input type="radio" name="recommendationOptions" id="wikidataBtn" onclick="radioButtonClicked('Wikidata');"> Wikidata
     </label>
     <label id="wordWindowBtn">
       <input type="radio" name="recommendationOptions" onclick="radioButtonClicked('WordWindow');"> Word Window
