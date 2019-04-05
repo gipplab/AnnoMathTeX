@@ -7,7 +7,7 @@ This file contains several named entity taggers, that can be used to find NEs in
 import nltk
 from ...models.word import Word
 from uuid import uuid1
-import en_core_web_sm
+#import en_core_web_sm
 from stanfordcorenlp import StanfordCoreNLP
 from ..__latex_processing_config__ import __SCNLP_PATH__
 from nltk.corpus import stopwords
@@ -191,7 +191,8 @@ class Spacy_NER(Tagger):
 
     def __init__(self):
         super().__init__()
-        self.nlp = en_core_web_sm.load()
+        #self.nlp = en_core_web_sm.load()
+        self.nlp = None
         self.tag_list = ['NOUN', 'PROPN']
 
 

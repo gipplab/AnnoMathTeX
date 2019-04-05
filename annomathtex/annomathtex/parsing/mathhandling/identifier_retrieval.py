@@ -98,14 +98,15 @@ class RakeIdentifier:
 
 
 ########### Spacey ##############
-import en_core_web_sm
+#import en_core_web_sm
 
 
 class SpaceyIdentifier:
     """
     Right now uses named entities, maybe it would be better to use pos tags (e.g. PNOUN)
     """
-    nlp = en_core_web_sm.load()
+    #nlp = en_core_web_sm.load()+
+    nlp = None
     test_text = "The case could escalate tensions between China and the US says Donald Trump."
 
     def extract_identifiers(self, line_chunk):
