@@ -30,7 +30,7 @@ function populateTable(results, source) {
     possible sources: concatenated, wikidata, wordWindow, arXiv, wikipedia
      */
 
-    console.log('populateTable, source: ', source)
+    console.log('populateTable, source: ', source);
 
 
     var myTable= "<table><tr><td style='width: 100px; color: red;'>Name</td></tr>";
@@ -151,7 +151,7 @@ function radioButtonClicked(option) {
     switch (String(option)) {
         case 'Concatenated':
             populateTable(concatenatedResults, 'concatenated');
-            console.log('OPTION: CONCATENATED')
+            console.log('OPTION: CONCATENATED');
             break;
         case 'Wikidata':
             populateTable(wikidataResults, 'wikidata');
@@ -219,7 +219,13 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, mathEnv, tokenHighli
     document.getElementById("highlightedText").innerHTML = fillText;
 
     //check wikidata option (default)
-    document.getElementById("wikidataBtn").checked = true;
+    if (tokenType == 'Word'){
+        document.getElementById("wikidataBtn").checked = true;
+    }
+    else {
+        document.getElementById("concatenatedLabel").checked = true;
+    }
+
 
     //Not the best way of doing this
     //https://stackoverflow.com/questions/5786851/define-global-variable-in-a-javascript-function
@@ -254,21 +260,27 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, mathEnv, tokenHighli
               //todo: clean up
               case 'Identifier':
                   console.log('Identifier');
-                  document.getElementById("wordWindowBtn").hidden = false;
-                  document.getElementById("arXivBtn").hidden = false;
-                  document.getElementById("wikipediaBtn").hidden = false;
+                  document.getElementById("concatenatedLabel").hidden = false;
+                  document.getElementById("wordWindowLabel").hidden = false;
+                  document.getElementById("arXivLabel").hidden = false;
+                  document.getElementById("wikipediaLabel").hidden = false;
+                  document.getElementById("concatenatedBtn").checked = true;
                   break;
               case 'Word':
                   console.log('Word');
-                  document.getElementById("wordWindowBtn").hidden = true;
-                  document.getElementById("arXivBtn").hidden = true;
-                  document.getElementById("wikipediaBtn").hidden = true;
+                  document.getElementById("concatenatedLabel").hidden = true;
+                  document.getElementById("wordWindowLabel").hidden = true;
+                  document.getElementById("arXivLabel").hidden = true;
+                  document.getElementById("wikipediaLabel").hidden = true;
+                  document.getElementById("wikidataBtn").checked = true;
                   break;
               case 'Formula':
                   console.log('Formula');
-                  document.getElementById("wordWindowBtn").hidden = false;
-                  document.getElementById("arXivBtn").hidden = true;
-                  document.getElementById("wikipediaBtn").hidden = true;
+                  document.getElementById("concatenatedLabel").hidden = false;
+                  document.getElementById("wordWindowLabel").hidden = false;
+                  document.getElementById("arXivLabel").hidden = true;
+                  document.getElementById("wikipediaLabel").hidden = true;
+                  document.getElementById("concatenatedBtn").checked = true;
                   break;
           }
           window.concatenatedResults = json['concatenatedResults'];
