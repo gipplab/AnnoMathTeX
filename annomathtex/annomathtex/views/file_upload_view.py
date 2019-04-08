@@ -14,7 +14,6 @@ from ..parsing.txt_parser import TXTParser
 from ..parsing.tex_parser import TEXParser
 from ..recommendation.arxiv_evaluation_handler import ArXivEvaluationListHandler
 from ..recommendation.wikipedia_evaluation_handler import WikipediaEvaluationListHandler
-from .posthelper import PostHelper
 from ..config import recommendations_limit
 from itertools import zip_longest
 

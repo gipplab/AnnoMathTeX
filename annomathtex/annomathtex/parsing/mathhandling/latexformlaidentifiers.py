@@ -2,17 +2,9 @@
 #made some changes
 
 
-import ast
-import parser
-import re
+
 from sympy.parsing.latex import parse_latex
-from sympy.utilities.mathml import c2p
-from sympy.core.sympify import sympify
-from sympy import Number, NumberSymbol, Symbol
-from sympy.printing.latex import latex
-from sympy.printing.mathml import mathml
 from sympy import *
-from collections import OrderedDict
 
 
 import logging

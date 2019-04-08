@@ -16,7 +16,7 @@ https://textminingonline.com/training-word2vec-model-on-english-wikipedia-by-gen
 https://textminingonline.com/getting-started-with-word2vec-and-glove-in-python
 
 """
-from annomathtex.annomathtex.models.word import Word
+"""from annomathtex.annomathtex.models.word import Word
 from uuid import uuid1
 from nltk.tokenize import wordpunct_tokenize
 from itertools import chain, groupby
@@ -28,8 +28,6 @@ import re
 # https://github.com/csurfer/rake-nltk
 from rake_nltk import Rake
 from nltk.corpus import stopwords
-
-
 class RakeIdentifier:
     #todo: add wikidata query check to see whether the found keywords are e.g. part of science
 
@@ -37,11 +35,7 @@ class RakeIdentifier:
     test_text = "The case could escalate tensions between China and the US."
 
     def get_ranks(self, line_chunk):
-        """
-        Calculate the ranks for phrases within the line
-        :param line_chunk:
-        :return:
-        """
+        #Calculate the ranks for phrases within the line
         self.r.extract_keywords_from_text(line_chunk)
 
         #phrases sorted highest to lowest
@@ -50,13 +44,11 @@ class RakeIdentifier:
         return rank_dict
 
     def extract_identifiers(self, line_chunk, cutoff=7.0):
-        """
-        loading the stopwords takes quite long I think
-        :param line_chunk:
-        :param endline:
-        :param cutoff: minimum value for rank, in order for the word to be highlighted
-        :return:
-        """
+        #loading the stopwords takes quite long I think
+        #:param line_chunk:
+        #:param endline:
+        #:param cutoff: minimum value for rank, in order for the word to be highlighted
+
         rank_dict = self.get_ranks(line_chunk)
 
         # All things which act as sentence breaks during keyword extraction.
@@ -102,9 +94,7 @@ class RakeIdentifier:
 
 
 class SpaceyIdentifier:
-    """
-    Right now uses named entities, maybe it would be better to use pos tags (e.g. PNOUN)
-    """
+    #Right now uses named entities, maybe it would be better to use pos tags (e.g. PNOUN)
     #nlp = en_core_web_sm.load()+
     nlp = None
     test_text = "The case could escalate tensions between China and the US says Donald Trump."
@@ -130,9 +120,4 @@ class SpaceyIdentifier:
         #    words[-1].endline = True
 
 
-        return words
-
-
-
-
-
+        return words"""

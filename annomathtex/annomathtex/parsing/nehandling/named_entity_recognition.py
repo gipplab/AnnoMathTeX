@@ -7,12 +7,7 @@ This file contains several named entity taggers, that can be used to find NEs in
 import nltk
 from ...models.word import Word
 from uuid import uuid1
-#import en_core_web_sm
-from stanfordcorenlp import StanfordCoreNLP
-from ..__latex_processing_config__ import __SCNLP_PATH__
 from nltk.corpus import stopwords
-from string import punctuation
-import os
 
 from abc import ABCMeta, abstractmethod
 
@@ -120,10 +115,14 @@ class NLTK_NER(Tagger):
 
 
 
+"""
+#import en_core_web_sm
+#from stanfordcorenlp import StanfordCoreNLP
+#from ..__latex_processing_config__ import __SCNLP_PATH__
+
 class StanfordCoreNLP_NER(Tagger):
-    """
-    has to be started in different terminal...
-    """
+    #has to be started in different terminal...
+    
 
 
     def __init__(self):
@@ -131,11 +130,8 @@ class StanfordCoreNLP_NER(Tagger):
         self.nlp = self.SCNLP()
 
     def start_corenlp(self):
-        """
-        Only has to be started once
-        When to kill?
-        :return:
-        """
+        #Only has to be started once
+        #When to kill?
         print("Starting CoreNLP Server")
         # path_to_libs = os.path.join(os.path.dirname(__file__)) + "/resources/corenlp/stanford-corenlp-full-2018-10-05"
         path_to_libs = __SCNLP_PATH__
@@ -149,11 +145,9 @@ class StanfordCoreNLP_NER(Tagger):
 
     class SCNLP:
         def __init__(self, host='http://localhost', port=9000):
-            """
-            Initializes connection to the localhost StanfordCoreNLP server
-            :param host: hostname of the local server
-            :param port: of the server
-            """
+            #Initializes connection to the localhost StanfordCoreNLP server
+            #:param host: hostname of the local server
+            #:param port: of the server
             self.nlp = StanfordCoreNLP(host, port=port,
                                        timeout=30000)
             # logging_level = logging.INFO)
@@ -179,15 +173,15 @@ class StanfordCoreNLP_NER(Tagger):
 
 
 class Spacy_NER(Tagger):
-    """
-    Looks quite promising, as it has several 'types' that words are tagged with, one of which is 'QUANTITY'
-    These can be accessed through word.ent_type
+    
+    #Looks quite promising, as it has several 'types' that words are tagged with, one of which is 'QUANTITY'
+    #These can be accessed through word.ent_type
 
-    https://towardsdatascience.com/named-entity-recognition-with-nltk-and-spacy-8c4a7d88e7da
+    #https://towardsdatascience.com/named-entity-recognition-with-nltk-and-spacy-8c4a7d88e7da
 
-    Spacey has the feature of recognizing multiple words that belong together.
-    Implemented this in identifier retrieval.
-    """
+    #Spacey has the feature of recognizing multiple words that belong together.
+    #Implemented this in identifier retrieval.
+    
 
     def __init__(self):
         super().__init__()
@@ -201,4 +195,4 @@ class Spacy_NER(Tagger):
         #s = ["QUANTITY", "ORDINAL", "CARDINAL"]
         #test = [(word.text, word.ent_type_) for word in self.nlp(line_chunk) if word.ent_type_ in s]
         #if test: print(test)
-        return word_tokens
+        return word_tokens"""
