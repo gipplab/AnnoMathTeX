@@ -4,38 +4,10 @@ from .sparql import Sparql
 from ..config import recommendations_limit
 
 
-
-"""
-Math environment handling involves the revognition of formulae and identifiers.
-These have to be recognised as being individual parts.
-Then values from the surrounding text (NLP) should be associated with them,
-and/or the corresponding wikidata Qid added.
-
-Wikidata Qid can be extracted using
-    - pywikibot
-    - sparql
-
-Steps:
-    - extract math environment
-    - extract identifiers
-    - extract formulae
-        -should add some kind of fuzzy string matching
-    - access wikidata
-    - find Qid
-
-Ideas:
-    - Crawl wikidata, extracting all physical quanities
-    
-"""
-
-
 class MathSparql(Sparql):
     """
-    import queries from separate file
-    todo: remove redundancy
-    """
-    #sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
 
+    """
 
     def aliases_search(self, search_string):
 
@@ -48,18 +20,14 @@ class MathSparql(Sparql):
             search_string_processed
         )
 
-        print('ENTIRE QUERY: ', entire_query)
-
         results = []
         try:
             self.sparql.setQuery(entire_query)
             self.sparql.setReturnFormat(JSON)
             query_results = self.sparql.query().convert()
-            results = query_results['results']['bindings']  # [0]
-            # results_cleaned = []
+            results = query_results['results']['bindings']
         except Exception as e:
-            #print(e, 'Search string: ', search_string)
-            print(e)
+            self.__LOGGER__.error(e)
 
         results_dict = {}
         for i, r in enumerate(results):
@@ -79,8 +47,6 @@ class MathSparql(Sparql):
                 'item_description': item_description
             }
 
-            # results_cleaned.append(results_dict)
-        # return results_cleaned
         return results_dict
 
 

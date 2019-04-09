@@ -4,6 +4,7 @@ from ..config import recommendations_limit
 
 
 class WikipediaEvaluationListHandler:
+    #todo: documentation
 
     def __init__(self):
         self.identifier_dict = self.read_file()

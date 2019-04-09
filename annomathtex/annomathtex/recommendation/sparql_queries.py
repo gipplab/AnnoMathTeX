@@ -27,75 +27,60 @@ Steps:
 
 Important:
     - mass: quantity symbol (P416): m
+
+
+
+NOTE:
+    this has to be in the clause, in order to get itemLabel and itemDescription
+    SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
 """
-
-
 ################ MATH ####################
 
-defining_formula_query = (
-"""
-SELECT 
-?item ?itemLabel ?itemDescription ?definingFormula
-WHERE {
-  ?item wdt:P2534 ?definingFormula;
-  FILTER( contains(?definingFormula, """,
-"""))
-  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
-}
-"""
-)
-
-tex_string_query = (
-"""
-SELECT 
-?item ?itemLabel ?itemDescription ?teXString
-WHERE {
-     ?item wdt:P1993 ?teXString .
-     FILTER( contains(?teXString,""",
-""")) 
-     #this has to be in the clause, in order to get itemLabel and itemDescription
-     SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }     
- }
-"""
-)
-
-
-#improve by including more properties
-
-concat_query = (
-"""
-SELECT 
-?item ?itemLabel ?itemDescription ?searchSpace
-WHERE {
-     ?item wdt:P1993|wdt:P2534 ?searchSpace;
-     FILTER( contains(?searchSpace, """,
-""")) 
-     #this has to be in the clause, in order to get itemLabel and itemDescription
-     SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }     
- }
-"""
-
-)
-
-
-formula_alias_query = (
+defining_formula_query ="""
+    SELECT ?item ?itemLabel ?itemDescription ?definingFormula WHERE {{
+      ?item wdt:P2534 ?definingFormula;
+      FILTER( contains(?definingFormula, '{}'@en))
+      SERVICE wikibase:label {{ bd:serviceParam wikibase:language "en". }}
+    }}
+    LIMIT {}
     """
-    SELECT DISTINCT ?item ?itemLabel ?itemDescription WHERE {
-    ?item skos:altLabel ?alias.
-    FILTER(CONTAINS(?alias, """,
-    """@en))
-    ?item wdt:P2534 ?dummy0 .
-    SERVICE wikibase:label { bd:serviceParam wikibase:language "en" .}
-    }
+
+tex_string_query ="""
+    SELECT ?item ?itemLabel ?itemDescription ?teXString WHERE {{
+         ?item wdt:P1993 ?teXString .
+         FILTER( contains(?teXString, '{}'@en)) 
+         SERVICE wikibase:label {{ bd:serviceParam wikibase:language "en". }}     
+     }}
+     LIMIT {}
+     """
+
+
+concat_query ="""
+    SELECT ?item ?itemLabel ?itemDescription ?searchSpace WHERE {{
+         ?item wdt:P1993|wdt:P2534 ?searchSpace;
+         FILTER( contains(?searchSpace, '{}'@en)) 
+         SERVICE wikibase:label {{ bd:serviceParam wikibase:language "en". }}     
+     }}
+     LIMIT {}
+     """
+
+
+formula_alias_query ="""
+    SELECT DISTINCT ?item ?itemLabel ?itemDescription WHERE {{
+        ?item skos:altLabel ?alias.
+        FILTER(CONTAINS(?alias, '{}'@en))
+        ?item wdt:P2534 ?dummy0 .
+        SERVICE wikibase:label {{ bd:serviceParam wikibase:language "en" .}}
+    }}
+    LIMIT {}
     """
-)
 
 
 identifier_query ="""
     SELECT ?item ?itemLabel ?itemDescription WHERE {{
-      ?item wdt:P416 ?def.
-      FILTER(CONTAINS(?def, '{}'@en))
-      SERVICE wikibase:label {{ bd:serviceParam wikibase:language "en" .}}
+        ?item wdt:P416 ?def.
+        FILTER(CONTAINS(?def, '{}'@en))
+        SERVICE wikibase:label {{ bd:serviceParam wikibase:language "en" .}}
     }}    
     LIMIT {}
     """
@@ -109,22 +94,9 @@ identifier_query ="""
 #to operators, symbols, science, ...
 
 named_entity_query = """
-SELECT 
-?item ?itemLabel ?itemDescription
-WHERE{{  
-  ?item ?label '{}'@en.  
-  SERVICE wikibase:label {{ bd:serviceParam wikibase:language "en". }}    
-}}
-LIMIT {}
-"""
-
-
-named_entity_query2 = ("""
-SELECT 
-distinct ?item ?itemLabel ?itemDescription
-WHERE{  
-  ?item ?label """,
-"""@en.  
-  SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }    
-}
-""")
+    SELECT ?item ?itemLabel ?itemDescription WHERE{{  
+        ?item ?label '{}'@en.  
+        SERVICE wikibase:label {{ bd:serviceParam wikibase:language "en". }}    
+    }}
+    LIMIT {}
+    """

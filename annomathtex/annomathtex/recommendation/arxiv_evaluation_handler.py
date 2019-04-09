@@ -7,14 +7,13 @@ from ..config import recommendations_limit
 
 
 class ArXivEvaluationListHandler:
+    # todo: documentation
 
     def __init__(self):
         self.evaluation_file = self.read_file()
         self.evaluation_dict = self.create_item_dict()
-        #print(self.evaluation_dict)
 
     def read_file(self):
-        #path = os.getcwd() + '/annomathtex/latexprocessing/evaluation_files/Evaluation_list_all.rtf'
         path = os.getcwd() + '/annomathtex/recommendation/evaluation_files/Evaluation_list_all.rtf'
         with open(path, 'r') as f:
             file = f.read()
@@ -23,12 +22,7 @@ class ArXivEvaluationListHandler:
 
         return file.split('\n\n\n\n')[1:]
 
-    #def get_wikidata_qid(self, name):
-    #    return NESparql().named_entity_search(name)
-
     def create_item_dict(self):
-
-        #print(file)
 
         item_dict = {}
         count = 0
