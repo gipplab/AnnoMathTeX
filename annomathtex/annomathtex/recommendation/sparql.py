@@ -1,5 +1,5 @@
 from SPARQLWrapper import SPARQLWrapper, JSON
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
 from ..config import recommendations_limit
 import re
 import logging
@@ -13,6 +13,7 @@ class Sparql(object, metaclass=ABCMeta):
     """
 
     def __init__(self):
+        # Used to access the wikidata query service API
         self.sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
         logging.basicConfig(level=logging.INFO)
         self.__LOGGER__ = logging.getLogger(__name__)
@@ -20,7 +21,6 @@ class Sparql(object, metaclass=ABCMeta):
     def remove_special_characters(self, search_string):
         """
         Right now: only removing backslash.
-        Also: don't search for strings like "1/2"
         :param search_string:
         :return:
         """
@@ -28,35 +28,25 @@ class Sparql(object, metaclass=ABCMeta):
         return search_string
 
     def remove_whitespaces(self, search_string):
+        """
+        Removes all whitespaces from the search string. This improves the results in many cases.
+        :param search_string: The string that is being searched for through the wikidata query service API.
+        :return: Processed search string.
+        """
+
         search_string = re.sub(r'\s', '', search_string)
         return search_string
-
-    def formulate_query(self, query_string, search_string, limit=recommendations_limit):
-        """
-
-        :param query: tuple of query parts
-        :param search_item: item that is being searched for, i.e. inserted into query
-        :return: entire query
-        """
-
-        #for other formats of query strings:
-        #entire_query = search_string.join(p for p in query)
-        #entire_query = "\'{}\'".format(search_string).join(p for p in query)
-
-        entire_query = query_string.format(search_string, limit)
-        return entire_query
 
 
     def query(self, query_string, search_string, limit=recommendations_limit):
         """
-
-        :param query_string:
-        :param search_string:
-        :param limit:
-        :return:
+        This method executes all the queries that may be sent to the wikidata query service API. The results are
+        cleaned and returned as a list of dictionaries.
+        :param query_string: The query that is being used.
+        :param search_string: The string that is being searched for through the wikidata query service API.
+        :param limit: The limit for the number of results.
+        :return: A list of dictionaries, where each dictionary is one result from the search.
         """
-
-
         entire_query = query_string.format(search_string, limit)
         results = []
 

@@ -9,9 +9,9 @@ class MathSparql(Sparql):
 
     def aliases_search(self, search_string):
         """
-
-        :param search_string:
-        :return:
+        This method queries the aliases (the also known as property) of a wikidata item.
+        :param search_string: The string that is being queried for.
+        :return: A list of dictionaries, where each dictionary is one result from the search.
         """
         search_string_processed = self.remove_special_characters(search_string)
         search_string_processed = self.remove_whitespaces(search_string_processed)
@@ -20,17 +20,13 @@ class MathSparql(Sparql):
         return results_list
 
 
-
-
     def defining_formula_search(self, search_string):
         """
-        Search for a formula with the defining formula property
-
-        For mathML format of formula
-        The defining formula property is written in MathML
-        Currently only reutrns the MathML as string
-        :param search_item:
-        :return:
+        This method queries for a formula using the defining formula property.
+        The defining formula property is written in MathML.
+        Currently only reutrns the MathML as string.
+        :param search_string: The string that is being queried for.
+        :return: A list of dictionaries, where each dictionary is one result from the search.
         """
         search_string_without_space = self.remove_whitespaces(search_string)
         search_string_preprocessed = self.remove_special_characters(search_string_without_space)
@@ -42,12 +38,9 @@ class MathSparql(Sparql):
 
     def tex_string_contains(self, search_string):
         """
-        Searching for items in wikidata that contain latex_part_formula
-
-        tex_string_query is a tuple. Joining it on the latex formula gives the
-        entire query with the tex formula at the right position.
-        :param latex_formula:
-        :return:
+        This method queries for items in wikidata that contain the search string in the property "latex formula".
+        :param search_string: The string that is being queried for.
+        :return: A list of dictionaries, where each dictionary is one result from the search.
         """
         results_list = self.query(tex_string_query, search_string)
         return results_list
@@ -55,9 +48,9 @@ class MathSparql(Sparql):
 
     def concat_search(self, search_string):
         """
-        Use concatenaed properties to query
-        :param search_string: string from latex doc that is being search for
-        :return:
+        This method uses concatenaed properties for the query.
+        :param search_string: The string that is being queried for.
+        :return: A list of dictionaries, where each dictionary is one result from the search.
         """
         search_string_preprocessed = self.remove_special_characters(search_string)
         results_list = self.query(concat_query, search_string_preprocessed)
@@ -66,9 +59,10 @@ class MathSparql(Sparql):
 
     def identifier_search(self, search_string):
         """
-        Mainly used module
-        :param identifier_string: string of the identifier that is queried
-        :return:
+        Mainly used module.
+        This method searches for the identifiers in the "has par" property of wikidata items.
+        :param search_string: The string that is being queried for.
+        :return: A list of dictionaries, where each dictionary is one result from the search.
         """
 
         results_list = self.query(identifier_query, search_string)
