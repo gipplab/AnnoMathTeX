@@ -1,8 +1,6 @@
 """
-This file contains several named entity taggers, that can be used to find NEs in the TeX file
+This file contains several named entity taggers, that can be used to find NEs in the document.
 """
-
-
 
 import nltk
 from ...models.word import Word
@@ -14,7 +12,6 @@ from abc import ABCMeta, abstractmethod
 
 #these commands sometimes get recognized as NEs (or nouns,...)
 #don't highlight these
-#add others
 latex_cmds_ignore = ['\\subsection',
                      '\\item',
                      '\\begin',
@@ -44,18 +41,28 @@ ignore = latex_cmds_ignore + stopWords + punctuation_nums + wikitext_cmds
 class Tagger(object, metaclass=ABCMeta):
     """
     Abstract base class for all NE taggers
-    todo: implement
     """
 
     @abstractmethod
-    def get_tags(self, line_chunk):
+    def get_tags(self, line):
+        """
+        Tag the words that are pased in the line with the corresponding part of speech tag.
+        :param line: A line of tokens (usually a sentence).
+        :return: A list of tagged words.
+        """
         raise NotImplementedError('must be implemented')
 
     def check_is_ne(self, word, tag):
+        """
+        Check whether the current word is a named entity. Tex and wikitext documents contain a lot of extra information
+        (e.g. 'volume=28|issue=1|pages=100') which get tagged by the NE tagger as named entities. This method adds a
+        few custom checks to make sure that they will not be highlighted as named entities.
+        :param word:
+        :param tag:
+        :return:
+        """
         max_word_length = 12
         min_word_length = 3
-
-        #todo
 
         is_ne = True if tag in self.tag_list and \
                 word not in ignore and \
@@ -66,8 +73,14 @@ class Tagger(object, metaclass=ABCMeta):
         return is_ne
 
 
-    def tag(self, line_chunk):
-        word_tokens = self.get_tags(line_chunk)
+    def tag(self, line):
+        """
+        This method loops through the words in the line and creates Word objects from them, adding the flag for named
+        entities if applicable.
+        :param line: A line of tokens (usually a sentence).
+        :return: A list of the processed line (or sentence).
+        """
+        word_tokens = self.get_tags(line)
         colour = '#973c97'
         words = []
 
@@ -92,28 +105,34 @@ class Tagger(object, metaclass=ABCMeta):
         return words
 
 
-
-def own_tagger(line_chunk):
-    #use https://en.wikipedia.org/wiki/List_of_physical_quantities
-    pass
-
-
 class NLTK_NER(Tagger):
     """
-    method tag called from abstract base class
+    The basic NLTK tagger
     """
 
     def __init__(self):
         super().__init__()
+        #Words with these tags are considered as named entities
         self.tag_list = ['NN', 'NNS', 'NNP', 'NNPS']
 
-    def get_tags(self, line_chunk):
-        word_tokens = nltk.word_tokenize(line_chunk)
-        #print(word_tokens)
+    def get_tags(self, line):
+        word_tokens = nltk.word_tokenize(line)
         word_tokens = nltk.pos_tag(word_tokens)
         return word_tokens
 
 
+
+
+
+
+
+###################################################################################
+###################################################################################
+###################################################################################
+#################################### NOT USED #####################################
+###################################################################################
+###################################################################################
+###################################################################################
 
 """
 #import en_core_web_sm

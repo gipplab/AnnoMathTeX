@@ -15,10 +15,14 @@ from ..parsing.mathhandling.custom_math_env_parser import CustomMathEnvParser
 
 class Parser(object, metaclass=ABCMeta):
     """
-    Abstract base class for classes that need parse different input formats
+    Abstract base class for classes that need to parse different input formats (tex, txt, html).
     """
 
     def __init__(self, request_file, file_type='tex'):
+        """
+        :param request_file: The file that the user selects to annotate.
+        :param file_type: The type of the file (tex, txt, html).
+        """
         logging.basicConfig(level=logging.INFO)
         self.__LOGGER__ = logging.getLogger(__name__)
         self.tagger = NLTK_NER()
@@ -37,27 +41,34 @@ class Parser(object, metaclass=ABCMeta):
 
     @abstractmethod
     def decode(self, request_file):
+        """
+        Decode the file that the user selected. I.e. read it and turn it into a string that can be processed.
+        :param request_file: File that the user selected.
+        :return: Decoded file (as string).
+        """
         raise NotImplementedError('Method decode must be implemented')
 
     @abstractmethod
     def extract_math_envs(self):
+        """
+        Extract the math environments from the file. E.g. for wikitext anything within <math> </math>
+        :return: The extracted math environments
+        """
         raise NotImplementedError('must be impplemented')
-
-
 
 
     def remove_special_chars(self):
         """
         remove things like <href ....>
+        #todo: implement
         :return:
         """
         pass
 
     def remove_math_envs(self):
         """
-        remove all the math environments
-        process file without them and add them back later
-        :return: file without math environments
+        Remove all the math environments, process file without them and add them back later
+        :return: File without math environments ('__MATH_ENV__' in place of each math_environment)
         """
         for i, m in enumerate(self.math_envs):
             math_env_old, math_env_specieal_chars_handled = m
@@ -70,6 +81,13 @@ class Parser(object, metaclass=ABCMeta):
 
 
     def form_word_links(self, tagged_words):
+        """
+        Link identical words. This is used later when annotating a file, to only have to annotate a word once. All the
+        other identical words in the file will be annotated automatically with the same field.
+        #todo maybe: link also words that haven't been recognised as named entities.
+        :param tagged_words: One line (sentence) of processed words.
+        :return: None; The linked words are stored in the class dictionary linked_words
+        """
         for word in tagged_words:
             if word.named_entity and word.content:
                 if word.content in self.linked_words:
@@ -77,14 +95,35 @@ class Parser(object, metaclass=ABCMeta):
                 else:
                     self.linked_words[word.content] = [word.unique_id]
 
-    def form_symbol_links(self, symbol):
-        if symbol.content:
-            if symbol.content in self.linked_math_symbols:
-                self.linked_math_symbols[symbol.content].append(symbol.unique_id)
+    def form_identifier_links(self, identifier):
+        """
+        Link identical identifiers. This is used later when annotating a file, to only have to annotate an
+        identifier once. All the other identical identifiers in the file will be annotated automatically with the same
+        field.
+        :param identifier: The identifier that is being processed.
+        :return: None; The linked identifier are stored in the class dictionary linked_math_symbols allong with the
+                 linked formulae. They are stored together, to allow a math environment with only one identifier to be
+                 treated the same way as an identifier within a math environemnt (e.g. $E$ is treated the same way as
+                 'E' in $E=mc2$).
+        """
+        if identifier.content:
+            if identifier.content in self.linked_math_symbols:
+                self.linked_math_symbols[identifier.content].append(identifier.unique_id)
             else:
-                self.linked_math_symbols[symbol.content] = [symbol.unique_id]
+                self.linked_math_symbols[identifier.content] = [identifier.unique_id]
 
     def form_formula_links(self, formula1, formula2):
+        """
+        Link identical formulae. This is used later when annotating a file, to only have to annotate a
+        formula once. All the other identical formulae in the file will be annotated automatically with the same
+        field.
+        :param formula1: The beginning delimiter of the formula (e.g. '$').
+        :param formula2: The ending delimiter of the formula (e.g. '$').
+        :return: None; The linked formulae are stored in the class dictionary linked_math_symbols allong with the
+                 linked identifiers. They are stored together, to allow a math environment with only one identifier to
+                 be treated the same way as an identifier within a math environemnt (e.g. $E$ is treated the same way
+                 as 'E' in $E=mc2$).
+        """
         math_env = formula1.math_env
         if math_env:
             if math_env in self.linked_math_symbols:
@@ -92,7 +131,13 @@ class Parser(object, metaclass=ABCMeta):
             else:
                 self.linked_math_symbols[math_env] = [formula1.unique_id, formula2.unique_id]
 
-    def handle_entire_formula(self, math_env, line_num):
+    def handle_entire_formula(self, math_env):
+        """
+        Create a Formula object out of each delimiter (e.g. '$') of the math environment. The user can mouse click the
+        delimiter to annotate the entire formula.
+        :param math_env: String of the math environemnt (/formula).
+        :return: 2 formula objects, one for each delimiter.
+        """
 
         # todo: put this in external class -> consistency   ??
 
@@ -116,11 +161,13 @@ class Parser(object, metaclass=ABCMeta):
         """
         This method extracts the words that are contained in a line.
         If a named entity is contained, mark that.
+
+        If keyword extraction is desired instead of NE tagging, this is where it should be changed
+
         :param line: a line in the file
         :param line_num: the number of the line in the file
-        :return: List of the words fom sentence as Word() objects.
+        :return: List of the words fom the line (sentence) as Word() objects.
         """
-        # if keyword extraction is desired instead of NE tagging, this is where it should be changed
         tagged_words = self.tagger.tag(line)
         self.form_word_links(tagged_words)
         self.line_dict[line_num] = [word for word in tagged_words if word.named_entity]
@@ -137,6 +184,7 @@ class Parser(object, metaclass=ABCMeta):
         # todo: for all math environemnt markers
         math_env = math_env.replace('$', '')
 
+        #Select the class that should process (extract the identifiers and split) the math environment.
         #identifiers, split_math_env = FormulaSplitter(math_env).get_split_math_env()
         identifiers, split_math_env = CustomMathEnvParser(math_env).get_split_math_env()
         self.__LOGGER__.debug(' process_math_env, split_math_env: {} '.format(split_math_env))
@@ -146,12 +194,7 @@ class Parser(object, metaclass=ABCMeta):
         processed_maths_env = []
         for symbol in split_math_env:
 
-
-            if identifiers and symbol in identifiers:
-                colour = '#c94f0c'
-            else:
-                colour = '#5c6670'
-
+            colour = '#c94f0c' if identifiers and symbol in identifiers else '#5c6670'
             endline = True if symbol == '\n' else False
 
             id_symbol = Identifier(
@@ -165,10 +208,10 @@ class Parser(object, metaclass=ABCMeta):
             self.identifier_line_dict[id_symbol.unique_id] = line_num
 
             processed_maths_env.append(id_symbol)
-            self.form_symbol_links(id_symbol)
+            self.form_identifier_links(id_symbol)
 
         # add the dollar signs back again
-        formula1, formula2 = self.handle_entire_formula(str(math_env), line_num)
+        formula1, formula2 = self.handle_entire_formula(str(math_env))
         processed_maths_env = [formula1] + processed_maths_env + [formula2]
 
         return processed_maths_env
@@ -176,20 +219,18 @@ class Parser(object, metaclass=ABCMeta):
 
 
     def process(self):
+        """
+        This method is called from upload_file_view.py to process (parse) the file that the user selected.
+        :return: A dictionary with the words and the line they appear on, a dictionary with the identifiers and what
+                 line they appear on (needed for word window extraction) and a File object.
+        """
 
         self.__LOGGER__.debug(' process ')
-
         self.remove_math_envs()
-
-        #self.__LOGGER__.debug(' file with math_envs removed: {}'.format(self.file))
-
         #necessary?
         lines = [p for p in self.file.split('\n')]
-
         self.__LOGGER__.debug(' lines extracted')
-
         processed_lines = [self.extract_words(s, i) for i, s in enumerate(lines)]
-
         self.__LOGGER__.debug(' lines processed')
 
         #todo: itertools
