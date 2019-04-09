@@ -10,10 +10,6 @@ class Formula(Token):
         highlight,
         content,
         endline,
-        wikidata_result,
-        word_window,
-        arXiv_evaluation_items,
-        wikipedia_evaluation_items,
         math_env
     ):
         """
@@ -35,10 +31,6 @@ class Formula(Token):
             highlight,
             content,
             endline,
-            wikidata_result,
-            word_window,
-            arXiv_evaluation_items,
-            wikipedia_evaluation_items,
             math_env
         )
         #word_window: named entities from surrounding text

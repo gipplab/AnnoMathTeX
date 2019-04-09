@@ -41,7 +41,6 @@ class Word(Token):
             highlight,
             content,
             endline,
-            wikidata_result
         )
         self.named_entity = named_entity
 

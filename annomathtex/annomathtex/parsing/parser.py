@@ -1,6 +1,5 @@
 import re
 import logging
-import json
 from uuid import uuid1
 from abc import ABCMeta, abstractmethod
 from ..parsing.nehandling.named_entity_recognition import NLTK_NER
@@ -12,9 +11,6 @@ from ..recommendation.arxiv_evaluation_handler import ArXivEvaluationListHandler
 from ..recommendation.wikipedia_evaluation_handler import WikipediaEvaluationListHandler
 from ..parsing.mathhandling.latexformlaidentifiers import FormulaSplitter
 from ..parsing.mathhandling.custom_math_env_parser import CustomMathEnvParser
-from ..config import recommendations_limit
-#from .tex_parser import TEXParser
-#from .txt_parser import TXTParser
 
 
 class Parser(object, metaclass=ABCMeta):
@@ -96,7 +92,7 @@ class Parser(object, metaclass=ABCMeta):
             else:
                 self.linked_math_symbols[math_env] = [formula1.unique_id, formula2.unique_id]
 
-    def get_word_window(self, line_num):
+    """def get_word_window(self, line_num):
         word_window = []
         limit = int(recommendations_limit / 2)
 
@@ -131,7 +127,7 @@ class Parser(object, metaclass=ABCMeta):
         if not word_window:
             word_window = [{}]
 
-        return word_window[:10]
+        return word_window[:10]"""
 
     def handle_entire_formula(self, math_env, line_num):
 
@@ -144,10 +140,6 @@ class Parser(object, metaclass=ABCMeta):
                 highlight='#ffa500',
                 content='$',
                 endline=False,
-                wikidata_result=None,
-                word_window=json.dumps({'word_window': self.get_word_window(line_num)}),
-                arXiv_evaluation_items=None,
-                wikipedia_evaluation_items=None,
                 math_env=math_env
             )
 
@@ -211,10 +203,6 @@ class Parser(object, metaclass=ABCMeta):
                 highlight=colour,
                 content=symbol,
                 endline=endline,
-                wikidata_result=json.dumps({'w': wikidata_result}),
-                word_window=json.dumps({'word_window': self.get_word_window(line_num)}),
-                arXiv_evaluation_items=json.dumps({'arXiv_evaluation_items': arXiv_evaluation_items}),
-                wikipedia_evaluation_items=json.dumps({'wikipedia_evaluation_items': wikipedia_evaluation_items})
             )
 
             self.identifier_line_dict[id_symbol.unique_id] = line_num

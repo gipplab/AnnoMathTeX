@@ -13,10 +13,6 @@ class Token(object, metaclass=ABCMeta):
                  highlight,
                  content,
                  endline,
-                 wikidata_result,
-                 word_window=None,
-                 arXiv_evaluation_items=None,
-                 wikipedia_evaluation_items=None,
                  math_env=None
 
                  ):
@@ -34,10 +30,6 @@ class Token(object, metaclass=ABCMeta):
         self.content = content
         self.endline = endline
         self.type = type
-        self.wikidata_result = wikidata_result
-        self.word_window = word_window
-        self.arXiv_evaluation_items = arXiv_evaluation_items
-        self.wikipedia_evaluation_items = wikipedia_evaluation_items
         self.math_env=math_env
 
 
