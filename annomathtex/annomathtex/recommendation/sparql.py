@@ -66,7 +66,7 @@ class Sparql(object, metaclass=ABCMeta):
         except Exception as e:
             self.__LOGGER__.error(e)
 
-        results_dict = {}
+        """results_dict = {}
         for i, r in enumerate(results):
             if i == recommendations_limit: break
             item_description = None
@@ -84,4 +84,23 @@ class Sparql(object, metaclass=ABCMeta):
                 'item_description': item_description
             }
 
-        return results_dict
+        return results_dict"""
+
+        results_list = []
+        for i, r in enumerate(results):
+            if i == recommendations_limit: break
+            item_description = None
+            if 'itemDescription' in r:
+                item_description = r['itemDescription']['value']
+            url = r['item']['value']
+            qid = url.split('/')[-1]
+            item_label = r['itemLabel']['value']
+
+            results_list.append({
+                'qid': qid,
+                'link': url,
+                'name': item_label,
+                'item_description': item_description
+            })
+
+        return results_list
