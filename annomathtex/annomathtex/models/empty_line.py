@@ -1,15 +1,12 @@
 from .token import Token
 
 
-"""
-Needed to treat empty lines
-"""
-
 class EmptyLine(Token):
 
     def __init__(self, unique_id, type='Emptyline', highlight=None, content=None, endline=True, wikidata_result=None):
         """
-        Constructor of superclass Token is called for highlight and content
+        An empty line is treated like any other token, this enables relatively simple rendering of the file at the
+        frontend of the project.
 
         :param unique_id: uuid.uuid1 object, converted to a string. Needed in template for rendering.
         :param type: String, "Word","Identifier" or "Emptyline". Needed for correct template rendering
@@ -17,14 +14,13 @@ class EmptyLine(Token):
         :param content: String, The Identifier itself.
         :param endline: Boolean, needed for page rendering
         """
+
         super().__init__(unique_id, type, highlight, content, endline, wikidata_result)
 
     def get_unique_id(self):
         """
         Get the unique id of the emptyline
-
         Can I remove this method for empty line?
-
         :return: String of unique id
         """
         return self.unique_id
@@ -59,7 +55,7 @@ class EmptyLine(Token):
 
     def set_endline(self, new_endline_val):
         """
-        set the endline value
+        Set the endline value
         :param new_endline_val:
         :return: None
         """

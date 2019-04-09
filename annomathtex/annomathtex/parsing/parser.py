@@ -182,8 +182,8 @@ class Parser(object, metaclass=ABCMeta):
         # todo: for all math environemnt markers
         math_env = math_env.replace('$', '')
 
-        identifiers, split_math_env = FormulaSplitter(math_env).get_split_math_env()
-        #identifiers, split_math_env = CustomMathEnvParser(math_env).get_split_math_env()
+        #identifiers, split_math_env = FormulaSplitter(math_env).get_split_math_env()
+        identifiers, split_math_env = CustomMathEnvParser(math_env).get_split_math_env()
         self.__LOGGER__.debug(' process_math_env, split_math_env: {} '.format(split_math_env))
 
 

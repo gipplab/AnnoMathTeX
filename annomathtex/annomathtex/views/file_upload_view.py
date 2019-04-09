@@ -134,6 +134,7 @@ class FileUploadView(View):
 
     def post(self, request, *args, **kwargs):
         __LOGGER__.debug('in post')
+        global __LINE__DICT__, __IDENTIFIER_LINE_DICT__
         if 'file_submit' in request.POST:
             __LOGGER__.debug('file submit')
             form = UploadFileForm(request.POST, request.FILES)
@@ -143,7 +144,7 @@ class FileUploadView(View):
                 if file_name.endswith('.tex'):
                     __LOGGER__.info(' tex file ')
                     line_dict, identifier_line_dict, processed_file = TEXParser(request_file).process()
-                    global __LINE__DICT__, __IDENTIFIER_LINE_DICT__
+                    #global __LINE__DICT__, __IDENTIFIER_LINE_DICT__
                     __LINE__DICT__ = line_dict
                     __IDENTIFIER_LINE_DICT__ = identifier_line_dict
                 elif file_name.endswith('.html'):
@@ -154,8 +155,8 @@ class FileUploadView(View):
                     __LOGGER__.info(' text file ')
                     line_dict, identifier_line_dict, processed_file = TXTParser(request_file, 'txt').process()
                     #global __LINE__DICT__, __IDENTIFIER_LINE_DICT__
-                    #__LINE__DICT__ = line_dict
-                    #__IDENTIFIER_LINE_DICT__ = identifier_line_dict
+                    __LINE__DICT__ = line_dict
+                    __IDENTIFIER_LINE_DICT__ = identifier_line_dict
 
                 #print(processed_file.linked_words)
                 #print(processed_file.linked_math_symbols)

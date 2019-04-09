@@ -17,7 +17,9 @@ class Formula(Token):
         math_env
     ):
         """
-        Constructor of superclass Token is called for highlight and content
+
+        A formula object contains the entire math evironment. The user can access it by clicking the delimiter of the
+        formula (e.g. '$').
 
         :param unique_id: uuid.uuid1 object, converted to a string. Needed in template for rendering.
         :param type: String, "Word" or "Identifier". Needed for correct template rendering

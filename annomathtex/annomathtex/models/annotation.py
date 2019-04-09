@@ -2,6 +2,9 @@ from django.db import models
 
 
 class AnnotationForm(models.Model):
+    """
+    The annotations that a user makes are stored as AnnotationForm objects.
+    """
     text = models.CharField(max_length=20)
     user = models.CharField(max_length=20)
     content = models.CharField(max_length=20)
