@@ -1,9 +1,5 @@
 from abc import ABCMeta, abstractmethod
 
-"""
-Each word/identifier in a tex document is a token. A token must be one of those 2.
-Punctuation are excluded.
-"""
 
 class Token(object, metaclass=ABCMeta):
     def __init__(
@@ -17,19 +13,20 @@ class Token(object, metaclass=ABCMeta):
 
                  ):
         """
+        Each word/identifier/formula/emptyline in a document is a token. A token must be one of those 4.
+        Punctuation are excluded.
+
         :param unique_id: uuid.uuid1 object, converted to a string. Needed in template for rendering.
-        :param type: String, "Word" or "Identifier". Needed for correct template rendering
+        :param type: String, "Word", "Identifier", "Formula", or "Endline". Needed for correct template rendering.
         :param highlight: String, color, that the Token should be highlighted in. None if no highlight desired.
         :param content: String, The Word/Identifier itself.
-        :param endline: Boolean, needed for page rendering
+        :param endline: Boolean, needed for page rendering, true if token ends the line.
         """
         self.unique_id = str(unique_id)
-        self.unique_id_2 = 'button' + str(unique_id)
-        self.unique_id_3 = 'modal' + str(unique_id)
+        self.type = type
         self.highlight = highlight
         self.content = content
         self.endline = endline
-        self.type = type
         self.math_env=math_env
 
 

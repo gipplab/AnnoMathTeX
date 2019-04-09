@@ -92,43 +92,6 @@ class Parser(object, metaclass=ABCMeta):
             else:
                 self.linked_math_symbols[math_env] = [formula1.unique_id, formula2.unique_id]
 
-    """def get_word_window(self, line_num):
-        word_window = []
-        limit = int(recommendations_limit / 2)
-
-
-        i = 0
-        #todo: fix
-        while i < limit:
-            # lines before
-            b = line_num - i
-            # lines after
-            a = line_num + i
-
-            if b in self.line_dict:
-                for word in reversed(self.line_dict[b]):
-                    # value not yet in word window
-                    if not list(filter(lambda d: d['content'] == word.content, word_window)):
-                        word_window.append({
-                            'content': word.content,
-                            'unique_id': word.unique_id
-                        })
-                        i += 1
-            if a in self.line_dict:
-                for word in reversed(self.line_dict[a]):
-                    # value not yet in word window
-                    if not list(filter(lambda d: d['content'] in word.content, word_window)):
-                        word_window.append({
-                            'content': word.content,
-                            'unique_id': word.unique_id
-                        })
-            i += 1
-
-        if not word_window:
-            word_window = [{}]
-
-        return word_window[:10]"""
-
     def handle_entire_formula(self, math_env, line_num):
 
         # todo: put this in external class -> consistency   ??
@@ -185,14 +148,8 @@ class Parser(object, metaclass=ABCMeta):
 
 
             if identifiers and symbol in identifiers:
-                wikidata_result = None
-                arXiv_evaluation_items = self.arXiv_evaluation_list_handler.check_identifiers(symbol)
-                wikipedia_evaluation_items = self.wikipedia_evaluation_list_handler.check_identifiers(symbol)
                 colour = '#c94f0c'
             else:
-                wikidata_result = None
-                arXiv_evaluation_items = None
-                wikipedia_evaluation_items = None
                 colour = '#5c6670'
 
             endline = True if symbol == '\n' else False
@@ -229,7 +186,11 @@ class Parser(object, metaclass=ABCMeta):
         #necessary?
         lines = [p for p in self.file.split('\n')]
 
+        self.__LOGGER__.debug(' lines extracted')
+
         processed_lines = [self.extract_words(s, i) for i, s in enumerate(lines)]
+
+        self.__LOGGER__.debug(' lines processed')
 
         #todo: itertools
         processed_lines_including_maths = []

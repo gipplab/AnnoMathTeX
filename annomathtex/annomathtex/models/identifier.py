@@ -15,12 +15,10 @@ class Identifier(Token):
         Constructor of superclass Token is called for highlight and content
 
         :param unique_id: uuid.uuid1 object, converted to a string. Needed in template for rendering.
-        :param type: String, "Word" or "Identifier". Needed for correct template rendering
+        :param type: String, "Word", "Identifier", "Formula", or "Endline". Needed for correct template rendering.
         :param highlight: String, colour, that the Identifier should be highlighted in. None if no highlight desired.
         :param content: String, The Identifier itself.
-        :param endline: Boolean, needed for page rendering
-        :param qid: String, the Wikidata Quid corresponding to the identifier.
-                    REPLACED BY WIKIDATA RESULTS
+        :param endline: Boolean, needed for page rendering, true if token ends the line.
         """
         super().__init__(
             unique_id,
@@ -75,9 +73,3 @@ class Identifier(Token):
         """
         self.endline = new_endline_val
 
-    def get_qid(self):
-        """
-        Get the Wikidata Quid for the identifier
-        :return: Wikidata Quid
-        """
-        return self.qid

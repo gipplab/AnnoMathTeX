@@ -1,15 +1,4 @@
-"""class Word:
-
-    def __init__(self, token, highlight=False):
-        self.content = token
-        self.highlight = highlight"""
-
-
 from .token import Token
-
-"""
-This class inherits from Token. Every word in the LaTeX file is a Word. 
-"""
 
 class Word(Token):
     #todo: add colouring for named entity is this class
@@ -22,18 +11,17 @@ class Word(Token):
         highlight,
         content,
         endline,
-        wikidata_result,
         named_entity
     ):
         """
-        Constructor of superclass Token is called for highlight and content
+        This class inherits from Token. Every word in the LaTeX file is a Word.
 
         :param unique_id: uuid.uuid1 object, converted to a string. Needed in template for rendering.
-        :param type: String, "Word" or "Identifier". Needed for correct template rendering
+        :param type: String, "Word", "Identifier", "Formula", or "Endline". Needed for correct template rendering.
         :param highlight: String, colour, that the Word should be highlighted in. None if no highlight desired.
         :param content: String, The Word itself.
-        :param endline: Boolean, needed for page rendering
-        :param named_entity: Boolean, whether the Word is a named entity.
+        :param endline: Boolean, needed for page rendering, true if token ends the line.
+        :param named_entity: Boolean, needed for highlighting.
         """
         super().__init__(
             unique_id,

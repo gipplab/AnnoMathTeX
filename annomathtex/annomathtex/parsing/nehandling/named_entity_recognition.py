@@ -81,8 +81,8 @@ class Tagger(object, metaclass=ABCMeta):
                      highlight=colour if is_ne else "black",
                      content=word,
                      endline=True if str(word) == '\n' else False,
-                     named_entity=is_ne,
-                     wikidata_result=None)
+                     named_entity=is_ne
+                     )
                 )
 
 
