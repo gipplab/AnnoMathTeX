@@ -256,6 +256,13 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, mathEnv, tokenHighli
           $("#" + tokenUniqueId).val(''); // remove the value from the input
 
 
+          window.concatenatedResults = json['concatenatedResults'];
+          window.wikidataResults = json['wikidataResults'];
+          window.arXivEvaluationItems = json['arXivEvaluationItems'];
+          window.wikipediaEvaluationItems = json['wikipediaEvaluationItems'];
+          window.wordWindow = json['wordWindow'];
+
+
           switch (tokenType) {
               //todo: clean up
               case 'Identifier':
@@ -265,6 +272,7 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, mathEnv, tokenHighli
                   document.getElementById("arXivLabel").hidden = false;
                   document.getElementById("wikipediaLabel").hidden = false;
                   document.getElementById("concatenatedBtn").checked = true;
+                  populateTable(concatenatedResults, 'concatenated');
                   break;
               case 'Word':
                   console.log('Word');
@@ -273,6 +281,7 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, mathEnv, tokenHighli
                   document.getElementById("arXivLabel").hidden = true;
                   document.getElementById("wikipediaLabel").hidden = true;
                   document.getElementById("wikidataBtn").checked = true;
+                  populateTable(wikidataResults, 'wikidata');
                   break;
               case 'Formula':
                   console.log('Formula');
@@ -281,15 +290,9 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, mathEnv, tokenHighli
                   document.getElementById("arXivLabel").hidden = true;
                   document.getElementById("wikipediaLabel").hidden = true;
                   document.getElementById("concatenatedBtn").checked = true;
+                  populateTable(concatenatedResults, 'concatenated');
                   break;
           }
-          window.concatenatedResults = json['concatenatedResults'];
-          window.wikidataResults = json['wikidataResults'];
-          window.arXivEvaluationItems = json['arXivEvaluationItems'];
-          window.wikipediaEvaluationItems = json['wikipediaEvaluationItems'];
-          window.wordWindow = json['wordWindow'];
-
-          populateTable(json['concatenatedResults'], 'concatenated');
 
           //console.log('WORD WINDOW   ', json['wordWindow']);
           //console.log('wikidata: ', json['wikidataResults']);

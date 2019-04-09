@@ -56,8 +56,10 @@ class Sparql(object, metaclass=ABCMeta):
         :return:
         """
 
+
         entire_query = query_string.format(search_string, limit)
         results = []
+
         try:
             self.sparql.setQuery(entire_query)
             self.sparql.setReturnFormat(JSON)
@@ -65,26 +67,6 @@ class Sparql(object, metaclass=ABCMeta):
             results = query_results['results']['bindings']
         except Exception as e:
             self.__LOGGER__.error(e)
-
-        """results_dict = {}
-        for i, r in enumerate(results):
-            if i == recommendations_limit: break
-            item_description = None
-            if 'itemDescription' in r:
-                item_description = r['itemDescription']['value']
-            url = r['item']['value']
-            qid = url.split('/')[-1]
-            item_label = r['itemLabel']['value']
-
-            #Depending on the query string, other fields which aren't used at the moment may be available.
-            results_dict[i] = {
-                'qid': qid,
-                'link': url,
-                'item_label': item_label,
-                'item_description': item_description
-            }
-
-        return results_dict"""
 
         results_list = []
         for i, r in enumerate(results):

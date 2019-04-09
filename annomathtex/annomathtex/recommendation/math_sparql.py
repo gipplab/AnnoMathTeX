@@ -72,9 +72,6 @@ class MathSparql(Sparql):
         """
 
         results_list = self.query(identifier_query, search_string)
-        print('RESULTS DICT: \n\n\n\n')
-        print(results_list)
-        print('\n'*4)
         return results_list
 
 
