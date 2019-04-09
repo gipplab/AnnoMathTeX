@@ -11,6 +11,7 @@ from ..models.latexfile import LaTeXFile
 from ..recommendation.arxiv_evaluation_handler import ArXivEvaluationListHandler
 from ..recommendation.wikipedia_evaluation_handler import WikipediaEvaluationListHandler
 from ..parsing.mathhandling.latexformlaidentifiers import FormulaSplitter
+from ..parsing.mathhandling.custom_math_env_parser import CustomMathEnvParser
 from ..config import recommendations_limit
 #from .tex_parser import TEXParser
 #from .txt_parser import TXTParser
@@ -181,17 +182,11 @@ class Parser(object, metaclass=ABCMeta):
         # todo: for all math environemnt markers
         math_env = math_env.replace('$', '')
 
-        identifiers = FormulaSplitter(math_env).get_identifiers()
-        self.__LOGGER__.debug(' process_math_env, identifiers: {} '.format(identifiers))
+        identifiers, split_math_env = FormulaSplitter(math_env).get_split_math_env()
+        #identifiers, split_math_env = CustomMathEnvParser(math_env).get_split_math_env()
+        self.__LOGGER__.debug(' process_math_env, split_math_env: {} '.format(split_math_env))
 
-        try:
-            split_regex = "|".join(str(i) for i in identifiers)
-            split_regex = r"({})".format(split_regex)
-            split_math_env = re.split(split_regex, math_env)
-            self.__LOGGER__.debug(' process_math_env, split_math_env: {} '.format(split_math_env))
-        except Exception as e:
-            self.__LOGGER__.error('math_env {} couldnt be split: {}'.format(math_env, e))
-            split_math_env = math_env
+
 
         processed_maths_env = []
         for symbol in split_math_env:
@@ -241,7 +236,7 @@ class Parser(object, metaclass=ABCMeta):
 
         self.remove_math_envs()
 
-        self.__LOGGER__.debug(' file with math_envs removed: {}'.format(self.file))
+        #self.__LOGGER__.debug(' file with math_envs removed: {}'.format(self.file))
 
         #necessary?
         lines = [p for p in self.file.split('\n')]

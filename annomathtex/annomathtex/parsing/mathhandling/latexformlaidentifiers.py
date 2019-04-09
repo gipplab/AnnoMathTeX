@@ -140,7 +140,8 @@ class FormulaSplitter:
 
     #todo: remove special symbols
     def __init__(self, request):
-        self.formula = self.remove_special_characters(request)
+        #self.formula = self.remove_special_characters(request)
+        self.formula = request
         global seprator
         seprator = formuladivision(self.formula)
 
@@ -149,7 +150,7 @@ class FormulaSplitter:
         #outtab = ""
         #trantab = maketrans(intab, outtab)
         #request_special_chars_removed =  request.translate(string.maketrans("", "", ), special_characters)
-        special_characters = ['\{', '\}', '\|' '\\ ']
+        special_characters = ['\{', '\}', '\|' '\\']
         request_special_chars_removed = request
         for special_char in special_characters:
             request_special_chars_removed = request_special_chars_removed.replace(special_char, '')
@@ -158,7 +159,8 @@ class FormulaSplitter:
 
     def get_identifiers(self):
         try:
-            symbols, _ = evalformula(self.formula)
+            formula_no_special_chars = self.remove_special_characters(self.formula)
+            symbols, _ = evalformula(formula_no_special_chars)
             symbols = {str(s) for s in symbols}
             __LOGGER__.debug(' Symbols: {}'.format(symbols))
         except Exception as e:
@@ -178,4 +180,19 @@ class FormulaSplitter:
                 }
         #print('MATHML: ', formula_dict['mathml'])
         return formula_dict
+
+
+    def get_split_math_env(self):
+        identifiers = self.get_identifiers()
+        math_env = self.formula
+        try:
+            split_regex = "|".join(str(i) for i in identifiers)
+            split_regex = r"({})".format(split_regex)
+            split_math_env = re.split(split_regex, math_env)
+            __LOGGER__.debug(' get_split_math_env, split_math_env: {} '.format(split_math_env))
+        except Exception as e:
+            __LOGGER__.error('math_env {} couldnt be split: {}'.format(math_env, e))
+            split_math_env = math_env
+
+        return identifiers, split_math_env
 
