@@ -200,9 +200,16 @@ AJAX FUNCTIONS USED TO POST THE REQUEST BACK TO DJANGO, WHERE THE WIKIDATA SPARQ
  */
 
 function clickToken(tokenContent, tokenUniqueId, tokenType, mathEnv, tokenHighlight) {
+    /*
+    This function is called when the user mouse clicks a token (identifier, formula, named entity or any other word).
+    The popup modal is opened, an post request is made to the backend to retreive suggestions for the selected token,
+    and the table is rendered with the correct search results.
+     */
 
 
-    //Display the selected tokens
+    //Display the selected token.
+    //If the clicked token is the delimiter of a math environment (entire formula), the presented text will be the
+    //string for the entire math environment and not the delimiter.
     if (mathEnv == 'None') {
         var fillText = tokenContent;
     }
@@ -239,14 +246,11 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, mathEnv, tokenHighli
     //https://stackoverflow.com/questions/5786851/define-global-variable-in-a-javascript-function
     window.uniqueID = tokenUniqueId;
     window.tokenContent = tokenContent;
-    //window.arXivEvaluationItems = arXivEvaluationItems;
-    //window.wikipediaEvaluationItems = wikipediaEvaluationItems;
     window.tokenType = tokenType;
 
 
     let data_dict = { the_post : $("#" + tokenUniqueId).val(),
                   'csrfmiddlewaretoken': getCookie("csrftoken"),
-                  //'csrfmiddlewaretoken': getCookie("csrftoken"),
                   'queryDict': tokenContent,
                   'tokenType': tokenType,
                   'mathEnv': mathEnv,
@@ -301,11 +305,6 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, mathEnv, tokenHighli
                   populateTable(concatenatedResults, 'concatenated');
                   break;
           }
-
-          //console.log('WORD WINDOW   ', json['wordWindow']);
-          //console.log('wikidata: ', json['wikidataResults']);
-          //console.log('arXiv: ', json['arXivEvaluationItems']);
-          //console.log('wikipedia: ', json['wikipediaEvaluationItems']);
       },
 
       // handle a non-successful response
@@ -355,9 +354,9 @@ $(document).ready(function () {
 
           // handle a non-successful response
           error : function(xhr,errmsg,err) {
-              $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-                  " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-              console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+              $('#results').html("<div class='alert-box alert radius' data-alert>error: "+errmsg+
+                  " <a href='#' class='close'>&times;</a></div>"); //add the error to the dom
+              console.log(xhr.status + ": " + xhr.responseText); //more information about error
           }
       });
     }
