@@ -1,3 +1,9 @@
+/*
+This file contains the functionality for the frontend of the project.
+It is called in annotation_template.html.
+ */
+
+
 //those words that are marked as NE are added to this dictionary
 var marked = {};
 //those tokens, that were marked by the system, but user rejected the suggestion
@@ -5,34 +11,24 @@ var unmarked = {};
 //all wikidata items are added to this dictionary
 //for those items, whose ids are selected, the item will be returned to django
 var wikidataReference = {};
-//the words that are annotated with a certain wikidata qid are added to this dictionary
-//which is returned to Django
-var annotatedWQID = {};
-//the words that are annotated with a certain NE from surrounding text (word window) are added to this dictionary
-//which is returned to Django
-var annotatedWW = {};
-//the words that are annotated with a certain item from the arXiv evaluation list are added to this dictionary
-//which is returned to Django
-var annotatedArXiv = {};
-//the words that are annotated with a certain item from the wikipedia evaluation list are added to this dictionary
-//which is returned to Django
-var annotatedWikipedia = {};
-
+//The tokens (identifier, formula, word) that are annotated with an item from wikidata, the arXiv evaluation list, the
+//wikipedia evaluation list or the word window are stored in this dictionary. Upon saving, the dictionary is sent to the
+//backend for further processing (saving, writing to database).
 var annotated = {};
-
-//var linkedWords;
-//var linkedMathSymbols;
 
 
 
 function populateTable(results, source) {
     /*
-    possible sources: concatenated, wikidata, wordWindow, arXiv, wikipedia
+    Possible sources: concatenated, wikidata, wordWindow, arXiv, wikipedia.
+    This function renders the table with the results that were retrieved by the backend of the project for a token that
+    the user mouse cliked. The table is rendered in the popup modal.
+
+    Each row in the table is stored as a string in an array. after the entire table has been created, an html element
+    that serves as a placeholder for the table is filled with its content.
      */
 
     console.log('populateTable, source: ', source);
-
-
     var myTable= "<table><tr><td style='width: 100px; color: red;'>Name</td></tr>";
     if (results != "None"){
         for (var i in results){
@@ -65,12 +61,16 @@ function populateTable(results, source) {
 
 
 function selected(name, qid, source){
+    /*
+    This function is called when the user annotates a token with an element from the created table (e.g. from the
+    retrieved wikidata results).
+     */
     function ww(id) {
         if (name in annotated) {
             annotated[name]['uniqueIDs'].push(id);
         }
         else {
-            annotatedWW[name] = {
+            annotated[name] = {
             'token': tokenContent,
             'content': name,
             //'wikidataInf': wikidataReference[qid],
@@ -108,7 +108,6 @@ function handleLinkedTokens(func) {
         for (i in word) {
             var id = word[i];
             func(id)
-            //document.getElementById(id).style.color = 'blue';
         }
     }
 }
@@ -121,6 +120,10 @@ FUNCTIONALITY USED TO SEND THE INFORMATION ABOUT ANNOTATIONS AND HIGHLIGHTING BA
 
 
 function markAsNE() {
+    /*
+    This function is called when the user selects a word in the document that wasn't found by the named entity tagger
+    and determines that it is a named entity after all.
+     */
 
     function mark(id) {
         document.getElementById(id).style.color = 'blue';
@@ -134,6 +137,10 @@ function markAsNE() {
 }
 
 function unMarkAsNE() {
+    /*
+    This function is called when the user selects a named entity in the document that wasn found by the named entity
+    tagger but determines that it isn't a named entity after all.
+     */
 
     function unmark(id) {
         document.getElementById(id).style.color = 'grey';
@@ -148,6 +155,10 @@ function unMarkAsNE() {
 
 
 function radioButtonClicked(option) {
+    /*
+    This function is called when the user selects a different column of results to be displayed in the table inside the
+    popup modal.
+     */
     switch (String(option)) {
         case 'Concatenated':
             populateTable(concatenatedResults, 'concatenated');
@@ -173,9 +184,12 @@ function radioButtonClicked(option) {
 }
 
 
-//store the linked tokens in a variable, to enable only having to
-//annotate a symbol, word, formula once for entire doc
+
 function linkTokens(linked_words, linked_math_symbols) {
+    /*
+    Linked tokens are stored in a variable, to enable only having to annotate an identifier, word, formula once for
+    entire document.
+     */
     window.linkedWords = JSON.parse(linked_words)['linkedWords'];
     window.linkedMathSymbols = JSON.parse(linked_math_symbols)['linkedMathSymbols'];
 }
@@ -187,12 +201,6 @@ AJAX FUNCTIONS USED TO POST THE REQUEST BACK TO DJANGO, WHERE THE WIKIDATA SPARQ
 
 function clickToken(tokenContent, tokenUniqueId, tokenType, mathEnv, tokenHighlight) {
 
-    /*console.log(typeof(linkedWords));
-    console.log(typeof(linkedMathSymbols));
-    console.log(testVal)
-    console.log(wikipediaEvaluationItems);*/
-
-    //console.log(tokenUniqueId);
 
     //Display the selected tokens
     if (mathEnv == 'None') {

@@ -1,5 +1,5 @@
 /*
-HELPER FUNCTIONS
+This file contains helper functions that are used by the script functionality.js
  */
 
 //function to format strings
