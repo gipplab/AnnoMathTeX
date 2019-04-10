@@ -1,7 +1,7 @@
-nltk
-SPARQLWrapper
-sympy
-html2text
-TexSoup
-beautifulsoup4
-django
+nltk==3.4
+SPARQLWrapper==1.8.2
+sympy==1.3
+html2text==2018.1.9
+TexSoup==0.1.4
+beautifulsoup4==4.7.1
+Django==2.1.3

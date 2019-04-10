@@ -74,7 +74,8 @@ class Parser(object, metaclass=ABCMeta):
             math_env_old, math_env_specieal_chars_handled = m
             self.__LOGGER__.debug(' in remove_math_envs() current math_env: {}'.format(m))
             try:
-                self.file = self.file.replace(math_env_old, '__MATH_ENV__', 1)
+                #todo: only add space if necessary
+                self.file = self.file.replace(math_env_old, ' __MATH_ENV__ ', 1)
             except Exception as e:
                 self.__LOGGER__.error('math_env {} couldnt be replaced: {}'.format(math_env_old, e))
                 continue
@@ -228,10 +229,12 @@ class Parser(object, metaclass=ABCMeta):
         self.__LOGGER__.debug(' process ')
         self.remove_math_envs()
         #necessary?
+        self.__LOGGER__.debug(' File before splitting: {}'.format(self.file))
         lines = [p for p in self.file.split('\n')]
-        self.__LOGGER__.debug(' lines extracted')
+        self.__LOGGER__.debug(' Lines extracted: {}'.format(lines))
         processed_lines = [self.extract_words(s, i) for i, s in enumerate(lines)]
-        self.__LOGGER__.debug(' lines processed')
+        p_content = [word.content for line in processed_lines for word in line]
+        self.__LOGGER__.debug(' lLines processed: {}'.format(p_content))
 
         #todo: itertools
         processed_lines_including_maths = []

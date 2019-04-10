@@ -65,18 +65,23 @@ class CustomMathEnvParser:
             identifiers.append(id)
             last_pos = p+l
 
-
+        end_chunk = self.math_env[last_pos:]
+        split_math_env.append(end_chunk)
         return identifiers, split_math_env
+
+
 
 if __name__ == "__main__":
     """
     Used for testing purposes
     """
     s = r'$ \underset{\mathbf{ S }} {\operatorname{arg\,min}} \sum_{ i =1}^{ k } \sum_{\mathbf x \ i n S _ i } \left\| \mathbf x - \boldsymbol\mu_ i \r i ght\|^2 = \underset{\mathbf{ S }} {\operatorname{arg\,m i n}} \sum_{ i =1}^{ k } | S _ i | \operatorname{Var} S _ i $'
+    s1 = r'$\Delta(m,n,x) =  \phi(S_n) + \phi(S_m) - \phi(S_n \backslash \{ x \} ) - \phi(S_m \cup \{ x \} )$'
+    s2 = r'$n,m \in \{1 \cdots k \}</math> and <math>x \in S_n$'
     #s = r'$ \underset{\mathbf{ S }} {\operatorname{arg\,min}} \sum_{ i =1}^{ k }'
-    c = CustomMathEnvParser(s)
-    identifiers = c.get_id_pos_len()
-    split_math_env = c.get_split_math_env()
+    c = CustomMathEnvParser(s2)
+    #identifiers = c.get_id_pos_len()
+    identifiers, split_math_env = c.get_split_math_env()
     print(identifiers)
     print(split_math_env)
 
