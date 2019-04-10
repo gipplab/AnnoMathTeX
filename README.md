@@ -12,7 +12,11 @@ Useful tools:
 
 # AnnoMathTeX
 
-AnnoMathTeX - a LaTeX text and formula annotation recommendation tool for STEM documents
+AnnoMathTeX is a LaTeX text and formula annotation recommendation tool for STEM documents. It allows users to annotate 
+identifiers in mathematical formulae, the entire formula as well as the named entities contained in a document 
+(recommended formats being .tex or .txt) with the corresponding concept. Theses concepts are taken from a number of 
+different sources, [Wikidata](https://www.wikidata.org) being one of them, in which case the selected token is annotated
+with the [Wikidata QID](https://en.wikipedia.org/wiki/Wikidata#Items).
 
 ## Motivation
 
@@ -37,6 +41,9 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites
 
 What things you need to install the software and how to install them
+
+Python version >=3.6 is recommended.
+
 
 ```
 Give examples
