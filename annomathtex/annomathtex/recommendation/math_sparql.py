@@ -4,7 +4,8 @@ from ..recommendation.sparql import Sparql
 
 class MathSparql(Sparql):
     """
-
+    This class handles all math environment related queries to Wikidata. It inherits from the Sparql class, which
+    contains most of the functionality necessary for accessing the Wikidata Query Service API.
     """
 
     def aliases_search(self, search_string):
@@ -59,7 +60,7 @@ class MathSparql(Sparql):
 
     def identifier_search(self, search_string):
         """
-        Mainly used module.
+        Method used at the moment when the user mouse clicks an identifiers.
         This method searches for the identifiers in the "has par" property of wikidata items.
         :param search_string: The string that is being queried for.
         :return: A list of dictionaries, where each dictionary is one result from the search.

@@ -18,7 +18,6 @@ from ..config import recommendations_limit
 from itertools import zip_longest
 
 logging.basicConfig(level=logging.INFO)
-#dictConfig(logging_config_path)
 __LOGGER__ = logging.getLogger(__name__)
 
 __MARKED__ = {}
@@ -58,10 +57,6 @@ class FileUploadView(View):
         :param word_window:
         :return:
         """
-        #print(wikidata_results)
-        #print(arXiv_evaluation_items)
-        #print(wikipedia_evaluation_items)
-        #print(word_window)
 
         all_recommendations = zip_longest(
                                               wikidata_results,
@@ -184,7 +179,6 @@ class FileUploadView(View):
             )
 
 
-        #make wikidata queries in real time
         elif 'queryDict' in request.POST:
             __LOGGER__.debug('making wikidata query...')
             items = {k: jquery_unparam(v) for (k, v) in request.POST.items()}
