@@ -19,9 +19,10 @@ different sources, [Wikidata](https://www.wikidata.org) being one of them, in wh
 with the [Wikidata QID](https://en.wikipedia.org/wiki/Wikidata#Items).
 
 ## Motivation
-
-A short description of the motivation behind the creation and maintenance of the project. This should explain **why** the project exists and which issue it addresses.
- 
+Machine Learning has proven time and time again to be extremely useful in classification tasks. However, very large 
+amounts of labeled data are necessary to train machine learning methods. Currently, there is no large enough labeled 
+dataset containing mathematical formulae annotated with their semantics available, that could be used to train machine 
+learning models.
 ## Features
 
 What makes your project stand out? Include logo/demo screenshot etc.
@@ -43,6 +44,7 @@ These instructions will get you a copy of the project up and running on your loc
 What things you need to install the software and how to install them
 
 Python version >=3.6 is recommended.
+Django 
 
 
 ```
@@ -51,19 +53,13 @@ Give examples
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
-
+Clone or download the repository. In your shell navigate to the folder [AnnoMathTeX](/AnnoMathTeX) and create & activate
+a new virtual environment. Then run the command
 ```
-Give the example
+pip install -r requirements.txt
 ```
 
-And repeat
 
-```
-until finished
-```
 
 End with an example of getting some data out of the system or using it for a little demo
 
@@ -73,7 +69,13 @@ Depending on the size of the project, if it is small and simple enough the refer
 
 ## How to use? (maybe optional)
 
-If people like your project they’ll want to learn how they can use it. To do so include step by step guide to using your project. Whether this section is required and if it should be part of the `README.md` depends on your project. If the `Very Short Code Examples` from above already comprehensively (despite being concise!) cover all the major functionality provided by your project, the `How to use?` section can be omitted. However, if you think that users/developers of your project will need more information to fully understand how to use your project, the section `How to use?` is mandatory. Next, you need to decide where to put this information. If it is just a few information, you may add it to the `README.md`, if not, place the information into a new `.md` file.
+In a terminal navigate to the folder where the manage.py file sits ([AnnoMathTeX/annomathtex](/AnnoMathTeX/annomathtex))
+and run the command
+```python
+python manage.py runserver
+```
+In your browser navigate to [http://127.0.0.1:8000/file_upload/](http://127.0.0.1:8000/file_upload/). Any browser should 
+work, although we recommend using Google Chrome.
 
 ## Results
 
