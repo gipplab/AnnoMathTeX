@@ -17,7 +17,7 @@ var wikidataReference = {};
 var annotated = {};
 
 
-var tokenAssignedItem = {};
+var tokenAssignedItem = new Set([]);
 
 
 var cellColorBasic = '#dddddd';
@@ -36,7 +36,8 @@ function populateTable(results, source) {
     that serves as a placeholder for the table is filled with its content.
      */
 
-    console.log('populateTable, source: ', source);
+    console.log('populate table tokenAssignedItem: ', tokenAssignedItem);
+
     var myTable= "<table><tr><td style='width: 100px;'>Name</td></tr>";
     if (results != "None"){
         for (var i in results){
@@ -49,7 +50,8 @@ function populateTable(results, source) {
             var qid = null;
 
             var backgroundColor = cellColorBasic;//'#dddddd';
-            if (tokenContent in tokenAssignedItem){
+
+            if (tokenAssignedItem.has(name)){
                 backgroundColor = cellColorSelected;
             }
 
@@ -101,8 +103,6 @@ function selected(argsString){
     retrieved wikidata results).
      */
 
-    console.log('SELECTED: ' + argsString);
-
 
     var argsArray = argsString.split('---');
     var name = argsArray[0];
@@ -110,6 +110,22 @@ function selected(argsString){
     var source = argsArray[2];
     var backgroundColor = argsArray[3];
     var cellID = argsArray[4]
+
+
+    if (backgroundColor == cellColorBasic){
+        document.getElementById(cellID).style.backgroundColor = cellColorSelected;
+        tokenAssignedItem.add(name);
+        console.log('ADDED ENERGY: ', tokenAssignedItem);
+    }
+    else {
+        document.getElementById(cellID).style.backgroundColor = cellColorBasic;
+        //remove element from array
+        tokenAssignedItem.delete(name);
+        console.log('NAME: ' + name);
+        console.log( 'ARRAY: ' + tokenAssignedItem);
+    }
+
+
 
 
 
@@ -127,8 +143,6 @@ function selected(argsString){
         }
     }
 
-    //console.log(cellID);
-    document.getElementById(cellID).style.backgroundColor = cellColorSelected;
     ww(uniqueID);
     handleLinkedTokens(ww);
 }
@@ -143,8 +157,8 @@ function handleLinkedTokens(func) {
     functionality.
      */
 
-    console.log('linkedWords: ', linkedWords);
-    console.log('linkedMathSymbols: ', linkedMathSymbols);
+    //console.log('linkedWords: ', linkedWords);
+    //console.log('linkedMathSymbols: ', linkedMathSymbols);
 
     if (tokenType == 'Word') {
         dicToCheck = linkedWords;
