@@ -18,7 +18,7 @@ class Parser(object, metaclass=ABCMeta):
     Abstract base class for classes that need to parse different input formats (tex, txt, html).
     """
 
-    def __init__(self, request_file, file_type='tex'):
+    def __init__(self, request_file, file_name):
         """
         :param request_file: The file that the user selects to annotate.
         :param file_type: The type of the file (tex, txt, html).
@@ -27,7 +27,8 @@ class Parser(object, metaclass=ABCMeta):
         self.__LOGGER__ = logging.getLogger(__name__)
         self.tagger = NLTK_NER()
         self.file = self.decode(request_file)
-        self.file_type = file_type
+        self.file_name = file_name
+        self.file_type = file_name.split('.')[-1]
         #self.__LOGGER__.debug(' FILE: {}'.format(self.file))
         self.math_envs = self.extract_math_envs()
         self.arXiv_evaluation_list_handler = ArXivEvaluationListHandler()
@@ -87,7 +88,7 @@ class Parser(object, metaclass=ABCMeta):
                 self.__LOGGER__.error('math_env {} couldnt be replaced: {}'.format(math_env, e))
                 continue
 
-        self.__LOGGER__.debug(' File after removing math_envs: {}'.format(self.file))
+        #self.__LOGGER__.debug(' File after removing math_envs: {}'.format(self.file))
 
 
     def form_word_links(self, tagged_words):
@@ -238,10 +239,10 @@ class Parser(object, metaclass=ABCMeta):
         self.remove_math_envs()
         #necessary?
         lines = [p for p in self.file.split('\n')]
-        self.__LOGGER__.debug(' Lines extracted: {}'.format(lines))
+        #self.__LOGGER__.debug(' Lines extracted: {}'.format(lines))
         processed_lines = [self.extract_words(s, i) for i, s in enumerate(lines)]
-        p_content = [word.content for line in processed_lines for word in line]
-        self.__LOGGER__.debug(' Lines processed: {}'.format(p_content))
+        #p_content = [word.content for line in processed_lines for word in line]
+        #self.__LOGGER__.debug(' Lines processed: {}'.format(p_content))
 
         #todo: itertools
         processed_lines_including_maths = []
@@ -264,5 +265,5 @@ class Parser(object, metaclass=ABCMeta):
         #todo
         #if self.file_type == 'txt':
         #    self.remove_tags()
-        latex_file = LaTeXFile(processed_lines_including_maths, self.linked_words, self.linked_math_symbols)
+        latex_file = LaTeXFile(processed_lines_including_maths, self.linked_words, self.linked_math_symbols, self.file_name)
         return (self.line_dict, self.identifier_line_dict, latex_file)

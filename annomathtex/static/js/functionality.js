@@ -258,6 +258,12 @@ function linkTokens(linked_words, linked_math_symbols) {
 }
 
 
+function handlefileName(fileName) {
+    window.fileName = fileName;
+    console.log(fileName);
+}
+
+
 /*
 AJAX FUNCTIONS USED TO POST THE REQUEST BACK TO DJANGO, WHERE THE WIKIDATA SPARQL QUERY IS EXECUTED
  */
@@ -395,13 +401,15 @@ $(document).ready(function () {
   });
 
     // AJAX for posting
+    var fileNameDict = {'f': fileName};
     function create_post() {
       let data_dict = { the_post : $('#post-text').val(),
                         //'csrfmiddlewaretoken': '{{ csrf_token }}',
                         'csrfmiddlewaretoken': getCookie("csrftoken"),
                         'marked': $.param(marked),
                         'annotated': $.param(annotated),
-                        'unmarked': $.param(unmarked)
+                        'unmarked': $.param(unmarked),
+                        'fileName': $.param(fileNameDict)
                         };
 
 

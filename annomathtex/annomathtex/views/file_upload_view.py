@@ -13,7 +13,7 @@ from ..parsing.txt_parser import TXTParser
 from ..parsing.tex_parser import TEXParser
 from ..recommendation.arxiv_evaluation_handler import ArXivEvaluationListHandler
 from ..recommendation.wikipedia_evaluation_handler import WikipediaEvaluationListHandler
-from ..config import recommendations_limit
+from ..config import recommendations_limit, evaluation_annotations_path
 from itertools import zip_longest
 
 logging.basicConfig(level=logging.INFO)
@@ -146,10 +146,10 @@ class FileUploadView(View):
             file_name = str(request_file)
             if file_name.endswith('.tex'):
                 __LOGGER__.info(' tex file ')
-                line_dict, identifier_line_dict, processed_file = TEXParser(request_file).process()
+                line_dict, identifier_line_dict, processed_file = TEXParser(request_file, file_name).process()
             elif file_name.endswith('.txt'):
                 __LOGGER__.info(' text file ')
-                line_dict, identifier_line_dict, processed_file = TXTParser(request_file, 'txt').process()
+                line_dict, identifier_line_dict, processed_file = TXTParser(request_file, file_name).process()
             else:
                 line_dict, identifier_line_dict, processed_file = None, None, None
 
@@ -158,6 +158,7 @@ class FileUploadView(View):
             return render(request,
                           'annotation_template.html',
                           {'File': processed_file})
+
 
         return render(request, "render_file_template.html", self.save_annotation_form)
 
@@ -176,14 +177,18 @@ class FileUploadView(View):
         marked = items['marked']
         unmarked = items['unmarked']
         annotated = items['annotated']
+        file_name = items['fileName']['f']
 
-        # todo: write to database
+
         __MARKED__.update(marked)
         __UNMARKED__.update(unmarked)
         __ANNOTATED__.update(annotated)
-
-
         __LOGGER__.debug(' ANNOTATED: {}'.format(annotated))
+
+
+        annotation_file_name = file_name.replace('.', '__DOT__') + '__ANN__.txt'
+        with open(evaluation_annotations_path + annotation_file_name, 'w') as f:
+            json.dump(__ANNOTATED__, f)
 
         return HttpResponse(
             json.dumps({'testkey': 'testvalue'}),

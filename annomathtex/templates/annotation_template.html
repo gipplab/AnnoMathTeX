@@ -53,7 +53,9 @@
 <script>
   var linked_words = "{{ File.linked_words|escapejs }}";
   var linked_math_symbols = "{{ File.linked_math_symbols|escapejs }}";
+  var fileName = "{{ File.file_name|escapejs }}";
   linkTokens(linked_words, linked_math_symbols);
+  handlefileName(fileName);
 </script>
 
 

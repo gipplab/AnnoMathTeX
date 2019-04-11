@@ -5,7 +5,7 @@ import json
 
 class LaTeXFile(models.Model):
 
-    def __init__(self, processed_lines, __linked_words__, __linked_math_symbols__):
+    def __init__(self, processed_lines, __linked_words__, __linked_math_symbols__, file_name):
         """
 
         :param processed_lines: each processed line consists of one or mulitple chunks. A chunk
@@ -19,6 +19,7 @@ class LaTeXFile(models.Model):
         #linked_words['Sun'] = ["TESTID"] + linked_words['Sun']
         self.linked_words = json.dumps({'linkedWords': linked_words})
         self.linked_math_symbols = json.dumps({'linkedMathSymbols': linked_math_symbols})
+        self.file_name = file_name
 
         #for k in linked_math_symbols:
         #    print(k, len(linked_math_symbols[k]), len(list(set(linked_math_symbols[k]))))
