@@ -55,8 +55,11 @@ td, th {
   border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;
+  /*background-color: aqua;*/
 }
+
 
 tr:nth-child(even) {
   background-color: #dddddd;
 }
+

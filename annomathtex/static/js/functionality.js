@@ -17,6 +17,14 @@ var wikidataReference = {};
 var annotated = {};
 
 
+var tokenAssignedItem = {};
+
+
+var cellColorBasic = '#dddddd';
+var cellColorSelected = 'pink';
+
+var cellCounter = 0;
+
 
 function populateTable(results, source) {
     /*
@@ -29,14 +37,41 @@ function populateTable(results, source) {
      */
 
     console.log('populateTable, source: ', source);
-    var myTable= "<table><tr><td style='width: 100px; color: red;'>Name</td></tr>";
+    var myTable= "<table><tr><td style='width: 100px;'>Name</td></tr>";
     if (results != "None"){
         for (var i in results){
+
+            cellCounter += 1;
+
             var item = results[i];
             var name = item['name'];
             //var qid = item['qid'];
             var qid = null;
-            myTable+="<tr><td style='width: 100px;' onclick='selected(\"" + name + "," + qid + "," + source + "\")'>" + name + "</td></tr>";
+
+            var backgroundColor = cellColorBasic;//'#dddddd';
+            if (tokenContent in tokenAssignedItem){
+                backgroundColor = cellColorSelected;
+            }
+
+            var cellID = "cell" + cellCounter;
+
+            var args = [
+                name,
+                qid,
+                source,
+                backgroundColor,
+                cellID
+            ];
+
+
+            var argsString = args.join('---');
+
+            //myTable+="<tr><td style='width: 100px; onclick='selected(\"" + null + "\")'>" + name + "</td></tr>";
+            //myTable+="<tr><td style='width: 100px; background-color: pink' onclick='selected(\"" + name + "," + qid + "," + source + "\")'>" + name + "</td></tr>";
+
+            //myTable+="<tr><td style='width: 100px; background-color: pink' onclick='selected(\"" + argsString + "\")'>" + name + "</td></tr>";
+            myTable+="<tr><td id="+ cellID +" style='width: 100px; background-color:" +  backgroundColor + "'" + "onclick='selected(\"" + argsString + "\")'>" + name + "</td></tr>";
+            //myTable+="<tr><td id=" + cellID + "style='width: 100px; background-color:" +  backgroundColor + "'" + "onclick='selected(\"" + name + "," + qid + "," + source + "," + backgroundColor + "," + cellID + "\")'>" + name + "</td></tr>";
             //myTable+="<tr><td style='width: 100px;' onclick=\"" + selectedFunction + name + "\")'>" + name + "</td></tr>";
 
       }
@@ -60,11 +95,24 @@ function populateTable(results, source) {
 }
 
 
-function selected(name, qid, source){
+function selected(argsString){
     /*
     This function is called when the user annotates a token with an element from the created table (e.g. from the
     retrieved wikidata results).
      */
+
+    console.log('SELECTED: ' + argsString);
+
+
+    var argsArray = argsString.split('---');
+    var name = argsArray[0];
+    var qid = argsArray[1];
+    var source = argsArray[2];
+    var backgroundColor = argsArray[3];
+    var cellID = argsArray[4]
+
+
+
     function ww(id) {
         if (name in annotated) {
             annotated[name]['uniqueIDs'].push(id);
@@ -78,9 +126,11 @@ function selected(name, qid, source){
             };
         }
     }
+
+    //console.log(cellID);
+    document.getElementById(cellID).style.backgroundColor = cellColorSelected;
     ww(uniqueID);
     handleLinkedTokens(ww);
-    console.log(tokenContent + ' assigned ' + name );
 }
 
 

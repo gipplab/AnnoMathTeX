@@ -260,7 +260,9 @@ class Parser(object, metaclass=ABCMeta):
                     processed_line.append(w)
             processed_lines_including_maths.append(processed_line)
 
-        if self.file_type == 'txt':
-            self.remove_tags()
+
+        #todo
+        #if self.file_type == 'txt':
+        #    self.remove_tags()
         latex_file = LaTeXFile(processed_lines_including_maths, self.linked_words, self.linked_math_symbols)
         return (self.line_dict, self.identifier_line_dict, latex_file)

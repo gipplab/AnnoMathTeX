@@ -74,7 +74,10 @@ class TXTParser(Parser):
         self.file = self.file.replace('</math>', '')
         print('REMOVE TAGS: {}'.format([str(tag) for tag in self.extract_tags_to_remove()]))
         for tag in self.extract_tags_to_remove():
+            print(str(tag))
             self.file = self.file.replace(str(tag), '')
+
+        print(self.file)
 
 
 
