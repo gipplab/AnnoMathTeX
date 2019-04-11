@@ -27,9 +27,9 @@ class Parser(object, metaclass=ABCMeta):
         self.__LOGGER__ = logging.getLogger(__name__)
         self.tagger = NLTK_NER()
         self.file = self.decode(request_file)
+        self.file_type = file_type
+        #self.__LOGGER__.debug(' FILE: {}'.format(self.file))
         self.math_envs = self.extract_math_envs()
-        if file_type == 'txt':
-            self.remove_tags()
         self.arXiv_evaluation_list_handler = ArXivEvaluationListHandler()
         self.wikipedia_evaluation_list_handler = WikipediaEvaluationListHandler()
         self.linked_words = {}
@@ -54,8 +54,15 @@ class Parser(object, metaclass=ABCMeta):
         Extract the math environments from the file. E.g. for wikitext anything within <math> </math>
         :return: The extracted math environments
         """
-        raise NotImplementedError('must be impplemented')
+        raise NotImplementedError('Function extract_math_envs() must be implemented')
 
+    @abstractmethod
+    def remove_math_envs(self):
+        """
+        Remove all the math environments, process file without them and add them back later
+        :return: File without math environments ('__MATH_ENV__' in place of each math_environment)
+        """
+        raise NotImplementedError('Function remove_math_envs() must be implemented')
 
     def remove_special_chars(self):
         """
@@ -71,14 +78,16 @@ class Parser(object, metaclass=ABCMeta):
         :return: File without math environments ('__MATH_ENV__' in place of each math_environment)
         """
         for i, m in enumerate(self.math_envs):
-            math_env_old, math_env_specieal_chars_handled = m
+            math_env = m
             self.__LOGGER__.debug(' in remove_math_envs() current math_env: {}'.format(m))
             try:
                 #todo: only add space if necessary
-                self.file = self.file.replace(math_env_old, ' __MATH_ENV__ ', 1)
+                self.file = self.file.replace(math_env, ' __MATH_ENV__ ', 1)
             except Exception as e:
-                self.__LOGGER__.error('math_env {} couldnt be replaced: {}'.format(math_env_old, e))
+                self.__LOGGER__.error('math_env {} couldnt be replaced: {}'.format(math_env, e))
                 continue
+
+        self.__LOGGER__.debug(' File after removing math_envs: {}'.format(self.file))
 
 
     def form_word_links(self, tagged_words):
@@ -226,15 +235,13 @@ class Parser(object, metaclass=ABCMeta):
                  line they appear on (needed for word window extraction) and a File object.
         """
 
-        self.__LOGGER__.debug(' process ')
         self.remove_math_envs()
         #necessary?
-        self.__LOGGER__.debug(' File before splitting: {}'.format(self.file))
         lines = [p for p in self.file.split('\n')]
         self.__LOGGER__.debug(' Lines extracted: {}'.format(lines))
         processed_lines = [self.extract_words(s, i) for i, s in enumerate(lines)]
         p_content = [word.content for line in processed_lines for word in line]
-        self.__LOGGER__.debug(' lLines processed: {}'.format(p_content))
+        self.__LOGGER__.debug(' Lines processed: {}'.format(p_content))
 
         #todo: itertools
         processed_lines_including_maths = []
@@ -244,7 +251,8 @@ class Parser(object, metaclass=ABCMeta):
                 processed_line.append(EmptyLine(uuid1()))
             for w in line:
                 if re.search(r'__MATH_ENV__', w.content):
-                    _, math_env = self.math_envs[0]
+                    #_, math_env = self.math_envs[0]
+                    math_env = self.math_envs[0]
                     self.math_envs.pop(0)
                     processed_math_env = self.process_math_env(math_env, line_num)
                     processed_line += processed_math_env
@@ -252,5 +260,7 @@ class Parser(object, metaclass=ABCMeta):
                     processed_line.append(w)
             processed_lines_including_maths.append(processed_line)
 
+        if self.file_type == 'txt':
+            self.remove_tags()
         latex_file = LaTeXFile(processed_lines_including_maths, self.linked_words, self.linked_math_symbols)
         return (self.line_dict, self.identifier_line_dict, latex_file)

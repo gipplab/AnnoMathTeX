@@ -39,16 +39,15 @@ class TXTParser(Parser):
         ignore = [r'\n', '', r'\s']
         soup = BeautifulSoup(self.file)
         #might work without list()
-        #todo: handle special characters - only necessary if Formulasplitter from latexformlaidentifiers.py is used
         # tex parser returns tuple of old,
         # and new math_env, which is why its also necessary to do that here.
-        math_envs = list(
+        """math_envs = list(
             map(
-                lambda math_env: (' '.join(chunk for chunk in math_env.contents if chunk not in ignore),
-                                  ' '.join(chunk for chunk in math_env.contents if chunk not in ignore)),
+                lambda math_env: ' '.join(chunk for chunk in math_env.contents if chunk not in ignore),
                 list(soup.find_all('math'))
             )
-        )
+        )"""
+        math_envs = [str(tag) for tag in list(soup.find_all('math'))]
         return math_envs
 
     def extract_tags_to_remove(self):
