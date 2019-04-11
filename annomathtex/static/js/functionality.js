@@ -125,18 +125,18 @@ function selected(argsString){
         tokenAssignedItem.delete(name);
         console.log('NAME: ' + name);
         console.log( 'ARRAY: ' + tokenAssignedItem);
-        delete annotated[name];
+        delete annotated[tokenContent];
     }
 
 
     function addToAnnotated(id) {
-        if (name in annotated) {
-            annotated[name]['uniqueIDs'].push(id);
+
+        if (annotated != null && tokenContent in annotated) {
+            annotated[tokenContent]['uniqueIDs'].push(id);
         }
         else {
-            annotated[name] = {
-            'token': tokenContent,
-            'content': name,
+            annotated[tokenContent] = {
+            'name': name,
             //'wikidataInf': wikidataReference[qid],
             'uniqueIDs': [id]
             };
@@ -255,12 +255,25 @@ function linkTokens(linked_words, linked_math_symbols) {
      */
     window.linkedWords = JSON.parse(linked_words)['linkedWords'];
     window.linkedMathSymbols = JSON.parse(linked_math_symbols)['linkedMathSymbols'];
+    console.log('LINKED WORDS: ',linkedWords);
 }
 
 
 function handlefileName(fileName) {
     window.fileName = fileName;
     console.log(fileName);
+}
+
+function handleAnnotations(existing_annotations){
+    if (existing_annotations != null){
+        var existingAnnotations = JSON.parse(existing_annotations)['existingAnnotations'];
+        console.log(existingAnnotations);
+        //tokenAssignedItem.add(name);
+        for (var token in existingAnnotations){
+
+        }
+    }
+
 }
 
 

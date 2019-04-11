@@ -1,5 +1,7 @@
 import re
 import logging
+import json
+from os import listdir
 from uuid import uuid1
 from abc import ABCMeta, abstractmethod
 from ..parsing.nehandling.named_entity_recognition import NLTK_NER
@@ -11,6 +13,7 @@ from ..recommendation.arxiv_evaluation_handler import ArXivEvaluationListHandler
 from ..recommendation.wikipedia_evaluation_handler import WikipediaEvaluationListHandler
 from ..parsing.mathhandling.latexformlaidentifiers import FormulaSplitter
 from ..parsing.mathhandling.custom_math_env_parser import CustomMathEnvParser
+from ..config import *
 
 
 class Parser(object, metaclass=ABCMeta):
@@ -57,14 +60,6 @@ class Parser(object, metaclass=ABCMeta):
         """
         raise NotImplementedError('Function extract_math_envs() must be implemented')
 
-    @abstractmethod
-    def remove_math_envs(self):
-        """
-        Remove all the math environments, process file without them and add them back later
-        :return: File without math environments ('__MATH_ENV__' in place of each math_environment)
-        """
-        raise NotImplementedError('Function remove_math_envs() must be implemented')
-
     def remove_special_chars(self):
         """
         remove things like <href ....>
@@ -72,6 +67,23 @@ class Parser(object, metaclass=ABCMeta):
         :return:
         """
         pass
+
+
+    def read_annotation_file(self):
+        """
+
+        :return:
+        """
+        #method create_annotation_file_name() imported from config.py
+        annotation_file_name = create_annotation_file_name(self.file_name)
+        print('READ ANNOTATOIN FILE: ', annotation_file_name)
+        print('IN: ', listdir(evaluation_annotations_path))
+        if annotation_file_name in listdir(evaluation_annotations_path):
+            with open(evaluation_annotations_path + annotation_file_name, 'r') as f:
+                json_annotations =json.load(f)
+            self.__LOGGER__.debug('ANNOTATIONS: {}'.format(json_annotations))
+            return json_annotations
+
 
     def remove_math_envs(self):
         """
@@ -265,5 +277,9 @@ class Parser(object, metaclass=ABCMeta):
         #todo
         #if self.file_type == 'txt':
         #    self.remove_tags()
-        latex_file = LaTeXFile(processed_lines_including_maths, self.linked_words, self.linked_math_symbols, self.file_name)
+        existing_annotations = self.read_annotation_file()
+        latex_file = LaTeXFile(processed_lines_including_maths,
+                               self.linked_words,
+                               self.linked_math_symbols,
+                               self.file_name, existing_annotations)
         return (self.line_dict, self.identifier_line_dict, latex_file)

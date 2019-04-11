@@ -13,7 +13,7 @@ from ..parsing.txt_parser import TXTParser
 from ..parsing.tex_parser import TEXParser
 from ..recommendation.arxiv_evaluation_handler import ArXivEvaluationListHandler
 from ..recommendation.wikipedia_evaluation_handler import WikipediaEvaluationListHandler
-from ..config import recommendations_limit, evaluation_annotations_path
+from ..config import recommendations_limit, create_annotation_file_path
 from itertools import zip_longest
 
 logging.basicConfig(level=logging.INFO)
@@ -186,8 +186,8 @@ class FileUploadView(View):
         __LOGGER__.debug(' ANNOTATED: {}'.format(annotated))
 
 
-        annotation_file_name = file_name.replace('.', '__DOT__') + '__ANN__.txt'
-        with open(evaluation_annotations_path + annotation_file_name, 'w') as f:
+        annotation_file_name = create_annotation_file_path(file_name)
+        with open(annotation_file_name, 'w') as f:
             json.dump(__ANNOTATED__, f)
 
         return HttpResponse(
