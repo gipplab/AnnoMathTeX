@@ -182,6 +182,9 @@ class FileUploadView(View):
         __UNMARKED__.update(unmarked)
         __ANNOTATED__.update(annotated)
 
+
+        __LOGGER__.debug(' ANNOTATED: {}'.format(annotated))
+
         return HttpResponse(
             json.dumps({'testkey': 'testvalue'}),
             content_type='application/json'

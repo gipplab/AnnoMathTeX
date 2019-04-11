@@ -116,6 +116,8 @@ function selected(argsString){
         document.getElementById(cellID).style.backgroundColor = cellColorSelected;
         tokenAssignedItem.add(name);
         console.log('ADDED ENERGY: ', tokenAssignedItem);
+        //addToAnnotated(uniqueID);
+        handleLinkedTokens(addToAnnotated);
     }
     else {
         document.getElementById(cellID).style.backgroundColor = cellColorBasic;
@@ -123,13 +125,11 @@ function selected(argsString){
         tokenAssignedItem.delete(name);
         console.log('NAME: ' + name);
         console.log( 'ARRAY: ' + tokenAssignedItem);
+        delete annotated[name];
     }
 
 
-
-
-
-    function ww(id) {
+    function addToAnnotated(id) {
         if (name in annotated) {
             annotated[name]['uniqueIDs'].push(id);
         }
@@ -143,8 +143,7 @@ function selected(argsString){
         }
     }
 
-    ww(uniqueID);
-    handleLinkedTokens(ww);
+
 }
 
 
