@@ -58,6 +58,9 @@ td, th {
   /*background-color: aqua;*/
 }
 
+td:empty {
+    visibility: hidden;
+}
 
 tr:nth-child(even) {
   background-color: #dddddd;

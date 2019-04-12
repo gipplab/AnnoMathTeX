@@ -38,7 +38,10 @@ function populateTable(results, source) {
 
     console.log('populate table tokenAssignedItem: ', tokenAssignedItem);
 
-    var myTable= "<table><tr><td style='width: 100px;'>Name</td></tr>";
+    var qidHeader = source=='concatenated' ? 'QID' : '';
+
+
+    var myTable= "<table><tr><td style='width: 100px;'>Name</td><td>" + qidHeader + "</td></tr>";
     if (results != "None"){
         for (var i in results){
 
@@ -47,7 +50,7 @@ function populateTable(results, source) {
             var item = results[i];
             var name = item['name'];
             //var qid = item['qid'];
-            var qid = null;
+            var qid = source=='concatenated' ? item['qid'] : '';
 
             var backgroundColor = cellColorBasic;//'#dddddd';
 
@@ -68,13 +71,8 @@ function populateTable(results, source) {
 
             var argsString = args.join('---');
 
-            //myTable+="<tr><td style='width: 100px; onclick='selected(\"" + null + "\")'>" + name + "</td></tr>";
-            //myTable+="<tr><td style='width: 100px; background-color: pink' onclick='selected(\"" + name + "," + qid + "," + source + "\")'>" + name + "</td></tr>";
-
-            //myTable+="<tr><td style='width: 100px; background-color: pink' onclick='selected(\"" + argsString + "\")'>" + name + "</td></tr>";
-            myTable+="<tr><td id="+ cellID +" style='width: 100px; background-color:" +  backgroundColor + "'" + "onclick='selected(\"" + argsString + "\")'>" + name + "</td></tr>";
-            //myTable+="<tr><td id=" + cellID + "style='width: 100px; background-color:" +  backgroundColor + "'" + "onclick='selected(\"" + name + "," + qid + "," + source + "," + backgroundColor + "," + cellID + "\")'>" + name + "</td></tr>";
-            //myTable+="<tr><td style='width: 100px;' onclick=\"" + selectedFunction + name + "\")'>" + name + "</td></tr>";
+            //myTable+="<tr><td id="+ cellID +" style='width: 100px; background-color:" +  backgroundColor + "'" + "onclick='selected(\"" + argsString + "\")'>" + name + "</td></tr>";
+            myTable+="<tr><td id="+ cellID +" style='background-color:" +  backgroundColor + "'" + "onclick='selected(\"" + argsString + "\")'>" + name + "</td><td style='width: 20px'>" + qid + "</td></tr>";
 
       }
       document.getElementById('tableholder').innerHTML = myTable;
