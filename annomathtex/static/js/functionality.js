@@ -267,11 +267,15 @@ function handlefileName(fileName) {
 function handleAnnotations(existing_annotations){
     if (existing_annotations != null){
         var existingAnnotations = JSON.parse(existing_annotations)['existingAnnotations'];
-        console.log(existingAnnotations);
-        //tokenAssignedItem.add(name);
+        //console.log('Existing annotations: ', existingAnnotations);
         for (var token in existingAnnotations){
-
+            item = existingAnnotations[token]
+            annotated[token] = item;
+            tokenAssignedItem.add(item['name']);
         }
+        //console.log(annotated);
+        //console.log(tokenAssignedItem)
+
     }
 
 }
