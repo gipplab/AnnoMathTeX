@@ -50,15 +50,6 @@ class FileUploadView(View):
         """
 
 
-        def access_wikidata(name):
-            """
-
-            :param name:
-            :return:
-            """
-
-
-
 
         all_recommendations = zip_longest(
                                               wikidata_results,

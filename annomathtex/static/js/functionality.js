@@ -52,6 +52,8 @@ function populateTable(results, source) {
             //var qid = item['qid'];
             var qid = source=='concatenated' ? item['qid'] : '';
 
+            var url = source=='concatenated' ? item['link'] : '';
+
             var backgroundColor = cellColorBasic;//'#dddddd';
 
             if (tokenAssignedItem.has(name)){
@@ -72,7 +74,9 @@ function populateTable(results, source) {
             var argsString = args.join('---');
 
             //myTable+="<tr><td id="+ cellID +" style='width: 100px; background-color:" +  backgroundColor + "'" + "onclick='selected(\"" + argsString + "\")'>" + name + "</td></tr>";
-            myTable+="<tr><td id="+ cellID +" style='background-color:" +  backgroundColor + "'" + "onclick='selected(\"" + argsString + "\")'>" + name + "</td><td style='width: 20px'>" + qid + "</td></tr>";
+            //myTable+="<tr><td id="+ cellID +" style='background-color:" +  backgroundColor + "'" + "onclick='selected(\"" + argsString + "\")'>" + name + "</td><td style='width: 20px'>" + qid + "</td></tr>";
+
+            myTable+="<tr><td id="+ cellID +" style='background-color:" +  backgroundColor + "'" + "onclick='selected(\"" + argsString + "\")'>" + name + "</td><td style='width: 20px'><a target='_blank' rel='noopener noreferrer' href='" + url + "'>" + qid + "</a></td></tr>";
 
       }
       document.getElementById('tableholder').innerHTML = myTable;

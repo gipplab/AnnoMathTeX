@@ -20,6 +20,5 @@ class NESparql(Sparql):
         """
         search_string_preprocessed = self.remove_special_characters(search_string)
         results_list = self.query(named_entity_query, search_string_preprocessed, limit)
-        print(results_list)
         return results_list
 
