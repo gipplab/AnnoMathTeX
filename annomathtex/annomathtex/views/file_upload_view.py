@@ -33,7 +33,7 @@ class FileUploadView(View):
     save_annotation_form = {'form': SaveAnnotationForm()}
     template_name = 'file_upload_template.html'
 
-    def get_concatenated_recommendations(self, wikidata_results, arXiv_evaluation_items,
+    def get_concatenated_recommendations(self, type, wikidata_results, arXiv_evaluation_items,
                                          wikipedia_evaluation_items, word_window):
         """
         Concatenate the recommendations from the various sources and show them in the first column.
@@ -49,20 +49,34 @@ class FileUploadView(View):
                  ArXiv, Wikipedia, Word Window.
         """
 
+
+        def access_wikidata(name):
+            """
+
+            :param name:
+            :return:
+            """
+
+
+
+
         all_recommendations = zip_longest(
                                               wikidata_results,
                                               arXiv_evaluation_items,
                                               wikipedia_evaluation_items,
                                               word_window,
-                                              fillvalue={'name':'__FOO__'}
+                                              fillvalue={'name':'__FILLVALUE__'}
                                           )
         count = 0
-        seen = ['__FOO__']
+        seen = ['__FILLVALUE__']
         concatenated_recommendations = []
         for zip_r in all_recommendations:
             for r in zip_r:
                 if count == recommendations_limit: break
                 if r['name'] not in seen:
+                    if 'qid' not in r:
+                        results = NESparql().named_entity_search(r['name'], 1)
+                        r = results[0] if results else r
                     concatenated_recommendations.append(r)
                     seen.append(r['name'])
                     count += 1
@@ -238,6 +252,7 @@ class FileUploadView(View):
             wikipedia_evaluation_items = wikipedia_evaluation_list_handler.check_identifiers(search_string)
             word_window = self.get_word_window(unique_id)
             concatenated_results = self.get_concatenated_recommendations(
+                'identifier',
                 wikidata_results,
                 arXiv_evaluation_items,
                 wikipedia_evaluation_items,

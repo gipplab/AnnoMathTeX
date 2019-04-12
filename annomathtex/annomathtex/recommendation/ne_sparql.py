@@ -12,14 +12,14 @@ class NESparql(Sparql):
     """
 
 
-    def named_entity_search(self, search_string):
+    def named_entity_search(self, search_string, limit=10):
         """
         This method uses the user selected word and queries the labels of wikidata items with that search strin.
         :param search_string: A string extracted by the named entitiy tagger.
         :return: A list of dictionaries, where each dictionary is one result from the search.
         """
         search_string_preprocessed = self.remove_special_characters(search_string)
-        results_list = self.query(named_entity_query, search_string_preprocessed)
+        results_list = self.query(named_entity_query, search_string_preprocessed, limit)
         print(results_list)
         return results_list
 
