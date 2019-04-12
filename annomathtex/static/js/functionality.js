@@ -126,6 +126,7 @@ function selected(argsString){
         console.log('NAME: ' + name);
         console.log( 'ARRAY: ' + tokenAssignedItem);
         delete annotated[tokenContent];
+
     }
 
 
@@ -142,8 +143,7 @@ function selected(argsString){
             };
         }
     }
-
-
+    fillAnnotationsTable();
 }
 
 
@@ -264,17 +264,33 @@ function handlefileName(fileName) {
     console.log(fileName);
 }
 
+
+function fillAnnotationsTable(){
+    var annotationsTable= "<table><tr><td>Token</td><td>Annotated with</td></tr>";
+    for (var token in annotated){
+        var item = annotated[token]
+        var name = item['name'];
+        annotationsTable+="<tr><td>" + token + "</td><td>" + name + "</td></tr>";
+    }
+    //console.log(annotated);
+    //console.log(tokenAssignedItem)
+
+    document.getElementById("annotationsHolder").innerHTML = annotationsTable;
+    //document.getElementById("annotationsHolder").style.color = "red";
+}
+
 function handleAnnotations(existing_annotations){
     if (existing_annotations != null){
         var existingAnnotations = JSON.parse(existing_annotations)['existingAnnotations'];
         //console.log('Existing annotations: ', existingAnnotations);
         for (var token in existingAnnotations){
-            item = existingAnnotations[token]
+            var item = existingAnnotations[token];
+            var name = item['name'];
             annotated[token] = item;
-            tokenAssignedItem.add(item['name']);
+            tokenAssignedItem.add(name);
         }
-        //console.log(annotated);
-        //console.log(tokenAssignedItem)
+
+        fillAnnotationsTable();
 
     }
 
