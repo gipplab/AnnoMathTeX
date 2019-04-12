@@ -8,7 +8,7 @@ from ..parsing.nehandling.named_entity_recognition import NLTK_NER
 from ..models.identifier import Identifier
 from ..models.formula import Formula
 from ..models.empty_line import EmptyLine
-from ..models.latexfile import LaTeXFile
+from ..models.file import File
 from ..recommendation.arxiv_evaluation_handler import ArXivEvaluationListHandler
 from ..recommendation.wikipedia_evaluation_handler import WikipediaEvaluationListHandler
 from ..parsing.mathhandling.latexformlaidentifiers import FormulaSplitter
@@ -278,8 +278,8 @@ class Parser(object, metaclass=ABCMeta):
         #if self.file_type == 'txt':
         #    self.remove_tags()
         existing_annotations = self.read_annotation_file()
-        latex_file = LaTeXFile(processed_lines_including_maths,
+        file = File(processed_lines_including_maths,
                                self.linked_words,
                                self.linked_math_symbols,
                                self.file_name, existing_annotations)
-        return (self.line_dict, self.identifier_line_dict, latex_file)
+        return (self.line_dict, self.identifier_line_dict, file)

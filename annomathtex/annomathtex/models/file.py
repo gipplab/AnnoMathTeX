@@ -3,7 +3,7 @@ import json
 
 
 
-class LaTeXFile(models.Model):
+class File(models.Model):
 
     def __init__(self, processed_lines, __linked_words__, __linked_math_symbols__, file_name, existing_annotations=None):
         """

@@ -11,7 +11,7 @@ class RenderFileView(View):
     template_name = 'render_file_old.html'
 
     """def __init__(self, latexfile):
-        self.latexfile = latexfile
+        self.file = file
         self.form_class = SaveAnnotationForm
         self.initial = {'key': 'value'}
         self.template_name = 'render_file_old.html'"""
@@ -19,10 +19,10 @@ class RenderFileView(View):
     def get(self, request, *args, **kwargs):
         #form = self.form_class(initial=self.initial)
         form = SaveAnnotationForm()
-        latexfile = request.session['latexfile']
+        file = request.session['file']
         return render(request,
                       self.template_name,
-                      {'form': form, 'TexFile': latexfile})
+                      {'form': form, 'TexFile': file})
 
     def post(self, request, *args, **kwargs):
         form = SaveAnnotationForm(request.POST, request.FILES)
