@@ -268,7 +268,8 @@ function handlefileName(fileName) {
 
 
 function fillAnnotationsTable(){
-    var annotationsTable= "<table><tr><td>Token</td><td>Annotated with</td></tr>";
+    var breaks = "</br>";
+    var annotationsTable= breaks + "<table><tr><td>Token</td><td>Annotated with</td></tr>";
     for (var token in annotated){
         var item = annotated[token]
         var name = item['name'];
@@ -276,7 +277,7 @@ function fillAnnotationsTable(){
     }
     //console.log(annotated);
     //console.log(tokenAssignedItem)
-
+    //annotationsTable += breaks;
     document.getElementById("annotationsHolder").innerHTML = annotationsTable;
     //document.getElementById("annotationsHolder").style.color = "red";
 }

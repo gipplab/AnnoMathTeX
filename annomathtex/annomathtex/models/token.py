@@ -9,8 +9,6 @@ class Token(object, metaclass=ABCMeta):
                  highlight,
                  content,
                  endline,
-                 math_env=None
-
                  ):
         """
         Each word/identifier/formula/emptyline in a document is a token. A token must be one of those 4.
@@ -27,7 +25,6 @@ class Token(object, metaclass=ABCMeta):
         self.highlight = highlight
         self.content = content
         self.endline = endline
-        self.math_env=math_env
 
 
     @abstractmethod

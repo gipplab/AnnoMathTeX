@@ -31,8 +31,9 @@ class Formula(Token):
             highlight,
             content,
             endline,
-            math_env
+            #math_env
         )
+        self.math_env = math_env
         #word_window: named entities from surrounding text
         #evaluation_list: items from evaluation list that match identifiers
 
