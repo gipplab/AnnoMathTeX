@@ -50,6 +50,7 @@ class CustomMathEnvParser:
 
     def get_split_math_env(self):
         """
+
         This mehtod splits the entire math environemnt the identifier and non identifier parts. These are used in the
         Parser class to construct Identifier and Formula Objects from the math environment.
         :return: The identifiers as a list and the entire math environment (also containing the identifiers) as a list.
