@@ -48,6 +48,8 @@ class TXTParser(Parser):
             )
         )"""
         math_envs = [str(tag) for tag in list(soup.find_all('math'))]
+        #math_envs = ['${}$'.format(str(tag.contents[0])) for tag in list(soup.find_all('math'))]
+        print(math_envs)
         return math_envs
 
     def extract_tags_to_remove(self):
@@ -78,6 +80,12 @@ class TXTParser(Parser):
             self.file = self.file.replace(str(tag), '')
 
         print(self.file)
+
+
+    def remove_math_tags(self, line):
+        line = line.replace('<math>', '')
+        line = line.replace('</math>', '')
+        return line
 
 
 

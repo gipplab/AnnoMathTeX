@@ -1,0 +1,1 @@
+{"E": {"name": "energy", "uniqueIDs": ["8a8b4562-5c69-11e9-adc8-c869cdb31058", "8a8b5b10-5c69-11e9-a6d8-c869cdb31058"]}}

@@ -206,6 +206,7 @@ class Parser(object, metaclass=ABCMeta):
 
         # todo: for all math environemnt markers
         math_env = math_env.replace('$', '')
+        #math_env = math_env.replace('<math>', '')
 
         #Select the class that should process (extract the identifiers and split) the math environment.
         #identifiers, split_math_env = FormulaSplitter(math_env).get_split_math_env()
