@@ -381,7 +381,6 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, mathEnv, tokenHighli
         var fillText = mathEnv;
     }
 
-    console.log('MATH ENV: ' + mathEnv);
 
     //hide both buttons for math environments
     if (tokenType == 'Identifier' || tokenType == 'Formula') {
