@@ -10,6 +10,7 @@ class Identifier(Token):
         highlight,
         content,
         endline,
+        math_env
     ):
         """
         Constructor of superclass Token is called for highlight and content
@@ -20,12 +21,16 @@ class Identifier(Token):
         :param content: String, The Identifier itself.
         :param endline: Boolean, needed for page rendering, true if token ends the line.
         """
+
+        #print('IN IDENTIFIER CLASS, MATH ENV: {}'.format(math_env))
+
         super().__init__(
             unique_id,
             type,
             highlight,
             content,
             endline,
+            math_env = math_env
         )
         #word_window: named entities from surrounding text
         #evaluation_list: items from evaluation list that match identifiers

@@ -26,7 +26,7 @@ class Token(object, metaclass=ABCMeta):
         self.highlight = highlight
         self.content = content
         self.endline = endline
-        self.math_env = None
+        self.math_env = math_env
 
 
     @abstractmethod

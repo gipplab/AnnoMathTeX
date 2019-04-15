@@ -227,7 +227,10 @@ class Parser(object, metaclass=ABCMeta):
                 highlight=colour,
                 content=symbol,
                 endline=endline,
+                math_env=str(math_env)
             )
+
+            print('SYMBOL Math Env: {}'.format(id_symbol.math_env))
 
             self.identifier_line_dict[id_symbol.unique_id] = line_num
 

@@ -62,6 +62,7 @@ class FileUploadView(View):
         seen = ['__FILLVALUE__']
         concatenated_recommendations = []
         for zip_r in all_recommendations:
+            #print(zip_r)
             for r in zip_r:
                 if count == recommendations_limit: break
                 if r['name'] not in seen:

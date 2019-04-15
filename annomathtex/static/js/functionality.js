@@ -39,8 +39,10 @@ function populateTable(results, source) {
      */
 
     console.log('populate table tokenAssignedItemGlobal: ', tokenAssignedItemGlobal);
+    console.log('populate table tokenAssignedItemLocal: ', tokenAssignedItemLocal);
 
     var qidHeader = source=='concatenated' ? 'QID' : '';
+
 
 
     //for local v global annotation
@@ -61,10 +63,13 @@ function populateTable(results, source) {
 
             var backgroundColor = cellColorBasic;//'#dddddd';
 
+
+
             if (tokenAssignedItemGlobal.has(name)){
                 backgroundColor = cellColorSelectedGlobal;
                 containsHighlightedName = true;
-            } else if (tokenAssignedItemLocal.has(name)) {
+            } else if (tokenAssignedItemLocal.has(name) && annotated['local'][tokenContent]['mathEnv'] == mathEnv) {
+                console.log('FOOOO: ', annotated['local'][tokenContent]);
                 backgroundColor = cellColorSelectedLocal;
             }
 
@@ -156,10 +161,12 @@ function selected(argsString){
 
 
         if (!global) {
+            //annotated['local'][tokenContent] = {
             annotated['local'][tokenContent] = {
             'name': name,
             //'wikidataInf': wikidataReference[qid],
-            'uniqueID': [id]
+            'uniqueID': [id],
+            'mathEnv': mathEnv
             }
         } else if (tokenContent in annotated['global']) {
             annotated['global'][tokenContent]['uniqueIDs'].push(id);
@@ -285,13 +292,13 @@ function linkTokens(linked_words, linked_math_symbols) {
      */
     window.linkedWords = JSON.parse(linked_words)['linkedWords'];
     window.linkedMathSymbols = JSON.parse(linked_math_symbols)['linkedMathSymbols'];
-    console.log('LINKED WORDS: ',linkedWords);
+    //console.log('LINKED WORDS: ',linkedWords);
 }
 
 
 function handlefileName(fileName) {
     window.fileName = fileName;
-    console.log(fileName);
+    //console.log(fileName);
 }
 
 
@@ -319,7 +326,7 @@ function fillAnnotationsTable(){
 }
 
 function handleAnnotations(existing_annotations){
-    console.log(typeof(existing_annotations));
+    //console.log(typeof(existing_annotations));
     json = JSON.parse(existing_annotations)['existingAnnotations'];
     if (json != null){
 
@@ -367,12 +374,14 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, mathEnv, tokenHighli
     //Display the selected token.
     //If the clicked token is the delimiter of a math environment (entire formula), the presented text will be the
     //string for the entire math environment and not the delimiter.
-    if (mathEnv == 'None') {
+    if (tokenType != 'Formula') {
         var fillText = tokenContent;
     }
     else {
         var fillText = mathEnv;
     }
+
+    console.log('MATH ENV: ' + mathEnv);
 
     //hide both buttons for math environments
     if (tokenType == 'Identifier' || tokenType == 'Formula') {
@@ -404,6 +413,7 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, mathEnv, tokenHighli
     window.uniqueID = tokenUniqueId;
     window.tokenContent = tokenContent;
     window.tokenType = tokenType;
+    window.mathEnv = mathEnv;
 
 
     let data_dict = { the_post : $("#" + tokenUniqueId).val(),
