@@ -43,8 +43,18 @@ class CustomMathEnvParser:
         :return: A triple of the identifier, the position of the identifier in the string and the length of the
                  identifier.
         """
+
+        def remove_math_tags(math_env):
+            math_env = math_env.replace('<math>', '')
+            math_env = math_env.replace('</math>', '')
+            return math_env
+
+
         r = re.compile(r'(\b[a-z]\b|(?<=_)[a-z]|(?<=[^a-z])[a-z](?=_))', re.IGNORECASE)
+        self.math_env = remove_math_tags(self.math_env)
+        print('MATH ENV: {}'.format(self.math_env))
         id_pos_len = [(i.group(), i.start(), len(i.group())) for i in r.finditer(self.math_env)]
+        print('ID POS LEN: {}'.format(id_pos_len))
         return id_pos_len
 
 
