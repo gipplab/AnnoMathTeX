@@ -184,6 +184,8 @@ class FileUploadView(View):
         annotated = items['annotated']
         file_name = items['fileName']['f']
 
+        __LOGGER__.debug(' ITEMS : {}'.format(items))
+
 
         __MARKED__.update(marked)
         __UNMARKED__.update(unmarked)
@@ -193,6 +195,7 @@ class FileUploadView(View):
 
         annotation_file_name = create_annotation_file_path(file_name)
         with open(annotation_file_name, 'w') as f:
+            __LOGGER__.debug(' WRITING TO FILE {}'.format(annotation_file_name))
             json.dump(__ANNOTATED__, f)
 
         return HttpResponse(
@@ -207,7 +210,7 @@ class FileUploadView(View):
 
         Identifier:
             - Wikidata query is made
-            - ArXiv evaluation list is checked for matches
+            - ArXiv evaluation list is checked for matches8
             - Wikipedia evaluation list is checked for matches
             - Word window is computed
 

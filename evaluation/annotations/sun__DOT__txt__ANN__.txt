@@ -1,1 +1,1 @@
-{"E": {"name": "energy", "uniqueIDs": ["8a8b4562-5c69-11e9-adc8-c869cdb31058", "8a8b5b10-5c69-11e9-a6d8-c869cdb31058"]}}
+{"local": {"E": {"name": "Erd\u0151s\u2013Borwein constant", "uniqueID": ["679d1118-5f7a-11e9-85a2-c869cdb31058"]}}, "global": {"E": {"name": "energy", "uniqueIDs": ["593faa70-5f7a-11e9-8522-c869cdb31058", "593fbe7a-5f7a-11e9-a490-c869cdb31058"]}}}

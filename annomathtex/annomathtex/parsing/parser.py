@@ -280,6 +280,7 @@ class Parser(object, metaclass=ABCMeta):
         #if self.file_type == 'txt':
         #    self.remove_tags()
         existing_annotations = self.read_annotation_file()
+        print('EXISTING ANNOTATIONS: {}'.format(existing_annotations))
         file = File(processed_lines_including_maths,
                                self.linked_words,
                                self.linked_math_symbols,

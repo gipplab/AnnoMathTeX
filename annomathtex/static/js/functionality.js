@@ -11,17 +11,19 @@ var unmarked = {};
 //all wikidata items are added to this dictionary
 //for those items, whose ids are selected, the item will be returned to django
 var wikidataReference = {};
-//The tokens (identifier, formula, word) that are annotated with an item from wikidata, the arXiv evaluation list, the
+//The tokens (identifier, formula, word) that are annotatedGLobal with an item from wikidata, the arXiv evaluation list, the
 //wikipedia evaluation list or the word window are stored in this dictionary. Upon saving, the dictionary is sent to the
 //backend for further processing (saving, writing to database).
-var annotated = {};
+var annotated = {'local': {}, 'global':{}};
 
 
-var tokenAssignedItem = new Set([]);
+var tokenAssignedItemGlobal = new Set([]);
+var tokenAssignedItemLocal = new Set([]);
 
 
 var cellColorBasic = '#dddddd';
-var cellColorSelected = 'pink';
+var cellColorSelectedGlobal = 'pink';
+var cellColorSelectedLocal = 'blue';
 
 var cellCounter = 0;
 
@@ -36,11 +38,14 @@ function populateTable(results, source) {
     that serves as a placeholder for the table is filled with its content.
      */
 
-    console.log('populate table tokenAssignedItem: ', tokenAssignedItem);
+    console.log('populate table tokenAssignedItemGlobal: ', tokenAssignedItemGlobal);
 
     var qidHeader = source=='concatenated' ? 'QID' : '';
 
 
+    //for local v global annotation
+    //if a highlighted name is already in table, second annotation will get different color
+    var containsHighlightedName = false;
     var myTable= "<table><tr><td style='width: 100px;'>Name</td><td>" + qidHeader + "</td></tr>";
     if (results != "None"){
         for (var i in results){
@@ -56,8 +61,11 @@ function populateTable(results, source) {
 
             var backgroundColor = cellColorBasic;//'#dddddd';
 
-            if (tokenAssignedItem.has(name)){
-                backgroundColor = cellColorSelected;
+            if (tokenAssignedItemGlobal.has(name)){
+                backgroundColor = cellColorSelectedGlobal;
+                containsHighlightedName = true;
+            } else if (tokenAssignedItemLocal.has(name)) {
+                backgroundColor = cellColorSelectedLocal;
             }
 
             var cellID = "cell" + cellCounter;
@@ -67,7 +75,8 @@ function populateTable(results, source) {
                 qid,
                 source,
                 backgroundColor,
-                cellID
+                cellID,
+                containsHighlightedName
             ];
 
 
@@ -111,34 +120,53 @@ function selected(argsString){
     var qid = argsArray[1];
     var source = argsArray[2];
     var backgroundColor = argsArray[3];
-    var cellID = argsArray[4]
+    var cellID = argsArray[4];
+    var containsHighlightedName = (argsArray[5] === 'true');
 
 
-    if (backgroundColor == cellColorBasic){
-        document.getElementById(cellID).style.backgroundColor = cellColorSelected;
-        tokenAssignedItem.add(name);
-        console.log('ADDED ENERGY: ', tokenAssignedItem);
+    if (containsHighlightedName && backgroundColor == cellColorBasic) {
+        document.getElementById(cellID).style.backgroundColor = cellColorSelectedLocal;
+        tokenAssignedItemLocal.add(name);
+        addToAnnotated(uniqueID, false);
+        console.log(annotated);
+
+    } else if(backgroundColor == cellColorSelectedLocal){
+        document.getElementById(cellID).style.backgroundColor = cellColorBasic;
+        tokenAssignedItemLocal.delete(name);
+
+    } else if (backgroundColor == cellColorBasic){
+        document.getElementById(cellID).style.backgroundColor = cellColorSelectedGlobal;
+        tokenAssignedItemGlobal.add(name);
+        console.log('ADDED ENERGY: ', tokenAssignedItemGlobal);
         //addToAnnotated(uniqueID);
         handleLinkedTokens(addToAnnotated);
-    }
-    else {
+    } else {
         document.getElementById(cellID).style.backgroundColor = cellColorBasic;
         //remove element from array
-        tokenAssignedItem.delete(name);
+        tokenAssignedItemGlobal.delete(name);
         console.log('NAME: ' + name);
-        console.log( 'ARRAY: ' + tokenAssignedItem);
-        delete annotated[tokenContent];
-
+        console.log( 'ARRAY: ' + tokenAssignedItemGlobal);
+        delete annotatedGLobal[tokenContent];
     }
 
 
-    function addToAnnotated(id) {
+    function addToAnnotated(id, global=true) {
 
-        if (annotated != null && tokenContent in annotated) {
-            annotated[tokenContent]['uniqueIDs'].push(id);
+        console.log('ADD TO ANNOTATED!');
+
+
+        if (!global) {
+            annotated['local'][tokenContent] = {
+            'name': name,
+            //'wikidataInf': wikidataReference[qid],
+            'uniqueID': [id]
+            }
+        } else if (tokenContent in annotated['global']) {
+            annotated['global'][tokenContent]['uniqueIDs'].push(id);
         }
         else {
-            annotated[tokenContent] = {
+            console.log('CASE 2');
+            annotated['global'][tokenContent] = {
             'name': name,
             //'wikidataInf': wikidataReference[qid],
             'uniqueIDs': [id]
@@ -269,28 +297,52 @@ function handlefileName(fileName) {
 
 function fillAnnotationsTable(){
     var breaks = "</br>";
-    var annotationsTable= breaks + "<table><tr><td>Token</td><td>Annotated with</td></tr>";
-    for (var token in annotated){
-        var item = annotated[token]
-        var name = item['name'];
-        annotationsTable+="<tr><td>" + token + "</td><td>" + name + "</td></tr>";
+    var annotationsTable= breaks + "<table><tr><td>Token</td><td>Annotated with</td><td>Type</td></tr>";
+
+    function fill(d, type){
+        for (var token in d){
+            var item = d[token];
+            var name = item['name'];
+            annotationsTable+="<tr><td>" + token + "</td><td>" + name + "</td><td>" + type + "</td></tr>";
+        }
     }
-    //console.log(annotated);
-    //console.log(tokenAssignedItem)
+
+    fill(annotated['global'], 'Global');
+    fill(annotated['local'], 'Local');
+
+
+    //console.log(annotatedGLobal);
+    //console.log(tokenAssignedItemGlobal)
     //annotationsTable += breaks;
     document.getElementById("annotationsHolder").innerHTML = annotationsTable;
     //document.getElementById("annotationsHolder").style.color = "red";
 }
 
 function handleAnnotations(existing_annotations){
-    if (existing_annotations != null){
-        var existingAnnotations = JSON.parse(existing_annotations)['existingAnnotations'];
+    console.log(typeof(existing_annotations));
+    json = JSON.parse(existing_annotations)['existingAnnotations'];
+    if (json != null){
+
+        console.log(existing_annotations);
+
+        //var existingAnnotationsGlobal = JSON.parse(existing_annotations)['existingAnnotations']['global'];
+        //var existingAnnotationsLocal = JSON.parse(existing_annotations)['existingAnnotations']['local'];
         //console.log('Existing annotations: ', existingAnnotations);
-        for (var token in existingAnnotations){
-            var item = existingAnnotations[token];
+        var existingAnnotationsGlobal = json['global'];
+        var existingAnnotationsLocal = json['local'];
+
+        for (var token in existingAnnotationsGlobal){
+            var item = existingAnnotationsGlobal[token];
             var name = item['name'];
-            annotated[token] = item;
-            tokenAssignedItem.add(name);
+            annotated['global'][token] = item;
+            tokenAssignedItemGlobal.add(name);
+        }
+
+        for (var token in existingAnnotationsLocal){
+            var item = existingAnnotationsLocal[token];
+            var name = item['name'];
+            annotated['local'][token] = item;
+            tokenAssignedItemLocal.add(name);
         }
 
         fillAnnotationsTable();
