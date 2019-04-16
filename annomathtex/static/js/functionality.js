@@ -43,6 +43,7 @@ function populateTable(results, source) {
 
     var qidHeader = source=='concatenated' ? 'QID' : '';
 
+    console.log('BBAAARR: ', annotated['local'][tokenContent]);
 
 
     //for local v global annotation
@@ -128,6 +129,8 @@ function selected(argsString){
     var cellID = argsArray[4];
     var containsHighlightedName = (argsArray[5] === 'true');
 
+    console.log(argsArray);
+
 
     if (containsHighlightedName && backgroundColor == cellColorBasic) {
         document.getElementById(cellID).style.backgroundColor = cellColorSelectedLocal;
@@ -142,22 +145,22 @@ function selected(argsString){
     } else if (backgroundColor == cellColorBasic){
         document.getElementById(cellID).style.backgroundColor = cellColorSelectedGlobal;
         tokenAssignedItemGlobal.add(name);
-        console.log('ADDED ENERGY: ', tokenAssignedItemGlobal);
+        //console.log('ADDED ENERGY: ', tokenAssignedItemGlobal);
         //addToAnnotated(uniqueID);
         handleLinkedTokens(addToAnnotated);
     } else {
         document.getElementById(cellID).style.backgroundColor = cellColorBasic;
         //remove element from array
         tokenAssignedItemGlobal.delete(name);
-        console.log('NAME: ' + name);
-        console.log( 'ARRAY: ' + tokenAssignedItemGlobal);
+        //console.log('NAME: ' + name);
+        //console.log( 'ARRAY: ' + tokenAssignedItemGlobal);
         delete annotatedGLobal[tokenContent];
     }
 
 
     function addToAnnotated(id, global=true) {
 
-        console.log('ADD TO ANNOTATED!');
+        //console.log('ADD TO ANNOTATED!');
 
 
         if (!global) {
@@ -170,9 +173,7 @@ function selected(argsString){
             }
         } else if (tokenContent in annotated['global']) {
             annotated['global'][tokenContent]['uniqueIDs'].push(id);
-        }
-        else {
-            console.log('CASE 2');
+        } else {
             annotated['global'][tokenContent] = {
             'name': name,
             //'wikidataInf': wikidataReference[qid],
@@ -497,6 +498,7 @@ $(document).ready(function () {
         create_post();
   });
 
+
     // AJAX for posting
     var fileNameDict = {'f': fileName};
     function create_post() {
@@ -505,9 +507,13 @@ $(document).ready(function () {
                         'csrfmiddlewaretoken': getCookie("csrftoken"),
                         'marked': $.param(marked),
                         'annotated': $.param(annotated),
+                        'annotatedLocal': $.param(annotated['local']),
                         'unmarked': $.param(unmarked),
                         'fileName': $.param(fileNameDict)
                         };
+
+      console.log(annotated);
+
 
 
       $.ajax({

@@ -183,6 +183,7 @@ class FileUploadView(View):
         marked = items['marked']
         unmarked = items['unmarked']
         annotated = items['annotated']
+        annotatedLocal = items['annotatedLocal']
         file_name = items['fileName']['f']
 
         __LOGGER__.debug(' ITEMS : {}'.format(items))

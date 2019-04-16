@@ -221,13 +221,16 @@ class Parser(object, metaclass=ABCMeta):
             colour = '#c94f0c' if identifiers and symbol in identifiers else '#5c6670'
             endline = True if symbol == '\n' else False
 
+            str_math_env = str(math_env).replace('<math>', '')
+            str_math_env = str_math_env.replace('</math>', '')
+
             id_symbol = Identifier(
                 str(uuid1()),
                 type='Identifier',
                 highlight=colour,
                 content=symbol,
                 endline=endline,
-                math_env=str(math_env)
+                math_env=str_math_env
             )
 
             print('SYMBOL Math Env: {}'.format(id_symbol.math_env))
