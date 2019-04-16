@@ -15,8 +15,11 @@ class CustomMathEnvParser:
         :param math_env: The math environment that is being parsed.
         """
         self.math_env = math_env
+        #todo: no hard coded paths, use path.join()
+        self.greek_letters_path = os.getcwd() + '/annomathtex/parsing/mathhandling/latex_math_symbols.json'
+        self.greek_letters_path_testing = os.getcwd()+'/latex_math_symbols.json'
 
-    def load_math_symbols(self):
+    def load_math_symbols(self, path):
         """
         Not used right now. latex_math_symbols.json is a file that contains a lot of latex commands. The idea was to
         use those to split the math environment. However, I took a different approache now: Extracting the identifiers
@@ -24,7 +27,6 @@ class CustomMathEnvParser:
         :return: A string of all symbols contained in latex_math_symbols.json that can be used as a regex to split the
                  math environment.
         """
-        path = os.getcwd() + '/parsing/mathhandling/latex_math_symbols.json'
         with open(path, 'r') as f:
             s = f.read()
 
@@ -34,6 +36,16 @@ class CustomMathEnvParser:
         all_symbols_string = '|'.join(all_symbols)
         all_symbols_string = r'({})'.format(all_symbols_string)
         return all_symbols_string
+
+    def get_greek_letters(self, path):
+        with open(path, 'r') as f:
+            s = f.read()
+
+        all_dict = json.loads(s)
+        greek_letters = all_dict['greek_letters']
+        greek_letters_set = set(map(lambda g: g[1:].lower(), greek_letters))
+        greek_letters_regex = r'|'.join(g for g in greek_letters_set)
+        return greek_letters_regex
 
     def get_id_pos_len(self):
         """
@@ -49,12 +61,12 @@ class CustomMathEnvParser:
             math_env = math_env.replace('</math>', '')
             return math_env
 
-
-        r = re.compile(r'(\b[a-z]\b|(?<=_)[a-z]|(?<=[^a-z])[a-z](?=_))', re.IGNORECASE)
+        greek_letters_regex = self.get_greek_letters(self.greek_letters_path)
+        identifier_r = r'(\b[a-z]\b|(?<=_)[a-z]|(?<=[^a-z])[a-z](?=_)|{})'.format(greek_letters_regex)
+        #identifier_r = r'(\b[a-z]\b|(?<=_)[a-z]|(?<=[^a-z])[a-z](?=_))'
+        r = re.compile(identifier_r, re.IGNORECASE)
         self.math_env = remove_math_tags(self.math_env)
-        print('MATH ENV: {}'.format(self.math_env))
         id_pos_len = [(i.group(), i.start(), len(i.group())) for i in r.finditer(self.math_env)]
-        print('ID POS LEN: {}'.format(id_pos_len))
         return id_pos_len
 
 
@@ -90,9 +102,7 @@ if __name__ == "__main__":
     s1 = r'$\Delta(m,n,x) =  \phi(S_n) + \phi(S_m) - \phi(S_n \backslash \{ x \} ) - \phi(S_m \cup \{ x \} )$'
     s2 = r'$n,m \in \{1 \cdots k \}</math> and <math>x \in S_n$'
     #s = r'$ \underset{\mathbf{ S }} {\operatorname{arg\,min}} \sum_{ i =1}^{ k }'
-    c = CustomMathEnvParser(s2)
-    #identifiers = c.get_id_pos_len()
-    identifiers, split_math_env = c.get_split_math_env()
-    print(identifiers)
-    print(split_math_env)
+    c = CustomMathEnvParser(s1)
+    i, s = c.get_split_math_env()
+    print(i)
 
