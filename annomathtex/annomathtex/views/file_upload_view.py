@@ -67,7 +67,7 @@ class FileUploadView(View):
                 if count == recommendations_limit: break
                 if r['name'] not in seen:
                     if 'qid' not in r:
-                        results = NESparql().named_entity_search(r['name'], 1)
+                        results = NESparql().concatenated_column_search(r['name'])
                         r = results[0] if results else r
                     concatenated_recommendations.append(r)
                     seen.append(r['name'])

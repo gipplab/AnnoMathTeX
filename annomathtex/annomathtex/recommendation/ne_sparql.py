@@ -1,5 +1,5 @@
 from ..recommendation.sparql import Sparql
-from ..recommendation.sparql_queries import named_entity_query
+from ..recommendation.sparql_queries import named_entity_query, concatenated_column_query
 
 
 class NESparql(Sparql):
@@ -14,7 +14,7 @@ class NESparql(Sparql):
 
     def named_entity_search(self, search_string, limit=10):
         """
-        This method uses the user selected word and queries the labels of wikidata items with that search strin.
+        This method uses the user selected word and queries the labels of wikidata items with that search string.
         :param search_string: A string extracted by the named entitiy tagger.
         :return: A list of dictionaries, where each dictionary is one result from the search.
         """
@@ -22,3 +22,13 @@ class NESparql(Sparql):
         results_list = self.query(named_entity_query, search_string_preprocessed, limit)
         return results_list
 
+    def concatenated_column_search(self, search_string, limit=1):
+        """
+        This method is called to present the wikidata QIDs for the first column in the popup table.
+        :param search_string: A string, found in one of the 4 possible sources for identifier conceps
+        :param limit: Limit of the search results returned per query
+        :return: A list of dictionaries, where each dictionary is one result from the search.
+        """
+        search_string_preprocessed = self.remove_special_characters(search_string)
+        results_list = self.query(concatenated_column_query, search_string_preprocessed, limit)
+        return results_list

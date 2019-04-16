@@ -100,3 +100,13 @@ named_entity_query = """
     }}
     LIMIT {}
     """
+
+concatenated_column_query = """
+    SELECT DISTINCT ?item ?itemLabel ?itemDescription WHERE{{
+      ?item ?label '{}'@en;
+                    rdfs:label ?itemLabel;
+      FILTER REGEX(?itemLabel, "[^0-9]").
+      SERVICE wikibase:label {{ bd:serviceParam wikibase:language "en". }} 
+    }}
+    LIMIT {}
+    """
