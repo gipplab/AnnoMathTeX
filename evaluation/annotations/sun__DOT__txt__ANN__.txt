@@ -1,1 +1,0 @@
-{"local": {"E": {"name": "Erd\u0151s\u2013Borwein constant", "uniqueID": ["15b6323a-6025-11e9-9dfd-c869cdb31058"], "mathEnv": " E = m c ^2 "}}, "global": {"E": {"name": "energy", "uniqueIDs": ["15b6181a-6025-11e9-8c30-c869cdb31058", "15b6323a-6025-11e9-9dfd-c869cdb31058", "15b64e1e-6025-11e9-8e88-c869cdb31058"]}}}

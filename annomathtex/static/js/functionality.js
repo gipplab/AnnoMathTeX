@@ -21,9 +21,18 @@ var tokenAssignedItemGlobal = new Set([]);
 var tokenAssignedItemLocal = new Set([]);
 
 
+
 var cellColorBasic = '#dddddd';
 var cellColorSelectedGlobal = 'pink';
 var cellColorSelectedLocal = 'blue';
+
+var identifierColorBasic = '#c94f0c';
+var formulaColorBasic = '#ffa500';
+var annotatedColor = '#04B404';
+
+//var identifierColorAnnotated = '#F88000';
+
+
 
 var cellCounter = 0;
 
@@ -132,30 +141,55 @@ function selected(argsString){
     console.log(argsArray);
 
 
+    function setAnnotatedColor(id) {
+        document.getElementById(id).style.color = annotatedColor;
+    }
+
+    function setBasicColor(id) {
+        if (tokenType == 'Identifier') {
+            document.getElementById(id).style.color = identifierColorBasic;
+        } else if (tokenType == 'Formula'){
+            document.getElementById(id).style.color = formulaColorBasic;
+        }
+    }
+
+
+
     if (containsHighlightedName && backgroundColor == cellColorBasic) {
+        //select a cell & global annotation has been made
         document.getElementById(cellID).style.backgroundColor = cellColorSelectedLocal;
         tokenAssignedItemLocal.add(name);
         addToAnnotated(uniqueID, false);
         console.log(annotated);
+        setAnnotatedColor(uniqueID);
 
     } else if(backgroundColor == cellColorSelectedLocal){
+        //reverse local annotation
         document.getElementById(cellID).style.backgroundColor = cellColorBasic;
         tokenAssignedItemLocal.delete(name);
+        setBasicColor(uniqueID);
 
     } else if (backgroundColor == cellColorBasic){
+        //global annotation
         document.getElementById(cellID).style.backgroundColor = cellColorSelectedGlobal;
         tokenAssignedItemGlobal.add(name);
+        setAnnotatedColor(uniqueID);
         //console.log('ADDED ENERGY: ', tokenAssignedItemGlobal);
         //addToAnnotated(uniqueID);
         handleLinkedTokens(addToAnnotated);
+        handleLinkedTokens(setAnnotatedColor);
     } else {
+        //reverse global annotation
         document.getElementById(cellID).style.backgroundColor = cellColorBasic;
+        setBasicColor(uniqueID);
         //remove element from array
         tokenAssignedItemGlobal.delete(name);
         //console.log('NAME: ' + name);
         //console.log( 'ARRAY: ' + tokenAssignedItemGlobal);
-        delete annotatedGLobal[tokenContent];
+        delete annotated['global'][tokenContent];
     }
+
+
 
 
     function addToAnnotated(id, global=true) {
@@ -185,6 +219,9 @@ function selected(argsString){
 }
 
 
+
+
+
 function handleLinkedTokens(func) {
     /*
     This function is used to annotate, mark the identical tokens in the document.
@@ -197,6 +234,9 @@ function handleLinkedTokens(func) {
     //console.log('linkedWords: ', linkedWords);
     //console.log('linkedMathSymbols: ', linkedMathSymbols);
 
+
+    console.log('in handleLinkedTokens ' + tokenType);
+
     if (tokenType == 'Word') {
         dicToCheck = linkedWords;
     }
@@ -205,6 +245,7 @@ function handleLinkedTokens(func) {
     }
 
     if (tokenContent in dicToCheck) {
+        console.log(tokenContent +  ' in linkedMathSymbols');
         var word = dicToCheck[tokenContent];
         for (i in word) {
             var id = word[i];
@@ -293,7 +334,7 @@ function linkTokens(linked_words, linked_math_symbols) {
      */
     window.linkedWords = JSON.parse(linked_words)['linkedWords'];
     window.linkedMathSymbols = JSON.parse(linked_math_symbols)['linkedMathSymbols'];
-    //console.log('LINKED WORDS: ',linkedWords);
+    console.log('LINKED MATH SYMBOLS: ',linkedMathSymbols);
 }
 
 
