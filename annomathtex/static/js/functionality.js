@@ -416,6 +416,7 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, mathEnv, tokenHighli
     //Display the selected token.
     //If the clicked token is the delimiter of a math environment (entire formula), the presented text will be the
     //string for the entire math environment and not the delimiter.
+
     if (tokenType != 'Formula') {
         var fillText = tokenContent;
     }
@@ -455,6 +456,9 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, mathEnv, tokenHighli
     window.tokenContent = tokenContent;
     window.tokenType = tokenType;
     window.mathEnv = mathEnv;
+
+
+
 
 
     let data_dict = { the_post : $("#" + tokenUniqueId).val(),

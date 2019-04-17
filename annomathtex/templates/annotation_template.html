@@ -80,22 +80,22 @@
             <script>
               //this part of js has to be in the loop, otherwise the unique_id will be lost
               //try catch not working yet, error happens when a backslash is in the text part
-              try {
+
                 $("#{{ Token.unique_id }}").on('click', function (event) {
                   event.preventDefault();
                   console.log('wikidata query sent out');
-                  clickToken("{{ Token.content }}",
+                  try {
+                    clickToken("{{ Token.content }}",
                               "{{ Token.unique_id }}",
                               "{{ Token.type }}",
                               "{{ Token.math_env }}",
                               "{{ Token.highlight }}"
                               );
-                });
-              }
-              catch(err) {
-                console.log('error ' + "{{ Token.content }}")
-              }
+                  } catch (e) {
+                    console.log('error');
+                  }
 
+                });
             </script>
           {% endif %}
           {% if Token.endline %}
