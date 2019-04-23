@@ -16,11 +16,8 @@ var wikidataReference = {};
 //backend for further processing (saving, writing to database).
 var annotated = {'local': {}, 'global':{}};
 
-
 var tokenAssignedItemGlobal = new Set([]);
 var tokenAssignedItemLocal = new Set([]);
-
-
 
 var cellColorBasic = '#dddddd';
 var cellColorSelectedGlobal = 'pink';
@@ -58,7 +55,14 @@ function populateTable(results, source) {
     //for local v global annotation
     //if a highlighted name is already in table, second annotation will get different color
     var containsHighlightedName = false;
-    var myTable= "<table><tr><td style='width: 100px;'>Name</td><td>" + qidHeader + "</td></tr>";
+
+    if (source=='Concatenated') {
+        var myTable= "<table><tr><td style='width: 100px;'>Name</td><td>" + qidHeader + "</td></tr>";
+    } else {
+        var myTable= "<table><tr><td style='width: 100px;'>Name</td></tr>";
+    }
+
+
     if (results != "None"){
         for (var i in results){
 
@@ -66,14 +70,9 @@ function populateTable(results, source) {
 
             var item = results[i];
             var name = item['name'];
-            //var qid = item['qid'];
             var qid = source=='Concatenated' ? item['qid'] : '';
-
             var url = source=='Concatenated' ? item['link'] : '';
-
             var backgroundColor = cellColorBasic;//'#dddddd';
-
-
 
             if (tokenAssignedItemGlobal.has(name)){
                 backgroundColor = cellColorSelectedGlobal;
@@ -84,7 +83,6 @@ function populateTable(results, source) {
             }
 
             var cellID = "cell" + cellCounter;
-
             var args = [
                 name,
                 qid,
@@ -93,13 +91,7 @@ function populateTable(results, source) {
                 cellID,
                 containsHighlightedName
             ];
-
-
             var argsString = args.join('---');
-
-            //myTable+="<tr><td id="+ cellID +" style='width: 100px; background-color:" +  backgroundColor + "'" + "onclick='selected(\"" + argsString + "\")'>" + name + "</td></tr>";
-            //myTable+="<tr><td id="+ cellID +" style='background-color:" +  backgroundColor + "'" + "onclick='selected(\"" + argsString + "\")'>" + name + "</td><td style='width: 20px'>" + qid + "</td></tr>";
-
             myTable+="<tr><td id="+ cellID +" style='background-color:" +  backgroundColor + "'" + "onclick='selected(\"" + argsString + "\")'>" + name + "</td><td style='width: 20px'><a target='_blank' rel='noopener noreferrer' href='" + url + "'>" + qid + "</a></td></tr>";
 
       }
@@ -167,7 +159,8 @@ function selected(argsString){
         //reverse local annotation
         document.getElementById(cellID).style.backgroundColor = cellColorBasic;
         tokenAssignedItemLocal.delete(name);
-        setBasicColor(uniqueID);
+        delete annotated['local'][tokenContent];
+        //setBasicColor(uniqueID);
 
     } else if (backgroundColor == cellColorBasic){
         //global annotation
@@ -182,10 +175,8 @@ function selected(argsString){
         //reverse global annotation
         document.getElementById(cellID).style.backgroundColor = cellColorBasic;
         setBasicColor(uniqueID);
-        //remove element from array
         tokenAssignedItemGlobal.delete(name);
-        //console.log('NAME: ' + name);
-        //console.log( 'ARRAY: ' + tokenAssignedItemGlobal);
+        //remove element from array
         delete annotated['global'][tokenContent];
         handleLinkedTokens(setBasicColor);
     }
@@ -341,7 +332,7 @@ function radioButtonClicked(option) {
             populateTable(wordWindow, 'WordWindow');
             console.log('OPTION: WORD WINDOW');
             break;
-        case 'ArXiv':
+        case 'arXiv':
             populateTable(arXivEvaluationItems, 'arXiv');
             console.log('OPTION: arXiv');
             break;
@@ -585,7 +576,6 @@ $(document).ready(function () {
                         };
 
       console.log(annotated);
-
 
 
       $.ajax({
