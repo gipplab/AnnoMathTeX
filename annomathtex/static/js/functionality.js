@@ -50,9 +50,9 @@ function populateTable(results, source) {
     console.log('populate table tokenAssignedItemGlobal: ', tokenAssignedItemGlobal);
     console.log('populate table tokenAssignedItemLocal: ', tokenAssignedItemLocal);
 
-    var qidHeader = source=='concatenated' ? 'QID' : '';
+    var qidHeader = source=='Concatenated' ? 'QID' : '';
 
-    console.log('BBAAARR: ', annotated['local'][tokenContent]);
+    //console.log('BBAAARR: ', annotated['local'][tokenContent]);
 
 
     //for local v global annotation
@@ -67,9 +67,9 @@ function populateTable(results, source) {
             var item = results[i];
             var name = item['name'];
             //var qid = item['qid'];
-            var qid = source=='concatenated' ? item['qid'] : '';
+            var qid = source=='Concatenated' ? item['qid'] : '';
 
-            var url = source=='concatenated' ? item['link'] : '';
+            var url = source=='Concatenated' ? item['link'] : '';
 
             var backgroundColor = cellColorBasic;//'#dddddd';
 
@@ -79,7 +79,7 @@ function populateTable(results, source) {
                 backgroundColor = cellColorSelectedGlobal;
                 containsHighlightedName = true;
             } else if (tokenAssignedItemLocal.has(name) && annotated['local'][tokenContent]['mathEnv'] == mathEnv) {
-                console.log('FOOOO: ', annotated['local'][tokenContent]);
+                //console.log('FOOOO: ', annotated['local'][tokenContent]);
                 backgroundColor = cellColorSelectedLocal;
             }
 
@@ -187,6 +187,32 @@ function selected(argsString){
         //console.log('NAME: ' + name);
         //console.log( 'ARRAY: ' + tokenAssignedItemGlobal);
         delete annotated['global'][tokenContent];
+        handleLinkedTokens(setBasicColor);
+    }
+
+
+    console.log('ABOVE SWITCH STATEMENT ' + source);
+    switch (source) {
+        case 'Concatenated':
+            populateTable(concatenatedResults, 'Concatenated');
+            console.log('OPTION: CONCATENATED');
+            break;
+        case 'Wikidata':
+            populateTable(wikidataResults, 'Wikidata');
+            console.log('OPTION: WIKDIATA');
+            break;
+        case 'WordWindow':
+            populateTable(wordWindow, 'WordWindow');
+            console.log('OPTION: WORD WINDOW');
+            break;
+        case 'ArXiv':
+            populateTable(arXivEvaluationItems, 'ArXiv');
+            console.log('OPTION: arXiv');
+            break;
+        case 'Wikipedia':
+            populateTable(wikipediaEvaluationItems, 'Wikipedia');
+            console.log('OPTION: Wikipedia');
+            break;
     }
 
 
@@ -301,25 +327,26 @@ function radioButtonClicked(option) {
     This function is called when the user selects a different column of results to be displayed in the table inside the
     popup modal.
      */
+    console.log('RadioButtonClicked ' + option);
     switch (String(option)) {
         case 'Concatenated':
-            populateTable(concatenatedResults, 'concatenated');
+            populateTable(concatenatedResults, 'Concatenated');
             console.log('OPTION: CONCATENATED');
             break;
         case 'Wikidata':
-            populateTable(wikidataResults, 'wikidata');
+            populateTable(wikidataResults, 'Wikidata');
             console.log('OPTION: WIKDIATA');
             break;
         case 'WordWindow':
-            populateTable(wordWindow, 'wordWindow');
+            populateTable(wordWindow, 'WordWindow');
             console.log('OPTION: WORD WINDOW');
             break;
-        case 'arXiv':
+        case 'ArXiv':
             populateTable(arXivEvaluationItems, 'arXiv');
             console.log('OPTION: arXiv');
             break;
         case 'Wikipedia':
-            populateTable(wikipediaEvaluationItems, 'wikipedia');
+            populateTable(wikipediaEvaluationItems, 'Wikipedia');
             console.log('OPTION: Wikipedia');
             break;
     }
@@ -496,7 +523,7 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, mathEnv, tokenHighli
                   document.getElementById("arXivLabel").hidden = false;
                   document.getElementById("wikipediaLabel").hidden = false;
                   document.getElementById("concatenatedBtn").checked = true;
-                  populateTable(concatenatedResults, 'concatenated');
+                  populateTable(concatenatedResults, 'Concatenated');
                   break;
               case 'Word':
                   console.log('Word');
@@ -505,7 +532,7 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, mathEnv, tokenHighli
                   document.getElementById("arXivLabel").hidden = true;
                   document.getElementById("wikipediaLabel").hidden = true;
                   document.getElementById("wikidataBtn").checked = true;
-                  populateTable(wikidataResults, 'wikidata');
+                  populateTable(wikidataResults, 'Wikidata');
                   break;
               case 'Formula':
                   console.log('Formula');
@@ -514,7 +541,7 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, mathEnv, tokenHighli
                   document.getElementById("arXivLabel").hidden = true;
                   document.getElementById("wikipediaLabel").hidden = true;
                   document.getElementById("concatenatedBtn").checked = true;
-                  populateTable(concatenatedResults, 'concatenated');
+                  populateTable(concatenatedResults, 'Concatenated');
                   break;
           }
       },

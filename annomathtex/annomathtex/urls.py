@@ -7,7 +7,7 @@ The `urlpatterns` list routes URLs to views. For more information please see:
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-from .views.file_upload_view import FileUploadView
+from .views.annotate_formula_view import FileUploadView
 from .views.render_file_view import RenderFileView
 from .views.test_view import test_view
 
