@@ -78,7 +78,6 @@
             <script>
               //this part of js has to be in the loop, otherwise the unique_id will be lost
               //try catch not working yet, error happens when a backslash is in the text part
-
                 $("#{{ Token.unique_id }}").on('click', function (event) {
                   event.preventDefault();
                   console.log('wikidata query sent out');
@@ -92,9 +91,9 @@
                   } catch (e) {
                     console.log('error');
                   }
-
                 });
             </script>
+
           {% endif %}
           {% if Token.endline %}
               </br>

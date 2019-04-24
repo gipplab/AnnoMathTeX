@@ -90,6 +90,8 @@ class CustomMathEnvParser:
 
         end_chunk = self.math_env[last_pos:]
         split_math_env.append(end_chunk)
+        print('IDENTIFIERS: ', identifiers)
+        print('SPLIT_MATH_ENV: ', split_math_env)
         return identifiers, split_math_env
 
 

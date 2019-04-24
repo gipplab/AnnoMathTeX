@@ -47,7 +47,13 @@ class TXTParser(Parser):
                 list(soup.find_all('math'))
             )
         )"""
-        math_envs = [str(tag) for tag in list(soup.find_all('math'))]
+
+        def remove_special_chars(math_env):
+            math_env = math_env.replace('amp;', '')
+            #math_env = math_env.replace('\\', 'SLASH')
+            return math_env
+
+        math_envs = [remove_special_chars(str(tag)) for tag in list(soup.find_all('math'))]
         #math_envs = ['${}$'.format(str(tag.contents[0])) for tag in list(soup.find_all('math'))]
         print(math_envs)
         return math_envs

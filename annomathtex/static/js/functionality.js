@@ -454,8 +454,8 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, mathEnv, tokenHighli
 
     console.log(tokenUniqueId);
 
-    document.getElementById(tokenUniqueId).style.color = annotatedColor;
-    document.getElementById('2---2').style.color = identifierColorBasic;
+    //document.getElementById(tokenUniqueId).style.color = annotatedColor;
+    //document.getElementById('2---2').style.color = identifierColorBasic;
 
 
     if (tokenType != 'Formula') {

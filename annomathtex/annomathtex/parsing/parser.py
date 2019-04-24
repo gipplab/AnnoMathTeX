@@ -351,6 +351,7 @@ class Parser(object, metaclass=ABCMeta):
         #print(processed_lines_including_maths)
 
         processed_lines_unique_ids = self.add_unique_ids(processed_lines)
+        #processed_lines_unique_ids = processed_lines
 
         linked_words, linked_math_symbols = self.form_links(processed_lines_unique_ids)
 

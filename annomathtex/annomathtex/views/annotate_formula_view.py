@@ -15,6 +15,7 @@ from ..recommendation.arxiv_evaluation_handler import ArXivEvaluationListHandler
 from ..recommendation.wikipedia_evaluation_handler import WikipediaEvaluationListHandler
 from ..config import recommendations_limit, create_annotation_file_path
 from itertools import zip_longest
+from time import time
 
 logging.basicConfig(level=logging.INFO)
 __LOGGER__ = logging.getLogger(__name__)
@@ -231,6 +232,7 @@ class FileUploadView(View):
         :return: The rendered response containing the template name, the necessary form and the response data.
         """
         __LOGGER__.debug('making wikidata query...')
+        start = time()
         items = {k: jquery_unparam(v) for (k, v) in request.POST.items()}
         search_string = [k for k in items['queryDict']][0]
         token_type_dict = items['tokenType']
@@ -265,6 +267,8 @@ class FileUploadView(View):
                 math_env = k
             __LOGGER__.debug('math_env: {}'.format(math_env))
             wikidata_results = MathSparql().aliases_search(math_env)
+
+        __LOGGER__.debug(' wikidata query made in {}'.format(time()-start))
 
         return HttpResponse(
             json.dumps({'concatenatedResults': concatenated_results,
