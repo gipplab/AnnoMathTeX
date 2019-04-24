@@ -247,6 +247,28 @@ class Parser(object, metaclass=ABCMeta):
         return processed_maths_env
 
 
+    def add_unique_ids(self, processed_lines):
+        """
+
+        :param processed_lines_including_maths:
+        :return:
+        """
+
+        def generate_id(line_num, token_num):
+            return '{}---{}'.format(line_num, token_num)
+
+
+        for line_num, line in enumerate(processed_lines):
+            for token_num, _ in enumerate(line):
+                processed_lines[line_num][token_num].unique_id = generate_id(line_num, token_num)
+
+
+        print(processed_lines[0][0].unique_id)
+
+
+        return processed_lines
+
+
 
     def process(self):
         """
@@ -259,13 +281,13 @@ class Parser(object, metaclass=ABCMeta):
         #necessary?
         lines = [p for p in self.file.split('\n')]
         #self.__LOGGER__.debug(' Lines extracted: {}'.format(lines))
-        processed_lines = [self.extract_words(s, i) for i, s in enumerate(lines)]
+        word_lines = [self.extract_words(s, i) for i, s in enumerate(lines)]
         #p_content = [word.content for line in processed_lines for word in line]
         #self.__LOGGER__.debug(' Lines processed: {}'.format(p_content))
 
         #todo: itertools
-        processed_lines_including_maths = []
-        for line_num, line in enumerate(processed_lines):
+        processed_lines = []
+        for line_num, line in enumerate(word_lines):
             processed_line = []
             if len(line) < 1:
                 processed_line.append(EmptyLine(uuid1()))
@@ -279,15 +301,19 @@ class Parser(object, metaclass=ABCMeta):
                     processed_line += processed_math_env
                 else:
                     processed_line.append(w)
-            processed_lines_including_maths.append(processed_line)
+            processed_lines.append(processed_line)
 
+
+        #print(processed_lines_including_maths)
+
+        processed_lines_unique_ids = self.add_unique_ids(processed_lines)
 
         #todo
         #if self.file_type == 'txt':
         #    self.remove_tags()
         existing_annotations = self.read_annotation_file()
         print('EXISTING ANNOTATIONS: {}'.format(existing_annotations))
-        file = File(processed_lines_including_maths,
+        file = File(processed_lines_unique_ids,
                                self.linked_words,
                                self.linked_math_symbols,
                                self.file_name, existing_annotations)

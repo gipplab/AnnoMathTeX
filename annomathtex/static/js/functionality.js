@@ -134,6 +134,7 @@ function selected(argsString){
 
 
     function setAnnotatedColor(id) {
+        console.log('setAnnotatedColor ' + id);
         document.getElementById(id).style.color = annotatedColor;
     }
 
@@ -434,6 +435,10 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, mathEnv, tokenHighli
     //Display the selected token.
     //If the clicked token is the delimiter of a math environment (entire formula), the presented text will be the
     //string for the entire math environment and not the delimiter.
+
+
+    console.log(tokenUniqueId);
+
 
     if (tokenType != 'Formula') {
         var fillText = tokenContent;
