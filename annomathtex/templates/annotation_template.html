@@ -58,10 +58,8 @@
   var linked_words = "{{ File.linked_words|escapejs }}";
   var linked_math_symbols = "{{ File.linked_math_symbols|escapejs }}";
   var fileName = "{{ File.file_name|escapejs }}";
-  var existingAnnotations = "{{ File.existing_annotations|escapejs }}";
   linkTokens(linked_words, linked_math_symbols);
   handlefileName(fileName);
-  handleAnnotations(existingAnnotations);
 </script>
 
 
@@ -104,6 +102,12 @@
         {% endfor %}
     </div>
 {% endfor %}
+
+
+<script>
+  var existingAnnotations = "{{ File.existing_annotations|escapejs }}";
+  handleAnnotations(existingAnnotations);
+</script>
 
 
 </body>

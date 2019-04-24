@@ -115,6 +115,23 @@ function populateTable(results, source) {
 }
 
 
+
+
+function setAnnotatedColor(id) {
+    console.log('setAnnotatedColor ' + typeof(id));
+    document.getElementById(id).style.color = annotatedColor;
+    //document.getElementById('4---4').style.color = annotatedColor;
+}
+
+function setBasicColor(id) {
+    if (tokenType == 'Identifier') {
+        document.getElementById(id).style.color = identifierColorBasic;
+    } else if (tokenType == 'Formula'){
+        document.getElementById(id).style.color = formulaColorBasic;
+    }
+}
+
+
 function selected(argsString){
     /*
     This function is called when the user annotates a token with an element from the created table (e.g. from the
@@ -131,21 +148,6 @@ function selected(argsString){
     var containsHighlightedName = (argsArray[5] === 'true');
 
     console.log(argsArray);
-
-
-    function setAnnotatedColor(id) {
-        console.log('setAnnotatedColor ' + id);
-        document.getElementById(id).style.color = annotatedColor;
-    }
-
-    function setBasicColor(id) {
-        if (tokenType == 'Identifier') {
-            document.getElementById(id).style.color = identifierColorBasic;
-        } else if (tokenType == 'Formula'){
-            document.getElementById(id).style.color = formulaColorBasic;
-        }
-    }
-
 
 
     if (containsHighlightedName && backgroundColor == cellColorBasic) {
@@ -413,6 +415,19 @@ function handleAnnotations(existing_annotations){
             tokenAssignedItemLocal.add(name);
         }
 
+
+        function colourExisting(ann){
+            for (identifier in ann) {
+                ids = ann[identifier]['uniqueIDs'];
+                for (id in ids) {
+                    setAnnotatedColor(ids[id]);
+                }
+            }
+        }
+
+        colourExisting(existingAnnotationsGlobal);
+        colourExisting(existingAnnotationsLocal);
+
         fillAnnotationsTable();
 
     }
@@ -438,6 +453,9 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, mathEnv, tokenHighli
 
 
     console.log(tokenUniqueId);
+
+    document.getElementById(tokenUniqueId).style.color = annotatedColor;
+    document.getElementById('2---2').style.color = identifierColorBasic;
 
 
     if (tokenType != 'Formula') {

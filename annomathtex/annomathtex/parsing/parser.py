@@ -103,6 +103,50 @@ class Parser(object, metaclass=ABCMeta):
         #self.__LOGGER__.debug(' File after removing math_envs: {}'.format(self.file))
 
 
+    def form_links(self, processed_lines_unique_ids):
+        """
+
+        :param processed_lines_unique_ids:
+        :return:
+        """
+
+        words = {}
+        math_symbols = {}
+
+        def word_links(word):
+            if word.named_entity and word.content:
+                if word.content in words:
+                    words[word.content].append(word.unique_id)
+                else:
+                    words[word.content] = [word.unique_id]
+
+        def identifier_links(identifier):
+            if identifier.content:
+                if identifier.content in math_symbols:
+                    math_symbols[identifier.content].append(identifier.unique_id)
+                else:
+                    math_symbols[identifier.content] = [identifier.unique_id]
+
+        def formula_links(formula):
+            math_env = formula.math_env
+            if math_env:
+                if math_env in math_symbols:
+                    math_symbols[math_env].append(formula.unique_id)
+                else:
+                    math_symbols[math_env] = [formula.unique_id]
+
+        for line in processed_lines_unique_ids:
+            for token in line:
+                if token.type == 'Word':
+                    word_links(token)
+                elif token.type == 'Identifier':
+                    identifier_links(token)
+                elif token.type == 'Formula':
+                    formula_links(token)
+
+
+        return words, math_symbols
+
     def form_word_links(self, tagged_words):
         """
         Link identical words. This is used later when annotating a file, to only have to annotate a word once. All the
@@ -308,13 +352,15 @@ class Parser(object, metaclass=ABCMeta):
 
         processed_lines_unique_ids = self.add_unique_ids(processed_lines)
 
+        linked_words, linked_math_symbols = self.form_links(processed_lines_unique_ids)
+
         #todo
         #if self.file_type == 'txt':
         #    self.remove_tags()
         existing_annotations = self.read_annotation_file()
         print('EXISTING ANNOTATIONS: {}'.format(existing_annotations))
         file = File(processed_lines_unique_ids,
-                               self.linked_words,
-                               self.linked_math_symbols,
+                               linked_words, #self.linked_words,
+                               linked_math_symbols, #self.linked_math_symbols,
                                self.file_name, existing_annotations)
         return (self.line_dict, self.identifier_line_dict, file)
