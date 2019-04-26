@@ -83,6 +83,7 @@ class CustomMathEnvParser:
         last_pos = 0
         for id, p, l in id_pos_len:
             formula_chunk = self.math_env[last_pos:p]
+            #formula_chunk = formula_chunk.replace('\\', '\\\\')
             split_math_env.append(formula_chunk)
             split_math_env.append(id)
             identifiers.append(id)

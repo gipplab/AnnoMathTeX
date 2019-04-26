@@ -494,9 +494,11 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, mathEnv, tokenHighli
     //Not the best way of doing this
     //https://stackoverflow.com/questions/5786851/define-global-variable-in-a-javascript-function
     window.uniqueID = tokenUniqueId;
-    window.tokenContent = tokenContent;
+    //window.tokenContent = tokenContent;
+    window.tokenContent = JSON.parse(tokenContent)['content'];
     window.tokenType = tokenType;
-    window.mathEnv = mathEnv;
+    //window.mathEnv = mathEnv;
+    window.mathEnv = JSON.parse(mathEnv)['math_env'];
 
 
 

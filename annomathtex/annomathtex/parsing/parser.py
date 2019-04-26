@@ -208,7 +208,10 @@ class Parser(object, metaclass=ABCMeta):
 
         # todo: put this in external class -> consistency   ??
 
-        def create_formula():
+        def create_formula(math_env):
+            math_env = math_env.replace('<math>', '')
+            math_env = math_env.replace('</math>', '')
+
             return Formula(
                 str(uuid1()),
                 type='Formula',
@@ -218,7 +221,7 @@ class Parser(object, metaclass=ABCMeta):
                 math_env=math_env
             )
 
-        formula1, formula2 = create_formula(), create_formula()
+        formula1, formula2 = create_formula(math_env), create_formula(math_env)
         self.form_formula_links(formula1, formula2)
 
         return formula1, formula2

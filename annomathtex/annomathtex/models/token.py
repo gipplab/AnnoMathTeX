@@ -1,4 +1,5 @@
 from abc import ABCMeta, abstractmethod
+import json
 
 
 class Token(object, metaclass=ABCMeta):
@@ -27,6 +28,9 @@ class Token(object, metaclass=ABCMeta):
         self.content = content
         self.endline = endline
         self.math_env = math_env
+
+        self.json_content = json.dumps({'content': content})
+        self.json_math_env = json.dumps({'math_env': math_env})
 
 
     @abstractmethod

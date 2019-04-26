@@ -81,11 +81,16 @@
                 $("#{{ Token.unique_id }}").on('click', function (event) {
                   event.preventDefault();
                   console.log('wikidata query sent out');
+
+                  var jsonContent = "{{ Token.json_content|escapejs }}";
+                  var jsonMathEnv = "{{ Token.json_math_env|escapejs  }}";
+
+
                   try {
-                    clickToken("{{ Token.content }}",
+                    clickToken(jsonContent,
                               "{{ Token.unique_id }}",
                               "{{ Token.type }}",
-                              "{{ Token.math_env }}",
+                              jsonMathEnv,
                               "{{ Token.highlight }}"
                               );
                   } catch (e) {
@@ -108,7 +113,5 @@
   handleAnnotations(existingAnnotations);
 </script>
 
-
 </body>
 </html>
-
