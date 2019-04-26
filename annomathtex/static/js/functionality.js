@@ -439,7 +439,7 @@ function handleAnnotations(existing_annotations){
 AJAX FUNCTIONS USED TO POST THE REQUEST BACK TO DJANGO, WHERE THE WIKIDATA SPARQL QUERY IS EXECUTED
  */
 
-function clickToken(tokenContent, tokenUniqueId, tokenType, mathEnv, tokenHighlight) {
+function clickToken(jsonContent, tokenUniqueId, tokenType, jsonMathEnv, tokenHighlight) {
     /*
     This function is called when the user mouse clicks a token (identifier, formula, named entity or any other word).
     The popup modal is opened, an post request is made to the backend to retreive suggestions for the selected token,
@@ -451,6 +451,9 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, mathEnv, tokenHighli
     //If the clicked token is the delimiter of a math environment (entire formula), the presented text will be the
     //string for the entire math environment and not the delimiter.
 
+    var content = JSON.parse(jsonContent)['content'];
+    var mathEnv = JSON.parse(jsonMathEnv)['math_env'];
+
 
     console.log(tokenUniqueId);
 
@@ -459,7 +462,7 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, mathEnv, tokenHighli
 
 
     if (tokenType != 'Formula') {
-        var fillText = tokenContent;
+        var fillText = content
     }
     else {
         var fillText = mathEnv;
@@ -495,10 +498,13 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, mathEnv, tokenHighli
     //https://stackoverflow.com/questions/5786851/define-global-variable-in-a-javascript-function
     window.uniqueID = tokenUniqueId;
     //window.tokenContent = tokenContent;
-    window.tokenContent = JSON.parse(tokenContent)['content'];
+    window.tokenContent = content;
     window.tokenType = tokenType;
-    //window.mathEnv = mathEnv;
-    window.mathEnv = JSON.parse(mathEnv)['math_env'];
+    window.mathEnv = mathEnv;
+
+
+
+    console.log('Content: ' +  content);
 
 
 
@@ -506,7 +512,7 @@ function clickToken(tokenContent, tokenUniqueId, tokenType, mathEnv, tokenHighli
 
     let data_dict = { the_post : $("#" + tokenUniqueId).val(),
                   'csrfmiddlewaretoken': getCookie("csrftoken"),
-                  'queryDict': tokenContent,
+                  'queryDict': content,
                   'tokenType': tokenType,
                   'mathEnv': mathEnv,
                   'uniqueId': tokenUniqueId

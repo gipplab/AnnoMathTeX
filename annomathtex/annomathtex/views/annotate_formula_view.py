@@ -231,7 +231,6 @@ class FileUploadView(View):
         :param request: Request object. Request made by the user through the frontend.
         :return: The rendered response containing the template name, the necessary form and the response data.
         """
-        __LOGGER__.debug('making wikidata query...')
         start = time()
         items = {k: jquery_unparam(v) for (k, v) in request.POST.items()}
         search_string = [k for k in items['queryDict']][0]
@@ -239,23 +238,27 @@ class FileUploadView(View):
         token_type = [k for k in token_type_dict][0]
         unique_id = [k for k in items['uniqueId']][0]
 
+        __LOGGER__.debug('making wikidata query for search string: {}'.format(search_string))
+
         concatenated_results, wikidata_results, word_window, \
         arXiv_evaluation_items, wikipedia_evaluation_items = None, None, None, None, None
 
         if token_type == 'Identifier':
-            wikidata_results = MathSparql().identifier_search(search_string)
+            #wikidata_results = MathSparql().identifier_search(search_string)
+            wikidata_results = None
             arXiv_evaluation_list_handler = ArXivEvaluationListHandler()
             wikipedia_evaluation_list_handler = WikipediaEvaluationListHandler()
             arXiv_evaluation_items = arXiv_evaluation_list_handler.check_identifiers(search_string)
             wikipedia_evaluation_items = wikipedia_evaluation_list_handler.check_identifiers(search_string)
             word_window = self.get_word_window(unique_id)
-            concatenated_results = self.get_concatenated_recommendations(
+            """concatenated_results = self.get_concatenated_recommendations(
                 'identifier',
                 wikidata_results,
                 arXiv_evaluation_items,
                 wikipedia_evaluation_items,
                 word_window
-            )
+            )"""
+            concatenated_results = None
         elif token_type == 'Word':
             wikidata_results = NESparql().named_entity_search(search_string)
         elif token_type == 'Formula':
