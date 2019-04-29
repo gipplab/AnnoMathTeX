@@ -56,7 +56,6 @@ function populateTable2() {
             backgroundColor = cellColorSelectedGlobal;
             containsHighlightedName = true;
         } else if (tokenAssignedItemLocal.has(name) && annotated['local'][tokenContent]['mathEnv'] == mathEnv) {
-            //console.log('FOOOO: ', annotated['local'][tokenContent]);
             backgroundColor = cellColorSelectedLocal;
         }
 
