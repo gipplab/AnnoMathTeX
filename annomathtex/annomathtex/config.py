@@ -19,3 +19,7 @@ def create_annotation_file_name(file_name):
 
 def create_annotation_file_path(file_name):
     return evaluation_annotations_path + create_annotation_file_name(file_name)
+
+
+
+view_cache_path = os.getcwd() + '/annomathtex/views/cache/'

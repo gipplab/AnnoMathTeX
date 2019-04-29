@@ -1,21 +1,30 @@
+from queue import Queue
+from threading import Thread
+import json
+import logging
+import os
+import pickle
+
 from django.shortcuts import render
 from django.views.generic import View
-from ..forms.uploadfileform import UploadFileForm
-from ..forms.save_annotation_form import SaveAnnotationForm
-from ..recommendation.math_sparql import MathSparql
-from ..recommendation.ne_sparql import NESparql
 from django.http import HttpResponse
 from ..forms.testform import TestForm
 from jquery_unparam import jquery_unparam
-import json
-import logging
+from itertools import zip_longest
+from time import time
+
 from ..parsing.txt_parser import TXTParser
 from ..parsing.tex_parser import TEXParser
 from ..recommendation.arxiv_evaluation_handler import ArXivEvaluationListHandler
 from ..recommendation.wikipedia_evaluation_handler import WikipediaEvaluationListHandler
-from ..config import recommendations_limit, create_annotation_file_path
-from itertools import zip_longest
-from time import time
+from ..forms.uploadfileform import UploadFileForm
+from ..forms.save_annotation_form import SaveAnnotationForm
+from ..recommendation.math_sparql import MathSparql
+from ..recommendation.ne_sparql import NESparql
+from ..config import recommendations_limit, create_annotation_file_path, view_cache_path
+
+
+
 
 logging.basicConfig(level=logging.INFO)
 __LOGGER__ = logging.getLogger(__name__)
@@ -23,6 +32,8 @@ __LOGGER__ = logging.getLogger(__name__)
 __MARKED__ = {}
 __UNMARKED__ = {}
 __ANNOTATED__ = {}
+
+__LINE_DICTS__ = {}
 
 
 class FileUploadView(View):
@@ -89,8 +100,15 @@ class FileUploadView(View):
         word_window = []
         limit = int(recommendations_limit / 2)
 
-        if unique_id in __IDENTIFIER_LINE_DICT__:
-            line_num = __IDENTIFIER_LINE_DICT__[unique_id]
+        #__LOGGER__.debug(' Line Dicts: ', __LINE_DICTS__)
+
+        dicts = self.cache_to_dicts()
+
+        identifier_line_dict = dicts['identifiers']
+        line_dict = dicts['lines']
+
+        if unique_id in identifier_line_dict:
+            line_num = identifier_line_dict[unique_id]
 
         else:
             return []
@@ -103,8 +121,8 @@ class FileUploadView(View):
             # lines after
             a = line_num + i
 
-            if b in __LINE__DICT__:
-                for word in reversed(__LINE__DICT__[b]):
+            if b in line_dict:
+                for word in reversed(line_dict[b]):
                     # value not yet in word window
                     if not list(filter(lambda d: d['name'] == word.content, word_window)):
                         word_window.append({
@@ -112,8 +130,8 @@ class FileUploadView(View):
                             #'unique_id': word.unique_id
                         })
                         i += 1
-            if a in __LINE__DICT__:
-                for word in reversed(__LINE__DICT__[a]):
+            if a in line_dict:
+                for word in reversed(line_dict[a]):
                     # value not yet in word window
                     if not list(filter(lambda d: d['name'] in word.content, word_window)):
                         word_window.append({
@@ -126,6 +144,33 @@ class FileUploadView(View):
             word_window = [{}]
 
         return word_window[:recommendations_limit]
+
+    def dicts_to_cache(self, dicts):
+        """
+
+        :param dicts:
+        :return:
+        """
+        path = view_cache_path + 'dicts'
+
+        with open(path, 'wb') as outfile:
+            pickle.dump(dicts, outfile)
+
+
+    def cache_to_dicts(self):
+        """
+
+        :return:
+        """
+        path = view_cache_path + 'dicts'
+        with open(path, 'rb') as infile:
+            dicts = pickle.load(infile)
+        #delete cached file
+        os.unlink(path)
+
+        return dicts
+
+
 
 
     def handle_file_submit(self, request):
@@ -145,7 +190,6 @@ class FileUploadView(View):
         :param request: Request object. Request made by the user through the frontend.
         :return:
         """
-        global __LINE__DICT__, __IDENTIFIER_LINE_DICT__
         __LOGGER__.debug('file submit')
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
@@ -157,10 +201,21 @@ class FileUploadView(View):
             elif file_name.endswith('.txt'):
                 __LOGGER__.info(' text file ')
                 line_dict, identifier_line_dict, processed_file = TXTParser(request_file, file_name).process()
+                #__LOGGER__.debug(' identifier_line_dict: {}'.format(identifier_line_dict))
             else:
                 line_dict, identifier_line_dict, processed_file = None, None, None
 
-            __LINE__DICT__, __IDENTIFIER_LINE_DICT__ = line_dict, identifier_line_dict
+            #__LINE__DICT__, __IDENTIFIER_LINE_DICT__ = line_dict, identifier_line_dict
+
+            #__LINE_DICTS__['identifiers'] = identifier_line_dict
+            #__LINE_DICTS__['lines'] = line_dict
+            #__LOGGER__.debug(' line dicts after creating: {}'.format(__LINE_DICTS__))
+
+            dicts = {'identifiers': identifier_line_dict, 'lines': line_dict}
+
+            self.dicts_to_cache(dicts)
+
+
 
             return render(request,
                           'annotation_template.html',
@@ -273,6 +328,8 @@ class FileUploadView(View):
 
         __LOGGER__.debug(' wikidata query made in {}'.format(time()-start))
 
+        __LOGGER__.debug(' word window: {}'.format(word_window))
+
         return HttpResponse(
             json.dumps({'concatenatedResults': concatenated_results,
                         'wikidataResults': wikidata_results,
@@ -302,7 +359,7 @@ class FileUploadView(View):
         :return: The rendered response containing the template name, the necessary form and the response data (if
                  applicable).
         """
-        __LOGGER__.debug('in post')
+        __LOGGER__.debug('in post {}'.format(os.getcwd()))
         if 'file_submit' in request.POST:
             return self.handle_file_submit(request)
 

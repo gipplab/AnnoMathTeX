@@ -502,13 +502,7 @@ function clickToken(jsonContent, tokenUniqueId, tokenType, jsonMathEnv, tokenHig
     window.tokenType = tokenType;
     window.mathEnv = mathEnv;
 
-
-
     console.log('Content: ' +  content);
-
-
-
-
 
     let data_dict = { the_post : $("#" + tokenUniqueId).val(),
                   'csrfmiddlewaretoken': getCookie("csrftoken"),

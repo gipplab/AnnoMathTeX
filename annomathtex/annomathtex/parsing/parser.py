@@ -367,4 +367,9 @@ class Parser(object, metaclass=ABCMeta):
                                linked_words, #self.linked_words,
                                linked_math_symbols, #self.linked_math_symbols,
                                self.file_name, existing_annotations)
+
+        #self.__LOGGER__.debug(' identier_line_dict: {}'.format(self.identifier_line_dict))
+        #self.__LOGGER__.debug(' line_dict: {}'.format(self.line_dict))
+
+
         return (self.line_dict, self.identifier_line_dict, file)
