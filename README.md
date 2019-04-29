@@ -1,15 +1,3 @@
-#  How to use this file
-
-We ask that all students working on their Bachelor or Master projects/theses have to hand in the source code and project documentation. Source code (including architecture and comments) has to adhere to our [developer guidelines](https://isgroup.atlassian.net/wiki/spaces/STUD/pages/1409184/Developer+Guidelines). The project documentation has to consist of a `README.md` file (optionally also more `.md` files if useful) that contains the following information. Thus, copy this file's content as a template in your project and revise it with your project's information.
-
-Besides using the following template, also check out the following sources to see some examples or read further useful information on how to write a good `README.md` for your project. Note that the exemplary projects do not 100% follow this template (either because they are created by third-parties or were created before we consolidated all the information into this template) but are still examples of good `README.md` files.
-* [Example: news-please](https://github.com/fhamborg/news-please/blob/master/README.md)
-* [Article: How to write a good readme](https://bulldogjob.com/news/449-how-to-write-a-good-readme-for-your-github-project)
-* [Article: A beginners guide to writing a good readme](https://medium.com/@meakaakka/a-beginners-guide-to-writing-a-kickass-readme-7ac01da88ab3)
-
-Useful tools:
-* [Recordit: record your screen and safe it to a GIF](http://recordit.co/)
-
 # AnnoMathTeX
 
 AnnoMathTeX is a LaTeX text and formula annotation recommendation tool for STEM documents. It allows users to annotate 
