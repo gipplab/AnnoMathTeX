@@ -338,6 +338,7 @@ class Parser(object, metaclass=ABCMeta):
             processed_line = []
             if len(line) < 1:
                 processed_line.append(EmptyLine(uuid1()))
+                #processed_line.append('{}---0'.format(line_num))
             for w in line:
                 if re.search(r'__MATH_ENV__', w.content):
                     #_, math_env = self.math_envs[0]

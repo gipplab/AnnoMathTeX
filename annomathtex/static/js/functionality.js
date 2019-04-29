@@ -32,6 +32,126 @@ var annotatedColor = '#04B404';
 
 
 var cellCounter = 0;
+var rowCounter = 0;
+
+
+function populateTable2() {
+
+    arXivEvaluationItems = jsonResults['arXivEvaluationItems'];
+    wikipediaEvaluationItems = jsonResults['wikipediaEvaluationItems'];
+    //wikidataResults = json['wikidataResults'];
+    //wordWindow = json['wordWindow'];
+
+    console.log(json);
+
+
+    function createCell(item, source, rowNum) {
+        var name = item['name'];
+        var backgroundColor = cellColorBasic;
+
+        var containsHighlightedName = false;
+
+
+        if (tokenAssignedItemGlobal.has(name)){
+            backgroundColor = cellColorSelectedGlobal;
+            containsHighlightedName = true;
+        } else if (tokenAssignedItemLocal.has(name) && annotated['local'][tokenContent]['mathEnv'] == mathEnv) {
+            //console.log('FOOOO: ', annotated['local'][tokenContent]);
+            backgroundColor = cellColorSelectedLocal;
+        }
+
+        var qid = '';
+
+        var cellID = "cell" + source + rowNum;
+
+        console.log(cellID);
+
+        var args = [
+            name,
+            qid,
+            source,
+            backgroundColor,
+            cellID,
+            containsHighlightedName
+        ];
+        var argsString = args.join('---');
+
+        var td = "<td id="+ cellID +" style='background-color:" +  backgroundColor + "'" + "onclick='selected(\"" + argsString + "\")'>" + name + "</td>";
+        return td;
+
+    }
+
+
+    //var table= "<table><tr><td>arXiv</td><td>Wikipedia</td><td>Wikidata</td><td>WW</td></tr>";
+    var table= "<table><tr><td>arXiv</td><td>Wikipedia</td><td>Wikidata</td><td>WordWindow</td></tr>";
+
+
+    /*for (i = 0; i<10; i++) {
+        if (arXivEvaluationItems.length >= i){
+            //console.log(arXivEvaluationItems[i]);
+            var tdArXiv = createCell(arXivEvaluationItems[i], 'ArXiv', i);
+        } else {
+            var tdArXiv = '<td></td>';
+        }
+        if (wikipediaEvaluationItems.length) {
+            var tdWikipedia = createCell(wikipediaEvaluationItems[i], 'Wikipedia', i);
+        } else {
+            var tdWikipedia = '<td></td>';
+        }
+        if (wikidataResults.length) {
+            var tdWikidata = createCell(wikidataResults[i], 'Wikidata', i);
+        } else {
+            var tdWikidata = '<td></td>';
+        }
+        if (wordWindow.length) {
+            var tdWordWindow = createCell(wordWindow[i], 'WordWindow', i);
+        } else {
+            var tdWordWindow = '<td></td>';
+        }
+
+        var tr = '<tr>' + tdArXiv + tdWikipedia + tdWikidata + tdWordWindow + '</tr>';
+        //tr += '<td></td><td></td><td></td></tr>';
+
+        table += tr;
+
+    }*/
+
+    for (i = 0; i<10; i++) {
+        if (arXivEvaluationItems.length >= i){
+            //console.log(arXivEvaluationItems[i]);
+            var tdArXiv = createCell(arXivEvaluationItems[i], 'ArXiv', i);
+        }
+        if (wikipediaEvaluationItems.length >= i) {
+            var tdWikipedia = createCell(wikipediaEvaluationItems[i], 'Wikipedia', i);
+        }
+        /*if (wikidataResults.length >= i) {
+            var tdWikidata = createCell(wikidataResults[i], 'Wikidata', i);
+        }
+        if (wordWindow.length >= i) {
+            var tdWordWindow = createCell(wordWindow[i], 'WordWindow', i);
+        }*/
+        //var tr = '<tr>' + tdArXiv + tdWikipedia + tdWikidata + tdWordWindow + '</tr>';
+        var tr = '<tr>' + tdArXiv + tdWikipedia + '<td></td><td></td></tr>';
+
+        table += tr;
+
+    }
+
+    document.getElementById('tableholder').innerHTML = table;
+    var modal = document.getElementById("popupModal");
+    modal.style.display = "block";
+
+    var span = document.getElementById("span");
+    span.onclick = function () {
+      modal.style.display = "none";
+    };
+
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    };
+}
 
 
 function populateTable(results, source) {
@@ -147,7 +267,7 @@ function selected(argsString){
     var cellID = argsArray[4];
     var containsHighlightedName = (argsArray[5] === 'true');
 
-    console.log(argsArray);
+    console.log(argsString);
 
 
     if (containsHighlightedName && backgroundColor == cellColorBasic) {
@@ -184,8 +304,10 @@ function selected(argsString){
         handleLinkedTokens(setBasicColor);
     }
 
+    populateTable2();
 
-    console.log('ABOVE SWITCH STATEMENT ' + source);
+
+    /*console.log('ABOVE SWITCH STATEMENT ' + source);
     switch (source) {
         case 'Concatenated':
             populateTable(concatenatedResults, 'Concatenated');
@@ -207,7 +329,7 @@ function selected(argsString){
             populateTable(wikipediaEvaluationItems, 'Wikipedia');
             console.log('OPTION: Wikipedia');
             break;
-    }
+    }*/
 
 
 
@@ -467,10 +589,11 @@ function clickToken(jsonContent, tokenUniqueId, tokenType, jsonMathEnv, tokenHig
     else {
         var fillText = mathEnv;
     }
+    document.getElementById("highlightedText").innerHTML = fillText;
 
 
     //hide both buttons for math environments
-    if (tokenType == 'Identifier' || tokenType == 'Formula') {
+    /*if (tokenType == 'Identifier' || tokenType == 'Formula') {
         document.getElementById("unmarkBtn").hidden = true;
         document.getElementById("markBtn").hidden = true;
     }
@@ -483,15 +606,13 @@ function clickToken(jsonContent, tokenUniqueId, tokenType, jsonMathEnv, tokenHig
         document.getElementById("unmarkBtn").hidden = false;
     }
 
-    document.getElementById("highlightedText").innerHTML = fillText;
-
     //check wikidata option (default)
     if (tokenType == 'Word'){
         document.getElementById("wikidataBtn").checked = true;
     }
     else {
         document.getElementById("concatenatedLabel").checked = true;
-    }
+    }*/
 
 
     //Not the best way of doing this
@@ -523,15 +644,22 @@ function clickToken(jsonContent, tokenUniqueId, tokenType, jsonMathEnv, tokenHig
           $("#" + tokenUniqueId).val(''); // remove the value from the input
 
 
-          window.concatenatedResults = json['concatenatedResults'];
+          /*window.concatenatedResults = json['concatenatedResults'];
           window.wikidataResults = json['wikidataResults'];
           window.arXivEvaluationItems = json['arXivEvaluationItems'];
           window.wikipediaEvaluationItems = json['wikipediaEvaluationItems'];
-          window.wordWindow = json['wordWindow'];
+          window.wordWindow = json['wordWindow'];*/
 
+          window.jsonResults = json;
 
           switch (tokenType) {
-              //todo: clean up
+              case 'Identifier':
+                  populateTable2();
+                  break;
+          }
+
+
+          /*switch (tokenType) {
               case 'Identifier':
                   console.log('Identifier');
                   document.getElementById("concatenatedLabel").hidden = false;
@@ -559,7 +687,7 @@ function clickToken(jsonContent, tokenUniqueId, tokenType, jsonMathEnv, tokenHig
                   document.getElementById("concatenatedBtn").checked = true;
                   populateTable(concatenatedResults, 'Concatenated');
                   break;
-          }
+          }*/
       },
 
       // handle a non-successful response

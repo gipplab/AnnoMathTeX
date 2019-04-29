@@ -100,18 +100,25 @@ class FileUploadView(View):
         word_window = []
         limit = int(recommendations_limit / 2)
 
-        #__LOGGER__.debug(' Line Dicts: ', __LINE_DICTS__)
-
         dicts = self.cache_to_dicts()
+        #print(self.cache_to_dicts())
+        #__LOGGER__.debug(' Line Dicts: ', dicts)
 
         identifier_line_dict = dicts['identifiers']
         line_dict = dicts['lines']
+
+        #print(identifier_line_dict)
+        #print(line_dict)
+
+        print(unique_id)
 
         if unique_id in identifier_line_dict:
             line_num = identifier_line_dict[unique_id]
 
         else:
             return []
+
+        print('AFTER IF ELSE')
 
         i = 0
         #todo: fix
@@ -156,6 +163,8 @@ class FileUploadView(View):
         with open(path, 'wb') as outfile:
             pickle.dump(dicts, outfile)
 
+        __LOGGER__.debug(' Wrote file to {}'.format(path))
+
 
     def cache_to_dicts(self):
         """
@@ -166,7 +175,9 @@ class FileUploadView(View):
         with open(path, 'rb') as infile:
             dicts = pickle.load(infile)
         #delete cached file
-        os.unlink(path)
+        #os.unlink(path)
+
+        #__LOGGER__.debug(' IN CACHE TO DICTS, DICTS: {}'.format(dicts))
 
         return dicts
 
