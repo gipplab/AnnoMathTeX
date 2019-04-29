@@ -1,6 +1,6 @@
 FROM python:3
 
-RUN apt-get update \ apt-get install python3-pip
+RUN apt-get update && apt-get install python3-pip
 WORKDIR /usr/src/app
 COPY AnnoMathTeX/requirements.txt ./
 RUN python3 -m venv --system-site-packages env/ && . env/bin/activate
