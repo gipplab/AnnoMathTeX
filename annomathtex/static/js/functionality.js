@@ -32,7 +32,6 @@ var annotatedColor = '#04B404';
 
 
 var cellCounter = 0;
-var rowCounter = 0;
 
 
 function populateTable2() {
@@ -40,7 +39,7 @@ function populateTable2() {
     arXivEvaluationItems = jsonResults['arXivEvaluationItems'];
     wikipediaEvaluationItems = jsonResults['wikipediaEvaluationItems'];
     //wikidataResults = json['wikidataResults'];
-    //wordWindow = json['wordWindow'];
+    wordWindow = jsonResults['wordWindow'];
 
     console.log(json);
 
@@ -125,12 +124,12 @@ function populateTable2() {
         }
         /*if (wikidataResults.length >= i) {
             var tdWikidata = createCell(wikidataResults[i], 'Wikidata', i);
-        }
+        }*/
         if (wordWindow.length >= i) {
             var tdWordWindow = createCell(wordWindow[i], 'WordWindow', i);
-        }*/
+        }
         //var tr = '<tr>' + tdArXiv + tdWikipedia + tdWikidata + tdWordWindow + '</tr>';
-        var tr = '<tr>' + tdArXiv + tdWikipedia + '<td></td><td></td></tr>';
+        var tr = '<tr>' + tdArXiv + tdWikipedia + tdWordWindow + '<td></td></tr>';
 
         table += tr;
 

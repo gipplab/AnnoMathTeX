@@ -304,16 +304,31 @@ class Parser(object, metaclass=ABCMeta):
         def generate_id(line_num, token_num):
             return '{}---{}'.format(line_num, token_num)
 
+        #self.identifier_line_dict[id_symbol.unique_id] = line_num
 
+        line_dict = {}
+        identifier_line_dict = {}
         for line_num, line in enumerate(processed_lines):
-            for token_num, _ in enumerate(line):
-                processed_lines[line_num][token_num].unique_id = generate_id(line_num, token_num)
+            line_dict[line_num] = []
+            for token_num, token in enumerate(line):
+                token.unique_id = generate_id(line_num, token_num)
+                processed_lines[line_num][token_num] = token
+
+                if token.type == 'Word' and token.named_entity:
+                    line_dict[line_num].append(token)
+
+                elif token.type == 'Identifier':
+                    identifier_line_dict[token.unique_id] = line_num
 
 
-        print(processed_lines[0][0].unique_id)
+                #processed_lines[line_num][token_num].unique_id = generate_id(line_num, token_num)
+                #line_dict[line_num].append(word) if word.named_entity else None
 
 
-        return processed_lines
+        #print(processed_lines[0][0].unique_id)
+
+
+        return processed_lines, line_dict, identifier_line_dict
 
 
 
@@ -354,7 +369,7 @@ class Parser(object, metaclass=ABCMeta):
 
         #print(processed_lines_including_maths)
 
-        processed_lines_unique_ids = self.add_unique_ids(processed_lines)
+        processed_lines_unique_ids, line_dict, identifier_line_dict = self.add_unique_ids(processed_lines)
         #processed_lines_unique_ids = processed_lines
 
         linked_words, linked_math_symbols = self.form_links(processed_lines_unique_ids)
@@ -373,4 +388,5 @@ class Parser(object, metaclass=ABCMeta):
         #self.__LOGGER__.debug(' line_dict: {}'.format(self.line_dict))
 
 
-        return (self.line_dict, self.identifier_line_dict, file)
+        #return (self.line_dict, self.identifier_line_dict, file)
+        return (line_dict, identifier_line_dict, file)
