@@ -21,7 +21,8 @@ var annotated = {'local': {}, 'global':{}};
 var evaluation = {};
 
 
-var tokenAssignedItemGlobal = new Set([]);
+//var tokenAssignedItemGlobal = new Set([]);
+var tokenAssignedItemGlobal = {};
 var tokenAssignedItemLocal = new Set([]);
 
 var cellColorBasic = '#dddddd';
@@ -56,7 +57,7 @@ function populateTable2() {
         var containsHighlightedName = false;
 
 
-        if (tokenAssignedItemGlobal.has(name)){
+        if (tokenContent in tokenAssignedItemGlobal && tokenAssignedItemGlobal[tokenContent] == name){
             backgroundColor = cellColorSelectedGlobal;
             containsHighlightedName = true;
             //annotated['global'][tokenContent]['sources'].push({'source': source, 'rowNum': rowNum});
@@ -176,7 +177,7 @@ function populateTable(results, source) {
             var url = source=='Concatenated' ? item['link'] : '';
             var backgroundColor = cellColorBasic;//'#dddddd';
 
-            if (tokenAssignedItemGlobal.has(name)){
+            if (tokenContent in tokenAssignedItemGlobal && tokenAssignedItemGlobal[tokenContent] === name){
                 backgroundColor = cellColorSelectedGlobal;
                 containsHighlightedName = true;
             } else if (tokenAssignedItemLocal.has(name) && annotated['local'][tokenContent]['mathEnv'] == mathEnv) {
@@ -276,7 +277,8 @@ function selected(argsString){
     } else if (backgroundColor == cellColorBasic){
         //global annotation
         document.getElementById(cellID).style.backgroundColor = cellColorSelectedGlobal;
-        tokenAssignedItemGlobal.add(name);
+        //tokenAssignedItemGlobal.add(name);
+        tokenAssignedItemGlobal[tokenContent] = name;
         setAnnotatedColor(uniqueID);
         //console.log('ADDED ENERGY: ', tokenAssignedItemGlobal);
         //addToAnnotated(uniqueID);
@@ -286,7 +288,8 @@ function selected(argsString){
         //reverse global annotation
         document.getElementById(cellID).style.backgroundColor = cellColorBasic;
         setBasicColor(uniqueID);
-        tokenAssignedItemGlobal.delete(name);
+        //tokenAssignedItemGlobal.delete(name);
+        tokenAssignedItemGlobal.delete(tokenContent);
         //remove element from array
         delete annotated['global'][tokenContent];
         handleLinkedTokens(setBasicColor);
@@ -492,7 +495,8 @@ function handleAnnotations(existing_annotations){
             var item = existingAnnotationsGlobal[token];
             var name = item['name'];
             annotated['global'][token] = item;
-            tokenAssignedItemGlobal.add(name);
+            //tokenAssignedItemGlobal.add(name);
+            tokenAssignedItemGlobal[token] = name;
         }
 
         for (var token in existingAnnotationsLocal){
