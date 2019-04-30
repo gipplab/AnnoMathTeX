@@ -39,6 +39,115 @@ var annotatedColor = '#04B404';
 
 var cellCounter = 0;
 
+function createCell(item, source, rowNum) {
+    var name = item['name'];
+    var backgroundColor = cellColorBasic;
+    var containsHighlightedName = false;
+    if (tokenContent in tokenAssignedItemGlobal && tokenAssignedItemGlobal[tokenContent] == name){
+        backgroundColor = cellColorSelectedGlobal;
+        containsHighlightedName = true;
+        //annotated['global'][tokenContent]['sources'].push({'source': source, 'rowNum': rowNum});
+        if (source in evaluation){
+            evaluation[source].push(rowNum);
+        }
+        else {
+            evaluation[source] = [rowNum];
+        }
+    } else if (tokenAssignedItemLocal.has(name) && annotated['local'][tokenContent]['mathEnv'] == mathEnv) {
+        backgroundColor = cellColorSelectedLocal;
+    }
+    var qid = '';
+    var cellID = "cell" + source + rowNum;
+    var args = [
+        name,
+        qid,
+        source,
+        backgroundColor,
+        cellID,
+        containsHighlightedName,
+        rowNum
+    ];
+    var argsString = args.join('---');
+    if (containsHighlightedName) {
+        console.log(args);
+    }
+    var td = "<td id="+ cellID +" style='background-color:" +  backgroundColor + "'" + "onclick='selected(\"" + argsString + "\")'>" + name + "</td>";
+    return td;
+}
+
+
+function populateTable3(random=true) {
+    arXivEvaluationItems = jsonResults['arXivEvaluationItems'];
+    wikipediaEvaluationItems = jsonResults['wikipediaEvaluationItems'];
+    wikidataResults = jsonResults['wikidataResults'];
+    wordWindow = jsonResults['wordWindow'];
+
+
+    var resultList = [[arXivEvaluationItems, 'ArXiv'],
+                      [wikipediaEvaluationItems, 'Wikipedia'],
+                      [wikidataResults, 'Wikidata'],
+                      [wordWindow, 'WordWindow']];
+
+    var table= "<table><tr><td>arXiv</td><td>Wikipedia</td><td>Wikidata</td><td>WordWindow</td></tr>";
+
+    if (random) {
+        resultList = shuffle([[arXivEvaluationItems, 'ArXiv'],
+                                    [wikipediaEvaluationItems, 'Wikipedia'],
+                                    [wikidataResults, 'Wikidata'],
+                                    [wordWindow, 'WordWindow']]);
+        var table= "<table><tr><td>Source 0</td><td>Source 1</td><td>Source 2</td><td>Source 3</td></tr>";
+    }
+
+
+    var source0 = resultList[0][0];
+    var source1 = resultList[1][0];
+    var source2 = resultList[2][0];
+    var source3 = resultList[3][0];
+
+    var name0 = resultList[0][1];
+    var name1 = resultList[1][1];
+    var name2 = resultList[2][1];
+    var name3 = resultList[3][1];
+
+
+    for (i = 0; i<10; i++) {
+        if (source0.length >= i && source0.length > 0){
+            var tdSource0 = createCell(source0[i], name0, i);
+        }
+        if (source1.length >= i && source1.length > 0) {
+            var tdSource1 = createCell(source1[i], name1, i);
+        }
+        if (source2.length >= i && source2.length > 0) {
+            var tdSource2 = createCell(source2[i], name2, i);
+        }
+        if (source3.length >= i && source3.length > 0) {
+            var tdSource3 = createCell(source3[i], name3, i);
+        }
+        var tr = '<tr>' + tdSource0 + tdSource1 + tdSource2 + tdSource3 + '</tr>';
+        table += tr;
+
+    }
+
+
+    document.getElementById('tableholder').innerHTML = table;
+    var modal = document.getElementById("popupModal");
+    modal.style.display = "block";
+
+    var span = document.getElementById("span");
+    span.onclick = function () {
+      modal.style.display = "none";
+    };
+
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    };
+}
+
+
+
+
 
 function populateTable2() {
 
@@ -295,7 +404,7 @@ function selected(argsString){
         handleLinkedTokens(setBasicColor);
     }
 
-    populateTable2();
+    populateTable3();
 
 
     function addToAnnotated(id, global=true) {
@@ -625,7 +734,7 @@ function clickToken(jsonContent, tokenUniqueId, tokenType, jsonMathEnv, tokenHig
 
           switch (tokenType) {
               case 'Identifier':
-                  populateTable2();
+                  populateTable3();
                   break;
           }
 
