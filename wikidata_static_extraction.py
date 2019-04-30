@@ -147,7 +147,7 @@ def read_file(file_path):
 if __name__ == '__main__':
     eval_files_path = os.getcwd() + '/evaluation/'
     evaluation_files_folder = os.getcwd() + '/annomathtex/annomathtex/recommendation/evaluation_files/'
-    files = ['Quantum_harmonic_oscillator.txt']
+    files = ['Quantum_harmonic_oscillator.txt', 'K-means clustering.txt', 'symbols.txt']
 
 
     all_identifiers = []
@@ -167,15 +167,12 @@ if __name__ == '__main__':
 
     all_identifiers = set(all_identifiers)
 
-
     all_results = {}
     i = 0
     for identifier in all_identifiers:
         wikidata_results = MathSparql().identifier_search(identifier)
         all_results[identifier] = wikidata_results
         i += 1
-        if i == 3:
-            break
 
 
     with open(evaluation_files_folder + 'wikidata.json', 'w') as outfile:

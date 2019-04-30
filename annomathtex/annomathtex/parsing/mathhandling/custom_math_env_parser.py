@@ -1,6 +1,7 @@
 import json
 import os
 import re
+import string
 
 
 class CustomMathEnvParser:
@@ -43,6 +44,9 @@ class CustomMathEnvParser:
 
         all_dict = json.loads(s)
         greek_letters = all_dict['greek_letters']
+
+        #return greek_letters
+
         greek_letters_set = set(map(lambda g: g[1:].lower(), greek_letters))
         greek_letters_regex = r'|'.join(g for g in greek_letters_set)
         return greek_letters_regex
@@ -91,8 +95,8 @@ class CustomMathEnvParser:
 
         end_chunk = self.math_env[last_pos:]
         split_math_env.append(end_chunk)
-        print('IDENTIFIERS: ', identifiers)
-        print('SPLIT_MATH_ENV: ', split_math_env)
+        #print('IDENTIFIERS: ', identifiers)
+        #print('SPLIT_MATH_ENV: ', split_math_env)
         return identifiers, split_math_env
 
 
@@ -107,5 +111,10 @@ if __name__ == "__main__":
     #s = r'$ \underset{\mathbf{ S }} {\operatorname{arg\,min}} \sum_{ i =1}^{ k }'
     c = CustomMathEnvParser(s1)
     i, s = c.get_split_math_env()
-    print(i)
+    greek_letters = c.get_greek_letters(c.greek_letters_path_testing)
+    s = ['<math>' + g.replace('\\', '') + '</math>' for g in greek_letters]
+    s += ['<math>' + letter + '</math>' for letter in string.ascii_letters]
+
+    with open(os.getcwd() + '/symbols.txt', 'w') as outfile:
+        outfile.write('\n'.join(s))
 
