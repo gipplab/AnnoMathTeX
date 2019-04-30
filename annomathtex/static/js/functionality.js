@@ -16,6 +16,11 @@ var wikidataReference = {};
 //backend for further processing (saving, writing to database).
 var annotated = {'local': {}, 'global':{}};
 
+// source: [nrow, ...]
+// e.g.: 'arXiv': [0,4,2,...]
+var evaluation = {};
+
+
 var tokenAssignedItemGlobal = new Set([]);
 var tokenAssignedItemLocal = new Set([]);
 
@@ -41,7 +46,7 @@ function populateTable2() {
     wikidataResults = jsonResults['wikidataResults'];
     wordWindow = jsonResults['wordWindow'];
 
-    console.log(jsonResults);
+    //console.log(jsonResults);
 
 
     function createCell(item, source, rowNum) {
@@ -54,6 +59,14 @@ function populateTable2() {
         if (tokenAssignedItemGlobal.has(name)){
             backgroundColor = cellColorSelectedGlobal;
             containsHighlightedName = true;
+            //annotated['global'][tokenContent]['sources'].push({'source': source, 'rowNum': rowNum});
+            if (source in evaluation){
+                evaluation[source].push(rowNum);
+            }
+            else {
+                evaluation[source] = [rowNum];
+            }
+            //console.log('NAME IN tokenAssignedItemGlobal ' + source + ' ' + rowNum)
         } else if (tokenAssignedItemLocal.has(name) && annotated['local'][tokenContent]['mathEnv'] == mathEnv) {
             backgroundColor = cellColorSelectedLocal;
         }
@@ -70,9 +83,14 @@ function populateTable2() {
             source,
             backgroundColor,
             cellID,
-            containsHighlightedName
+            containsHighlightedName,
+            rowNum
         ];
         var argsString = args.join('---');
+
+        if (containsHighlightedName) {
+            console.log(args);
+        }
 
         var td = "<td id="+ cellID +" style='background-color:" +  backgroundColor + "'" + "onclick='selected(\"" + argsString + "\")'>" + name + "</td>";
         return td;
@@ -230,8 +248,9 @@ function selected(argsString){
     var backgroundColor = argsArray[3];
     var cellID = argsArray[4];
     var containsHighlightedName = (argsArray[5] === 'true');
+    var rowNum = argsArray[6];
 
-    console.log(argsString);
+    //console.log(argsString);
 
 
     if (containsHighlightedName && backgroundColor == cellColorBasic) {
@@ -241,6 +260,11 @@ function selected(argsString){
         addToAnnotated(uniqueID, false);
         console.log(annotated);
         setAnnotatedColor(uniqueID);
+        if (source in evaluation) {
+            evaluation[source].push(rowNum);
+        } else {
+            evaluation[source] = [rowNum];
+        }
 
     } else if(backgroundColor == cellColorSelectedLocal){
         //reverse local annotation
@@ -271,36 +295,10 @@ function selected(argsString){
     populateTable2();
 
 
-    /*console.log('ABOVE SWITCH STATEMENT ' + source);
-    switch (source) {
-        case 'Concatenated':
-            populateTable(concatenatedResults, 'Concatenated');
-            console.log('OPTION: CONCATENATED');
-            break;
-        case 'Wikidata':
-            populateTable(wikidataResults, 'Wikidata');
-            console.log('OPTION: WIKDIATA');
-            break;
-        case 'WordWindow':
-            populateTable(wordWindow, 'WordWindow');
-            console.log('OPTION: WORD WINDOW');
-            break;
-        case 'ArXiv':
-            populateTable(arXivEvaluationItems, 'ArXiv');
-            console.log('OPTION: arXiv');
-            break;
-        case 'Wikipedia':
-            populateTable(wikipediaEvaluationItems, 'Wikipedia');
-            console.log('OPTION: Wikipedia');
-            break;
-    }*/
-
-
-
-
     function addToAnnotated(id, global=true) {
 
-        //console.log('ADD TO ANNOTATED!');
+        console.log(cellID);
+        console.log(source);
 
 
         if (!global) {
@@ -309,10 +307,13 @@ function selected(argsString){
             'name': name,
             //'wikidataInf': wikidataReference[qid],
             'uniqueID': [id],
-            'mathEnv': mathEnv
+            'mathEnv': mathEnv,
+            'source': source
             }
         } else if (tokenContent in annotated['global']) {
             annotated['global'][tokenContent]['uniqueIDs'].push(id);
+            //annotated['global'][tokenContent]['sources'].push(source);
+
         } else {
             annotated['global'][tokenContent] = {
             'name': name,
@@ -441,7 +442,7 @@ function linkTokens(linked_words, linked_math_symbols) {
      */
     window.linkedWords = JSON.parse(linked_words)['linkedWords'];
     window.linkedMathSymbols = JSON.parse(linked_math_symbols)['linkedMathSymbols'];
-    console.log('LINKED MATH SYMBOLS: ',linkedMathSymbols);
+    //console.log('LINKED MATH SYMBOLS: ',linkedMathSymbols);
 }
 
 
@@ -479,7 +480,7 @@ function handleAnnotations(existing_annotations){
     json = JSON.parse(existing_annotations)['existingAnnotations'];
     if (json != null){
 
-        console.log(existing_annotations);
+        //console.log(existing_annotations);
 
         //var existingAnnotationsGlobal = JSON.parse(existing_annotations)['existingAnnotations']['global'];
         //var existingAnnotationsLocal = JSON.parse(existing_annotations)['existingAnnotations']['local'];
@@ -541,7 +542,7 @@ function clickToken(jsonContent, tokenUniqueId, tokenType, jsonMathEnv, tokenHig
     var mathEnv = JSON.parse(jsonMathEnv)['math_env'];
 
 
-    console.log(tokenUniqueId);
+    //console.log(tokenUniqueId);
 
     //document.getElementById(tokenUniqueId).style.color = annotatedColor;
     //document.getElementById('2---2').style.color = identifierColorBasic;
@@ -553,9 +554,9 @@ function clickToken(jsonContent, tokenUniqueId, tokenType, jsonMathEnv, tokenHig
     else {
         var fillText = mathEnv;
     }
-    //document.getElementById("highlightedText").innerHTML = fillText;
+    document.getElementById("highlightedText").innerHTML = fillText;
 
-    console.log(fillText);
+    //console.log(fillText);
 
 
     //hide both buttons for math environments
@@ -589,7 +590,7 @@ function clickToken(jsonContent, tokenUniqueId, tokenType, jsonMathEnv, tokenHig
     window.tokenType = tokenType;
     window.mathEnv = mathEnv;
 
-    console.log('Content: ' +  content);
+    //console.log('Content: ' +  content);
 
     let data_dict = { the_post : $("#" + tokenUniqueId).val(),
                   'csrfmiddlewaretoken': getCookie("csrftoken"),
@@ -689,12 +690,13 @@ $(document).ready(function () {
                         'csrfmiddlewaretoken': getCookie("csrftoken"),
                         'marked': $.param(marked),
                         'annotated': $.param(annotated),
-                        'annotatedLocal': $.param(annotated['local']),
+                        //'annotatedLocal': $.param(annotated['local']),
+                        'evaluation': $.param(evaluation),
                         'unmarked': $.param(unmarked),
                         'fileName': $.param(fileNameDict)
                         };
 
-      console.log(annotated);
+      //console.log(annotated);
 
 
       $.ajax({

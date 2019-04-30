@@ -22,7 +22,7 @@ from ..forms.uploadfileform import UploadFileForm
 from ..forms.save_annotation_form import SaveAnnotationForm
 from ..recommendation.math_sparql import MathSparql
 from ..recommendation.ne_sparql import NESparql
-from ..config import recommendations_limit, create_annotation_file_path, view_cache_path
+from ..config import *
 
 
 
@@ -251,7 +251,7 @@ class FileUploadView(View):
         marked = items['marked']
         unmarked = items['unmarked']
         annotated = items['annotated']
-        annotatedLocal = items['annotatedLocal']
+        evaluation = items['evaluation']
         file_name = items['fileName']['f']
 
         __LOGGER__.debug(' ITEMS : {}'.format(items))
@@ -261,12 +261,24 @@ class FileUploadView(View):
         __UNMARKED__.update(unmarked)
         __ANNOTATED__.update(annotated)
         __LOGGER__.debug(' ANNOTATED: {}'.format(annotated))
+        __LOGGER__.debug(' EVALUATION: {}'.format(evaluation))
 
 
-        annotation_file_name = create_annotation_file_path(file_name)
-        with open(annotation_file_name, 'w') as f:
-            __LOGGER__.debug(' WRITING TO FILE {}'.format(annotation_file_name))
+        annotation_file_path = create_annotation_file_path(file_name)
+        with open(annotation_file_path, 'w') as f:
+            __LOGGER__.debug(' WRITING TO FILE {}'.format(annotation_file_path))
             json.dump(__ANNOTATED__, f)
+
+        #path defined in config
+        with open(evaluations_path, 'r') as f:
+            __LOGGER__.debug(' WRITING TO FILE {}'.format(evaluations_path))
+            eval_dict = json.load(f.read())
+            for source in evaluation:
+                eval_dict[source] += evaluation[source]
+
+        with open(evaluations_path, 'w') as f:
+            __LOGGER__.debug(' WRITING TO FILE {}'.format(evaluations_path))
+            json.dump(eval_dict, f)
 
         return HttpResponse(
             json.dumps({'testkey': 'testvalue'}),
