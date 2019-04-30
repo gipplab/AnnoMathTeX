@@ -2,8 +2,6 @@
 This file contains the functionality for the frontend of the project.
 It is called in annotation_template.html.
  */
-
-
 //those words that are marked as NE are added to this dictionary
 var marked = {};
 //those tokens, that were marked by the system, but user rejected the suggestion
@@ -15,7 +13,6 @@ var wikidataReference = {};
 //wikipedia evaluation list or the word window are stored in this dictionary. Upon saving, the dictionary is sent to the
 //backend for further processing (saving, writing to database).
 var annotated = {'local': {}, 'global':{}};
-
 // source: [nrow, ...]
 // e.g.: 'arXiv': [0,4,2,...]
 var evaluation = {};
@@ -73,7 +70,7 @@ function createCell(item, source, rowNum) {
 }
 
 
-function populateTable3(random=true) {
+function populateTable(random=true) {
     arXivEvaluationItems = jsonResults['arXivEvaluationItems'];
     wikipediaEvaluationItems = jsonResults['wikipediaEvaluationItems'];
     wikidataResults = jsonResults['wikidataResults'];
@@ -141,189 +138,6 @@ function populateTable3(random=true) {
       }
     };
 }
-
-
-
-
-
-function populateTable2() {
-
-    arXivEvaluationItems = jsonResults['arXivEvaluationItems'];
-    wikipediaEvaluationItems = jsonResults['wikipediaEvaluationItems'];
-    wikidataResults = jsonResults['wikidataResults'];
-    wordWindow = jsonResults['wordWindow'];
-
-    //console.log(jsonResults);
-
-
-    function createCell(item, source, rowNum) {
-        var name = item['name'];
-        var backgroundColor = cellColorBasic;
-
-        var containsHighlightedName = false;
-
-
-        if (tokenContent in tokenAssignedItemGlobal && tokenAssignedItemGlobal[tokenContent] == name){
-            backgroundColor = cellColorSelectedGlobal;
-            containsHighlightedName = true;
-            //annotated['global'][tokenContent]['sources'].push({'source': source, 'rowNum': rowNum});
-            if (source in evaluation){
-                evaluation[source].push(rowNum);
-            }
-            else {
-                evaluation[source] = [rowNum];
-            }
-            //console.log('NAME IN tokenAssignedItemGlobal ' + source + ' ' + rowNum)
-        } else if (tokenAssignedItemLocal.has(name) && annotated['local'][tokenContent]['mathEnv'] == mathEnv) {
-            backgroundColor = cellColorSelectedLocal;
-        }
-
-        var qid = '';
-
-        var cellID = "cell" + source + rowNum;
-
-        //console.log(cellID);
-
-        var args = [
-            name,
-            qid,
-            source,
-            backgroundColor,
-            cellID,
-            containsHighlightedName,
-            rowNum
-        ];
-        var argsString = args.join('---');
-
-        if (containsHighlightedName) {
-            console.log(args);
-        }
-
-        var td = "<td id="+ cellID +" style='background-color:" +  backgroundColor + "'" + "onclick='selected(\"" + argsString + "\")'>" + name + "</td>";
-        return td;
-
-    }
-
-    var table= "<table><tr><td>arXiv</td><td>Wikipedia</td><td>Wikidata</td><td>WordWindow</td></tr>";
-
-
-    for (i = 0; i<10; i++) {
-        if (arXivEvaluationItems.length >= i && arXivEvaluationItems.length > 0){
-            var tdArXiv = createCell(arXivEvaluationItems[i], 'ArXiv', i);
-        }
-        if (wikipediaEvaluationItems.length >= i && wikipediaEvaluationItems.length > 0) {
-            var tdWikipedia = createCell(wikipediaEvaluationItems[i], 'Wikipedia', i);
-        }
-        if (wikidataResults.length >= i && wikidataResults.length > 0) {
-            var tdWikidata = createCell(wikidataResults[i], 'Wikidata', i);
-        }
-        if (wordWindow.length >= i && wordWindow.length > 0) {
-            var tdWordWindow = createCell(wordWindow[i], 'WordWindow', i);
-        }
-        var tr = '<tr>' + tdArXiv + tdWikipedia + tdWikidata + tdWordWindow + '</tr>';
-
-        table += tr;
-
-    }
-
-    document.getElementById('tableholder').innerHTML = table;
-    var modal = document.getElementById("popupModal");
-    modal.style.display = "block";
-
-    var span = document.getElementById("span");
-    span.onclick = function () {
-      modal.style.display = "none";
-    };
-
-    window.onclick = function(event) {
-      if (event.target == modal) {
-        modal.style.display = "none";
-      }
-    };
-}
-
-
-function populateTable(results, source) {
-    /*
-    Possible sources: concatenated, wikidata, wordWindow, arXiv, wikipedia.
-    This function renders the table with the results that were retrieved by the backend of the project for a token that
-    the user mouse cliked. The table is rendered in the popup modal.
-
-    Each row in the table is stored as a string in an array. after the entire table has been created, an html element
-    that serves as a placeholder for the table is filled with its content.
-     */
-
-    console.log('populate table tokenAssignedItemGlobal: ', tokenAssignedItemGlobal);
-    console.log('populate table tokenAssignedItemLocal: ', tokenAssignedItemLocal);
-
-    var qidHeader = source=='Concatenated' ? 'QID' : '';
-
-    //console.log('BBAAARR: ', annotated['local'][tokenContent]);
-
-
-    //for local v global annotation
-    //if a highlighted name is already in table, second annotation will get different color
-    var containsHighlightedName = false;
-
-    if (source=='Concatenated') {
-        var myTable= "<table><tr><td style='width: 100px;'>Name</td><td>" + qidHeader + "</td></tr>";
-    } else {
-        var myTable= "<table><tr><td style='width: 100px;'>Name</td></tr>";
-    }
-
-
-    if (results != "None"){
-        for (var i in results){
-
-            cellCounter += 1;
-
-            var item = results[i];
-            var name = item['name'];
-            var qid = source=='Concatenated' ? item['qid'] : '';
-            var url = source=='Concatenated' ? item['link'] : '';
-            var backgroundColor = cellColorBasic;//'#dddddd';
-
-            if (tokenContent in tokenAssignedItemGlobal && tokenAssignedItemGlobal[tokenContent] === name){
-                backgroundColor = cellColorSelectedGlobal;
-                containsHighlightedName = true;
-            } else if (tokenAssignedItemLocal.has(name) && annotated['local'][tokenContent]['mathEnv'] == mathEnv) {
-                //console.log('FOOOO: ', annotated['local'][tokenContent]);
-                backgroundColor = cellColorSelectedLocal;
-            }
-
-            var cellID = "cell" + cellCounter;
-            var args = [
-                name,
-                qid,
-                source,
-                backgroundColor,
-                cellID,
-                containsHighlightedName
-            ];
-            var argsString = args.join('---');
-            myTable+="<tr><td id="+ cellID +" style='background-color:" +  backgroundColor + "'" + "onclick='selected(\"" + argsString + "\")'>" + name + "</td><td style='width: 20px'><a target='_blank' rel='noopener noreferrer' href='" + url + "'>" + qid + "</a></td></tr>";
-
-      }
-      document.getElementById('tableholder').innerHTML = myTable;
-
-    }
-    var modal = document.getElementById("popupModal");
-    modal.style.display = "block";
-
-    var span = document.getElementById("span");
-    span.onclick = function () {
-      modal.style.display = "none";
-    };
-
-    window.onclick = function(event) {
-      if (event.target == modal) {
-        modal.style.display = "none";
-      }
-    };
-    
-}
-
-
 
 
 function setAnnotatedColor(id) {
@@ -401,7 +215,7 @@ function selected(argsString){
         handleLinkedTokens(setBasicColor);
     }
 
-    populateTable3();
+    populateTable();
 
 
     function addToAnnotated(id, global=true) {
@@ -510,37 +324,6 @@ function unMarkAsNE() {
     console.log('unmarked ' + tokenContent);
 }
 
-
-
-function radioButtonClicked(option) {
-    /*
-    This function is called when the user selects a different column of results to be displayed in the table inside the
-    popup modal.
-     */
-    console.log('RadioButtonClicked ' + option);
-    switch (String(option)) {
-        case 'Concatenated':
-            populateTable(concatenatedResults, 'Concatenated');
-            console.log('OPTION: CONCATENATED');
-            break;
-        case 'Wikidata':
-            populateTable(wikidataResults, 'Wikidata');
-            console.log('OPTION: WIKDIATA');
-            break;
-        case 'WordWindow':
-            populateTable(wordWindow, 'WordWindow');
-            console.log('OPTION: WORD WINDOW');
-            break;
-        case 'arXiv':
-            populateTable(arXivEvaluationItems, 'arXiv');
-            console.log('OPTION: arXiv');
-            break;
-        case 'Wikipedia':
-            populateTable(wikipediaEvaluationItems, 'Wikipedia');
-            console.log('OPTION: Wikipedia');
-            break;
-    }
-}
 
 
 
@@ -731,7 +514,7 @@ function clickToken(jsonContent, tokenUniqueId, tokenType, jsonMathEnv, tokenHig
 
           switch (tokenType) {
               case 'Identifier':
-                  populateTable3();
+                  populateTable();
                   break;
           }
 
