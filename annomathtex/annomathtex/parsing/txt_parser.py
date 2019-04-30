@@ -29,6 +29,7 @@ class TXTParser(Parser):
 
         file = request_file.read()
         file = decode_txt(file)
+
         return file
 
     def extract_math_envs(self):

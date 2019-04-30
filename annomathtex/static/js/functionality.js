@@ -38,10 +38,10 @@ function populateTable2() {
 
     arXivEvaluationItems = jsonResults['arXivEvaluationItems'];
     wikipediaEvaluationItems = jsonResults['wikipediaEvaluationItems'];
-    //wikidataResults = json['wikidataResults'];
+    wikidataResults = jsonResults['wikidataResults'];
     wordWindow = jsonResults['wordWindow'];
 
-    console.log(json);
+    console.log(jsonResults);
 
 
     function createCell(item, source, rowNum) {
@@ -62,7 +62,7 @@ function populateTable2() {
 
         var cellID = "cell" + source + rowNum;
 
-        console.log(cellID);
+        //console.log(cellID);
 
         var args = [
             name,
@@ -79,57 +79,23 @@ function populateTable2() {
 
     }
 
-
-    //var table= "<table><tr><td>arXiv</td><td>Wikipedia</td><td>Wikidata</td><td>WW</td></tr>";
     var table= "<table><tr><td>arXiv</td><td>Wikipedia</td><td>Wikidata</td><td>WordWindow</td></tr>";
 
 
-    /*for (i = 0; i<10; i++) {
-        if (arXivEvaluationItems.length >= i){
-            //console.log(arXivEvaluationItems[i]);
-            var tdArXiv = createCell(arXivEvaluationItems[i], 'ArXiv', i);
-        } else {
-            var tdArXiv = '<td></td>';
-        }
-        if (wikipediaEvaluationItems.length) {
-            var tdWikipedia = createCell(wikipediaEvaluationItems[i], 'Wikipedia', i);
-        } else {
-            var tdWikipedia = '<td></td>';
-        }
-        if (wikidataResults.length) {
-            var tdWikidata = createCell(wikidataResults[i], 'Wikidata', i);
-        } else {
-            var tdWikidata = '<td></td>';
-        }
-        if (wordWindow.length) {
-            var tdWordWindow = createCell(wordWindow[i], 'WordWindow', i);
-        } else {
-            var tdWordWindow = '<td></td>';
-        }
-
-        var tr = '<tr>' + tdArXiv + tdWikipedia + tdWikidata + tdWordWindow + '</tr>';
-        //tr += '<td></td><td></td><td></td></tr>';
-
-        table += tr;
-
-    }*/
-
     for (i = 0; i<10; i++) {
-        if (arXivEvaluationItems.length >= i){
-            //console.log(arXivEvaluationItems[i]);
+        if (arXivEvaluationItems.length >= i && arXivEvaluationItems.length > 0){
             var tdArXiv = createCell(arXivEvaluationItems[i], 'ArXiv', i);
         }
-        if (wikipediaEvaluationItems.length >= i) {
+        if (wikipediaEvaluationItems.length >= i && wikipediaEvaluationItems.length > 0) {
             var tdWikipedia = createCell(wikipediaEvaluationItems[i], 'Wikipedia', i);
         }
-        /*if (wikidataResults.length >= i) {
+        if (wikidataResults.length >= i && wikidataResults.length > 0) {
             var tdWikidata = createCell(wikidataResults[i], 'Wikidata', i);
-        }*/
-        if (wordWindow.length >= i) {
+        }
+        if (wordWindow.length >= i && wordWindow.length > 0) {
             var tdWordWindow = createCell(wordWindow[i], 'WordWindow', i);
         }
-        //var tr = '<tr>' + tdArXiv + tdWikipedia + tdWikidata + tdWordWindow + '</tr>';
-        var tr = '<tr>' + tdArXiv + tdWikipedia + tdWordWindow + '<td></td></tr>';
+        var tr = '<tr>' + tdArXiv + tdWikipedia + tdWikidata + tdWordWindow + '</tr>';
 
         table += tr;
 
@@ -587,7 +553,9 @@ function clickToken(jsonContent, tokenUniqueId, tokenType, jsonMathEnv, tokenHig
     else {
         var fillText = mathEnv;
     }
-    document.getElementById("highlightedText").innerHTML = fillText;
+    //document.getElementById("highlightedText").innerHTML = fillText;
+
+    console.log(fillText);
 
 
     //hide both buttons for math environments

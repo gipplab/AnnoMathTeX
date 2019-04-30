@@ -17,6 +17,7 @@ from ..parsing.txt_parser import TXTParser
 from ..parsing.tex_parser import TEXParser
 from ..recommendation.arxiv_evaluation_handler import ArXivEvaluationListHandler
 from ..recommendation.wikipedia_evaluation_handler import WikipediaEvaluationListHandler
+from ..recommendation.static_wikidata_handler import StaticWikidataHandler
 from ..forms.uploadfileform import UploadFileForm
 from ..forms.save_annotation_form import SaveAnnotationForm
 from ..recommendation.math_sparql import MathSparql
@@ -311,11 +312,11 @@ class FileUploadView(View):
 
         if token_type == 'Identifier':
             #wikidata_results = MathSparql().identifier_search(search_string)
-            wikidata_results = None
-            arXiv_evaluation_list_handler = ArXivEvaluationListHandler()
-            wikipedia_evaluation_list_handler = WikipediaEvaluationListHandler()
-            arXiv_evaluation_items = arXiv_evaluation_list_handler.check_identifiers(search_string)
-            wikipedia_evaluation_items = wikipedia_evaluation_list_handler.check_identifiers(search_string)
+            wikidata_results = StaticWikidataHandler().check_identifiers(search_string)
+            #arXiv_evaluation_list_handler = ArXivEvaluationListHandler()
+            #wikipedia_evaluation_list_handler = WikipediaEvaluationListHandler()
+            arXiv_evaluation_items = ArXivEvaluationListHandler().check_identifiers(search_string)
+            wikipedia_evaluation_items = WikipediaEvaluationListHandler().check_identifiers(search_string)
             word_window = self.get_word_window(unique_id)
             """concatenated_results = self.get_concatenated_recommendations(
                 'identifier',
@@ -340,13 +341,20 @@ class FileUploadView(View):
         __LOGGER__.debug(' wikidata query made in {}'.format(time()-start))
 
         __LOGGER__.debug(' word window: {}'.format(word_window))
+        __LOGGER__.debug(' wikipedia: {}'.format(wikipedia_evaluation_items))
+        __LOGGER__.debug(' arxiv: {}'.format(arXiv_evaluation_items))
+        __LOGGER__.debug(' wikidata: {}'.format(wikidata_results))
+
+        def fill_to_limit(dict_list):
+            dict_list += [{'name': ''} for _ in range(recommendations_limit-len(dict_list))]
+            return dict_list
+
 
         return HttpResponse(
-            json.dumps({'concatenatedResults': concatenated_results,
-                        'wikidataResults': wikidata_results,
-                        'arXivEvaluationItems': arXiv_evaluation_items,
-                        'wikipediaEvaluationItems': wikipedia_evaluation_items,
-                        'wordWindow': word_window}),
+            json.dumps({'wikidataResults': fill_to_limit(wikidata_results),
+                        'arXivEvaluationItems': fill_to_limit(arXiv_evaluation_items),
+                        'wikipediaEvaluationItems': fill_to_limit(wikipedia_evaluation_items),
+                        'wordWindow': fill_to_limit(word_window)}),
             content_type='application/json'
         )
 
