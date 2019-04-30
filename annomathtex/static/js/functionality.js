@@ -34,9 +34,6 @@ var formulaColorBasic = '#ffa500';
 var annotatedColor = '#04B404';
 
 //var identifierColorAnnotated = '#F88000';
-
-
-
 var cellCounter = 0;
 
 function createCell(item, source, rowNum) {
