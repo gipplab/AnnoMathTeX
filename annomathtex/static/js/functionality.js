@@ -33,6 +33,7 @@ var annotatedColor = '#04B404';
 //var identifierColorAnnotated = '#F88000';
 var cellCounter = 0;
 
+
 function createCell(item, source, rowNum) {
     var name = item['name'];
     var backgroundColor = cellColorBasic;
@@ -61,11 +62,17 @@ function createCell(item, source, rowNum) {
         containsHighlightedName,
         rowNum
     ];
+    //not possible to pass multiple arguments, that's why they are concatenated to one argument string
     var argsString = args.join('---');
-    if (containsHighlightedName) {
-        console.log(args);
-    }
-    var td = "<td id="+ cellID +" style='background-color:" +  backgroundColor + "'" + "onclick='selected(\"" + argsString + "\")'>" + name + "</td>";
+
+    var td = "<td id=" + cellID;
+    td += " style='background-color:" + backgroundColor + "'";
+    td += "onclick='selected(\"" + argsString + "\")' >";
+    //td += "<div onclick='selectedDouble()'>";
+    td += name;
+    //td += "</div>";
+    td += "</td>";
+
     return td;
 }
 
@@ -76,21 +83,24 @@ function populateTable(random=true) {
     wikidataResults = jsonResults['wikidataResults'];
     wordWindow = jsonResults['wordWindow'];
 
-
     var resultList = [[arXivEvaluationItems, 'ArXiv'],
                       [wikipediaEvaluationItems, 'Wikipedia'],
                       [wikidataResults, 'Wikidata'],
                       [wordWindow, 'WordWindow']];
 
-    var table= "<table><tr><td>arXiv</td><td>Wikipedia</td><td>Wikidata</td><td>WordWindow</td></tr>";
+    var table= "<table><tr><td>Source 0</td><td>Source 1</td><td>Source 2</td><td>Source 3</td></tr>";
 
-    if (random) {
+    if (preservedResultList != null) {
+        resultList = preservedResultList;
+    } else if (random) {
         resultList = shuffle([[arXivEvaluationItems, 'ArXiv'],
                                     [wikipediaEvaluationItems, 'Wikipedia'],
                                     [wikidataResults, 'Wikidata'],
                                     [wordWindow, 'WordWindow']]);
         var table= "<table><tr><td>Source 0</td><td>Source 1</td><td>Source 2</td><td>Source 3</td></tr>";
     }
+
+    preservedResultList = resultList;
 
 
     var source0 = resultList[0][0];
@@ -130,11 +140,13 @@ function populateTable(random=true) {
     var span = document.getElementById("span");
     span.onclick = function () {
       modal.style.display = "none";
+      preservedResultList = null;
     };
 
     window.onclick = function(event) {
       if (event.target == modal) {
         modal.style.display = "none";
+        preservedResultList = null;
       }
     };
 }
@@ -155,13 +167,13 @@ function setBasicColor(id) {
 }
 
 
+
+
 function selected(argsString){
     /*
     This function is called when the user annotates a token with an element from the created table (e.g. from the
     retrieved wikidata results).
      */
-
-
     var argsArray = argsString.split('---');
     var name = argsArray[0];
     var qid = argsArray[1];
@@ -171,10 +183,52 @@ function selected(argsString){
     var containsHighlightedName = (argsArray[5] === 'true');
     var rowNum = argsArray[6];
 
-    //console.log(argsString);
+
+    var local = document.getElementById('localSwitch').checked;
 
 
-    if (containsHighlightedName && backgroundColor == cellColorBasic) {
+    if (local) {
+
+        //local annotations
+        if (backgroundColor == cellColorBasic) {
+            //make local annotation
+            document.getElementById(cellID).style.backgroundColor = cellColorSelectedLocal;
+            tokenAssignedItemLocal.add(name);
+            addToAnnotated(uniqueID, false);
+            console.log(annotated);
+            setAnnotatedColor(uniqueID);
+            if (source in evaluation) {
+                evaluation[source].push(rowNum);
+            } else {
+                evaluation[source] = [rowNum];
+            }
+        } else if (backgroundColor == cellColorSelectedLocal) {
+            //reverse local annotation
+            document.getElementById(cellID).style.backgroundColor = cellColorBasic;
+            tokenAssignedItemLocal.delete(name);
+            delete annotated['local'][tokenContent];
+        }
+    } else {
+        //global annotations
+        if (backgroundColor == cellColorBasic) {
+            //make global annotation
+            document.getElementById(cellID).style.backgroundColor = cellColorSelectedGlobal;
+            tokenAssignedItemGlobal[tokenContent] = name;
+            setAnnotatedColor(uniqueID);
+            handleLinkedTokens(addToAnnotated);
+            handleLinkedTokens(setAnnotatedColor);
+        } else if(backgroundColor == cellColorSelectedGlobal) {
+            //reverse global annotation
+            document.getElementById(cellID).style.backgroundColor = cellColorBasic;
+            setBasicColor(uniqueID);
+            delete tokenAssignedItemGlobal[tokenContent];
+            delete annotated['global'][tokenContent];
+            handleLinkedTokens(setBasicColor);
+        }
+    }
+
+
+    /*if (containsHighlightedName && backgroundColor == cellColorBasic) {
         //select a cell & global annotation has been made
         document.getElementById(cellID).style.backgroundColor = cellColorSelectedLocal;
         tokenAssignedItemLocal.add(name);
@@ -209,11 +263,11 @@ function selected(argsString){
         document.getElementById(cellID).style.backgroundColor = cellColorBasic;
         setBasicColor(uniqueID);
         //tokenAssignedItemGlobal.delete(name);
-        tokenAssignedItemGlobal.delete(tokenContent);
+        delete tokenAssignedItemGlobal[tokenContent];
         //remove element from array
         delete annotated['global'][tokenContent];
         handleLinkedTokens(setBasicColor);
-    }
+    }*/
 
     populateTable();
 
@@ -449,31 +503,6 @@ function clickToken(jsonContent, tokenUniqueId, tokenType, jsonMathEnv, tokenHig
     }
     document.getElementById("highlightedText").innerHTML = fillText;
 
-    //console.log(fillText);
-
-
-    //hide both buttons for math environments
-    /*if (tokenType == 'Identifier' || tokenType == 'Formula') {
-        document.getElementById("unmarkBtn").hidden = true;
-        document.getElementById("markBtn").hidden = true;
-    }
-    else if (tokenHighlight == "black") {
-        document.getElementById("unmarkBtn").hidden = true;
-        document.getElementById("markBtn").hidden = false;
-    }
-    else {
-        document.getElementById("markBtn").hidden = true;
-        document.getElementById("unmarkBtn").hidden = false;
-    }
-
-    //check wikidata option (default)
-    if (tokenType == 'Word'){
-        document.getElementById("wikidataBtn").checked = true;
-    }
-    else {
-        document.getElementById("concatenatedLabel").checked = true;
-    }*/
-
 
     //Not the best way of doing this
     //https://stackoverflow.com/questions/5786851/define-global-variable-in-a-javascript-function
@@ -482,6 +511,7 @@ function clickToken(jsonContent, tokenUniqueId, tokenType, jsonMathEnv, tokenHig
     window.tokenContent = content;
     window.tokenType = tokenType;
     window.mathEnv = mathEnv;
+    window.preservedResultList = null;
 
     //console.log('Content: ' +  content);
 
