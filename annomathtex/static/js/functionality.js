@@ -218,8 +218,17 @@ function selected(argsString){
             document.getElementById(cellID).style.backgroundColor = cellColorSelectedGlobal;
             tokenAssignedItemGlobal[tokenContent] = name;
             setAnnotatedColor(uniqueID);
+            //delete any existing global annotation for this identifier and concept
+            //use case: changing the selected annotation
+            if (tokenContent in annotated['global']) {
+                console.log('Changing annotation...');
+                delete annotated['global'][tokenContent];
+            }
             handleLinkedTokens(addToAnnotated);
             handleLinkedTokens(setAnnotatedColor);
+            console.log('adding to annotated ' + name);
+
+            console.log(annotated);
 
             //document.getElementById('284---4').style.color = annotatedColor;
 
