@@ -380,25 +380,13 @@ function fillAnnotationsTable(){
 
     fill(annotated['global'], 'Global');
     fill(annotated['local'], 'Local');
-
-
-    //console.log(annotatedGLobal);
-    //console.log(tokenAssignedItemGlobal)
-    //annotationsTable += breaks;
     document.getElementById("annotationsHolder").innerHTML = annotationsTable;
-    //document.getElementById("annotationsHolder").style.color = "red";
 }
 
 function handleAnnotations(existing_annotations){
-    //console.log(typeof(existing_annotations));
     json = JSON.parse(existing_annotations)['existingAnnotations'];
     if (json != null){
 
-        //console.log(existing_annotations);
-
-        //var existingAnnotationsGlobal = JSON.parse(existing_annotations)['existingAnnotations']['global'];
-        //var existingAnnotationsLocal = JSON.parse(existing_annotations)['existingAnnotations']['local'];
-        //console.log('Existing annotations: ', existingAnnotations);
         var existingAnnotationsGlobal = json['global'];
         var existingAnnotationsLocal = json['local'];
 
@@ -456,13 +444,6 @@ function clickToken(jsonContent, tokenUniqueId, tokenType, jsonMathEnv, tokenHig
     var content = JSON.parse(jsonContent)['content'];
     var mathEnv = JSON.parse(jsonMathEnv)['math_env'];
 
-
-    //console.log(tokenUniqueId);
-
-    //document.getElementById(tokenUniqueId).style.color = annotatedColor;
-    //document.getElementById('2---2').style.color = identifierColorBasic;
-
-
     if (tokenType != 'Formula') {
         var fillText = content
     }
@@ -502,12 +483,6 @@ function clickToken(jsonContent, tokenUniqueId, tokenType, jsonMathEnv, tokenHig
           $("#" + tokenUniqueId).val(''); // remove the value from the input
 
 
-          /*window.concatenatedResults = json['concatenatedResults'];
-          window.wikidataResults = json['wikidataResults'];
-          window.arXivEvaluationItems = json['arXivEvaluationItems'];
-          window.wikipediaEvaluationItems = json['wikipediaEvaluationItems'];
-          window.wordWindow = json['wordWindow'];*/
-
           window.jsonResults = json;
 
           switch (tokenType) {
@@ -517,35 +492,6 @@ function clickToken(jsonContent, tokenUniqueId, tokenType, jsonMathEnv, tokenHig
           }
 
 
-          /*switch (tokenType) {
-              case 'Identifier':
-                  console.log('Identifier');
-                  document.getElementById("concatenatedLabel").hidden = false;
-                  document.getElementById("wordWindowLabel").hidden = false;
-                  document.getElementById("arXivLabel").hidden = false;
-                  document.getElementById("wikipediaLabel").hidden = false;
-                  document.getElementById("concatenatedBtn").checked = true;
-                  populateTable(concatenatedResults, 'Concatenated');
-                  break;
-              case 'Word':
-                  console.log('Word');
-                  document.getElementById("concatenatedLabel").hidden = true;
-                  document.getElementById("wordWindowLabel").hidden = true;
-                  document.getElementById("arXivLabel").hidden = true;
-                  document.getElementById("wikipediaLabel").hidden = true;
-                  document.getElementById("wikidataBtn").checked = true;
-                  populateTable(wikidataResults, 'Wikidata');
-                  break;
-              case 'Formula':
-                  console.log('Formula');
-                  document.getElementById("concatenatedLabel").hidden = false;
-                  document.getElementById("wordWindowLabel").hidden = false;
-                  document.getElementById("arXivLabel").hidden = true;
-                  document.getElementById("wikipediaLabel").hidden = true;
-                  document.getElementById("concatenatedBtn").checked = true;
-                  populateTable(concatenatedResults, 'Concatenated');
-                  break;
-          }*/
       },
 
       // handle a non-successful response
