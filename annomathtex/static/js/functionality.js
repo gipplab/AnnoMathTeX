@@ -41,15 +41,21 @@ function createCell(item, source, rowNum) {
     if (tokenContent in tokenAssignedItemGlobal && tokenAssignedItemGlobal[tokenContent] == name){
         backgroundColor = cellColorSelectedGlobal;
         containsHighlightedName = true;
-        //annotated['global'][tokenContent]['sources'].push({'source': source, 'rowNum': rowNum});
         if (source in evaluation){
             evaluation[source].push(rowNum);
         }
         else {
             evaluation[source] = [rowNum];
         }
-    } else if (tokenAssignedItemLocal.has(name) && annotated['local'][tokenContent]['mathEnv'] == mathEnv) {
-        backgroundColor = cellColorSelectedLocal;
+    } else if (tokenContent in annotated['local']) {
+        if (annotated['local'][tokenContent]['mathEnv'] == mathEnv) {
+            if (annotated['local'][tokenContent]['name'] == name) {
+                backgroundColor = cellColorSelectedLocal;
+            } else {
+                //delete annotated['local'][tokenContent];
+                backgroundColor = cellColorBasic;
+            }
+        }
     }
     var qid = '';
     var cellID = "cell" + source + rowNum;
