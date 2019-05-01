@@ -13,7 +13,6 @@ isodate==0.6.0
 pytest-cov==2.5.1
 python-dateutil==2.7.5
 pytz==2018.7
-rake-nltk==1.0.4
 rdflib==4.2.2
 regex==2018.1.10
 jquery_unparam==2.0.0
