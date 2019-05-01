@@ -17,10 +17,8 @@ var annotated = {'local': {}, 'global':{}};
 // e.g.: 'arXiv': [0,4,2,...]
 var evaluation = {};
 
-
-//var tokenAssignedItemGlobal = new Set([]);
 var tokenAssignedItemGlobal = {};
-var tokenAssignedItemLocal = new Set([]);
+//var tokenAssignedItemLocal = new Set([]);
 
 var cellColorBasic = '#dddddd';
 var cellColorSelectedGlobal = 'pink';
@@ -47,9 +45,19 @@ function createCell(item, source, rowNum) {
         else {
             evaluation[source] = [rowNum];
         }
-    } else if (tokenContent in annotated['local']) {
+    } /*else if (tokenContent in annotated['local']) {
         if (annotated['local'][tokenContent]['mathEnv'] == mathEnv) {
             if (annotated['local'][tokenContent]['name'] == name) {
+                backgroundColor = cellColorSelectedLocal;
+            } else {
+                //delete annotated['local'][tokenContent];
+                backgroundColor = cellColorBasic;
+            }
+        }
+    }*/
+    else if (tokenContent in annotated['local']) {
+        if (uniqueID in annotated['local'][tokenContent]) {
+            if (annotated['local'][tokenContent][uniqueID]['name'] == name) {
                 backgroundColor = cellColorSelectedLocal;
             } else {
                 //delete annotated['local'][tokenContent];
@@ -202,7 +210,7 @@ function selected(argsString){
         if (backgroundColor == cellColorBasic) {
             //make local annotation
             document.getElementById(cellID).style.backgroundColor = cellColorSelectedLocal;
-            tokenAssignedItemLocal.add(name);
+            //tokenAssignedItemLocal.add(name);
             addToAnnotated(uniqueID, false);
             console.log(annotated);
             setAnnotatedColor(uniqueID);
@@ -214,8 +222,8 @@ function selected(argsString){
         } else if (backgroundColor == cellColorSelectedLocal) {
             //reverse local annotation
             document.getElementById(cellID).style.backgroundColor = cellColorBasic;
-            tokenAssignedItemLocal.delete(name);
-            delete annotated['local'][tokenContent];
+            //tokenAssignedItemLocal.delete(name);
+            delete annotated['local'][tokenContent][uniqueID];
         }
     } else {
         //global annotations
@@ -255,19 +263,57 @@ function selected(argsString){
 
     function addToAnnotated(id, global=true) {
 
-        if (!global) {
-            //annotated['local'][tokenContent] = {
+        /*if (!global) {
             annotated['local'][tokenContent] = {
             'name': name,
             //'wikidataInf': wikidataReference[qid],
             'uniqueID': [id],
             'mathEnv': mathEnv,
             'source': source
+            }*/
+        if (!global) {
+            /*var t = tokenContent;
+            var i = id;
+            console.log(t);
+            if (t in annotated['local']){
+                annotated['local'][t] = {
+                    i: {
+                        'name': name,
+                        'mathEnv': mathEnv,
+                        'source': source
+                    }
+                }
+            } else {
+                annotated['local'] = {
+                    t: {
+                        i: {
+                            'name': name,
+                            'mathEnv': mathEnv,
+                            'source': source
+                        }
+                    }
+                }
+            }*/
+
+            if (tokenContent in annotated['local']){
+                annotated['local'][tokenContent][id] = {
+                    'name': name,
+                    'mathEnv': mathEnv,
+                    'source': source
+                }
+            } else {
+                annotated['local'][tokenContent] = {};
+                annotated['local'][tokenContent][id] = {
+                    'name': name,
+                    'mathEnv': mathEnv,
+                    'source': source
+                }
             }
+
+            console.log(annotated['local']);
         } else if (tokenContent in annotated['global']) {
             annotated['global'][tokenContent]['uniqueIDs'].push(id);
             //annotated['global'][tokenContent]['sources'].push(source);
-
         } else {
             annotated['global'][tokenContent] = {
             'name': name,
@@ -278,7 +324,6 @@ function selected(argsString){
     }
     fillAnnotationsTable();
 }
-
 
 
 
@@ -393,8 +438,20 @@ function fillAnnotationsTable(){
         }
     }
 
+
+    function fillLocal(d, type){
+        for (var token in d){
+            for (var uID in d[token]){
+                var dict = d[token][uID];
+                var name = dict['name']
+                annotationsTable+="<tr><td>" + token + "</td><td>" + name + "</td><td>" + type + "</td></tr>";
+            }
+
+        }
+    }
+
     fill(annotated['global'], 'Global');
-    fill(annotated['local'], 'Local');
+    fillLocal(annotated['local'], 'Local');
     document.getElementById("annotationsHolder").innerHTML = annotationsTable;
 }
 
@@ -417,7 +474,7 @@ function handleAnnotations(existing_annotations){
             var item = existingAnnotationsLocal[token];
             var name = item['name'];
             annotated['local'][token] = item;
-            tokenAssignedItemLocal.add(name);
+            //tokenAssignedItemLocal.add(name);
         }
 
 

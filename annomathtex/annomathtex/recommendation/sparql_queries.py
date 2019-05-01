@@ -77,7 +77,7 @@ formula_alias_query ="""
 
 
 identifier_query ="""
-    SELECT ?item ?itemLabel ?itemDescription WHERE {{
+    SELECT DISTINCT ?item ?itemLabel ?itemDescription WHERE {{
         ?item wdt:P416 ?def.
         FILTER(CONTAINS(?def, '{}'@en))
         SERVICE wikibase:label {{ bd:serviceParam wikibase:language "en" .}}
