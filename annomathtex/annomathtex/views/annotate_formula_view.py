@@ -50,7 +50,6 @@ class FileUploadView(View):
                                          wikipedia_evaluation_items, word_window):
         """
         Concatenate the recommendations from the various sources and show them in the first column.
-        #todo: active learner
         :param wikidata_results: The results that were obtained from querying the wikidata query service API.
         :param arXiv_evaluation_items: The results that were obtained from checking string matches of the character
                                        in the evaluation list from ArXiv. Only for identifiers.
@@ -272,7 +271,7 @@ class FileUploadView(View):
         #path defined in config
         with open(evaluations_path, 'r') as f:
             __LOGGER__.debug(' WRITING TO FILE {}'.format(evaluations_path))
-            eval_dict = json.load(f.read())
+            eval_dict = json.load(f)
             for source in evaluation:
                 eval_dict[source] += evaluation[source]
 

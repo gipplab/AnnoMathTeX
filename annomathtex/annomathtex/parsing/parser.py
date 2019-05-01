@@ -302,7 +302,12 @@ class Parser(object, metaclass=ABCMeta):
         """
 
         def generate_id(line_num, token_num):
-            return '{}---{}'.format(line_num, token_num)
+            unique_id = '{}---{}'.format(line_num, token_num)
+
+            #if unique_id == '284---4':
+            #    print('UNIQUE_ID: {}'.format(unique_id))
+
+            return unique_id
 
         #self.identifier_line_dict[id_symbol.unique_id] = line_num
 

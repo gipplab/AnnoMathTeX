@@ -153,9 +153,15 @@ function populateTable(random=true) {
 
 
 function setAnnotatedColor(id) {
-    console.log('setAnnotatedColor ' + typeof(id));
-    document.getElementById(id).style.color = annotatedColor;
-    //document.getElementById('4---4').style.color = annotatedColor;
+    try {
+        document.getElementById(id).style.color = annotatedColor;
+    } catch (e) {
+        //console.log(e);
+        console.log('error: ' + id);
+
+    }
+    //document.getElementById(id).style.color = annotatedColor;
+    //document.getElementById('210---9').style.color = 'pink';
 }
 
 function setBasicColor(id) {
@@ -183,10 +189,7 @@ function selected(argsString){
     var containsHighlightedName = (argsArray[5] === 'true');
     var rowNum = argsArray[6];
 
-
     var local = document.getElementById('localSwitch').checked;
-
-
     if (local) {
 
         //local annotations
@@ -217,6 +220,9 @@ function selected(argsString){
             setAnnotatedColor(uniqueID);
             handleLinkedTokens(addToAnnotated);
             handleLinkedTokens(setAnnotatedColor);
+
+            //document.getElementById('284---4').style.color = annotatedColor;
+
         } else if(backgroundColor == cellColorSelectedGlobal) {
             //reverse global annotation
             document.getElementById(cellID).style.backgroundColor = cellColorBasic;
@@ -228,55 +234,11 @@ function selected(argsString){
     }
 
 
-    /*if (containsHighlightedName && backgroundColor == cellColorBasic) {
-        //select a cell & global annotation has been made
-        document.getElementById(cellID).style.backgroundColor = cellColorSelectedLocal;
-        tokenAssignedItemLocal.add(name);
-        addToAnnotated(uniqueID, false);
-        console.log(annotated);
-        setAnnotatedColor(uniqueID);
-        if (source in evaluation) {
-            evaluation[source].push(rowNum);
-        } else {
-            evaluation[source] = [rowNum];
-        }
-
-    } else if(backgroundColor == cellColorSelectedLocal){
-        //reverse local annotation
-        document.getElementById(cellID).style.backgroundColor = cellColorBasic;
-        tokenAssignedItemLocal.delete(name);
-        delete annotated['local'][tokenContent];
-        //setBasicColor(uniqueID);
-
-    } else if (backgroundColor == cellColorBasic){
-        //global annotation
-        document.getElementById(cellID).style.backgroundColor = cellColorSelectedGlobal;
-        //tokenAssignedItemGlobal.add(name);
-        tokenAssignedItemGlobal[tokenContent] = name;
-        setAnnotatedColor(uniqueID);
-        //console.log('ADDED ENERGY: ', tokenAssignedItemGlobal);
-        //addToAnnotated(uniqueID);
-        handleLinkedTokens(addToAnnotated);
-        handleLinkedTokens(setAnnotatedColor);
-    } else {
-        //reverse global annotation
-        document.getElementById(cellID).style.backgroundColor = cellColorBasic;
-        setBasicColor(uniqueID);
-        //tokenAssignedItemGlobal.delete(name);
-        delete tokenAssignedItemGlobal[tokenContent];
-        //remove element from array
-        delete annotated['global'][tokenContent];
-        handleLinkedTokens(setBasicColor);
-    }*/
 
     populateTable();
 
 
     function addToAnnotated(id, global=true) {
-
-        console.log(cellID);
-        console.log(source);
-
 
         if (!global) {
             //annotated['local'][tokenContent] = {
@@ -321,6 +283,8 @@ function handleLinkedTokens(func) {
 
     console.log('in handleLinkedTokens ' + tokenType);
 
+
+
     if (tokenType == 'Word') {
         dicToCheck = linkedWords;
     }
@@ -331,6 +295,7 @@ function handleLinkedTokens(func) {
     if (tokenContent in dicToCheck) {
         console.log(tokenContent +  ' in linkedMathSymbols');
         var word = dicToCheck[tokenContent];
+        //console.log(word);
         for (i in word) {
             var id = word[i];
             func(id)
@@ -399,6 +364,9 @@ function handlefileName(fileName) {
 
 
 function fillAnnotationsTable(){
+
+    console.log('')
+
     var breaks = "</br>";
     var annotationsTable= breaks + "<table><tr><td>Token</td><td>Annotated with</td><td>Type</td></tr>";
 
