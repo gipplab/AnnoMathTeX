@@ -5,7 +5,7 @@ COPY ./ AnnoMathTeX
 WORKDIR ./AnnoMathTeX
 RUN python3 -m venv --system-site-packages env/ && . env/bin/activate
 RUN pip3 install -r requirements.txt
-RUN python3 -m nltk.downloader punkt, stopwords, averaged_perceptron_tagger
+RUN python3 -m nltk.downloader -d ./nltk_data punkt, stopwords, averaged_perceptron_tagger
 RUN python3 annomathtex/manage.py migrate
 RUN python3 annomathtex/manage.py runserver
 EXPOSE 8000
