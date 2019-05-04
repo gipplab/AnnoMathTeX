@@ -5,6 +5,7 @@ COPY ./ AnnoMathTeX
 WORKDIR ./AnnoMathTeX
 RUN python3 -m venv --system-site-packages env/ && . env/bin/activate
 RUN pip3 install -r requirements.txt
+RUN mkdir -p ./usr/local/nltk_data
 RUN python -m nltk.downloader punkt
 RUN python -m nltk.downloader stopwords
 RUN python -m nltk.downloader averaged_perceptron_tagger
