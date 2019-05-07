@@ -11,7 +11,6 @@ from ..models.empty_line import EmptyLine
 from ..models.file import File
 from ..recommendation.arxiv_evaluation_handler import ArXivEvaluationListHandler
 from ..recommendation.wikipedia_evaluation_handler import WikipediaEvaluationListHandler
-from ..parsing.mathhandling.latexformlaidentifiers import FormulaSplitter
 from ..parsing.mathhandling.custom_math_env_parser import CustomMathEnvParser
 from ..config import *
 

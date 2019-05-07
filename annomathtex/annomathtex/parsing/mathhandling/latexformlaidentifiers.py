@@ -9,7 +9,7 @@
 #taken from https://github.com/ag-gipp/MathQa/blob/master/latexformlaidentifiers.py
 #made some changes
 
-from sympy.parsing.latex import parse_latex
+"""from sympy.parsing.latex import parse_latex
 from sympy import *
 
 
@@ -34,9 +34,6 @@ contant = {'pi': '3.141592653589793', 'golden': '1.618033988749895', 'golden_rat
 
 
 def prepformula(formula):
-    """
-        Process of formula
-    """
 
     replace = {"{\displaystyle": "", "\\tfrac": "\\frac", "\\left": "", "\\right": "", "\\mathrm": "", "\\textbf": "",
                "\\begin": "", "\end": "", "\\bigg": "", "\\vec": ""}
@@ -83,19 +80,6 @@ def evalformula(formula):
     #print('symbol: {} , l: {}'.format(symbol, l))
     return symbol, l
     #return symbol
-
-
-"""def equality(formula, ext):
-    global lhs
-    global rhs
-    lhs, rhs = formula.split(ext, 1)
-    #print('lhs: {} , rhs: {}'.format(lhs, rhs))
-    value = evalformula(rhs)
-    
-    return {'lhs': lhs}
-    
-    #return value"""
-
 
 def formuladivision(formula):
     k = ['=', '\leq', '\req', '\\approx']
@@ -200,5 +184,5 @@ class FormulaSplitter:
             __LOGGER__.error('math_env {} couldnt be split: {}'.format(math_env, e))
             split_math_env = math_env
 
-        return identifiers, split_math_env
+        return identifiers, split_math_env"""
 
