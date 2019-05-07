@@ -22,7 +22,8 @@ urlpatterns = [
 
     # enable the admin interface
     url(r'^admin/', admin.site.urls),
-    url(r'^file_upload/', FileUploadView.as_view()),
+    url(r'', FileUploadView.as_view()),
+    #url(r'^file_upload/', FileUploadView.as_view()),
     url(r'^render_file/', RenderFileView.as_view()),
     url(r'^test/', test_view)
 

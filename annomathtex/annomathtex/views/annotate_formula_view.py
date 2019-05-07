@@ -160,7 +160,7 @@ class FileUploadView(View):
         """
         path = view_cache_path + 'dicts'
 
-        print(dicts)
+        #print(dicts)
 
         with open(path, 'wb') as outfile:
             pickle.dump(dicts, outfile)
