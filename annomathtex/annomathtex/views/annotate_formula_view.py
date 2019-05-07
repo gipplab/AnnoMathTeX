@@ -4,6 +4,7 @@ import json
 import logging
 import os
 import pickle
+import csv
 
 from django.shortcuts import render
 from django.views.generic import View
@@ -22,6 +23,9 @@ from ..forms.uploadfileform import UploadFileForm
 from ..forms.save_annotation_form import SaveAnnotationForm
 from ..recommendation.math_sparql import MathSparql
 from ..recommendation.ne_sparql import NESparql
+
+from ..views.eval_file_writer import EvalFileWriter
+
 from ..config import *
 
 
@@ -184,6 +188,37 @@ class FileUploadView(View):
         return dicts
 
 
+    def write_to_eval_file(self, annotations):
+        """
+        wirte the evaluations to the evaluations file
+        :param annotations:
+        :return:
+        """
+
+        loc = annotations['local']
+        glob = annotations['global']
+
+        with open(evaluations_path, 'w') as f:
+            for token_content in loc:
+                for id in loc[token_content]:
+                    row = None
+
+
+        """"#path defined in config
+        with open(evaluations_path, 'r') as f:
+            __LOGGER__.debug(' WRITING TO FILE {}'.format(evaluations_path))
+            eval_dict = json.load(f)
+            for source in evaluation:
+                eval_dict[source] += evaluation[source]
+
+        __LOGGER__.debug(eval_dict)
+        with open(evaluations_path, 'w') as f:
+            __LOGGER__.debug(' WRITING TO FILE {}'.format(evaluations_path))
+            json.dump(eval_dict, f)"""
+
+
+
+
 
 
     def handle_file_submit(self, request):
@@ -252,7 +287,6 @@ class FileUploadView(View):
         marked = items['marked']
         unmarked = items['unmarked']
         annotated = items['annotated']
-        evaluation = items['evaluation']
         file_name = items['fileName']['f']
 
         __LOGGER__.debug(' ITEMS : {}'.format(items))
@@ -262,7 +296,6 @@ class FileUploadView(View):
         __UNMARKED__.update(unmarked)
         __ANNOTATED__.update(annotated)
         __LOGGER__.debug(' ANNOTATED: {}'.format(annotated))
-        __LOGGER__.debug(' EVALUATION: {}'.format(evaluation))
 
 
         annotation_file_path = create_annotation_file_path(file_name)
@@ -270,16 +303,20 @@ class FileUploadView(View):
             __LOGGER__.debug(' WRITING TO FILE {}'.format(annotation_file_path))
             json.dump(__ANNOTATED__, f)
 
-        #path defined in config
+        """"#path defined in config
         with open(evaluations_path, 'r') as f:
             __LOGGER__.debug(' WRITING TO FILE {}'.format(evaluations_path))
             eval_dict = json.load(f)
             for source in evaluation:
                 eval_dict[source] += evaluation[source]
 
+        __LOGGER__.debug(eval_dict)
         with open(evaluations_path, 'w') as f:
             __LOGGER__.debug(' WRITING TO FILE {}'.format(evaluations_path))
-            json.dump(eval_dict, f)
+            json.dump(eval_dict, f)"""
+
+        eval_file_writer = EvalFileWriter(annotated)
+        eval_file_writer.write()
 
         return HttpResponse(
             json.dumps({'testkey': 'testvalue'}),

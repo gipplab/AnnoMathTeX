@@ -15,7 +15,6 @@ var wikidataReference = {};
 var annotated = {'local': {}, 'global':{}};
 // source: [nrow, ...]
 // e.g.: 'arXiv': [0,4,2,...]
-var evaluation = {};
 
 var tokenAssignedItemGlobal = {};
 //var tokenAssignedItemLocal = new Set([]);
@@ -39,23 +38,8 @@ function createCell(item, source, rowNum) {
     if (tokenContent in tokenAssignedItemGlobal && tokenAssignedItemGlobal[tokenContent] == name){
         backgroundColor = cellColorSelectedGlobal;
         containsHighlightedName = true;
-        if (source in evaluation){
-            evaluation[source].push(rowNum);
-        }
-        else {
-            evaluation[source] = [rowNum];
-        }
-    } /*else if (tokenContent in annotated['local']) {
-        if (annotated['local'][tokenContent]['mathEnv'] == mathEnv) {
-            if (annotated['local'][tokenContent]['name'] == name) {
-                backgroundColor = cellColorSelectedLocal;
-            } else {
-                //delete annotated['local'][tokenContent];
-                backgroundColor = cellColorBasic;
-            }
-        }
-    }*/
-    else if (tokenContent in annotated['local']) {
+
+    } else if (tokenContent in annotated['local']) {
         if (uniqueID in annotated['local'][tokenContent]) {
             if (annotated['local'][tokenContent][uniqueID]['name'] == name) {
                 backgroundColor = cellColorSelectedLocal;
@@ -76,6 +60,16 @@ function createCell(item, source, rowNum) {
         containsHighlightedName,
         rowNum
     ];
+
+
+    if (name in sourcesWithNums){
+        sourcesWithNums[name][source] = rowNum;
+    } else {
+        sourcesWithNums[name] = {};
+        sourcesWithNums[name][source] = rowNum;
+    }
+
+
     //not possible to pass multiple arguments, that's why they are concatenated to one argument string
     var argsString = args.join('---');
 
@@ -92,6 +86,10 @@ function createCell(item, source, rowNum) {
 
 
 function populateTable(random=true) {
+
+    window.sourcesWithNums = {};
+    //console.log(sourcesWithNums);
+
     arXivEvaluationItems = jsonResults['arXivEvaluationItems'];
     wikipediaEvaluationItems = jsonResults['wikipediaEvaluationItems'];
     wikidataResults = jsonResults['wikidataResults'];
@@ -174,8 +172,6 @@ function setAnnotatedColor(id) {
         console.log('error: ' + id);
 
     }
-    //document.getElementById(id).style.color = annotatedColor;
-    //document.getElementById('210---9').style.color = 'pink';
 }
 
 function setBasicColor(id) {
@@ -214,11 +210,6 @@ function selected(argsString){
             addToAnnotated(uniqueID, false);
             console.log(annotated);
             setAnnotatedColor(uniqueID);
-            if (source in evaluation) {
-                evaluation[source].push(rowNum);
-            } else {
-                evaluation[source] = [rowNum];
-            }
         } else if (backgroundColor == cellColorSelectedLocal) {
             //reverse local annotation
             document.getElementById(cellID).style.backgroundColor = cellColorBasic;
@@ -263,62 +254,36 @@ function selected(argsString){
 
     function addToAnnotated(id, global=true) {
 
-        /*if (!global) {
-            annotated['local'][tokenContent] = {
-            'name': name,
-            //'wikidataInf': wikidataReference[qid],
-            'uniqueID': [id],
-            'mathEnv': mathEnv,
-            'source': source
-            }*/
         if (!global) {
-            /*var t = tokenContent;
-            var i = id;
-            console.log(t);
-            if (t in annotated['local']){
-                annotated['local'][t] = {
-                    i: {
-                        'name': name,
-                        'mathEnv': mathEnv,
-                        'source': source
-                    }
-                }
-            } else {
-                annotated['local'] = {
-                    t: {
-                        i: {
-                            'name': name,
-                            'mathEnv': mathEnv,
-                            'source': source
-                        }
-                    }
-                }
-            }*/
 
             if (tokenContent in annotated['local']){
                 annotated['local'][tokenContent][id] = {
                     'name': name,
                     'mathEnv': mathEnv,
-                    'source': source
+                    'source': source,
+                    'rowNum': rowNum,
+                    'sourcesWithNums': sourcesWithNums[name]
                 }
             } else {
                 annotated['local'][tokenContent] = {};
                 annotated['local'][tokenContent][id] = {
                     'name': name,
                     'mathEnv': mathEnv,
-                    'source': source
+                    'source': source,
+                    'rowNum': rowNum,
+                    'sourcesWithNums': sourcesWithNums[name]
                 }
             }
 
             console.log(annotated['local']);
         } else if (tokenContent in annotated['global']) {
             annotated['global'][tokenContent]['uniqueIDs'].push(id);
-            //annotated['global'][tokenContent]['sources'].push(source);
         } else {
             annotated['global'][tokenContent] = {
             'name': name,
             //'wikidataInf': wikidataReference[qid],
-            'uniqueIDs': [id]
+            'uniqueIDs': [id],
+            'sourcesWithNums': sourcesWithNums[name]
             };
         }
     }
@@ -600,7 +565,6 @@ $(document).ready(function () {
                         'marked': $.param(marked),
                         'annotated': $.param(annotated),
                         //'annotatedLocal': $.param(annotated['local']),
-                        'evaluation': $.param(evaluation),
                         'unmarked': $.param(unmarked),
                         'fileName': $.param(fileNameDict)
                         };
