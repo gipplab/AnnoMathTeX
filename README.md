@@ -23,15 +23,39 @@ The recommendations for the concepts are taken from four different sources:
 * Wikidata: A Sparql query to the [Wikidata Query Services API](https://query.wikidata.org) retrieves a list of matching [wikidata items](https://en.wikipedia.org/wiki/Wikidata#Items).
 * Word Window: Nouns and proper nouns from the text surrounding the formula. The idea being, that the text surrounding the formula will often explain the formula its parts. Consider this example from the Wikipedia article on the [Mass-energy equivalence](https://en.wikipedia.org/wiki/Mass–energy_equivalence):
    
-  *In physics, **mass–energy equivalence** states that anything having **mass** has an equivalent amount of **energy** and vice versa, with these fundamental quantities directly relating to one another by Albert Einstein's famous formula:*
+  *"In physics, **mass–energy equivalence** states that anything having **mass** has an equivalent amount of **energy** and vice versa, with these fundamental quantities directly relating to one another by Albert Einstein's famous formula:*
 
-  *E=mc^2*
+  *E=mc^2"*
   
   The sentence directly preceding the formula, contains the word *"**mass**"*, which corresponds to the identifier *"m"* and the word *"**energy**"*, which corresponds to the identifier *"E"*. Furthermore, *"**mass–energy equivalence**"* describes the meaning of the entire formula.
  
+The vision for >>AnnoMathTeX<< is that it will enable the creation of a large and labeled dataset of identifiers and formulae with their corresponding concepts.
+This dataset could be used to train models for all sorts of recommendation and recognition tasks involving mathematical symbols.
 ## Features
 
 What makes your project stand out? Include logo/demo screenshot etc.
+
+
+![](/media/upload.gif)
+
+
+
+### Include:
+* annotations saved and possible to reload later
+  * enables saving and reloading
+  * multiple people working on same file at same time
+* different sources with functionality easy to add others
+* global annotations
+* local annoations
+* reject all recommendations
+* highlighting in text to show feedback to user about already handled tokens
+* highlighting in table to show to user which concept was chosen
+* annotations shown in table at top of document that updates in real time with the current annotations
+* Evaluation file
+  * per annotation
+  * which sources contained the conecpt that the user selected for the annotation
+  * which position the selected concept had in the column.
+* Randomized and anonymzed recommendation sources, or information shown to user.
 
 ## Components/Modules/Workflow
 
