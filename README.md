@@ -18,6 +18,16 @@ documents, by recommending the concept associated to a certain identifier of for
 document.
 
 The recommendations for the concepts are taken from four different sources:
+* arXiv: A list containing identifiers appearing in the arXiv corpus with the corresponding concepts, ranked by frequency of appearence.
+* Wikipedia: A list containing identifiers appearing in Wikipedia articles with the corresponding concepts, ranked by frequency of appearence.
+* Wikidata: A Sparql query to the [Wikidata Query Services API](https://query.wikidata.org) retrieves a list of matching [wikidata items](https://en.wikipedia.org/wiki/Wikidata#Items).
+* Word Window: Nouns and proper nouns from the text surrounding the formula. The idea being, that the text surrounding the formula will often explain the formula its parts. Consider this example from the Wikipedia article on the [Mass-energy equivalence](https://en.wikipedia.org/wiki/Mass–energy_equivalence):
+   
+  *In physics, **mass–energy equivalence** states that anything having **mass** has an equivalent amount of **energy** and vice versa, with these fundamental quantities directly relating to one another by Albert Einstein's famous formula:*
+
+  *E=mc^2*
+  
+  The sentence directly preceding the formula, contains the word *"**mass**"*, which corresponds to the identifier *"m"* and the word *"**energy**"*, which corresponds to the identifier *"E"*. Furthermore, *"**mass–energy equivalence**"* describes the meaning of the entire formula.
  
 ## Features
 
