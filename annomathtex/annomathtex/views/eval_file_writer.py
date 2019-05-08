@@ -6,8 +6,8 @@ from ..config import evaluations_path, evaluation_annotations_path
 class EvalFileWriter:
 
     def __init__(self, annotations):
-        self.loc = annotations['local']
-        self.glob = annotations['global']
+        self.loc = annotations['local'] if 'local' in annotations else {}
+        self.glob = annotations['global'] if 'global' in annotations else {}
 
 
 

@@ -26,6 +26,9 @@ var cellColorSelectedLocal = 'blue';
 var identifierColorBasic = '#c94f0c';
 var formulaColorBasic = '#ffa500';
 var annotatedColor = '#04B404';
+var noMatchIdentifierColor = '#2b332f';
+
+var nmStr = 'NOMATCH';
 
 //var identifierColorAnnotated = '#F88000';
 var cellCounter = 0;
@@ -85,7 +88,35 @@ function createCell(item, source, rowNum) {
 }
 
 
+function checkNoMatch() {
+    var g = annotated['global'];
+    var l = annotated['local'];
+
+    if (tokenContent in g) {
+        if (g[tokenContent]['name'] == nmStr) {
+            return true;
+        }
+    }
+    if (tokenContent in l){
+        if (uniqueID in l[tokenContent]){
+            if (l[tokenContent][uniqueID]['name'] == nmStr) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 function populateTable(random=true) {
+
+    console.log('populateTable');
+
+
+    if (checkNoMatch()){
+        document.getElementById('noMatch').style.color = cellColorSelectedGlobal;
+        window.blockMatch = true;
+    }
+
 
     window.sourcesWithNums = {};
     //console.log(sourcesWithNums);
@@ -183,6 +214,69 @@ function setBasicColor(id) {
 }
 
 
+function handleNoMatch(){
+    if (document.getElementById('noMatch').style.color == 'black') {
+        console.log('true');
+        document.getElementById('noMatch').style.color = cellColorSelectedGlobal;
+        //document.getElementById(uniqueID).style.color = noMatchIdentifierColor;
+        window.blockMatch = true;
+        var local = document.getElementById('localSwitch').checked;
+        if (local) {
+            if (tokenContent in annotated['local']){
+                annotated['local'][tokenContent][id] = {
+                    'name': nmStr,
+                    'mathEnv': '',
+                    'source': '',
+                    'rowNum': '',
+                    'sourcesWithNums': {}
+                }
+            } else {
+                annotated['local'][tokenContent] = {};
+                annotated['local'][tokenContent][nmStr] = {
+                    'name': nmStr,
+                    'mathEnv': '',
+                    'source': '',
+                    'rowNum': '',
+                    'sourcesWithNums': {}
+                }
+            }
+        } else {
+            annotated['global'][tokenContent] = {
+            'name': nmStr,
+            //'wikidataInf': wikidataReference[qid],
+            'uniqueIDs': [],
+            'sourcesWithNums': {}
+            };
+        }
+
+    }
+    else {
+        console.log('else');
+        document.getElementById('noMatch').style.color = 'black';
+        //document.getElementById(uniqueID).style.color = identifierColorBasic;
+        window.blockMatch = false;
+
+        var g = annotated['global'];
+        var l = annotated['local'];
+
+        if (tokenContent in g) {
+            if (g[tokenContent]['name'] == nmStr) {
+                console.log('delete');
+                delete annotated['global'][tokenContent];
+            }
+        }
+        if (tokenContent in l){
+            if (uniqueID in l[tokenContent]){
+                if (l[tokenContent][uniqueID]['name'] == nmStr) {
+                    delete annotated['local'][tokenContent][uniqueID];
+                }
+            }
+        }
+    }
+    populateTable();
+    fillAnnotationsTable();
+
+}
 
 
 function selected(argsString){
@@ -190,6 +284,12 @@ function selected(argsString){
     This function is called when the user annotates a token with an element from the created table (e.g. from the
     retrieved wikidata results).
      */
+
+    if (blockMatch) {
+        alert('No Match selected');
+        return;
+    }
+
     var argsArray = argsString.split('---');
     var name = argsArray[0];
     var qid = argsArray[1];
@@ -200,6 +300,7 @@ function selected(argsString){
     var rowNum = argsArray[6];
 
     var local = document.getElementById('localSwitch').checked;
+
     if (local) {
 
         //local annotations
