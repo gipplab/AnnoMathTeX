@@ -1,16 +1,24 @@
-# AnnoMathTeX
+# \>>AnnoMathTeX<<
 
-AnnoMathTeX is a LaTeX text and formula annotation recommendation tool for STEM documents. It allows users to annotate 
+AnnoMathTeX is a LaTeX text and formula annotation recommendation tool for STEM (Science, Technology, Engineering, 
+Mathematics) documents. It allows users to annotate 
 identifiers in mathematical formulae, the entire formula as well as the named entities contained in a document 
-(recommended formats being .tex or .txt) with the corresponding concept. Theses concepts are taken from a number of 
-different sources, [Wikidata](https://www.wikidata.org) being one of them, in which case the selected token is annotated
+(recommended formats being .tex or .txt) with the corresponding concept. Theses concepts are extracted from a number of 
+different sources.
+
+[Wikidata](https://www.wikidata.org) being one of them, in which case the selected token is annotated
 with the [Wikidata QID](https://en.wikipedia.org/wiki/Wikidata#Items).
 
 ## Motivation
 Machine Learning has proven time and time again to be extremely useful in classification tasks. However, very large 
 amounts of labeled data are necessary to train machine learning methods. Currently, there is no large enough labeled 
 dataset containing mathematical formulae annotated with their semantics available, that could be used to train machine 
-learning models.
+learning models. >>AnnoMathTeX<< offers a first approach to facilitate the annotation of mathematical formulae in STEM 
+documents, by recommending the concept associated to a certain identifier of formula to the user who is annotating the 
+document.
+
+The recommendations for the concepts are taken from four different sources:
+ 
 ## Features
 
 What makes your project stand out? Include logo/demo screenshot etc.
