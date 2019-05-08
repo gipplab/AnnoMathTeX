@@ -10,8 +10,8 @@ from nltk.corpus import stopwords
 from abc import ABCMeta, abstractmethod
 
 
-#these commands sometimes get recognized as NEs (or nouns,...)
-#don't highlight these
+# These commands sometimes get recognized as NEs (or nouns,...)
+# Exclude these from highlighting
 latex_cmds_ignore = ['\\subsection',
                      '\\item',
                      '\\begin',
@@ -34,7 +34,6 @@ punctuation_nums = ['!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+',
                 '0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
 wikitext_cmds = ['sub', 'center', 'nbsp', 'ref', 'IEEE', 'ndash', 'Cite']
-
 ignore = latex_cmds_ignore + stopWords + punctuation_nums + wikitext_cmds
 
 

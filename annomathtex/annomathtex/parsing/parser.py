@@ -31,7 +31,6 @@ class Parser(object, metaclass=ABCMeta):
         self.file = self.decode(request_file)
         self.file_name = file_name
         self.file_type = file_name.split('.')[-1]
-        #self.__LOGGER__.debug(' FILE: {}'.format(self.file))
         self.math_envs = self.extract_math_envs()
         self.arXiv_evaluation_list_handler = ArXivEvaluationListHandler()
         self.wikipedia_evaluation_list_handler = WikipediaEvaluationListHandler()
@@ -62,18 +61,17 @@ class Parser(object, metaclass=ABCMeta):
     def remove_special_chars(self):
         """
         remove things like <href ....>
-        #todo: implement
+        #Not necessary atm.
         :return:
         """
         pass
 
-
     def read_annotation_file(self):
         """
-
-        :return:
+        If the user has worked on annotating the same file before, the annotations are stored in a json file.
+        This method reads said json file when the user selects the document he wants to annotate.
+        :return: Dictionary of existing annoations.
         """
-        #method create_annotation_file_name() imported from config.py
         annotation_file_name = create_annotation_file_name(self.file_name)
         print('READ ANNOTATOIN FILE: ', annotation_file_name)
         print('IN: ', listdir(evaluation_annotations_path))
@@ -93,20 +91,19 @@ class Parser(object, metaclass=ABCMeta):
             math_env = m
             self.__LOGGER__.debug(' in remove_math_envs() current math_env: {}'.format(m))
             try:
-                #todo: only add space if necessary
                 self.file = self.file.replace(math_env, ' __MATH_ENV__ ', 1)
             except Exception as e:
                 self.__LOGGER__.error('math_env {} couldnt be replaced: {}'.format(math_env, e))
                 continue
 
-        #self.__LOGGER__.debug(' File after removing math_envs: {}'.format(self.file))
-
 
     def form_links(self, processed_lines_unique_ids):
         """
-
-        :param processed_lines_unique_ids:
-        :return:
+        Create dictionaries of the words and math symbols that appear multiple times in the document. Necessary for
+        global annotations
+        :param processed_lines_unique_ids: The lines of the file that have been processed by the parser. Contain the
+        custom generated unique_ids as well.
+        :return: Dictionary of linked words, dictionary of linked math symbols.
         """
 
         words = {}
@@ -150,7 +147,6 @@ class Parser(object, metaclass=ABCMeta):
         """
         Link identical words. This is used later when annotating a file, to only have to annotate a word once. All the
         other identical words in the file will be annotated automatically with the same field.
-        #todo maybe: link also words that haven't been recognised as named entities.
         :param tagged_words: One line (sentence) of processed words.
         :return: None; The linked words are stored in the class dictionary linked_words
         """
@@ -250,16 +246,13 @@ class Parser(object, metaclass=ABCMeta):
         :return: List of the Identifiers and other symbols in the math environment
         """
 
-        # todo: for all math environemnt markers
+        #todo: for all math environemnt markers
         math_env = math_env.replace('$', '')
-        #math_env = math_env.replace('<math>', '')
 
         #Select the class that should process (extract the identifiers and split) the math environment.
         #identifiers, split_math_env = FormulaSplitter(math_env).get_split_math_env()
         identifiers, split_math_env = CustomMathEnvParser(math_env).get_split_math_env()
         self.__LOGGER__.debug(' process_math_env, split_math_env: {} '.format(split_math_env))
-
-
 
         processed_maths_env = []
         for symbol in split_math_env:
@@ -279,8 +272,6 @@ class Parser(object, metaclass=ABCMeta):
                 math_env=str_math_env
             )
 
-            #print('SYMBOL Math Env: {}'.format(id_symbol.math_env))
-
             self.identifier_line_dict[id_symbol.unique_id] = line_num
 
             processed_maths_env.append(id_symbol)
@@ -295,20 +286,22 @@ class Parser(object, metaclass=ABCMeta):
 
     def add_unique_ids(self, processed_lines):
         """
-
-        :param processed_lines_including_maths:
-        :return:
+        Generate unique_ids that allows reconstruction of the file at any later time (as long as file isn't modified.
+        :param processed_lines_including_maths: All the lines contained in the document, processed.
+        :return: The processed lines, with the custom generated unique_ids, a dicitonary of the lines, with the line
+        number and a dictionary of the identifiers, with the lines they appear on (necessary for the creation of the
+        word window.
         """
 
         def generate_id(line_num, token_num):
+            """
+            Generate a unique_id of the form [line number]---[token number].
+            :param line_num: Number of line in the document.
+            :param token_num: Number of token in the line.
+            :return: Custom generated unique_id
+            """
             unique_id = '{}---{}'.format(line_num, token_num)
-
-            #if unique_id == '284---4':
-            #    print('UNIQUE_ID: {}'.format(unique_id))
-
             return unique_id
-
-        #self.identifier_line_dict[id_symbol.unique_id] = line_num
 
         line_dict = {}
         identifier_line_dict = {}
@@ -324,14 +317,6 @@ class Parser(object, metaclass=ABCMeta):
                 elif token.type == 'Identifier':
                     identifier_line_dict[token.unique_id] = line_num
 
-
-                #processed_lines[line_num][token_num].unique_id = generate_id(line_num, token_num)
-                #line_dict[line_num].append(word) if word.named_entity else None
-
-
-        #print(processed_lines[0][0].unique_id)
-
-
         return processed_lines, line_dict, identifier_line_dict
 
 
@@ -346,23 +331,15 @@ class Parser(object, metaclass=ABCMeta):
         self.remove_math_envs()
         #necessary?
         lines = [p for p in self.file.split('\n')]
-        #self.__LOGGER__.debug(' Lines extracted: {}'.format(lines))
         word_lines = [self.extract_words(s, i) for i, s in enumerate(lines)]
-        #p_content = [word.content for line in processed_lines for word in line]
-        #self.__LOGGER__.debug(' Lines processed: {}'.format(p_content))
-
-        #todo: itertools
         processed_lines = []
         for line_num, line in enumerate(word_lines):
             processed_line = []
             if len(line) < 1:
                 processed_line.append(EmptyLine(uuid1()))
-                #processed_line.append('{}---0'.format(line_num))
             for w in line:
                 if re.search(r'__MATH_ENV__', w.content):
-                    #_, math_env = self.math_envs[0]
                     math_env = self.math_envs[0]
-                    #print(math_env)
                     self.math_envs.pop(0)
                     processed_math_env = self.process_math_env(math_env, line_num)
                     processed_line += processed_math_env
@@ -370,27 +347,12 @@ class Parser(object, metaclass=ABCMeta):
                     processed_line.append(w)
             processed_lines.append(processed_line)
 
-
-        #print(processed_lines_including_maths)
-
         processed_lines_unique_ids, line_dict, identifier_line_dict = self.add_unique_ids(processed_lines)
-        #processed_lines_unique_ids = processed_lines
-
         linked_words, linked_math_symbols = self.form_links(processed_lines_unique_ids)
-
-        #todo
-        #if self.file_type == 'txt':
-        #    self.remove_tags()
         existing_annotations = self.read_annotation_file()
         print('EXISTING ANNOTATIONS: {}'.format(existing_annotations))
         file = File(processed_lines_unique_ids,
-                               linked_words, #self.linked_words,
-                               linked_math_symbols, #self.linked_math_symbols,
+                               linked_words,
+                               linked_math_symbols,
                                self.file_name, existing_annotations)
-
-        #self.__LOGGER__.debug(' identier_line_dict: {}'.format(self.identifier_line_dict))
-        #self.__LOGGER__.debug(' line_dict: {}'.format(self.line_dict))
-
-
-        #return (self.line_dict, self.identifier_line_dict, file)
         return (line_dict, identifier_line_dict, file)

@@ -1,7 +1,7 @@
 import json
-import os
 import re
 import string
+import os
 
 
 class CustomMathEnvParser:
@@ -16,9 +16,8 @@ class CustomMathEnvParser:
         :param math_env: The math environment that is being parsed.
         """
         self.math_env = math_env
-        #todo: no hard coded paths, use path.join()
-        self.greek_letters_path = os.getcwd() + '/annomathtex/parsing/mathhandling/latex_math_symbols.json'
-        self.greek_letters_path_testing = os.getcwd()+'/latex_math_symbols.json'
+        self.greek_letters_path = os.path.join(os.getcwd(), 'annomathtex', 'parsing', 'mathhandling', 'latex_math_symbols.json')
+        self.greek_letters_path_testing = os.path.join(os.getcwd(), 'latex_math_symbols.json')
 
     def load_math_symbols(self, path):
         """
@@ -44,9 +43,6 @@ class CustomMathEnvParser:
 
         all_dict = json.loads(s)
         greek_letters = all_dict['greek_letters']
-
-        #return greek_letters
-
         greek_letters_set = set(map(lambda g: g[1:].lower(), greek_letters))
         greek_letters_regex = r'|'.join(g for g in greek_letters_set)
         return greek_letters_regex
@@ -67,7 +63,6 @@ class CustomMathEnvParser:
 
         greek_letters_regex = self.get_greek_letters(self.greek_letters_path)
         identifier_r = r'(\b[a-z]\b|(?<=_)[a-z]|(?<=[^a-z])[a-z](?=_)|{})'.format(greek_letters_regex)
-        #identifier_r = r'(\b[a-z]\b|(?<=_)[a-z]|(?<=[^a-z])[a-z](?=_))'
         r = re.compile(identifier_r, re.IGNORECASE)
         self.math_env = remove_math_tags(self.math_env)
         id_pos_len = [(i.group(), i.start(), len(i.group())) for i in r.finditer(self.math_env)]
@@ -87,7 +82,6 @@ class CustomMathEnvParser:
         last_pos = 0
         for id, p, l in id_pos_len:
             formula_chunk = self.math_env[last_pos:p]
-            #formula_chunk = formula_chunk.replace('\\', '\\\\')
             split_math_env.append(formula_chunk)
             split_math_env.append(id)
             identifiers.append(id)
@@ -95,8 +89,6 @@ class CustomMathEnvParser:
 
         end_chunk = self.math_env[last_pos:]
         split_math_env.append(end_chunk)
-        #print('IDENTIFIERS: ', identifiers)
-        #print('SPLIT_MATH_ENV: ', split_math_env)
         return identifiers, split_math_env
 
 

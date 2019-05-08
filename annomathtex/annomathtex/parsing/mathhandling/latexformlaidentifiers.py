@@ -128,7 +128,6 @@ class ErrorHandler:
 
 class FormulaSplitter:
 
-    #todo: remove special symbols
     def __init__(self, request):
         #self.formula = self.remove_special_characters(request)
         self.formula = request
