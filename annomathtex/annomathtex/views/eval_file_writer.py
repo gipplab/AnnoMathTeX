@@ -12,7 +12,7 @@ class EvalFileWriter:
 
 
     def fill_remaining(self, sources_with_nums):
-        sources = ['ArXiV', 'Wikipedia', 'Wikidata', 'WordWindow']
+        sources = ['ArXiv', 'Wikipedia', 'Wikidata', 'WordWindow']
         completed_list = []
         for source in sources:
             if source in sources_with_nums:
@@ -37,9 +37,14 @@ class EvalFileWriter:
     def handle_global(self):
         rows = []
         for token_content in self.glob:
-            sources_with_nums = self.fill_remaining(self.glob[token_content]['sourcesWithNums'])
+            try:
+                sources_with_nums = self.fill_remaining(self.glob[token_content]['sourcesWithNums'])
+            except Exception:
+                sources_with_nums = self.fill_remaining({})
+
             row = [token_content, self.glob[token_content]['name']] + sources_with_nums + ['global']
             rows.append(row)
+
 
         return rows
 

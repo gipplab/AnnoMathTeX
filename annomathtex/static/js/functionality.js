@@ -29,6 +29,7 @@ var annotatedColor = '#04B404';
 var noMatchIdentifierColor = '#2b332f';
 
 var nmStr = 'NOMATCH';
+var blockMatch = false;
 
 //var identifierColorAnnotated = '#F88000';
 var cellCounter = 0;
@@ -109,12 +110,10 @@ function checkNoMatch() {
 
 function populateTable(random=true) {
 
-    console.log('populateTable');
-
-
-    if (checkNoMatch()){
+    if (blockMatch){
         document.getElementById('noMatch').style.color = cellColorSelectedGlobal;
-        window.blockMatch = true;
+    } else {
+        document.getElementById('noMatch').style.color = 'black';
     }
 
 
@@ -219,7 +218,7 @@ function handleNoMatch(){
         console.log('true');
         document.getElementById('noMatch').style.color = cellColorSelectedGlobal;
         //document.getElementById(uniqueID).style.color = noMatchIdentifierColor;
-        window.blockMatch = true;
+        blockMatch = true;
         var local = document.getElementById('localSwitch').checked;
         if (local) {
             if (tokenContent in annotated['local']){
@@ -254,7 +253,7 @@ function handleNoMatch(){
         console.log('else');
         document.getElementById('noMatch').style.color = 'black';
         //document.getElementById(uniqueID).style.color = identifierColorBasic;
-        window.blockMatch = false;
+        blockMatch = false;
 
         var g = annotated['global'];
         var l = annotated['local'];
@@ -579,6 +578,7 @@ function clickToken(jsonContent, tokenUniqueId, tokenType, jsonMathEnv, tokenHig
     //If the clicked token is the delimiter of a math environment (entire formula), the presented text will be the
     //string for the entire math environment and not the delimiter.
 
+
     var content = JSON.parse(jsonContent)['content'];
     var mathEnv = JSON.parse(jsonMathEnv)['math_env'];
 
@@ -599,6 +599,13 @@ function clickToken(jsonContent, tokenUniqueId, tokenType, jsonMathEnv, tokenHig
     window.tokenType = tokenType;
     window.mathEnv = mathEnv;
     window.preservedResultList = null;
+
+
+    if (checkNoMatch()){
+        blockMatch = true;
+    } else {
+        blockMatch = false;
+    }
 
     //console.log('Content: ' +  content);
 
