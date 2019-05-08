@@ -1,15 +1,12 @@
 from annomathtex.annomathtex.recommendation.sparql import Sparql
 from annomathtex.annomathtex.recommendation.sparql_queries import identifier_query
 from bs4 import BeautifulSoup
-import os
 import json
 import os
 import re
 
 import warnings
 warnings.filterwarnings("ignore")
-
-
 
 class CustomMathEnvParser:
     """
@@ -44,6 +41,12 @@ class CustomMathEnvParser:
         return all_symbols_string
 
     def get_greek_letters(self, path):
+        """
+        Load the extracted file of latex symbols, and more specifically the greek letters. Needed for the extraction
+        of identifiers. The greek letters are written as: 'alpha, 'beta', ...
+        :param path: The path to the file of latex symbols.
+        :return: A regular expression that allows extraction of all greek letters from a string
+        """
         with open(path, 'r') as f:
             s = f.read()
 
@@ -173,7 +176,6 @@ if __name__ == '__main__':
         wikidata_results = MathSparql().identifier_search(identifier)
         all_results[identifier] = wikidata_results
         i += 1
-
 
     with open(evaluation_files_folder + 'wikidata.json', 'w') as outfile:
         json.dump(all_results, outfile)

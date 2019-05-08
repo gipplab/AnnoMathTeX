@@ -15,15 +15,12 @@
 
 <body>
 
-
 <form method="POST" id="post-form">
     {% csrf_token %}
     <button type="submit" name="post-form-submit2" >Save</button>
 </form>
 
-
 <div id="annotationsHolder"></div></br>
-
 
 <div id="popupModal" class="modal">
   <!-- Modal content -->
@@ -32,8 +29,6 @@
     <label><input id="localSwitch" type="checkbox" >Local</label>
     <button id="noMatch" onclick="handleNoMatch()" style="color: black;">No Match</button>
     <p id="highlightedText"></p>
-    <!--<button id="markBtn" onclick="markAsNE()">MARK</button>
-    <button id="unmarkBtn" onclick="unMarkAsNE()">UNMARK</button>-->
     <div id="tableholder"></div>
   </div>
 </div>
