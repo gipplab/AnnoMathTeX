@@ -1,6 +1,6 @@
 import csv
 import os
-from ..config import evaluations_path, evaluation_annotations_path
+from ..config import evaluation_annotations_path, create_evaluation_file_path, create_evaluation_file_name
 
 
 class EvalFileWriter:
@@ -18,9 +18,11 @@ class EvalFileWriter:
     not list it. Furthermore, the identifier was annotated globally with this concept.
     """
 
-    def __init__(self, annotations):
+    def __init__(self, annotations, file_name=None):
         self.loc = annotations['local'] if 'local' in annotations else {}
         self.glob = annotations['global'] if 'global' in annotations else {}
+
+        self.file_name = file_name
 
 
 
@@ -83,17 +85,28 @@ class EvalFileWriter:
         :return: None.
         """
         all_rows = self.handle_local() + self.handle_global()
+        evaluation_file_name = create_evaluation_file_name(self.file_name)
+        evaluation_file_path = create_evaluation_file_path(self.file_name)
 
-        if evaluations_path in os.listdir(evaluation_annotations_path):
-            with open(evaluations_path, 'a') as f:
+
+        #currently only overwriting
+        """if evaluation_file_name in os.listdir(evaluation_annotations_path):
+            with open(evaluation_file_path, 'a') as f:
                 f.write(all_rows)
         else:
-            header = ['Identifier', 'Name', 'ArXiV', 'Wikipedia', 'Wikidata', 'WordWindow', 'global/local']
-            with open(evaluations_path, 'w') as f:
+            header = ['Identifier', 'Name', 'ArXiV', 'Wikipedia', 'Wikidata', 'WordWindow', 'type']
+            with open(evaluation_file_path, 'w') as f:
                 csv_writer = csv.writer(f, delimiter=',')
                 csv_writer.writerow(header)
                 for row in all_rows:
-                    csv_writer.writerow(row)
+                    csv_writer.writerow(row)"""
+
+        header = ['Identifier', 'Name', 'ArXiV', 'Wikipedia', 'Wikidata', 'WordWindow', 'type']
+        with open(evaluation_file_path, 'w') as f:
+            csv_writer = csv.writer(f, delimiter=',')
+            csv_writer.writerow(header)
+            for row in all_rows:
+                csv_writer.writerow(row)
 
 
 

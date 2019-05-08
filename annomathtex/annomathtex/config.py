@@ -11,9 +11,10 @@ evaluation_annotations_path = os.getcwd() + '/../evaluation/annotations/'
 #evaluation_annotations_path = os.path.join(project_root, ['evaluation', 'annotations'])
 
 def create_annotation_file_name(file_name):
-    annotation_file_name = file_name.replace('.', '__DOT__') + '__ANN__.txt'
-    #return os.path.join(evaluation_annotations_path, annotation_file_name)
-
+    file_name = file_name.replace('.txt', '')
+    file_name = file_name.replace('.tex', '')
+    file_name = file_name.replace('.html', '')
+    annotation_file_name = file_name + '__annotation__.txt'
     return annotation_file_name
 
 
@@ -21,7 +22,18 @@ def create_annotation_file_path(file_name):
     return evaluation_annotations_path + create_annotation_file_name(file_name)
 
 
-evaluations_path = evaluation_annotations_path + 'evaluation_file.csv'
+def create_evaluation_file_name(file_name):
+    file_name = file_name.replace('.txt', '')
+    file_name = file_name.replace('.tex', '')
+    file_name = file_name.replace('.html', '')
+    evaluation_file_name = file_name + '__evaluation__.csv'
+    return evaluation_file_name
+
+def create_evaluation_file_path(file_name):
+    return evaluation_annotations_path + create_evaluation_file_name(file_name)
+
+#evaluations_path = evaluation_annotations_path + 'evaluation_file.csv'
 
 
-view_cache_path = os.getcwd() + '/annomathtex/views/cache/'
+#view_cache_path = os.getcwd() + '/annomathtex/views/cache/'
+view_cache_path = os.path.join(os.getcwd(), 'annomathtex', 'views', 'cache')

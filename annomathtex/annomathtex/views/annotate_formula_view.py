@@ -216,6 +216,9 @@ class FileUploadView(View):
         annotated = items['annotated']
         file_name = items['fileName']['f']
 
+
+        print(annotated)
+
         __LOGGER__.debug(' ITEMS : {}'.format(items))
 
 
@@ -230,7 +233,7 @@ class FileUploadView(View):
             __LOGGER__.debug(' WRITING TO FILE {}'.format(annotation_file_path))
             json.dump(__ANNOTATED__, f)
 
-        eval_file_writer = EvalFileWriter(annotated)
+        eval_file_writer = EvalFileWriter(annotated, file_name)
         eval_file_writer.write()
 
         return HttpResponse(

@@ -24,7 +24,7 @@ var formulaColorBasic = '#ffa500';
 var annotatedColor = '#04B404';
 var noMatchIdentifierColor = '#2b332f';
 
-var nmStr = 'NOMATCH';
+var nmStr = 'no match';
 var blockMatch = false;
 
 //var identifierColorAnnotated = '#F88000';
@@ -49,6 +49,7 @@ function createCell(item, source, rowNum) {
             }
         }
     }
+    rowNum += 1
     var qid = '';
     var cellID = "cell" + source + rowNum;
     var args = [
