@@ -36,7 +36,7 @@ This dataset could be used to train models for all sorts of recommendation and r
 What makes your project stand out? Include logo/demo screenshot etc.
 
 
-![](/media/upload.gif)
+![](https://github.com/philsMINT/AnnoMathTeX/blob/master/media/upload.gif)
 
 
 
