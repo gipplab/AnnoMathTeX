@@ -9,7 +9,6 @@ class TXTParser(Parser):
     This class is a subclass of the abstract base class Parser. It is used to parse and process text files (including
     wikitext).
     """
-
     def decode(self, request_file):
         """
         Text files have to be read and decoded.
@@ -29,7 +28,6 @@ class TXTParser(Parser):
 
         file = request_file.read()
         file = decode_txt(file)
-
         return file
 
     def extract_math_envs(self):
@@ -39,24 +37,13 @@ class TXTParser(Parser):
         """
         ignore = [r'\n', '', r'\s']
         soup = BeautifulSoup(self.file)
-        #might work without list()
-        # tex parser returns tuple of old,
-        # and new math_env, which is why its also necessary to do that here.
-        """math_envs = list(
-            map(
-                lambda math_env: ' '.join(chunk for chunk in math_env.contents if chunk not in ignore),
-                list(soup.find_all('math'))
-            )
-        )"""
 
         def remove_special_chars(math_env):
             math_env = math_env.replace('amp;', '')
-            #math_env = math_env.replace('\\', 'SLASH')
             return math_env
 
         math_envs = [remove_special_chars(str(tag)) for tag in list(soup.find_all('math'))]
-        #math_envs = ['${}$'.format(str(tag.contents[0])) for tag in list(soup.find_all('math'))]
-        print(math_envs)
+        self.__LOGGER__.debug(math_envs)
         return math_envs
 
     def extract_tags_to_remove(self):
@@ -65,7 +52,6 @@ class TXTParser(Parser):
         :return: A list of the tags that were extracted for removal.
         """
         soup = BeautifulSoup(self.file)
-        #tag_list = ['ref', 'sub']
         tag_list = ['ref']
         tags = list(soup.find_all(tag_list))
         return tags
@@ -78,16 +64,11 @@ class TXTParser(Parser):
                 removing these tags.
         :return: None, the class attribute file is changed directly.
         """
-        #todo: check time and use more efficient method
         self.file = self.file.replace('<math>', '')
         self.file = self.file.replace('</math>', '')
-        print('REMOVE TAGS: {}'.format([str(tag) for tag in self.extract_tags_to_remove()]))
         for tag in self.extract_tags_to_remove():
             print(str(tag))
             self.file = self.file.replace(str(tag), '')
-
-        print(self.file)
-
 
     def remove_math_tags(self, line):
         line = line.replace('<math>', '')

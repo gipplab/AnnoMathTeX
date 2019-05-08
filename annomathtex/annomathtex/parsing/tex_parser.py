@@ -52,7 +52,6 @@ class TEXParser(Parser):
         align = list(tex_soup.find_all('align'))
         dollar = list(tex_soup.find_all('$'))
         math_envs = equation + align + dollar
-        #math_envs = list(map(lambda m: handle_special_chars(str(m)), math_envs))
         math_envs = list(map(lambda m: str(m), math_envs))
         self.__LOGGER__.info(' extracted math_envs: {}'.format(math_envs))
         return math_envs
