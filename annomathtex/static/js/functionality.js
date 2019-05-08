@@ -13,11 +13,7 @@ var wikidataReference = {};
 //wikipedia evaluation list or the word window are stored in this dictionary. Upon saving, the dictionary is sent to the
 //backend for further processing (saving, writing to database).
 var annotated = {'local': {}, 'global':{}};
-// source: [nrow, ...]
-// e.g.: 'arXiv': [0,4,2,...]
-
 var tokenAssignedItemGlobal = {};
-//var tokenAssignedItemLocal = new Set([]);
 
 var cellColorBasic = '#dddddd';
 var cellColorSelectedGlobal = 'pink';
@@ -32,10 +28,11 @@ var nmStr = 'NOMATCH';
 var blockMatch = false;
 
 //var identifierColorAnnotated = '#F88000';
-var cellCounter = 0;
-
 
 function createCell(item, source, rowNum) {
+    /*
+    The cells, that populate the table in the popup modal are created in this method.
+     */
     var name = item['name'];
     var backgroundColor = cellColorBasic;
     var containsHighlightedName = false;
@@ -48,7 +45,6 @@ function createCell(item, source, rowNum) {
             if (annotated['local'][tokenContent][uniqueID]['name'] == name) {
                 backgroundColor = cellColorSelectedLocal;
             } else {
-                //delete annotated['local'][tokenContent];
                 backgroundColor = cellColorBasic;
             }
         }
@@ -80,9 +76,7 @@ function createCell(item, source, rowNum) {
     var td = "<td id=" + cellID;
     td += " style='background-color:" + backgroundColor + "'";
     td += "onclick='selected(\"" + argsString + "\")' >";
-    //td += "<div onclick='selectedDouble()'>";
     td += name;
-    //td += "</div>";
     td += "</td>";
 
     return td;
@@ -90,6 +84,10 @@ function createCell(item, source, rowNum) {
 
 
 function checkNoMatch() {
+    /*
+    Check, whether the user has selected the "No Match" button. This entails, that no other annotations are possible for
+    this identifier (unless the "No Match" option is deselected).
+     */
     var g = annotated['global'];
     var l = annotated['local'];
 
@@ -109,6 +107,13 @@ function checkNoMatch() {
 }
 
 function populateTable(random=true) {
+    /*
+    The entire table, containing the recommendations, that is shown to the user in the popup modal is created as html
+    code in this function. The function createCell() is called upon, to create the individual cells in the table.
+
+    random: The sources are shuffled and anonymized (The user does not know which recommendations come from which
+    source, which is important for the evaluation)
+     */
 
     if (blockMatch){
         document.getElementById('noMatch').style.color = cellColorSelectedGlobal;
@@ -118,7 +123,6 @@ function populateTable(random=true) {
 
 
     window.sourcesWithNums = {};
-    //console.log(sourcesWithNums);
 
     arXivEvaluationItems = jsonResults['arXivEvaluationItems'];
     wikipediaEvaluationItems = jsonResults['wikipediaEvaluationItems'];
@@ -195,6 +199,9 @@ function populateTable(random=true) {
 
 
 function setAnnotatedColor(id) {
+    /*
+    Set the color of annotated tokens.
+     */
     try {
         document.getElementById(id).style.color = annotatedColor;
     } catch (e) {
@@ -205,6 +212,9 @@ function setAnnotatedColor(id) {
 }
 
 function setBasicColor(id) {
+    /*
+    Set the color of tokens back to basic, if the user changed his mind.
+     */
     if (tokenType == 'Identifier') {
         document.getElementById(id).style.color = identifierColorBasic;
     } else if (tokenType == 'Formula'){
@@ -214,6 +224,14 @@ function setBasicColor(id) {
 
 
 function handleNoMatch(){
+    /*
+    The "No Match" button was clicked: The user did not find any of the recommendations to be fitting.
+    This means that this information has to be added to the "annotated" dictionary, which will later be written to the
+    evaluation csv file, along with the other annotations.
+
+    This method is also called if the user deselects the "No Match" button, i.e. if he found a matching recommendation
+    after all.
+     */
     if (document.getElementById('noMatch').style.color == 'black') {
         console.log('true');
         document.getElementById('noMatch').style.color = cellColorSelectedGlobal;
@@ -331,11 +349,6 @@ function selected(argsString){
             }
             handleLinkedTokens(addToAnnotated);
             handleLinkedTokens(setAnnotatedColor);
-            console.log('adding to annotated ' + name);
-
-            console.log(annotated);
-
-            //document.getElementById('284---4').style.color = annotatedColor;
 
         } else if(backgroundColor == cellColorSelectedGlobal) {
             //reverse global annotation
@@ -347,12 +360,13 @@ function selected(argsString){
         }
     }
 
-
-
     populateTable();
 
-
     function addToAnnotated(id, global=true) {
+        /*
+        Add annotations (local or global) that were made to the annotated dictionary. These will later be written to the
+        evaluation csv file.
+         */
 
         if (!global) {
 
@@ -391,8 +405,6 @@ function selected(argsString){
 }
 
 
-
-
 function handleLinkedTokens(func) {
     /*
     This function is used to annotate, mark the identical tokens in the document.
@@ -401,14 +413,6 @@ function handleLinkedTokens(func) {
     This function takes a function f as argument, since a lot of differnen functions need this
     functionality.
      */
-
-    //console.log('linkedWords: ', linkedWords);
-    //console.log('linkedMathSymbols: ', linkedMathSymbols);
-
-
-    console.log('in handleLinkedTokens ' + tokenType);
-
-
 
     if (tokenType == 'Word') {
         dicToCheck = linkedWords;
@@ -429,48 +433,6 @@ function handleLinkedTokens(func) {
 }
 
 
-
-/*
-FUNCTIONALITY USED TO SEND THE INFORMATION ABOUT ANNOTATIONS AND HIGHLIGHTING BACK TO DJANGO
- */
-
-
-function markAsNE() {
-    /*
-    This function is called when the user selects a word in the document that wasn't found by the named entity tagger
-    and determines that it is a named entity after all.
-     */
-
-    function mark(id) {
-        document.getElementById(id).style.color = 'blue';
-        marked[id] = tokenContent;
-    }
-
-    mark(uniqueID);
-    handleLinkedTokens(mark);
-    console.log('marked ' + tokenContent);
-
-}
-
-function unMarkAsNE() {
-    /*
-    This function is called when the user selects a named entity in the document that wasn found by the named entity
-    tagger but determines that it isn't a named entity after all.
-     */
-
-    function unmark(id) {
-        document.getElementById(id).style.color = 'grey';
-        unmarked[id] = tokenContent;
-    }
-
-    unmark(uniqueID);
-    handleLinkedTokens(unmark);
-    console.log('unmarked ' + tokenContent);
-}
-
-
-
-
 function linkTokens(linked_words, linked_math_symbols) {
     /*
     Linked tokens are stored in a variable, to enable only having to annotate an identifier, word, formula once for
@@ -478,24 +440,28 @@ function linkTokens(linked_words, linked_math_symbols) {
      */
     window.linkedWords = JSON.parse(linked_words)['linkedWords'];
     window.linkedMathSymbols = JSON.parse(linked_math_symbols)['linkedMathSymbols'];
-    //console.log('LINKED MATH SYMBOLS: ',linkedMathSymbols);
 }
 
 
-function handlefileName(fileName) {
+function handleFileName(fileName) {
+    /*
+    Store the name of the file that the user selected for annotation in a variable. It will be sent back to django upon
+    saving the annoations. Could also store it in cache.
+     */
     window.fileName = fileName;
-    //console.log(fileName);
 }
 
 
 function fillAnnotationsTable(){
-
-    console.log('')
+    /*
+    The table at the top of the document, that is constantly being updated with the latest annotations is generated in
+    this function.
+     */
 
     var breaks = "</br>";
     var annotationsTable= breaks + "<table><tr><td>Token</td><td>Annotated with</td><td>Type</td></tr>";
 
-    function fill(d, type){
+    function fillGlobal(d, type){
         for (var token in d){
             var item = d[token];
             var name = item['name'];
@@ -511,16 +477,22 @@ function fillAnnotationsTable(){
                 var name = dict['name']
                 annotationsTable+="<tr><td>" + token + "</td><td>" + name + "</td><td>" + type + "</td></tr>";
             }
-
         }
     }
 
-    fill(annotated['global'], 'Global');
+    fillGlobal(annotated['global'], 'Global');
     fillLocal(annotated['local'], 'Local');
     document.getElementById("annotationsHolder").innerHTML = annotationsTable;
 }
 
+
 function handleAnnotations(existing_annotations){
+    /*
+    If any previous annotations for the same document exist, a number of actions are made:
+        - The annotations are added to the dictionary "annotated".
+        - The table at the top of the document containing the current annotations is filled with the existing ones.
+        - The tokens that were annotated are colored accordingly.
+     */
     json = JSON.parse(existing_annotations)['existingAnnotations'];
     if (json != null){
 
@@ -539,9 +511,7 @@ function handleAnnotations(existing_annotations){
             var item = existingAnnotationsLocal[token];
             var name = item['name'];
             annotated['local'][token] = item;
-            //tokenAssignedItemLocal.add(name);
         }
-
 
         function colourExisting(ann){
             for (identifier in ann) {
@@ -561,7 +531,6 @@ function handleAnnotations(existing_annotations){
 
 }
 
-
 /*
 AJAX FUNCTIONS USED TO POST THE REQUEST BACK TO DJANGO, WHERE THE WIKIDATA SPARQL QUERY IS EXECUTED
  */
@@ -573,15 +542,13 @@ function clickToken(jsonContent, tokenUniqueId, tokenType, jsonMathEnv, tokenHig
     and the table is rendered with the correct search results.
      */
 
-
-    //Display the selected token.
-    //If the clicked token is the delimiter of a math environment (entire formula), the presented text will be the
-    //string for the entire math environment and not the delimiter.
-
-
     var content = JSON.parse(jsonContent)['content'];
     var mathEnv = JSON.parse(jsonMathEnv)['math_env'];
 
+
+    //Display the selected token in the element "highlightedText".
+    //If the clicked token is the delimiter of a math environment (entire formula), the presented text will be the
+    //string for the entire math environment and not the delimiter.
     if (tokenType != 'Formula') {
         var fillText = content
     }
@@ -607,8 +574,6 @@ function clickToken(jsonContent, tokenUniqueId, tokenType, jsonMathEnv, tokenHig
         blockMatch = false;
     }
 
-    //console.log('Content: ' +  content);
-
     let data_dict = { the_post : $("#" + tokenUniqueId).val(),
                   'csrfmiddlewaretoken': getCookie("csrftoken"),
                   'queryDict': content,
@@ -623,39 +588,26 @@ function clickToken(jsonContent, tokenUniqueId, tokenType, jsonMathEnv, tokenHig
       type : "POST", // http method
       data : data_dict, // data sent with the post request
 
-      // handle a successful response
+      //successful response
       success : function(json) {
           $("#" + tokenUniqueId).val(''); // remove the value from the input
-
-
           window.jsonResults = json;
-
           switch (tokenType) {
               case 'Identifier':
                   populateTable();
                   break;
           }
-
-
       },
 
-      // handle a non-successful response
+      //non-successful response
       error : function(xhr,errmsg,err) {
-          $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-              " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-          console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+          $('#results').html("<div class='alert-box alert radius' data-alert>error: "+errmsg+
+              " <a href='#' class='close'>&times;</a></div>");
+          console.log(xhr.status + ": " + xhr.responseText);
       }
     });
-
-
 }
 
-
-
-
-/*
-AJAX FUNCTIONS USED TO POST
- */
 
 $(document).ready(function () {
     $('#post-form').on('submit', function(event){
@@ -677,24 +629,21 @@ $(document).ready(function () {
                         'fileName': $.param(fileNameDict)
                         };
 
-      //console.log(annotated);
-
-
       $.ajax({
           url : "file_upload/", // the endpoint
           type : "POST", // http method
           data : data_dict, // data sent with the post request
 
-          // handle a successful response
+          //successful response
           success : function(json) {
               $('#post-text').val(''); // remove the value from the input
           },
 
-          // handle a non-successful response
+          //non-successful response
           error : function(xhr,errmsg,err) {
               $('#results').html("<div class='alert-box alert radius' data-alert>error: "+errmsg+
-                  " <a href='#' class='close'>&times;</a></div>"); //add the error to the dom
-              console.log(xhr.status + ": " + xhr.responseText); //more information about error
+                  " <a href='#' class='close'>&times;</a></div>");
+              console.log(xhr.status + ": " + xhr.responseText);
           }
       });
     }
