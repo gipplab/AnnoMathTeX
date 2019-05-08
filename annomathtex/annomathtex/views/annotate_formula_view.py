@@ -30,7 +30,6 @@ __LOGGER__ = logging.getLogger(__name__)
 __MARKED__ = {}
 __UNMARKED__ = {}
 __ANNOTATED__ = {}
-
 __LINE_DICTS__ = {}
 
 
@@ -57,7 +56,6 @@ class FileUploadView(View):
         :return: A list of unique results where as long as the source contains more results the order goes Wikidata,
                  ArXiv, Wikipedia, Word Window.
         """
-
 
 
         all_recommendations = zip_longest(
@@ -96,29 +94,15 @@ class FileUploadView(View):
 
         word_window = []
         limit = int(recommendations_limit / 2)
-
         dicts = self.cache_to_dicts()
-        #print(self.cache_to_dicts())
-        #__LOGGER__.debug(' Line Dicts: ', dicts)
-
         identifier_line_dict = dicts['identifiers']
         line_dict = dicts['lines']
-
-        #print(identifier_line_dict)
-        #print(line_dict)
-
-        print(unique_id)
-
         if unique_id in identifier_line_dict:
             line_num = identifier_line_dict[unique_id]
-
         else:
             return []
 
-        print('AFTER IF ELSE')
-
         i = 0
-        #todo: fix
         while i < limit:
             # lines before
             b = line_num - i
@@ -143,75 +127,31 @@ class FileUploadView(View):
                             #'unique_id': word.unique_id
                         })
             i += 1
-
         if not word_window:
             word_window = [{}]
-
         return word_window[:recommendations_limit]
 
     def dicts_to_cache(self, dicts):
         """
-
-        :param dicts:
-        :return:
+        Write the dictionary, that is used to form the word window when the user clicks a token, to the cache.
+        :param dicts: Line dictionary and identifier line dictionary.
+        :return: None; files are pickled and stored in cache.
         """
         path = view_cache_path + 'dicts'
-
-        #print(dicts)
-
         with open(path, 'wb') as outfile:
             pickle.dump(dicts, outfile)
-
         __LOGGER__.debug(' Wrote file to {}'.format(path))
 
 
     def cache_to_dicts(self):
         """
-
-        :return:
+        Read the dictionary, that is used to form the word window when the user clicks a token, from the cache.
+        :return: Line dictionary and identifier line dictionary.
         """
         path = view_cache_path + 'dicts'
         with open(path, 'rb') as infile:
             dicts = pickle.load(infile)
-        #delete cached file
-        #os.unlink(path)
-
-        #__LOGGER__.debug(' IN CACHE TO DICTS, DICTS: {}'.format(dicts))
-
         return dicts
-
-
-    def write_to_eval_file(self, annotations):
-        """
-        wirte the evaluations to the evaluations file
-        :param annotations:
-        :return:
-        """
-
-        loc = annotations['local']
-        glob = annotations['global']
-
-        with open(evaluations_path, 'w') as f:
-            for token_content in loc:
-                for id in loc[token_content]:
-                    row = None
-
-
-        """"#path defined in config
-        with open(evaluations_path, 'r') as f:
-            __LOGGER__.debug(' WRITING TO FILE {}'.format(evaluations_path))
-            eval_dict = json.load(f)
-            for source in evaluation:
-                eval_dict[source] += evaluation[source]
-
-        __LOGGER__.debug(eval_dict)
-        with open(evaluations_path, 'w') as f:
-            __LOGGER__.debug(' WRITING TO FILE {}'.format(evaluations_path))
-            json.dump(eval_dict, f)"""
-
-
-
-
 
 
     def handle_file_submit(self, request):
@@ -220,16 +160,16 @@ class FileUploadView(View):
         appropriate parser for the file type is selected. After the file is processed by the parser it is returned to
         the frontend for rendering.
 
-        The dictionaries __LINE__DICT__ and __IDENTIFIER_LINE_DICT__ are needed for the creation of the word window
+        The dictionaries line_dict and identifier_line_dict are needed for the creation of the word window
         surrounding a token (it is constructed when the user mouse clicks a token (identifier or formula).
 
-        __LINE__DICT__ is a dictionary of line numbers as keys and a list of the named entities that appear on the
+        line_dict is a dictionary of line numbers as keys and a list of the named entities that appear on the
 
-        __IDENTIFIER_LINE_DICT__ is a dictionary of the unique ids of identifiers as keys and the line number they
+        identifier_line_dict is a dictionary of the unique ids of identifiers as keys and the line number they
         appear on as values.
 
-        :param request: Request object. Request made by the user through the frontend.
-        :return:
+        :param request: Request object; request made by the user through the frontend.
+        :return: The rendered response to the frontend.
         """
         __LOGGER__.debug('file submit')
         form = UploadFileForm(request.POST, request.FILES)
@@ -242,15 +182,9 @@ class FileUploadView(View):
             elif file_name.endswith('.txt'):
                 __LOGGER__.info(' text file ')
                 line_dict, identifier_line_dict, processed_file = TXTParser(request_file, file_name).process()
-                #__LOGGER__.debug(' identifier_line_dict: {}'.format(identifier_line_dict))
             else:
                 line_dict, identifier_line_dict, processed_file = None, None, None
 
-            #__LINE__DICT__, __IDENTIFIER_LINE_DICT__ = line_dict, identifier_line_dict
-
-            #__LINE_DICTS__['identifiers'] = identifier_line_dict
-            #__LINE_DICTS__['lines'] = line_dict
-            #__LOGGER__.debug(' line dicts after creating: {}'.format(__LINE_DICTS__))
 
             dicts = {'identifiers': identifier_line_dict, 'lines': line_dict}
 
@@ -295,18 +229,6 @@ class FileUploadView(View):
         with open(annotation_file_path, 'w') as f:
             __LOGGER__.debug(' WRITING TO FILE {}'.format(annotation_file_path))
             json.dump(__ANNOTATED__, f)
-
-        """"#path defined in config
-        with open(evaluations_path, 'r') as f:
-            __LOGGER__.debug(' WRITING TO FILE {}'.format(evaluations_path))
-            eval_dict = json.load(f)
-            for source in evaluation:
-                eval_dict[source] += evaluation[source]
-
-        __LOGGER__.debug(eval_dict)
-        with open(evaluations_path, 'w') as f:
-            __LOGGER__.debug(' WRITING TO FILE {}'.format(evaluations_path))
-            json.dump(eval_dict, f)"""
 
         eval_file_writer = EvalFileWriter(annotated)
         eval_file_writer.write()
@@ -354,21 +276,10 @@ class FileUploadView(View):
         arXiv_evaluation_items, wikipedia_evaluation_items = None, None, None, None, None
 
         if token_type == 'Identifier':
-            #wikidata_results = MathSparql().identifier_search(search_string)
             wikidata_results = StaticWikidataHandler().check_identifiers(search_string)
-            #arXiv_evaluation_list_handler = ArXivEvaluationListHandler()
-            #wikipedia_evaluation_list_handler = WikipediaEvaluationListHandler()
             arXiv_evaluation_items = ArXivEvaluationListHandler().check_identifiers(search_string)
             wikipedia_evaluation_items = WikipediaEvaluationListHandler().check_identifiers(search_string)
             word_window = self.get_word_window(unique_id)
-            """concatenated_results = self.get_concatenated_recommendations(
-                'identifier',
-                wikidata_results,
-                arXiv_evaluation_items,
-                wikipedia_evaluation_items,
-                word_window
-            )"""
-            concatenated_results = None
         elif token_type == 'Word':
             wikidata_results = NESparql().named_entity_search(search_string)
         elif token_type == 'Formula':

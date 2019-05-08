@@ -4,6 +4,19 @@ from ..config import evaluations_path, evaluation_annotations_path
 
 
 class EvalFileWriter:
+    """
+    This class is used to write the evaluation results from the annotations as a table to a csv file.
+    This table is of the form:
+
+    Identifier | Name | ArXiV | Wikipedia | Wikidata | WordWindow | global/local
+
+    S          | set  |   1   |     -     |     -    |      4     |   global
+
+
+    In the above example, the identifier "S" was annotated with the concept "set". The concept "set" appeared in the
+    recommendations from the ArXiV column (position 1) and the WordWindow column (position 4). The other sources did
+    not list it. Furthermore, the identifier was annotated globally with this concept.
+    """
 
     def __init__(self, annotations):
         self.loc = annotations['local'] if 'local' in annotations else {}
@@ -12,6 +25,13 @@ class EvalFileWriter:
 
 
     def fill_remaining(self, sources_with_nums):
+        """
+        The sources that did not list the chosen recommendation are filled with a dash '-'.
+        :param sources_with_nums: A dictionary containing the sources and the position of the recommendation (if
+        present) in the column. For the above example: {'ArXiv': 1, 'WordWindow': 4}.
+        :return: Completed dictionary; for the above example:
+        {'ArXiv': 1, 'Wikipedia': '-', 'Wikidata': '-',  'WordWindow': 4}
+        """
         sources = ['ArXiv', 'Wikipedia', 'Wikidata', 'WordWindow']
         completed_list = []
         for source in sources:
@@ -24,6 +44,10 @@ class EvalFileWriter:
 
 
     def handle_local(self):
+        """
+        The local annotations are handled in this method, i.e. transformed into rows for the csv file.
+        :return: All the rows of local annotations.
+        """
         rows = []
         for token_content in self.loc:
             for id in self.loc[token_content]:
@@ -35,6 +59,10 @@ class EvalFileWriter:
 
 
     def handle_global(self):
+        """
+        The global annotations are handled in this method, i.e. transformed into rows for the csv file.
+        :return: All the rows of global annotations.
+        """
         rows = []
         for token_content in self.glob:
             try:
@@ -50,6 +78,10 @@ class EvalFileWriter:
 
 
     def write(self):
+        """
+        Write the processed rows to a csv file.
+        :return: None.
+        """
         all_rows = self.handle_local() + self.handle_global()
 
         if evaluations_path in os.listdir(evaluation_annotations_path):

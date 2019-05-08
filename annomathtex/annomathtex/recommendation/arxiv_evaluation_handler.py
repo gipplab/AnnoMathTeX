@@ -36,9 +36,7 @@ class ArXivEvaluationListHandler:
                 item_dict[identifier] = list(
                     map(
                         lambda x: {
-                            'name': x.split()[0][:-1],
-                            #'value': x.split()[1]
-                            #'qid': self.get_wikidata_qid(x.split()[0][:-1])
+                            'name': x.split()[0][:-1]
                         },
                         item_parts[1:]
                     )
