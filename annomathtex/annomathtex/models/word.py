@@ -1,8 +1,6 @@
 from .token import Token
 
 class Word(Token):
-    #todo: add colouring for named entity is this class
-    #todo: differentiate between named entity and NNS
 
     def __init__(
         self,
@@ -31,53 +29,3 @@ class Word(Token):
             endline,
         )
         self.named_entity = named_entity
-
-    def get_unique_id(self):
-        """
-        Get the unique id of the word
-        :return: String of unique id
-        """
-        return self.unique_id
-
-    def get_type(self):
-        """
-        Get the name of the current class.
-        :return: Name of class.
-        """
-        return self.type
-
-    def get_highlight(self):
-        """
-        Get the highlight value for the Word.
-        :return: Colour of highlighting, None if no highlighting.
-        """
-        return self.highlight
-
-    def get_content(self):
-        """
-        Get the word itself.
-        :return: String of word
-        """
-        return self.content
-
-    def get_endline(self):
-        """
-        Get the boolean value.
-        :return: endline, true or false
-        """
-        return self.endline
-
-    def get_named_entity(self):
-        """
-        Get a boolean stating whether Word is a named entity or not.
-        :return: Boolean, named entity or not.
-        """
-        return self.named_entity
-
-    def set_endline(self, new_endline_val):
-        """
-        set the endline value
-        :param new_endline_val:
-        :return: None
-        """
-        self.endline = new_endline_val

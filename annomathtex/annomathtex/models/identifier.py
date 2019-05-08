@@ -21,9 +21,6 @@ class Identifier(Token):
         :param content: String, The Identifier itself.
         :param endline: Boolean, needed for page rendering, true if token ends the line.
         """
-
-        #print('IN IDENTIFIER CLASS, MATH ENV: {}'.format(math_env))
-
         super().__init__(
             unique_id,
             type,
@@ -32,49 +29,3 @@ class Identifier(Token):
             endline,
             math_env = math_env
         )
-        #word_window: named entities from surrounding text
-        #evaluation_list: items from evaluation list that match identifiers
-
-    def get_unique_id(self):
-        """
-        Get the unique id of the identifier
-        :return: String of unique id
-        """
-        return self.unique_id
-
-    def get_type(self):
-        """
-        Get the name of the current class.
-        :return: Name of class.
-        """
-        return self.type
-
-    def get_highlight(self):
-        """
-        Get the highlight value for the Word.
-        :return: Colour of highlighting, None if no highlighting.
-        """
-        return self.highlight
-
-    def get_content(self):
-        """
-        Get the word itself.
-        :return: String of word
-        """
-        return self.content
-
-    def get_endline(self):
-        """
-        Get the boolean value.
-        :return: endline, true or false
-        """
-        return self.endline
-
-    def set_endline(self, new_endline_val):
-        """
-        set the endline value
-        :param new_endline_val:
-        :return: None
-        """
-        self.endline = new_endline_val
-

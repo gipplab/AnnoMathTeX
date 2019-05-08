@@ -1,10 +1,6 @@
-from queue import Queue
-from threading import Thread
 import json
 import logging
-import os
 import pickle
-import csv
 
 from django.shortcuts import render
 from django.views.generic import View
@@ -25,10 +21,7 @@ from ..recommendation.math_sparql import MathSparql
 from ..recommendation.ne_sparql import NESparql
 
 from ..views.eval_file_writer import EvalFileWriter
-
 from ..config import *
-
-
 
 
 logging.basicConfig(level=logging.INFO)

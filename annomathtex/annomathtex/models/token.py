@@ -33,26 +33,3 @@ class Token(object, metaclass=ABCMeta):
         self.json_math_env = json.dumps({'math_env': math_env})
 
 
-    @abstractmethod
-    def get_unique_id(self):
-        raise NotImplementedError('must be implemented')
-
-    @abstractmethod
-    def get_type(self):
-        raise NotImplementedError('must be implemented')
-
-    @abstractmethod
-    def get_highlight(self):
-        raise NotImplementedError('must be implemented')
-
-    @abstractmethod
-    def get_content(self):
-        raise NotImplementedError('must be implemented')
-
-    @abstractmethod
-    def get_endline(self):
-        raise NotImplementedError('must be implemented')
-
-    @abstractmethod
-    def set_endline(self, new_endline_val):
-        raise NotImplementedError('must be implemented')
