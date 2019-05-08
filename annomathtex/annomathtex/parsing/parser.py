@@ -34,9 +34,6 @@ class Parser(object, metaclass=ABCMeta):
         self.math_envs = self.extract_math_envs()
         self.arXiv_evaluation_list_handler = ArXivEvaluationListHandler()
         self.wikipedia_evaluation_list_handler = WikipediaEvaluationListHandler()
-        self.linked_words = {}
-        self.linked_math_symbols = {}
-        self.line_dict = {}
         #dictionary identifier ids and the line they're on
         #needed for word window in file_upload_view
         self.identifier_line_dict = {}
@@ -100,7 +97,12 @@ class Parser(object, metaclass=ABCMeta):
     def form_links(self, processed_lines_unique_ids):
         """
         Create dictionaries of the words and math symbols that appear multiple times in the document. Necessary for
-        global annotations
+        global annotations. This is used later when annotating a file, to only have to annotate an
+        identifier/word once. All the other identical identifiers/words in the file will be annotated automatically
+        with the same field. The linked identifier are stored in the class dictionary linked_math_symbols allong with the
+        linked formulae. They are stored together, to allow a math environment with only one identifier to be
+        treated the same way as an identifier within a math environemnt (e.g. $E$ is treated the same way as
+        'E' in $E=mc2$).
         :param processed_lines_unique_ids: The lines of the file that have been processed by the parser. Contain the
         custom generated unique_ids as well.
         :return: Dictionary of linked words, dictionary of linked math symbols.
@@ -143,55 +145,6 @@ class Parser(object, metaclass=ABCMeta):
 
         return words, math_symbols
 
-    def form_word_links(self, tagged_words):
-        """
-        Link identical words. This is used later when annotating a file, to only have to annotate a word once. All the
-        other identical words in the file will be annotated automatically with the same field.
-        :param tagged_words: One line (sentence) of processed words.
-        :return: None; The linked words are stored in the class dictionary linked_words
-        """
-        for word in tagged_words:
-            if word.named_entity and word.content:
-                if word.content in self.linked_words:
-                    self.linked_words[word.content].append(word.unique_id)
-                else:
-                    self.linked_words[word.content] = [word.unique_id]
-
-    def form_identifier_links(self, identifier):
-        """
-        Link identical identifiers. This is used later when annotating a file, to only have to annotate an
-        identifier once. All the other identical identifiers in the file will be annotated automatically with the same
-        field.
-        :param identifier: The identifier that is being processed.
-        :return: None; The linked identifier are stored in the class dictionary linked_math_symbols allong with the
-                 linked formulae. They are stored together, to allow a math environment with only one identifier to be
-                 treated the same way as an identifier within a math environemnt (e.g. $E$ is treated the same way as
-                 'E' in $E=mc2$).
-        """
-        if identifier.content:
-            if identifier.content in self.linked_math_symbols:
-                self.linked_math_symbols[identifier.content].append(identifier.unique_id)
-            else:
-                self.linked_math_symbols[identifier.content] = [identifier.unique_id]
-
-    def form_formula_links(self, formula1, formula2):
-        """
-        Link identical formulae. This is used later when annotating a file, to only have to annotate a
-        formula once. All the other identical formulae in the file will be annotated automatically with the same
-        field.
-        :param formula1: The beginning delimiter of the formula (e.g. '$').
-        :param formula2: The ending delimiter of the formula (e.g. '$').
-        :return: None; The linked formulae are stored in the class dictionary linked_math_symbols allong with the
-                 linked identifiers. They are stored together, to allow a math environment with only one identifier to
-                 be treated the same way as an identifier within a math environemnt (e.g. $E$ is treated the same way
-                 as 'E' in $E=mc2$).
-        """
-        math_env = formula1.math_env
-        if math_env:
-            if math_env in self.linked_math_symbols:
-                self.linked_math_symbols[math_env] += [formula1.unique_id, formula2.unique_id]
-            else:
-                self.linked_math_symbols[math_env] = [formula1.unique_id, formula2.unique_id]
 
     def handle_entire_formula(self, math_env):
         """
@@ -200,9 +153,6 @@ class Parser(object, metaclass=ABCMeta):
         :param math_env: String of the math environemnt (/formula).
         :return: 2 formula objects, one for each delimiter.
         """
-
-        # todo: put this in external class -> consistency   ??
-
         def create_formula(math_env):
             math_env = math_env.replace('<math>', '')
             math_env = math_env.replace('</math>', '')
@@ -215,10 +165,7 @@ class Parser(object, metaclass=ABCMeta):
                 endline=False,
                 math_env=math_env
             )
-
         formula1, formula2 = create_formula(math_env), create_formula(math_env)
-        self.form_formula_links(formula1, formula2)
-
         return formula1, formula2
 
 
@@ -234,8 +181,6 @@ class Parser(object, metaclass=ABCMeta):
         :return: List of the words fom the line (sentence) as Word() objects.
         """
         tagged_words = self.tagger.tag(line)
-        self.form_word_links(tagged_words)
-        self.line_dict[line_num] = [word for word in tagged_words if word.named_entity]
         return tagged_words
 
     def process_math_env(self, math_env, line_num):
@@ -275,7 +220,6 @@ class Parser(object, metaclass=ABCMeta):
             self.identifier_line_dict[id_symbol.unique_id] = line_num
 
             processed_maths_env.append(id_symbol)
-            self.form_identifier_links(id_symbol)
 
         # add the dollar signs back again
         formula1, formula2 = self.handle_entire_formula(str(math_env))
