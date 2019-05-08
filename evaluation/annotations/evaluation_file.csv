@@ -1,0 +1,17 @@
+Identifier,Name,ArXiV,Wikipedia,Wikidata,WordWindow,global/local
+S,set,1,-,-,-,global
+i,index,0,-,-,-,global
+k,clusters,-,-,-,9,global
+x,NOMATCH,-,-,-,-,global
+y,NOMATCH,-,-,-,-,global
+mu,NOMATCH,-,-,-,-,global
+t,time,0,2,3,-,global
+p,NOMATCH,-,-,-,-,global
+m,means,-,-,-,0,global
+j,index,3,-,-,-,global
+O,running time,-,4,-,-,global
+n,number,0,-,-,-,global
+d,distance,-,-,2,-,global
+sigma,variance,-,-,-,1,global
+phi,function,2,-,-,-,global
+Delta,minimum,-,-,-,0,global
