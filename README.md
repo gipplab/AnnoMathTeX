@@ -3,6 +3,10 @@
 Mathematical formulae are a significant part of scientific documents, books and web pages in the fields of science, technology, engineering and mathematics (STEM). 
 In current information retrieval approaches connected with textual data, mathematical formulae are not considered, even though they are very common in texts within STEM fields.
 Since mathematical formulae contain a lot of important information, they should not be ignored when comparing documents.
+Currently, there is no large enough labeled dataset containing mathematical formulae annotated with their semantics available, that could be used to train machine learning models. 
+\>>AnnoMathTeX<< offers a first approach to facilitate the annotation of mathematical formulae in STEM documents, by recommending the concept associated to a certain identifier of formula to the user who is annotating the 
+document and thus creating a labeled dataset of identifiers and formula concepts in the process.
+
 
 ### Definitions
 
@@ -15,20 +19,17 @@ The concept of a formula is the meaning that is associated with it. The formula 
 
 # \>>AnnoMathTeX<<
 AnnoMathTeX is a standalone LaTeX text and formula annotation recommendation tool for STEM documents. 
-It allows users to annotate identifiers contained in mathematical formulae, as well as the entire formula contained in a document with their corresponding concept. 
-Theses concepts are extracted from a number of different sources.
+It allows users to annotate identifiers contained in mathematical formulae, as well as the entire formula contained in a document with their corresponding concept from a list of suggested recommendations. 
+
+<!---The recommendations are extracted from a number of different sources.
 
 ([Wikidata](https://www.wikidata.org) being one of them, in which case the selected token is annotated
-with the [Wikidata QID](https://en.wikipedia.org/wiki/Wikidata#Items).)
+with the [Wikidata QID](https://en.wikipedia.org/wiki/Wikidata#Items).)--->
 
 ## Motivation
-Machine Learning has proven time and time again to be extremely useful in classification tasks. However, very large 
-amounts of labeled data are necessary to train machine learning methods. Currently, there is no large enough labeled 
-dataset containing mathematical formulae annotated with their semantics available, that could be used to train machine 
-learning models. >>AnnoMathTeX<< offers a first approach to facilitate the annotation of mathematical formulae in STEM 
-documents, by recommending the concept associated to a certain identifier of formula to the user who is annotating the 
-document.
 
+
+<!--- Maybe exclude this? --->
 The recommendations for the concepts are taken from four different sources:
 * arXiv: A list containing identifiers appearing in the arXiv corpus with the corresponding concepts, ranked by frequency of appearence.
 * Wikipedia: A list containing identifiers appearing in Wikipedia articles with the corresponding concepts, ranked by frequency of appearence.
@@ -164,6 +165,16 @@ To annotate an identifier locally (meaning that only this occurence of the Ident
 <p align="center">
   <img src="https://github.com/philsMINT/AnnoMathTeX/blob/master/media/local.gif"/>
 </p>
+
+
+### Saving the annotations
+To save the anntotations, simply click the "*save*" button at the top left of the page. This will write the annotations to a json file and create a csv file that can be used for the evaluation.
+
+<p align="center">
+  <img src="https://github.com/philsMINT/AnnoMathTeX/blob/master/media/save.gif"/>
+</p>
+
+If you open the same file again at a later point in time, the annotations you made previously will be reloaded and you can continue right where you left off.
 
 
 ## Results
