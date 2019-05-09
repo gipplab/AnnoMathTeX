@@ -107,7 +107,7 @@ function checkNoMatch() {
     return false;
 }
 
-function populateTable(random=true) {
+function populateTable(random=false) {
     /*
     The entire table, containing the recommendations, that is shown to the user in the popup modal is created as html
     code in this function. The function createCell() is called upon, to create the individual cells in the table.
@@ -135,7 +135,8 @@ function populateTable(random=true) {
                       [wikidataResults, 'Wikidata'],
                       [wordWindow, 'WordWindow']];
 
-    var table= "<table><tr><td>Source 0</td><td>Source 1</td><td>Source 2</td><td>Source 3</td></tr>";
+    //var table= "<table><tr><td>Source 0</td><td>Source 1</td><td>Source 2</td><td>Source 3</td></tr>";
+    var table= "<table><tr><td>arXiv</td><td>Wikipedia</td><td>Wikidata</td><td>WordWindow</td></tr>";
 
     if (preservedResultList != null) {
         resultList = preservedResultList;

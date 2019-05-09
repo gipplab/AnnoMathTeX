@@ -98,11 +98,16 @@ Depending on the size of the project, if it is small and simple enough the refer
 
 ## Usage
 
+### Start The Server
+
 In a terminal navigate to the folder where the manage.py file sits ([AnnoMathTeX/annomathtex](/AnnoMathTeX/annomathtex))
 and run the command
 ```python
 python manage.py runserver
 ```
+
+### Select A File
+
 Open a browser window and navigate to [http://127.0.0.1:8000](http://127.0.0.1:8000). 
 
 Select the file that you would like to annotate with the file browser.
@@ -115,6 +120,13 @@ Mathematical environments are enclosed with highlighted dollar signs, and the id
 All other symbols in the mathematical environment are coloured in grey, as they are not interesting for the purpose of annotation.
 
 ![](https://github.com/philsMINT/AnnoMathTeX/blob/master/media/uploaded_file.png)
+
+
+### Annotating An Identifier
+
+![](https://github.com/philsMINT/AnnoMathTeX/blob/master/media/global_select.gif)
+
+To annotate an identifier, simply click on the highlighted character in the document and you will be presented with a table of recommendations.
 
 
 
