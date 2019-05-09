@@ -112,18 +112,18 @@ class FileUploadView(View):
             if b in line_dict:
                 for word in reversed(line_dict[b]):
                     # value not yet in word window
-                    if not list(filter(lambda d: d['name'] == word.content, word_window)):
+                    if not list(filter(lambda d: d['name'] == word.content.lower(), word_window)):
                         word_window.append({
-                            'name': word.content,
+                            'name': word.content.lower(),
                             #'unique_id': word.unique_id
                         })
                         i += 1
             if a in line_dict:
                 for word in reversed(line_dict[a]):
                     # value not yet in word window
-                    if not list(filter(lambda d: d['name'] in word.content, word_window)):
+                    if not list(filter(lambda d: d['name'] in word.content.lower(), word_window)):
                         word_window.append({
-                            'name': word.content,
+                            'name': word.content.lower(),
                             #'unique_id': word.unique_id
                         })
             i += 1

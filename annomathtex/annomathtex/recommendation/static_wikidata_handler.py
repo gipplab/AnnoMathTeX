@@ -24,6 +24,13 @@ class StaticWikidataHandler:
         return all_results
 
 
+    def toLowerCase(self, dict_list):
+        for d in dict_list:
+            d['name'] = d['name'].lower()
+
+        return dict_list
+
+
     def check_identifiers(self, symbol):
         """
         Return the entries of the static dictionary that match the symbol that was clicked by the user.
@@ -31,5 +38,5 @@ class StaticWikidataHandler:
         :return: The corresponding matches from the dictionary of wikidata identifiers.
         """
         if symbol in self.evaluation_dict:
-            return self.evaluation_dict[symbol][:recommendations_limit]
+            return self.toLowerCase(self.evaluation_dict[symbol][:recommendations_limit])
         return []

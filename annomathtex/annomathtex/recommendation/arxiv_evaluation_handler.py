@@ -36,7 +36,8 @@ class ArXivEvaluationListHandler:
                 item_dict[identifier] = list(
                     map(
                         lambda x: {
-                            'name': x.split()[0][:-1]
+                            #'name': x.split()[0][:-1]
+                            'name': x.split()[0][:-1].lower()
                         },
                         item_parts[1:]
                     )

@@ -34,7 +34,7 @@ class WikipediaEvaluationListHandler:
             for d in identifier_dict_symbol:
                 if d['description'] not in found_descriptions:
                     item_dict = {
-                        'name': d['description']
+                        'name': d['description'].lower()
                     }
                     new_d.append(item_dict)
                     found_descriptions.append(d['description'])
