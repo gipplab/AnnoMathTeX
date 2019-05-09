@@ -140,6 +140,7 @@ To select one of the suggested recommendations, select the matching cell, and it
 The annotated identifier will be highlighted in a different colour, and a table holding all the annotations is constructed at the top of the document.
 If you click a highlighted cell, your annotation will be reversed. 
 If none of the recommendations match, select the "*no match*" button at the top of the table.
+
 ![](https://github.com/philsMINT/AnnoMathTeX/blob/master/media/no_match.gif)
 
 
@@ -151,6 +152,7 @@ By default the anotation mode is set to global annotation. This means that if yo
 
 #### Local annotation
 To annotate an identifier locally (meaning that only this occurence of the Identifier will be annotated), select the "*local*" option at the top of the table.
+
 ![](https://github.com/philsMINT/AnnoMathTeX/blob/master/media/local.gif)
 
 
