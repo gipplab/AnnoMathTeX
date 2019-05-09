@@ -6,8 +6,8 @@ identifiers in mathematical formulae, the entire formula as well as the named en
 (recommended formats being .tex or .txt) with the corresponding concept. Theses concepts are extracted from a number of 
 different sources.
 
-[Wikidata](https://www.wikidata.org) being one of them, in which case the selected token is annotated
-with the [Wikidata QID](https://en.wikipedia.org/wiki/Wikidata#Items).
+([Wikidata](https://www.wikidata.org) being one of them, in which case the selected token is annotated
+with the [Wikidata QID](https://en.wikipedia.org/wiki/Wikidata#Items).)
 
 ## Motivation
 Machine Learning has proven time and time again to be extremely useful in classification tasks. However, very large 
@@ -55,6 +55,7 @@ What makes your project stand out? Include logo/demo screenshot etc.
   * which sources contained the conecpt that the user selected for the annotation
   * which position the selected concept had in the column.
 * Randomized and anonymzed recommendation sources, or information shown to user.
+* 10 recommendations per source (less if 10 not present)
 
 ## Components/Modules/Workflow
 
