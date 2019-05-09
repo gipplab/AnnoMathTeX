@@ -36,7 +36,6 @@ This dataset could be used to train models for all sorts of recommendation and r
 What makes your project stand out? Include logo/demo screenshot etc.
 
 
-![](https://github.com/philsMINT/AnnoMathTeX/blob/master/media/upload.gif)
 
 
 
@@ -97,15 +96,26 @@ End with an example of getting some data out of the system or using it for a lit
 
 Depending on the size of the project, if it is small and simple enough the reference docs can be added to the README. For medium size to larger projects it is important to at least provide a link to where the API reference docs live.
 
-## How to use? (maybe optional)
+## Usage
 
 In a terminal navigate to the folder where the manage.py file sits ([AnnoMathTeX/annomathtex](/AnnoMathTeX/annomathtex))
 and run the command
 ```python
 python manage.py runserver
 ```
-In your browser navigate to [http://127.0.0.1:8000/file_upload/](http://127.0.0.1:8000/file_upload/). Any browser should 
-work, although we recommend using Google Chrome.
+Open a browser window and navigate to [http://127.0.0.1:8000](http://127.0.0.1:8000). 
+
+Select the file that you would like to annotate with the file browser.
+
+![](https://github.com/philsMINT/AnnoMathTeX/blob/master/media/upload.gif)
+
+After selecting and uploading the file you will see the processed and rendered document in your browser window.
+
+![](https://github.com/philsMINT/AnnoMathTeX/blob/master/media/uploaded_file.png)
+
+
+You can now start annotating the document.
+
 
 ## Results
 
