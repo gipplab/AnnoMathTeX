@@ -1,10 +1,22 @@
+# Introduction
+
+Mathematical formulae are a significant part of scientific documents, books and web pages in the fields of science, technology, engineering and mathematics (STEM). 
+In current information retrieval approaches connected with textual data, mathematical formulae are not considered, even though they are very common in texts within STEM fields.
+Since mathematical formulae contain a lot of important information, they should not be ignored when comparing documents.
+
+### Definitions
+
+##### Identifier
+Identifiers in mathematical formulae are the meanings attached to symbols contained in the expression. The identifier *E* means *energy* in the formula *E=mc2*.
+
+##### Formula Concept
+The concept of a formula is the meaning that is associated with it. The formula *E=mc2* has the concept of *mass-energy equivalence* associated with it.
+
 # \>>AnnoMathTeX<<
 
-AnnoMathTeX is a LaTeX text and formula annotation recommendation tool for STEM (Science, Technology, Engineering, 
-Mathematics) documents. It allows users to annotate 
-identifiers in mathematical formulae, the entire formula as well as the named entities contained in a document 
-(recommended formats being .tex or .txt) with the corresponding concept. Theses concepts are extracted from a number of 
-different sources.
+AnnoMathTeX is a LaTeX text and formula annotation recommendation tool for STEM documents. 
+It allows users to annotate identifiers contained in mathematical formulae, as well as the entire formula contained in a document with their corresponding concept. 
+Theses concepts are extracted from a number of different sources.
 
 ([Wikidata](https://www.wikidata.org) being one of them, in which case the selected token is annotated
 with the [Wikidata QID](https://en.wikipedia.org/wiki/Wikidata#Items).)
@@ -54,6 +66,7 @@ What makes your project stand out? Include logo/demo screenshot etc.
   * which position the selected concept had in the column.
 * Randomized and anonymzed recommendation sources, or information shown to user.
 * 10 recommendations per source (less if 10 not present)
+* (recommended formats being .tex or .txt)
 
 ## Components/Modules/Workflow
 
