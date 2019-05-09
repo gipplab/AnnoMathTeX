@@ -121,7 +121,10 @@ Open a browser window and navigate to [http://127.0.0.1:8000](http://127.0.0.1:8
 
 Select the file that you would like to annotate with the file browser.
 
-![](https://github.com/philsMINT/AnnoMathTeX/blob/master/media/upload.gif)
+<p align="center">
+  <img src="https://github.com/philsMINT/AnnoMathTeX/blob/master/media/upload.gif"/>
+</p>
+
 
 After selecting and uploading the file you will see the processed and rendered document in your browser window. You can now start annotating.
 Nouns, proper nouns and named entities are highlighted in the natural language part of the document. They are also shown as recommendations for annotation in the word window.
@@ -140,6 +143,8 @@ To select one of the suggested recommendations, select the matching cell, and it
 The annotated identifier will be highlighted in a different colour, and a table holding all the annotations is constructed at the top of the document.
 If you click a highlighted cell, your annotation will be reversed. 
 If none of the recommendations match, select the "*no match*" button at the top of the table.
+
+
 
 ![](https://github.com/philsMINT/AnnoMathTeX/blob/master/media/no_match.gif)
 
