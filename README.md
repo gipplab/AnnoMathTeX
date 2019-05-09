@@ -109,12 +109,15 @@ Select the file that you would like to annotate with the file browser.
 
 ![](https://github.com/philsMINT/AnnoMathTeX/blob/master/media/upload.gif)
 
-After selecting and uploading the file you will see the processed and rendered document in your browser window.
+After selecting and uploading the file you will see the processed and rendered document in your browser window. You can now start annotating.
+Nouns, proper nouns and named entities are highlighted in the natural language part of the document. They are also shown as recommendations for annotation in the word window.
+Mathematical environments are enclosed with highlighted dollar signs, and the identifiers are highlighted with yet another colour.
+All other symbols in the mathematical environment are coloured in grey, as they are not interesting for the purpose of annotation.
 
 ![](https://github.com/philsMINT/AnnoMathTeX/blob/master/media/uploaded_file.png)
 
 
-You can now start annotating the document.
+
 
 
 ## Results
