@@ -131,12 +131,16 @@ Nouns, proper nouns and named entities are highlighted in the natural language p
 Mathematical environments are enclosed with highlighted dollar signs, and the identifiers are highlighted with yet another colour.
 All other symbols in the mathematical environment are coloured in grey, as they are not interesting for the purpose of annotation.
 
-![](https://github.com/philsMINT/AnnoMathTeX/blob/master/media/uploaded_file.png)
+<p align="center">
+  <img src="https://github.com/philsMINT/AnnoMathTeX/blob/master/media/uploaded_file.png"/>
+</p>
 
 
 ### Annotating an Identifier
 
-![](https://github.com/philsMINT/AnnoMathTeX/blob/master/media/global_select.gif)
+<p align="center">
+  <img src="https://github.com/philsMINT/AnnoMathTeX/blob/master/media/global_select.gif"/>
+</p>
 
 To annotate an identifier, simply click on the highlighted character (e.g. "E") in the document and you will be presented with a table of recommendations.
 To select one of the suggested recommendations, select the matching cell, and it will be highlighted (along with all other mathcing cells from different sources).
@@ -144,10 +148,9 @@ The annotated identifier will be highlighted in a different colour, and a table 
 If you click a highlighted cell, your annotation will be reversed. 
 If none of the recommendations match, select the "*no match*" button at the top of the table.
 
-
-
-![](https://github.com/philsMINT/AnnoMathTeX/blob/master/media/no_match.gif)
-
+<p align="center">
+  <img src="https://github.com/philsMINT/AnnoMathTeX/blob/master/media/no_match.gif"/>
+</p>
 
 ### Types of Annotations
 Two different types of annotations are possible: A global annotation, and a local annotation. 
@@ -158,7 +161,9 @@ By default the anotation mode is set to global annotation. This means that if yo
 #### Local annotation
 To annotate an identifier locally (meaning that only this occurence of the Identifier will be annotated), select the "*local*" option at the top of the table.
 
-![](https://github.com/philsMINT/AnnoMathTeX/blob/master/media/local.gif)
+<p align="center">
+  <img src="https://github.com/philsMINT/AnnoMathTeX/blob/master/media/local.gif"/>
+</p>
 
 
 ## Results
