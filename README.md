@@ -37,8 +37,6 @@ What makes your project stand out? Include logo/demo screenshot etc.
 
 
 
-
-
 ### Include:
 * annotations saved and possible to reload later
   * enables saving and reloading
