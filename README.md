@@ -177,14 +177,23 @@ To save the anntotations, simply click the "*save*" button at the top left of th
 If you open the same file again at a later point in time, the annotations you made previously will be reloaded and you can continue right where you left off.
 
 
-## Results
+## Evaluation
+
+### Results
+
+For each file, an evaluation table of the following format is constructed.
+
+| Identifier | Name     | arXiv | Wikipedia | Wikidata | WordWindow | Type   |
+|:----------:|:--------:|:-----:|:---------:|:--------:|:----------:|:------:|
+| X          | variable | -     | 6         | -        | 1          | global |
+| p          | no match | -     | -         | -        | -          | global |
+| f          | function | 2     | -         | -        | -          | local  |
 
 
+The identifier *X* was annotated globally with "*variable*", which was found in the recommendations from the Wikipedia list and from the word window (positions 6 and 1 in the column respectively).
+For the identifier *p* no matches were found; it was annotated with "*no match*".
+The identifier "*f*" was annotated locally with "*function*", which was found in the recommendations from the arXiv list at position 2.
 
-
-If you are about to complete your project, include your preliminary results that you also show in your final project presentation, e.g., precision/recall/F1 measure and/or figures highlighting what your project does with input data. If applicable, at first briefly describe the dataset your created/use and the use cases.
-
-If you are about to complete your thesis, just include the most important findings (precision/recall/F1 measure) and refer the to the corresponding pages in your thesis document.
 
 ## License
 
