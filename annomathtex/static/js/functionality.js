@@ -49,7 +49,7 @@ function createCell(item, source, rowNum) {
             }
         }
     }
-    rowNum += 1
+    rowNum += 1;
     var qid = '';
     var cellID = "cell" + source + rowNum;
     var args = [
@@ -107,7 +107,7 @@ function checkNoMatch() {
     return false;
 }
 
-function populateTable(random=false) {
+function populateTable(random=true) {
     /*
     The entire table, containing the recommendations, that is shown to the user in the popup modal is created as html
     code in this function. The function createCell() is called upon, to create the individual cells in the table.
@@ -135,8 +135,8 @@ function populateTable(random=false) {
                       [wikidataResults, 'Wikidata'],
                       [wordWindow, 'WordWindow']];
 
-    //var table= "<table><tr><td>Source 0</td><td>Source 1</td><td>Source 2</td><td>Source 3</td></tr>";
-    var table= "<table><tr><td>arXiv</td><td>Wikipedia</td><td>Wikidata</td><td>WordWindow</td></tr>";
+    var table= "<table><tr><td>Source 0</td><td>Source 1</td><td>Source 2</td><td>Source 3</td></tr>";
+    //var table= "<table><tr><td>arXiv</td><td>Wikipedia</td><td>Wikidata</td><td>WordWindow</td></tr>";
 
     if (preservedResultList != null) {
         resultList = preservedResultList;
@@ -454,6 +454,31 @@ function handleFileName(fileName) {
 }
 
 
+function deleteFromAnnotated(argsString) {
+    var argsArray = argsString.split('----');
+
+    console.log(argsArray);
+
+    var token = argsArray[0];
+    var name = argsArray[1];
+    var local = (argsArray[2] == 'true');
+    if (local) {
+        var uID = argsArray[3];
+        setBasicColor(uID);
+        delete annotated['local'][token][uID];
+    } else {
+        uniqueIDs = argsArray[3].split(',');
+        for (i in uniqueIDs) {
+            setBasicColor(uniqueIDs[i]);
+
+        }
+        delete annotated['global'][token];
+    }
+
+    fillAnnotationsTable();
+
+}
+
 function fillAnnotationsTable(){
     /*
     The table at the top of the document, that is constantly being updated with the latest annotations is generated in
@@ -461,13 +486,27 @@ function fillAnnotationsTable(){
      */
 
     var breaks = "</br>";
-    var annotationsTable= breaks + "<table><tr><td>Token</td><td>Annotated with</td><td>Type</td></tr>";
+    var annotationsTable = breaks + "<table><tr><td>Token</td><td>Annotated with</td><td>Type</td><td>Delete</td></tr>";
+
+
 
     function fillGlobal(d, type){
         for (var token in d){
             var item = d[token];
             var name = item['name'];
-            annotationsTable+="<tr><td>" + token + "</td><td>" + name + "</td><td>" + type + "</td></tr>";
+            var uniqueIDs = item['uniqueIDs'];
+            console.log(uniqueIDs);
+            //annotationsTable+="<tr><td>" + token + "</td><td>" + name + "</td><td>" + type + "</td></tr>";
+            var args = [
+                    token,
+                    name,
+                    false,
+                    uniqueIDs
+                ];
+            var argsString = args.join('----');
+            var tr ="<tr><td>" + token + "</td><td>" + name + "</td><td>" + type + "</td>";
+            tr += "<td onclick='deleteFromAnnotated(\"" + argsString + "\")'>x</td></tr>";
+            annotationsTable += tr;
         }
     }
 
@@ -476,8 +515,17 @@ function fillAnnotationsTable(){
         for (var token in d){
             for (var uID in d[token]){
                 var dict = d[token][uID];
-                var name = dict['name']
-                annotationsTable+="<tr><td>" + token + "</td><td>" + name + "</td><td>" + type + "</td></tr>";
+                var name = dict['name'];
+                var args = [
+                    token,
+                    name,
+                    true,
+                    uID
+                ];
+            var argsString = args.join('----');
+            var tr ="<tr><td>" + token + "</td><td>" + name + "</td><td>" + type + "</td>";
+            tr += "<td onclick='deleteFromAnnotated(\"" + argsString + "\")'>x</td></tr>";
+            annotationsTable += tr;
             }
         }
     }

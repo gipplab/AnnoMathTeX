@@ -106,7 +106,7 @@ and run the command
 python manage.py runserver
 ```
 
-### Select A File
+### Select a File
 
 Open a browser window and navigate to [http://127.0.0.1:8000](http://127.0.0.1:8000). 
 
@@ -122,12 +122,17 @@ All other symbols in the mathematical environment are coloured in grey, as they 
 ![](https://github.com/philsMINT/AnnoMathTeX/blob/master/media/uploaded_file.png)
 
 
-### Annotating An Identifier
+### Annotating an Identifier
 
 ![](https://github.com/philsMINT/AnnoMathTeX/blob/master/media/global_select.gif)
 
-To annotate an identifier, simply click on the highlighted character in the document and you will be presented with a table of recommendations.
+To annotate an identifier, simply click on the highlighted character (e.g. "E") in the document and you will be presented with a table of recommendations.
+To select one of the suggested recommendations, select the matching cell, and it will be highlighted (along with all other mathcing cells from different sources).
+The annotated identifier will be highlighted in a different colour, and a table holding all the annotations is constructed at the top of the document.
+If you click a highlighted cell, your annotation will be reversed. 
 
+### Types of Annotations
+Two different types of annotations are possible: A global annotation, and a local annotation. 
 
 
 
