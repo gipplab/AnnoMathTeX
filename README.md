@@ -12,8 +12,8 @@ Identifiers in mathematical formulae are the meanings attached to symbols contai
 ##### Formula Concept
 The concept of a formula is the meaning that is associated with it. The formula *E=mc2* has the concept of *mass-energy equivalence* associated with it.
 
-# \>>AnnoMathTeX<<
 
+# \>>AnnoMathTeX<<
 AnnoMathTeX is a LaTeX text and formula annotation recommendation tool for STEM documents. 
 It allows users to annotate identifiers contained in mathematical formulae, as well as the entire formula contained in a document with their corresponding concept. 
 Theses concepts are extracted from a number of different sources.
