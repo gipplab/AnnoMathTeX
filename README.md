@@ -7,14 +7,14 @@ Since mathematical formulae contain a lot of important information, they should 
 ### Definitions
 
 ##### Identifier
-Identifiers in mathematical formulae are the meanings attached to symbols contained in the expression. The identifier *E* means *energy* in the formula *E=mc2*.
+Identifiers in mathematical formulae are the meanings attached to symbols contained in the expression. The identifier *E* means "*energy*" in the formula *E=mc2*.
 
 ##### Formula Concept
-The concept of a formula is the meaning that is associated with it. The formula *E=mc2* has the concept of *mass-energy equivalence* associated with it.
+The concept of a formula is the meaning that is associated with it. The formula *E=mc2* has the concept of "*mass-energy equivalence*" associated with it.
 
 
 # \>>AnnoMathTeX<<
-AnnoMathTeX is a LaTeX text and formula annotation recommendation tool for STEM documents. 
+AnnoMathTeX is a standalone LaTeX text and formula annotation recommendation tool for STEM documents. 
 It allows users to annotate identifiers contained in mathematical formulae, as well as the entire formula contained in a document with their corresponding concept. 
 Theses concepts are extracted from a number of different sources.
 
@@ -35,9 +35,9 @@ The recommendations for the concepts are taken from four different sources:
 * Wikidata: A Sparql query to the [Wikidata Query Services API](https://query.wikidata.org) retrieves a list of matching [wikidata items](https://en.wikipedia.org/wiki/Wikidata#Items).
 * Word Window: Nouns and proper nouns from the text surrounding the formula. The idea being, that the text surrounding the formula will often explain the formula its parts. Consider this example from the Wikipedia article on the [Mass-energy equivalence](https://en.wikipedia.org/wiki/Mass–energy_equivalence):
    
-  *"In physics, **mass–energy equivalence** states that anything having **mass** has an equivalent amount of **energy** and vice versa, with these fundamental quantities directly relating to one another by Albert Einstein's famous formula:*
+  "*In physics, **mass–energy equivalence** states that anything having **mass** has an equivalent amount of **energy** and vice versa, with these fundamental quantities directly relating to one another by Albert Einstein's famous formula:*
 
-  *E=mc^2"*
+  *E=mc^2*"
   
   The sentence directly preceding the formula, contains the word *"**mass**"*, which corresponds to the identifier *"m"* and the word *"**energy**"*, which corresponds to the identifier *"E"*. Furthermore, *"**mass–energy equivalence**"* describes the meaning of the entire formula.
  
@@ -72,9 +72,6 @@ What makes your project stand out? Include logo/demo screenshot etc.
 
 Visualize an overview of the different components/modules of the system as well as the workflow and describe the individual parts
 
-## Very Short Code Examples
-
-Show what the library does as **concisely** as possible, developers should be able to figure out **how** your project solves their problem by looking at the code example. Make sure the API you are showing off is obvious, and that your code is short and concise. See the [news-please project](https://github.com/fhamborg/news-please/blob/master/README.md#use-within-your-own-code-as-a-library) for example.
 
 ## Getting Started
 
@@ -142,14 +139,25 @@ To annotate an identifier, simply click on the highlighted character (e.g. "E") 
 To select one of the suggested recommendations, select the matching cell, and it will be highlighted (along with all other mathcing cells from different sources).
 The annotated identifier will be highlighted in a different colour, and a table holding all the annotations is constructed at the top of the document.
 If you click a highlighted cell, your annotation will be reversed. 
+If none of the recommendations match, select the "*no match*" button at the top of the table.
+![](https://github.com/philsMINT/AnnoMathTeX/blob/master/media/no_match.gif)
+
 
 ### Types of Annotations
 Two different types of annotations are possible: A global annotation, and a local annotation. 
 
+#### Global Annotation
+By default the anotation mode is set to global annotation. This means that if you anntotate e.g. the identifier *E* with "*energy*", all occurences of this identifier in the document will receive this annotation.
 
+#### Local annotation
+To annotate an identifier locally (meaning that only this occurence of the Identifier will be annotated), select the "*local*" option at the top of the table.
+![](https://github.com/philsMINT/AnnoMathTeX/blob/master/media/local.gif)
 
 
 ## Results
+
+
+
 
 If you are about to complete your project, include your preliminary results that you also show in your final project presentation, e.g., precision/recall/F1 measure and/or figures highlighting what your project does with input data. If applicable, at first briefly describe the dataset your created/use and the use cases.
 
