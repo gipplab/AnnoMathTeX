@@ -96,7 +96,7 @@ pip install -r requirements.txt
 
 
 
-End with an example of getting some data out of the system or using it for a little demo
+<!--End with an example of getting some data out of the system or using it for a little demo-->
 
 <!--## API Reference
 
