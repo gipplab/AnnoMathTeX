@@ -73,8 +73,9 @@ What makes your project stand out? Include logo/demo screenshot etc.-->
 
 ## Components/Modules/Workflow
 
-Visualize an overview of the different components/modules of the system as well as the workflow and describe the individual parts
-
+<p align="center">
+  <img src="https://github.com/philsMINT/AnnoMathTeX/blob/master/media/overview.png"/>
+</p>
 
 ## Getting Started
 
