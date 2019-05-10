@@ -1,11 +1,12 @@
 # Introduction
 
 Mathematical formulae are a significant part of scientific documents, books and web pages in the fields of science, technology, engineering and mathematics (STEM). 
-In current information retrieval approaches connected with textual data, mathematical formulae are not considered, even though they are very common in texts within STEM fields.
+In current information retrieval approaches mathematical formulae are not considered, even though they are very common in texts within STEM fields.
 Since mathematical formulae contain a lot of important information, they should not be ignored when comparing documents.
 Currently, there is no large enough labeled dataset containing mathematical formulae annotated with their semantics available, that could be used to train machine learning models. 
-\>>AnnoMathTeX<< offers a first approach to facilitate the annotation of mathematical formulae in STEM documents, by recommending the concept associated to a certain identifier of formula to the user who is annotating the 
-document and thus creating a labeled dataset of identifiers and formula concepts in the process.
+\>>AnnoMathTeX<< offers a first approach to facilitate the annotation of mathematical formulae in STEM documents.
+It recommends the concept associated to a certain identifier of formula to the user who is annotating the 
+document and thus creates a labeled dataset of identifiers and formula concepts in the process.
 
 
 ### Definitions
@@ -18,7 +19,7 @@ The concept of a formula is the meaning that is associated with it. The formula 
 
 
 # \>>AnnoMathTeX<<
-AnnoMathTeX is a standalone LaTeX text and formula annotation recommendation tool for STEM documents. 
+AnnoMathTeX is a standalone LaTeX text and formula annotation recommendation tool for STEM documents, implemented in python and django. 
 It allows users to annotate identifiers contained in mathematical formulae, as well as the entire formula contained in a document with their corresponding concept from a list of suggested recommendations. 
 
 <!---The recommendations are extracted from a number of different sources.
@@ -26,7 +27,7 @@ It allows users to annotate identifiers contained in mathematical formulae, as w
 ([Wikidata](https://www.wikidata.org) being one of them, in which case the selected token is annotated
 with the [Wikidata QID](https://en.wikipedia.org/wiki/Wikidata#Items).)--->
 
-## Motivation
+<!---## Motivation--->
 
 
 <!--- Maybe exclude this? --->
@@ -42,15 +43,16 @@ The recommendations for the concepts are taken from four different sources:
   
   The sentence directly preceding the formula, contains the word *"**mass**"*, which corresponds to the identifier *"m"* and the word *"**energy**"*, which corresponds to the identifier *"E"*. Furthermore, *"**mass–energy equivalence**"* describes the meaning of the entire formula.
  
-The vision for >>AnnoMathTeX<< is that it will enable the creation of a large and labeled dataset of identifiers and formulae with their corresponding concepts.
-This dataset could be used to train models for all sorts of recommendation and recognition tasks involving mathematical symbols.
-## Features
+<!---The vision for >>AnnoMathTeX<< is that it will enable the creation of a large and labeled dataset of identifiers and formulae with their corresponding concepts.
+This dataset could be used to train models for all sorts of recommendation and recognition tasks involving mathematical symbols.--->
 
-What makes your project stand out? Include logo/demo screenshot etc.
+<!--## Features
+
+What makes your project stand out? Include logo/demo screenshot etc.-->
 
 
 
-### Include:
+<!---### Include:
 * annotations saved and possible to reload later
   * enables saving and reloading
   * multiple people working on same file at same time
@@ -67,7 +69,7 @@ What makes your project stand out? Include logo/demo screenshot etc.
   * which position the selected concept had in the column.
 * Randomized and anonymzed recommendation sources, or information shown to user.
 * 10 recommendations per source (less if 10 not present)
-* (recommended formats being .tex or .txt)
+* (recommended formats being .tex or .txt)--->
 
 ## Components/Modules/Workflow
 
@@ -80,15 +82,8 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+Python version >=3.6 is recommended. 
 
-Python version >=3.6 is recommended.
-Django 
-
-
-```
-Give examples
-```
 
 ### Installing
 
@@ -102,9 +97,10 @@ pip install -r requirements.txt
 
 End with an example of getting some data out of the system or using it for a little demo
 
-## API Reference
+<!--## API Reference
 
 Depending on the size of the project, if it is small and simple enough the reference docs can be added to the README. For medium size to larger projects it is important to at least provide a link to where the API reference docs live.
+-->
 
 ## Usage
 
@@ -199,9 +195,9 @@ The identifier "*f*" was annotated locally with "*function*", which was found in
 
 This project is licensed under the Apache License 2.0 - see the [LICENSE.md](LICENSE.md) file for details
 
-## Built With
+<!--## Built With
 
-* [Django](https://www.djangoproject.com) - The web framework used
+* [Django](https://www.djangoproject.com) - The web framework used-->
 
 ## Contributing
 
@@ -211,6 +207,7 @@ Please read [CONTRIBUTING.md](https://gist.github.com/AnnoMathTeX/contributing) 
 
 * Ian Mackerracher
 * Philipp Scharpf
+
 See also the list of [contributors](https://github.com/philsMINT/AnnoMathTeX/contributors) who participated in this project.
 
 ## Acknowledgments
