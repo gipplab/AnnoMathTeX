@@ -9,6 +9,11 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from .views.annotate_formula_view import FileUploadView
 
+from django.contrib.staticfiles.urls import static
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
+from .settings import common
+
 urlpatterns = [
     # Examples:
     # url(r'^blog/', include('blog.urls', namespace='blog')),
@@ -22,3 +27,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'', FileUploadView.as_view())
 ]
+
+urlpatterns += staticfiles_urlpatterns()
+urlpatterns += static(common.MEDIA_URL, document_root=common.MEDIA_ROOT)
+

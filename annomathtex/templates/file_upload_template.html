@@ -1,7 +1,17 @@
+
 {% block content %}
-    <form method="post" enctype="multipart/form-data">
+
+  <script>
+    console.log("{{ MEDIA_ROOT }}AnnoMathTeX_Emblem.png");
+  </script>
+
+  <img src="{{ MEDIA_URL }}AnnoMathTeX_Emblem.png">
+
+  <div style="text-align: center">
+    <form id="upload_form" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <input type="file" name="file">
         <button type="submit" name="file_submit">Upload</button>
     </form>
+  </div>
 {% endblock %}

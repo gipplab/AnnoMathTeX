@@ -1,4 +1,5 @@
 import os
+from ..settings.common import PROJECT_ROOT
 
 
 class ArXivEvaluationListHandler:
@@ -15,7 +16,8 @@ class ArXivEvaluationListHandler:
         Read the file containing the extacted arXiv identifiers.
         :return: The read file as a string, with some unnecessary characters removed.
         """
-        path = os.path.join(os.getcwd(), 'annomathtex', 'recommendation', 'evaluation_files', 'Evaluation_list_all.rtf')
+        #path = os.path.join(os.getcwd(), 'annomathtex', 'recommendation', 'evaluation_files', 'Evaluation_list_all.rtf')
+        path = os.path.join(PROJECT_ROOT, 'annomathtex', 'recommendation', 'evaluation_files', 'Evaluation_list_all.rtf')
         with open(path, 'r') as f:
             file = f.read()
         file = file.replace('\par', '\n')

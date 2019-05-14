@@ -1,6 +1,7 @@
 import os
 import json
 from ..config import recommendations_limit
+from ..settings.common import PROJECT_ROOT
 
 
 class WikipediaEvaluationListHandler:
@@ -16,7 +17,8 @@ class WikipediaEvaluationListHandler:
         Read the file containing the previously extacted Wikipedia identifiers.
         :return: The read file as a string.
         """
-        path = os.getcwd() + '/annomathtex/recommendation/evaluation_files/wikipedia_list.json'
+        #path = os.getcwd() + '/annomathtex/recommendation/evaluation_files/wikipedia_list.json'
+        path = os.path.join(PROJECT_ROOT, 'annomathtex', 'recommendation', 'evaluation_files', 'wikipedia_list.json')
         with open(path, 'r') as json_file:
             identifier_dict = json.load(json_file)
         return identifier_dict

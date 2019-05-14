@@ -2,6 +2,7 @@ import json
 import re
 import string
 import os
+from ...settings.common import PROJECT_ROOT
 
 
 class CustomMathEnvParser:
@@ -16,7 +17,9 @@ class CustomMathEnvParser:
         :param math_env: The math environment that is being parsed.
         """
         self.math_env = math_env
-        self.greek_letters_path = os.path.join(os.getcwd(), 'annomathtex', 'parsing', 'mathhandling', 'latex_math_symbols.json')
+        #self.greek_letters_path = os.path.join(os.getcwd(), 'annomathtex', 'parsing', 'mathhandling', 'latex_math_symbols.json')
+        self.greek_letters_path = os.path.join(PROJECT_ROOT, 'annomathtex', 'parsing', 'mathhandling',
+                                               'latex_math_symbols.json')
         self.greek_letters_path_testing = os.path.join(os.getcwd(), 'latex_math_symbols.json')
 
     def load_math_symbols(self, path):
