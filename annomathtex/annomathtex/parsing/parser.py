@@ -70,10 +70,11 @@ class Parser(object, metaclass=ABCMeta):
         :return: Dictionary of existing annoations.
         """
         annotation_file_name = create_annotation_file_name(self.file_name)
+        file_path = os.path.join(evaluation_annotations_path, annotation_file_name)
         print('READ ANNOTATOIN FILE: ', annotation_file_name)
         print('IN: ', listdir(evaluation_annotations_path))
         if annotation_file_name in listdir(evaluation_annotations_path):
-            with open(evaluation_annotations_path + annotation_file_name, 'r') as f:
+            with open(file_path, 'r') as f:
                 json_annotations =json.load(f)
             self.__LOGGER__.debug('ANNOTATIONS: {}'.format(json_annotations))
             return json_annotations

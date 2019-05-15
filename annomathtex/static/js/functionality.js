@@ -24,7 +24,7 @@ var formulaColorBasic = '#ffa500';
 var annotatedColor = '#04B404';
 var noMatchIdentifierColor = '#2b332f';
 
-var nmStr = 'no match';
+var nmStr = '-';
 var blockMatch = false;
 
 //var identifierColorAnnotated = '#F88000';
@@ -135,7 +135,7 @@ function populateTable(random=true) {
                       [wikidataResults, 'Wikidata'],
                       [wordWindow, 'WordWindow']];
 
-    var table= "<table><tr><td>Source 0</td><td>Source 1</td><td>Source 2</td><td>Source 3</td></tr>";
+    var table= "<table><tr><td>Source 1</td><td>Source 2</td><td>Source 3</td><td>Source 4</td></tr>";
     //var table= "<table><tr><td>arXiv</td><td>Wikipedia</td><td>Wikidata</td><td>WordWindow</td></tr>";
 
     if (preservedResultList != null) {
@@ -145,7 +145,7 @@ function populateTable(random=true) {
                                     [wikipediaEvaluationItems, 'Wikipedia'],
                                     [wikidataResults, 'Wikidata'],
                                     [wordWindow, 'WordWindow']]);
-        var table= "<table><tr><td>Source 0</td><td>Source 1</td><td>Source 2</td><td>Source 3</td></tr>";
+        var table= "<table><tr><td>Source 1</td><td>Source 2</td><td>Source 3</td><td>Source 4</td></tr>";
     }
 
     preservedResultList = resultList;
