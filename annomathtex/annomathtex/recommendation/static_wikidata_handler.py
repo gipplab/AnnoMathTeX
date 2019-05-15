@@ -1,6 +1,7 @@
 import os
 import json
 from ..config import recommendations_limit
+from ..settings.common import PROJECT_ROOT
 
 
 
@@ -18,7 +19,8 @@ class StaticWikidataHandler:
         Read the json file containing the static list of wikidata identifiers, that was extracted before.
         :return: The read file as a dictionary.
         """
-        path = os.path.join(os.getcwd(), 'annomathtex', 'recommendation', 'evaluation_files', 'wikidata.json')
+        #path = os.path.join(os.getcwd(), 'annomathtex', 'recommendation', 'evaluation_files', 'wikidata.json')
+        path = os.path.join(PROJECT_ROOT, 'annomathtex', 'recommendation', 'evaluation_files', 'wikidata.json')
         with open(path, 'r') as infile:
             all_results = json.load(infile)
         return all_results
