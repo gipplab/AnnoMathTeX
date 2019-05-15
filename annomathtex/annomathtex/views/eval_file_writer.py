@@ -1,5 +1,6 @@
 import csv
 import os
+from io import StringIO
 from ..config import evaluation_annotations_path, create_evaluation_file_path, create_evaluation_file_name
 
 
@@ -107,6 +108,18 @@ class EvalFileWriter:
             csv_writer.writerow(header)
             for row in all_rows:
                 csv_writer.writerow(row)
+
+
+    def get_csv_for_repo(self):
+        """
+        Create a csv file of the evaluation as a string for adding to the github repository ("ag-gipp/dataAnnoMathTex")
+        :return: csv as string
+        """
+        all_rows = self.handle_local() + self.handle_global()
+        f = StringIO()
+        csv.writer(f).writerows(all_rows)
+        return f.getvalue()
+
 
 
 

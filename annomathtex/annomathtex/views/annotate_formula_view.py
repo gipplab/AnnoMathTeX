@@ -21,6 +21,7 @@ from ..recommendation.math_sparql import MathSparql
 from ..recommendation.ne_sparql import NESparql
 
 from ..views.eval_file_writer import EvalFileWriter
+from ..views.data_repo_handler import DataRepoHandler
 from ..config import *
 
 
@@ -233,8 +234,16 @@ class FileUploadView(View):
             __LOGGER__.debug(' WRITING TO FILE {}'.format(annotation_file_path))
             json.dump(__ANNOTATED__, f)
 
+        #eval_file_writer = EvalFileWriter(annotated, file_name)
+        #eval_file_writer.write()
+
         eval_file_writer = EvalFileWriter(annotated, file_name)
-        eval_file_writer.write()
+        csv_string = eval_file_writer.get_csv_for_repo()
+        data_repo_handler = DataRepoHandler()
+        data_repo_handler.commit_file(file_name, csv_string)
+
+
+
 
         return HttpResponse(
             json.dumps({'testkey': 'testvalue'}),
