@@ -29,6 +29,8 @@ var blockMatch = false;
 
 //var identifierColorAnnotated = '#F88000';
 
+
+
 function createCell(item, source, rowNum) {
     /*
     The cells, that populate the table in the popup modal are created in this method.
@@ -85,6 +87,7 @@ function createCell(item, source, rowNum) {
 
 
 function checkNoMatch() {
+    //todo
     /*
     Check, whether the user has selected the "No Match" button. This entails, that no other annotations are possible for
     this identifier (unless the "No Match" option is deselected).
@@ -116,11 +119,7 @@ function populateTable(random=true) {
     source, which is important for the evaluation)
      */
 
-    if (blockMatch){
-        document.getElementById('noMatch').style.color = cellColorSelectedGlobal;
-    } else {
-        document.getElementById('noMatch').style.color = 'black';
-    }
+
 
 
     window.sourcesWithNums = {};
@@ -217,12 +216,17 @@ function setBasicColor(id) {
     /*
     Set the color of tokens back to basic, if the user changed his mind.
      */
+
+    console.log(id);
+
     if (tokenType == 'Identifier') {
         document.getElementById(id).style.color = identifierColorBasic;
     } else if (tokenType == 'Formula'){
         document.getElementById(id).style.color = formulaColorBasic;
     }
 }
+
+
 
 
 function handleNoMatch(){
@@ -234,8 +238,58 @@ function handleNoMatch(){
     This method is also called if the user deselects the "No Match" button, i.e. if he found a matching recommendation
     after all.
      */
+
+    var name = document.getElementById('noMatchInput').value;
+
+    blockMatch = true;
+    var local = document.getElementById('localSwitch').checked;
+    if (local) {
+        if (tokenContent in annotated['local']){
+            annotated['local'][tokenContent][id] = {
+                'name': name,
+                'mathEnv': mathEnv,
+                'source': 'user',
+                'rowNum': '-',
+                'sourcesWithNums': {}
+            }
+        } else {
+            annotated['local'][tokenContent] = {};
+            annotated['local'][tokenContent][name] = {
+                'name': name,
+                'mathEnv': mathEnv,
+                'source': 'user',
+                'rowNum': '-',
+                'sourcesWithNums': {}
+            }
+        }
+    } else {
+        annotated['global'][tokenContent] = {
+        'name': name,
+        //'wikidataInf': wikidataReference[qid],
+        'uniqueIDs': [],
+        'sourcesWithNums': {}
+        };
+    }
+
+    populateTable();
+    fillAnnotationsTable();
+    console.log(annotated);
+
+}
+
+
+
+
+function handleNoMatchOld(){
+    /*
+    The "No Match" button was clicked: The user did not find any of the recommendations to be fitting.
+    This means that this information has to be added to the "annotated" dictionary, which will later be written to the
+    evaluation csv file, along with the other annotations.
+
+    This method is also called if the user deselects the "No Match" button, i.e. if he found a matching recommendation
+    after all.
+     */
     if (document.getElementById('noMatch').style.color == 'black') {
-        console.log('true');
         document.getElementById('noMatch').style.color = cellColorSelectedGlobal;
         //document.getElementById(uniqueID).style.color = noMatchIdentifierColor;
         blockMatch = true;
@@ -404,6 +458,7 @@ function selected(argsString){
         }
     }
     fillAnnotationsTable();
+    console.log(annotated);
 }
 
 

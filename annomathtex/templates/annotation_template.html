@@ -27,7 +27,18 @@
   <div class="modal-content">
     <span class="close" id="span">&times;</span>
     <label><input id="localSwitch" type="checkbox" >Local</label>
-    <button id="noMatch" onclick="handleNoMatch()" style="color: black;">No Match</button>
+
+    <br>
+
+    <div>
+      <label for="noMatchInput">Suggestion: </label>
+      <input type="text" id="noMatchInput" required size="20" placeholder="Name" minlength="3" maxlength="20">
+      <!--<span class="validity"></span>-->
+      <button id="noMatchSubmit">Submit</button>
+    </div>
+
+
+
     <p id="highlightedText"></p>
     <div id="tableholder"></div>
   </div>
@@ -40,6 +51,12 @@
   var fileName = "{{ File.file_name|escapejs }}";
   linkTokens(linked_words, linked_math_symbols);
   handleFileName(fileName);
+
+  $("#noMatchSubmit").on('click', function (event) {
+    event.preventDefault();
+    handleNoMatch();
+  })
+
 </script>
 
 
