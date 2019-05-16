@@ -242,35 +242,42 @@ function handleNoMatch(){
     var name = document.getElementById('noMatchInput').value;
 
     blockMatch = true;
-    var local = document.getElementById('localSwitch').checked;
-    if (local) {
-        if (tokenContent in annotated['local']){
-            annotated['local'][tokenContent][id] = {
-                'name': name,
-                'mathEnv': mathEnv,
-                'source': 'user',
-                'rowNum': '-',
-                'sourcesWithNums': {}
+
+    function addToAnnotated(id) {
+        var local = document.getElementById('localSwitch').checked;
+        if (local) {
+            if (tokenContent in annotated['local']){
+                annotated['local'][tokenContent][id] = {
+                    'name': name,
+                    'mathEnv': mathEnv,
+                    'source': 'user',
+                    'rowNum': '-',
+                    'sourcesWithNums': {}
+                }
+            } else {
+                annotated['local'][tokenContent] = {};
+                annotated['local'][tokenContent][id] = {
+                    'name': name,
+                    'mathEnv': mathEnv,
+                    'source': 'user',
+                    'rowNum': '-',
+                    'sourcesWithNums': {}
+                }
             }
         } else {
-            annotated['local'][tokenContent] = {};
-            annotated['local'][tokenContent][name] = {
-                'name': name,
-                'mathEnv': mathEnv,
-                'source': 'user',
-                'rowNum': '-',
-                'sourcesWithNums': {}
-            }
+            annotated['global'][tokenContent] = {
+            'name': name,
+            //'wikidataInf': wikidataReference[qid],
+            'uniqueIDs': [id],
+            'sourcesWithNums': {}
+            };
         }
-    } else {
-        annotated['global'][tokenContent] = {
-        'name': name,
-        //'wikidataInf': wikidataReference[qid],
-        'uniqueIDs': [],
-        'sourcesWithNums': {}
-        };
     }
 
+    addToAnnotated(uniqueID);
+    setAnnotatedColor(uniqueID);
+    handleLinkedTokens(addToAnnotated);
+    handleLinkedTokens(setAnnotatedColor);
     populateTable();
     fillAnnotationsTable();
     console.log(annotated);
