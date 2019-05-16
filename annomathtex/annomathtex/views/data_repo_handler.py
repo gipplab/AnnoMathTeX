@@ -28,15 +28,6 @@ class DataRepoHandler:
         return
 
 
-if __name__ == '__main__':
-    """
-    For testing purposes
-    """
-    from .key import token
-    d = DataRepoHandler(token)
-    d.commit_file('test.txt', 'test commit', 'test content')
-
-
 
 
 

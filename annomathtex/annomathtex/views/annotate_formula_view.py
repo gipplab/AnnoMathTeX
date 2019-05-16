@@ -1,6 +1,7 @@
 import json
 import logging
 import pickle
+import re
 
 from django.shortcuts import render
 from django.views.generic import View
@@ -240,6 +241,7 @@ class FileUploadView(View):
         eval_file_writer = EvalFileWriter(annotated, file_name)
         csv_string = eval_file_writer.get_csv_for_repo()
         data_repo_handler = DataRepoHandler()
+        file_name = re.sub(r'\..*', '.csv', file_name)
         data_repo_handler.commit_file(file_name, csv_string)
 
 
