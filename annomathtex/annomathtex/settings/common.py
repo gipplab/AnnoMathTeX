@@ -15,14 +15,19 @@ PROJECT_ROOT = dirname(DJANGO_ROOT)
 SITE_NAME = basename(DJANGO_ROOT)
 
 # collect static evaluation_files here
-STATIC_ROOT = join(PROJECT_ROOT, 'run', 'static')
+#STATIC_ROOT = join(PROJECT_ROOT, 'run', 'static')
+
+STAT = join(PROJECT_ROOT, 'static')
 
 # collect media evaluation_files here
 MEDIA_ROOT = join(PROJECT_ROOT, 'run', 'media')
 
 # look for static assets here
+# the URL for static evaluation_files
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    join(PROJECT_ROOT, 'static'),
+    #join(PROJECT_ROOT, 'static'),
+    STAT
 ]
 
 # look for templates here
@@ -104,8 +109,6 @@ WSGI_APPLICATION = '%s.wsgi.application' % SITE_NAME
 # the root URL configuration
 ROOT_URLCONF = '%s.urls' % SITE_NAME
 
-# the URL for static evaluation_files
-STATIC_URL = '/static/'
 
 # the URL for media evaluation_files
 MEDIA_URL = '/media/'

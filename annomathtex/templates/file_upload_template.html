@@ -1,17 +1,40 @@
+{% load staticfiles %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AnnoMathTex</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/uploadstyle.css' %}">
+</head>
+
+<!--<div class="hero flex-center">
+  <div class="hero-message">
+    <h1 class="hero-title">TITLE hereee</h1>
+  </div>
+</div>-->
+
+
 
 {% block content %}
 
-  <script>
-    console.log("{{ MEDIA_ROOT }}AnnoMathTeX_Emblem.png");
-  </script>
 
-  <img src="{{ MEDIA_URL }}AnnoMathTeX_Emblem.png">
-
-  <div style="text-align: center">
-    <form id="upload_form" method="post" enctype="multipart/form-data">
+  <div class="hero flex-center">
+    <form class="hero-message" id="upload_form" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <input type="file" name="file">
-        <button type="submit" name="file_submit">Upload</button>
+        <div class="hero-title">
+          <input type="file" name="file">
+          <button type="submit" name="file_submit">Upload</button>
+        </div>
+
     </form>
   </div>
+
+
 {% endblock %}
+
+
+
+</body>
+</html>
