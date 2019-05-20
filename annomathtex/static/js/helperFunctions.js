@@ -10,7 +10,7 @@ String.prototype.format = function() {
       a = a.replace("{" + k + "}", arguments[k])
     }
     return a
-}
+};
 
 //better way to get the type of object
 var toType = function(obj) {
@@ -32,7 +32,7 @@ function getCookie(c_name)
         }
     }
     return "";
- };
+ }
 
 
 //from: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
@@ -53,4 +53,35 @@ function shuffle(array) {
   }
 
   return array;
-};
+}
+
+
+function getLocalUniqueIDs(){
+    var uniqueIDs = [];
+    for (var token in annotations['local']) {
+        for (uniqueID in annotations['local'][token]) {
+            uniqueIDs.push(uniqueID);
+        }
+    }
+    return uniqueIDs;
+}
+
+function getGlobalUniqueIDs() {
+    var uniqueIDs = new Array();
+    for (var token in annotations['global']) {
+        var tmpIDs = annotations['global'][token]['uniqueIDs'];
+        uniqueIDs = uniqueIDs.concat(tmpIDs);
+    }
+    return uniqueIDs;
+}
+
+
+function getLinkedIDs(content) {
+    var uIDs = [];
+    if (content in linkedMathSymbols) {
+        for (var i in linkedMathSymbols[content]) {
+            uIDs.push(linkedMathSymbols[content][i]);
+        }
+    }
+    return uIDs;
+}

@@ -120,8 +120,6 @@ function populateTable(random=true) {
      */
 
 
-
-
     window.sourcesWithNums = {};
 
     arXivEvaluationItems = jsonResults['arXivEvaluationItems'];
@@ -527,9 +525,13 @@ function deleteFromAnnotated(argsString) {
     if (local) {
         var uID = argsArray[3];
         setBasicColor(uID);
+        console.log(uID);
         delete annotated['local'][token][uID];
     } else {
         uniqueIDs = argsArray[3].split(',');
+
+        console.log(uniqueIDs);
+
         for (i in uniqueIDs) {
             setBasicColor(uniqueIDs[i]);
 
@@ -606,6 +608,7 @@ function handleAnnotations(existing_annotations){
         - The tokens that were annotated are colored accordingly.
      */
     json = JSON.parse(existing_annotations)['existingAnnotations'];
+    console.log(json);
     if (json != null){
 
         var existingAnnotationsGlobal = json['global'];

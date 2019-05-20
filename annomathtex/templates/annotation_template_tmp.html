@@ -1,0 +1,117 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AnnoMathTex</title>
+
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script type="text/javascript" src="{% static 'js/helperFunctions.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/posting.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/rendering.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/annotating.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/mystyle.css' %}">
+
+  <script>
+    var tokenContent;
+    var uniqueID;
+    var mathEnv;
+    var recommendations;
+    var annotations = {};
+    var linkedWords = JSON.parse("{{ File.linked_words|escapejs }}")['linkedWords'];
+    var linkedMathSymbols = JSON.parse("{{ File.linked_math_symbols|escapejs }}")['linkedMathSymbols'];
+    var fileName = "{{ File.file_name|escapejs }}";
+    var tokenUniqueId;
+    var preservedResultList;
+    var sourceWithNums = {};
+  </script>
+</head>
+<body>
+
+<form method="POST" id="post-form">
+    {% csrf_token %}
+    <button type="submit" name="post-form-submit2" >Save</button>
+</form>
+
+<div id="annotationsHolder"></div></br>
+
+<div id="popupModal" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close" id="span">&times;</span>
+    <label><input id="localSwitch" type="checkbox" >Local</label>
+    <br>
+    <div>
+      <label for="noMatchInput">Suggestion: </label>
+      <input type="text" id="noMatchInput" required size="20" placeholder="Name" minlength="3" maxlength="20">
+      <!--<span class="validity"></span>-->
+      <button id="noMatchSubmit">Submit</button>
+    </div>
+    <p id="highlightedText"></p>
+    <div id="tableholder"></div>
+  </div>
+</div>
+
+
+<script>
+  $("#noMatchSubmit").on('click', function (event) {
+    event.preventDefault();
+    handleNoMatch();
+  })
+
+</script>
+
+
+{% for Line in File.body %}
+    <div>
+        {% for Token in Line %}
+          {% if not Token.content == None %}
+            <span
+              class="inline"
+              id="{{ Token.unique_id }}"
+              style="color: {{ Token.highlight }};"
+            >
+                {{ Token.content }}
+            </span>
+
+            <script>
+              //this part of js has to be in the loop, otherwise the unique_id will be lost
+              //try catch not working yet, error happens when a backslash is in the text part
+                $("#{{ Token.unique_id }}").on('click', function (event) {
+                  event.preventDefault();
+                  console.log('wikidata query sent out');
+
+                  var jsonContent = "{{ Token.json_content|escapejs }}";
+                  var jsonMathEnv = "{{ Token.json_math_env|escapejs  }}";
+
+
+                  try {
+                    clickToken(jsonContent,
+                              jsonMathEnv,
+                              "{{ Token.unique_id }}",
+                              "{{ Token.type }}"
+                              );
+                  } catch (e) {
+                    console.log(e);
+                  }
+                });
+            </script>
+
+          {% endif %}
+          {% if Token.endline %}
+              </br>
+          {% endif %}
+        {% endfor %}
+    </div>
+{% endfor %}
+
+
+<script>
+    var existingAnnotations = "{{ File.existing_annotations|escapejs }}";
+    handleExistingAnnotations(existingAnnotations);
+</script>
+
+</body>
+</html>
