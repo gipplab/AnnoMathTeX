@@ -195,8 +195,8 @@ class FileUploadView(View):
 
 
             return render(request,
-                          #'annotation_template.html',
-                          'annotation_template_tmp.html',
+                          'annotation_template.html',
+                          #'annotation_template_tmp.html',
                           {'File': processed_file})
 
 

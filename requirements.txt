@@ -18,3 +18,4 @@ regex==2018.1.10
 jquery_unparam==2.0.0
 TeXSoup==0.1.4
 SPARQLWrapper==1.8.2
+PyGithub==1.43.7
