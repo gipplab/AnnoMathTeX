@@ -47,6 +47,8 @@ function addToAnnotations(uID, name, source, rowNum, noMatch=false, uIDs = null)
         }
     } else {
 
+        console.log(tokenContent);
+
         annotations['global'][tokenContent] = {
         'name': name,
         'uniqueIDs': uIDs,

@@ -46,6 +46,9 @@ function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
     var content = JSON.parse(jsonContent)['content'];
     var mathEnv = JSON.parse(jsonMathEnv)['math_env'];
 
+    //todo: unify content & tokenContent
+    tokenContent = content;
+
 
     //Display the selected token in the element "highlightedText".
     //If the clicked token is the delimiter of a math environment (entire formula), the presented text will be the
@@ -60,10 +63,38 @@ function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
 
 
 
-    recommendations = getRecommendations(content, mathEnv, tokenType, tokenUniqueId);
-    populateTable();
+    let data_dict = { the_post : $("#" + tokenUniqueId).val(),
+                  'csrfmiddlewaretoken': getCookie("csrftoken"),
+                  'queryDict': content,
+                  'tokenType': tokenType,
+                  'mathEnv': mathEnv,
+                  'uniqueId': tokenUniqueId
+                  };
 
 
+    $.ajax({
+      url : "file_upload/", // the endpoint
+      type : "POST", // http method
+      data : data_dict, // data sent with the post request
 
+      //successful response
+      success : function(json) {
+          $("#" + tokenUniqueId).val(''); // remove the value from the input
+          window.jsonResults = json;
+          recommendations = json;
+          switch (tokenType) {
+              case 'Identifier':
+                  populateTable();
+                  break;
+          }
+      },
+
+      //non-successful response
+      error : function(xhr,errmsg,err) {
+          $('#results').html("<div class='alert-box alert radius' data-alert>error: "+errmsg+
+              " <a href='#' class='close'>&times;</a></div>");
+          console.log(xhr.status + ": " + xhr.responseText);
+      }
+    });
 }
 

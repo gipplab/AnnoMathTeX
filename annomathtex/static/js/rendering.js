@@ -4,7 +4,7 @@ var cellColorSelectedLocal = 'blue';
 
 var identifierColorBasic = '#c94f0c';
 var formulaColorBasic = '#ffa500';
-var annotatedColor = '#04B404';
+var annotationsColor = '#04B404';
 
 
 /*
@@ -13,10 +13,11 @@ Setting colours
 
 function setAnnotatedColor(uIDs) {
     /*
-    Set the color of annotated tokens.
+    Set the color of annotations tokens.
      */
+    //console.log(uIDs);
     for (var i=0 in uIDs) {
-        document.getElementById(uIDs[i]).style.color = annotatedColor;
+        document.getElementById(uIDs[i]).style.color = annotationsColor;
     }
 }
 
@@ -46,7 +47,7 @@ function setCellColorSelectedGlobal(cellID) {
 Rendering of table in popup modal
  */
 
-function populateTable(random=true) {
+function populateTable(random=false) {
     /*
     The entire table, containing the recommendations, that is shown to the user in the popup modal is created as html
     code in this function. The function createCell() is called upon, to create the individual cells in the table.
@@ -54,7 +55,6 @@ function populateTable(random=true) {
     random: The sources are shuffled and anonymized (The user does not know which recommendations come from which
     source, which is important for the evaluation)
      */
-
 
     sourcesWithNums = {};
 
@@ -79,8 +79,6 @@ function populateTable(random=true) {
     } else {
         var table= "<table><tr><td>arXiv</td><td>Wikipedia</td><td>Wikidata</td><td>WordWindow</td></tr>";
     }
-
-    preservedResultList = resultList;
 
 
     var source0 = resultList[0][0];
@@ -138,13 +136,15 @@ function createCell(item, source, rowNum) {
     var name = item['name'];
     var backgroundColor = cellColorBasic;
     var containsHighlightedName = false;
-    if (tokenContent in tokenAssignedItemGlobal && tokenAssignedItemGlobal[tokenContent] == name){
-        backgroundColor = cellColorSelectedGlobal;
-        containsHighlightedName = true;
+    if (tokenContent in annotations['global']) {
+        if (annotations['global'][tokenContent]['name'] == name) {
+            backgroundColor = cellColorSelectedGlobal;
+            containsHighlightedName = true;
+        }
 
-    } else if (tokenContent in annotated['local']) {
-        if (uniqueID in annotated['local'][tokenContent]) {
-            if (annotated['local'][tokenContent][uniqueID]['name'] == name) {
+    } else if (tokenContent in annotations['local']) {
+        if (uniqueID in annotations['local'][tokenContent]) {
+            if (annotations['local'][tokenContent][uniqueID]['name'] == name) {
                 backgroundColor = cellColorSelectedLocal;
             } else {
                 backgroundColor = cellColorBasic;
@@ -227,25 +227,25 @@ function selected(argsString){
                 //tokenAssignedItemGlobal[tokenContent] = name;
 
                 if (tokenContent in annotations['global']) {
-                    deleteGlobalAnnotation();
+                    deleteGlobalAnnotation(tokenContent);
                 }
 
                 var uIDs = getLinkedIDs(tokenContent);
                 addToAnnotations(uniqueID, name, source, rowNum, false, uIDs);
                 //todo: check if uniqueID is already contained
-                setAnnotatedColor(uIDs + [uniqueID]);
+                //setAnnotatedColor(uIDs + [uniqueID]);
+                setAnnotatedColor(uIDs.push(uniqueID));
                 break;
 
             case cellColorSelectedGlobal:
                 setCellColorBasic(cellID);
                 //todo: check if uniqueID is already contained
-                var uIDs = annotated['global'][tokenContent]['uniqueIDs'] + uniqueID;
+                var uIDs = annotations['global'][tokenContent]['uniqueIDs'] + uniqueID;
                 setBasicColor(uIDs);
                 deleteGlobalAnnotation(tokenContent);
                 break;
         }
     }
-
     populateTable();
     renderAnnotationsTable();
 }

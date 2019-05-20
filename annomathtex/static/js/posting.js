@@ -41,6 +41,7 @@ $(document).ready(function () {
 
 
 function getRecommendations(content, mathEnv, tokenType, tokenUniqueId) {
+    console.log('in getRec');
     let data_dict = { the_post : $("#" + tokenUniqueId).val(),
           'csrfmiddlewaretoken': getCookie("csrftoken"),
           'queryDict': content,
@@ -58,6 +59,7 @@ function getRecommendations(content, mathEnv, tokenType, tokenUniqueId) {
       //successful response
       success : function(json) {
           $("#" + tokenUniqueId).val(''); // remove the value from the input
+          console.log('in success');
           return json;
       },
 
