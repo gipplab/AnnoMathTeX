@@ -80,7 +80,9 @@ class Tagger(object, metaclass=ABCMeta):
         :return: A list of the processed line (or sentence).
         """
         word_tokens = self.get_tags(line)
-        colour = '#973c97'
+        #colour = '#973c97'
+        # NEs currently not highlighted
+        colour = "black";
         words = []
 
         try:

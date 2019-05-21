@@ -2,7 +2,7 @@ import os
 import urllib3
 urllib3.disable_warnings()
 from github import Github
-
+from .key import local_token
 
 
 class DataRepoHandler:
@@ -11,8 +11,9 @@ class DataRepoHandler:
         self.token = token
 
         if not token:
-            print('Token not set')
-            return
+            #print('Token not set')
+            self.token = local_token
+            #return
 
         self.g = Github(self.token)
         self.repo = self.g.get_repo("ag-gipp/dataAnnoMathTex")

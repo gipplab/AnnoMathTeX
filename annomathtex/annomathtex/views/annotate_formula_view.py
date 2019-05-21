@@ -236,15 +236,16 @@ class FileUploadView(View):
             __LOGGER__.debug(' WRITING TO FILE {}'.format(annotation_file_path))
             json.dump(__ANNOTATED__, f)
 
+        #eval_file_writer = EvalFileWriter(annotations, file_name)
+        #eval_file_writer.write()
+
+
         eval_file_writer = EvalFileWriter(annotations, file_name)
         eval_file_writer.write()
-
-
-        """eval_file_writer = EvalFileWriter(annotated, file_name)
         csv_string = eval_file_writer.get_csv_for_repo()
         data_repo_handler = DataRepoHandler()
         file_name = re.sub(r'\..*', '.csv', file_name)
-        data_repo_handler.commit_file(file_name, csv_string)"""
+        data_repo_handler.commit_file(file_name, csv_string)
 
 
 
