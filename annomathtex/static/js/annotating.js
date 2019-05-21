@@ -77,6 +77,7 @@ function deleteLocalAnnotation(token, uID) {
 
 function deleteGlobalAnnotation(token) {
     delete annotations['global'][token];
+    console.log(annotations);
 }
 
 function deleteFromAnnotations(argsString) {
@@ -110,8 +111,16 @@ function handleExistingAnnotations(existing_annotations) {
         uIDs = getLocalUniqueIDs().concat(getGlobalUniqueIDs());
         setAnnotatedColor(uIDs);
         renderAnnotationsTable();
-    } else {
-        annotations = {'global': {}, 'local': {}};
+    }
+    let g = 'global' in annotations;
+    let l = 'local' in annotations;
+
+    if (!g) {
+        annotations['global'] = {};
+    }
+
+    if (!l) {
+        annotations['local'] = {};
     }
 
 }

@@ -24,7 +24,6 @@ function setBasicColor(uIDs) {
     /*
     Set the color of tokens back to basic, if the user changed his mind.
      */
-    console.log(uIDs);
     for (var i=0 in uIDs) {
         document.getElementById(uIDs[i]).style.color = identifierColorBasic;
     }
@@ -77,9 +76,6 @@ function populateTable(random=false) {
     } else {
         var manual = recommendations['manual'];
     }
-
-
-    console.log(manual);
 
     var resultList = [[arXivEvaluationItems, 'ArXiv'],
                       [wikipediaEvaluationItems, 'Wikipedia'],
