@@ -11,8 +11,9 @@ function handleNoMatch(){
     var name = document.getElementById('noMatchInput').value;
     var uIDs = getLinkedIDs(tokenContent);
     addToAnnotations(uniqueID, name, 'user', '-', true, uIDs);
-
+    addToMannualRecommendations(name);
     var local = document.getElementById('localSwitch').checked;
+
     if (local) {
         setAnnotatedColor([uniqueID]);
     } else {
@@ -22,6 +23,23 @@ function handleNoMatch(){
     renderAnnotationsTable();
 }
 
+
+
+function addToMannualRecommendations(name) {
+    /*for (var i in recommendations['manual']) {
+        if (recommendations['manual'][i]['name'] == '') {
+            recommendations['manual'][i]['name'] = name;
+            return;
+        }
+    }
+    //no free spots, replace last item
+    recommendations['manual'][9]['name'] = name;*/
+    if (tokenContent in manualRecommendations){
+        manualRecommendations[tokenContent].push({'name': name});
+    } else {
+        manualRecommendations[tokenContent] = [{'name': name}];
+    }
+}
 
 
 function addToAnnotations(uID, name, source, rowNum, noMatch=false, uIDs = null) {

@@ -59,15 +59,25 @@ function populateTable(random=false) {
 
     sourcesWithNums = {};
 
-    arXivEvaluationItems = recommendations['arXivEvaluationItems'];
-    wikipediaEvaluationItems = recommendations['wikipediaEvaluationItems'];
-    wikidataResults = recommendations['wikidataResults'];
-    wordWindow = recommendations['wordWindow'];
+    let arXivEvaluationItems = recommendations['arXivEvaluationItems'];
+    let wikipediaEvaluationItems = recommendations['wikipediaEvaluationItems'];
+    let wikidataResults = recommendations['wikidataResults'];
+    let wordWindow = recommendations['wordWindow'];
+    //let manual = recommendations['manual'];
+    if (tokenContent in manualRecommendations) {
+        var manual = manualRecommendations[tokenContent];
+    } else {
+        var manual = recommendations['manual'];
+    }
+
+
+    console.log(manual);
 
     var resultList = [[arXivEvaluationItems, 'ArXiv'],
                       [wikipediaEvaluationItems, 'Wikipedia'],
                       [wikidataResults, 'Wikidata'],
-                      [wordWindow, 'WordWindow']];
+                      [wordWindow, 'WordWindow'],
+                      [manual, 'Manual']];
 
     if (preservedResultList) {
         resultList = preservedResultList;
@@ -76,24 +86,26 @@ function populateTable(random=false) {
                                     [wikipediaEvaluationItems, 'Wikipedia'],
                                     [wikidataResults, 'Wikidata'],
                                     [wordWindow, 'WordWindow']]);
-        var table= "<table><tr><td>Source 1</td><td>Source 2</td><td>Source 3</td><td>Source 4</td></tr>";
+        var table= "<table><tr><td>Source 1</td><td>Source 2</td><td>Source 3</td><td>Source 4</td><td>Source 5</td></tr>";
     } else {
-        var table= "<table><tr><td>arXiv</td><td>Wikipedia</td><td>Wikidata</td><td>WordWindow</td></tr>";
+        var table= "<table><tr><td>arXiv</td><td>Wikipedia</td><td>Wikidata</td><td>WordWindow</td><td>Manual</td></tr>";
     }
 
 
-    var source0 = resultList[0][0];
-    var source1 = resultList[1][0];
-    var source2 = resultList[2][0];
-    var source3 = resultList[3][0];
+    let source0 = resultList[0][0];
+    let source1 = resultList[1][0];
+    let source2 = resultList[2][0];
+    let source3 = resultList[3][0];
+    let source4 = resultList[4][0];
 
-    var name0 = resultList[0][1];
-    var name1 = resultList[1][1];
-    var name2 = resultList[2][1];
-    var name3 = resultList[3][1];
+    let name0 = resultList[0][1];
+    let name1 = resultList[1][1];
+    let name2 = resultList[2][1];
+    let name3 = resultList[3][1];
+    let name4 = resultList[4][1];
 
 
-    for (i = 0; i<10; i++) {
+    for (let i = 0; i<10; i++) {
         if (source0.length >= i && source0.length > 0){
             var tdSource0 = createCell(source0[i], name0, i);
         }
@@ -106,9 +118,11 @@ function populateTable(random=false) {
         if (source3.length >= i && source3.length > 0) {
             var tdSource3 = createCell(source3[i], name3, i);
         }
-        var tr = '<tr>' + tdSource0 + tdSource1 + tdSource2 + tdSource3 + '</tr>';
+        if (source4.length >= i && source4.length > 0) {
+            var tdSource4 = createCell(source4[i], name4, i);
+        }
+        let tr = '<tr>' + tdSource0 + tdSource1 + tdSource2 + tdSource3 + tdSource4 + '</tr>';
         table += tr;
-
     }
 
 
@@ -134,7 +148,12 @@ function createCell(item, source, rowNum) {
     /*
     The cells, that populate the table in the popup modal are created in this method.
      */
-    var name = item['name'];
+    if (item) {
+        var name = item['name'];
+    } else {
+        var name = '';
+    }
+
     var backgroundColor = cellColorBasic;
     var containsHighlightedName = false;
     if (tokenContent in annotations['global']) {

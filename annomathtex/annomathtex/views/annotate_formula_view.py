@@ -325,7 +325,8 @@ class FileUploadView(View):
             json.dumps({'wikidataResults': fill_to_limit(wikidata_results),
                         'arXivEvaluationItems': fill_to_limit(arXiv_evaluation_items),
                         'wikipediaEvaluationItems': fill_to_limit(wikipedia_evaluation_items),
-                        'wordWindow': fill_to_limit(word_window)}),
+                        'wordWindow': fill_to_limit(word_window),
+                        'manual': fill_to_limit([])}),
             content_type='application/json'
         )
 

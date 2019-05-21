@@ -83,6 +83,7 @@ function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
           $("#" + tokenUniqueId).val(''); // remove the value from the input
           window.jsonResults = json;
           recommendations = json;
+
           switch (tokenType) {
               case 'Identifier':
                   populateTable();
