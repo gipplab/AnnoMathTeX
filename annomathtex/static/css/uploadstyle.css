@@ -17,7 +17,7 @@ body {
     position: relative;
 }
 .hero::before {
-    background-image: url("AnnoMathTeX_Emblem.png");
+    background-image: url("background.png");
     background-size: cover;
     content: "";
     display: block;
@@ -102,36 +102,36 @@ body {
 }
 @media (min-width: 320px) {
     .hero::before {
-        background-image: url("AnnoMathTeX_Emblem.png");
+        background-image: url("background.png");
     }
 }
 @media (min-width: 460px) {
     .hero::before {
-        background-image: url("AnnoMathTeX_Emblem.png");
+        background-image: url("background.png");
     }
 }
 @media (min-width: 720px) {
     .hero::before {
-        background-image: url("AnnoMathTeX_Emblem.png");
+        background-image: url("background.png");
     }
 }
 @media (min-width: 980px) {
     .hero::before {
-        background-image: url("AnnoMathTeX_Emblem.png");
+        background-image: url("background.png");
     }
 }
 @media (min-width: 1240px) {
     .hero::before {
-        background-image: url("AnnoMathTeX_Emblem.png");
+        background-image: url("background.png");
     }
 }
 @media (min-width: 1500px) {
     .hero::before {
-        background-image: url("AnnoMathTeX_Emblem.png");
+        background-image: url("background.png");
     }
 }
 @media (min-width: 1760px) {
     .hero::before {
-        background-image: url("AnnoMathTeX_Emblem.png");
+        background-image: url("background.png");
     }
 }
