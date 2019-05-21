@@ -26,14 +26,6 @@ function handleNoMatch(){
 
 
 function addToMannualRecommendations(name) {
-    /*for (var i in recommendations['manual']) {
-        if (recommendations['manual'][i]['name'] == '') {
-            recommendations['manual'][i]['name'] = name;
-            return;
-        }
-    }
-    //no free spots, replace last item
-    recommendations['manual'][9]['name'] = name;*/
     if (tokenContent in manualRecommendations){
         manualRecommendations[tokenContent].push({'name': name});
     } else {

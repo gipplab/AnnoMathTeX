@@ -25,6 +25,7 @@ for csv_file in os.listdir(path):
     if csv_file.endswith(".csv"):
 
         with open(path+"/"+csv_file,"r") as f:
+            print('file open')
             table = f.read().splitlines()
             for line in table:
                 if line != header and line != empty:

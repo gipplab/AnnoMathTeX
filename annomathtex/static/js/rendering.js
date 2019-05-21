@@ -15,7 +15,6 @@ function setAnnotatedColor(uIDs) {
     /*
     Set the color of annotations tokens.
      */
-
     for (var i=0 in uIDs) {
         document.getElementById(uIDs[i]).style.color = annotationsColor;
     }
@@ -32,14 +31,23 @@ function setBasicColor(uIDs) {
 }
 
 function setCellColorBasic(cellID) {
+    /*
+    Set the color of the cell back to basic color (if the user changes his mind)
+     */
     document.getElementById(cellID).style.backgroundColor = cellColorBasic;
 }
 
 function setCellColorSelectedLocal(cellID) {
+    /*
+    Set the color of the cell, if the user selected a local annotation
+     */
     document.getElementById(cellID).style.backgroundColor = cellColorSelectedLocal;
 }
 
 function setCellColorSelectedGlobal(cellID) {
+    /*
+    Set the color of the cell, if the user selected a global annotation
+     */
     document.getElementById(cellID).style.backgroundColor = cellColorSelectedGlobal;
 }
 

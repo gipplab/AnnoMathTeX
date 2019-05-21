@@ -2,7 +2,7 @@ import os
 import urllib3
 urllib3.disable_warnings()
 from github import Github
-from .key import local_token
+
 
 
 class DataRepoHandler:
@@ -11,9 +11,8 @@ class DataRepoHandler:
         self.token = token
 
         if not token:
-            #print('Token not set')
+            from .key import local_token
             self.token = local_token
-            #return
 
         self.g = Github(self.token)
         self.repo = self.g.get_repo("ag-gipp/dataAnnoMathTex")
@@ -30,6 +29,10 @@ class DataRepoHandler:
 
 
 
+if __name__ == '__main__':
+    from key import local_token
+    d = DataRepoHandler(local_token)
+    d.delete_file('sun.csv')
 
 
 
