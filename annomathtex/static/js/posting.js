@@ -11,10 +11,7 @@ $(document).ready(function () {
       let data_dict = { the_post : $('#post-text').val(),
                         //'csrfmiddlewaretoken': '{{ csrf_token }}',
                         'csrfmiddlewaretoken': getCookie("csrftoken"),
-                        'marked': $.param(marked),
-                        'annotated': $.param(annotated),
-                        //'annotatedLocal': $.param(annotated['local']),
-                        'unmarked': $.param(unmarked),
+                        'annotations': $.param(annotations),
                         'fileName': $.param(fileNameDict)
                         };
 

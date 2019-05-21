@@ -46,8 +46,9 @@ function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
     var content = JSON.parse(jsonContent)['content'];
     var mathEnv = JSON.parse(jsonMathEnv)['math_env'];
 
-    //todo: unify content & tokenContent
+    //todo: unify content & tokenContent / tokenUniqueId & uniqueID
     tokenContent = content;
+    uniqueID = tokenUniqueId;
 
 
     //Display the selected token in the element "highlightedText".
@@ -97,4 +98,3 @@ function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
       }
     });
 }
-

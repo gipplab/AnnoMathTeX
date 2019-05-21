@@ -1,4 +1,3 @@
-
 function handleNoMatch(){
     /*
     The "No Match" button was clicked: The user did not find any of the recommendations to be fitting.
@@ -10,13 +9,15 @@ function handleNoMatch(){
      */
 
     var name = document.getElementById('noMatchInput').value;
-
-
-    //setAnnotatedColor([uniqueID);
-    //handleLinkedTokens(addToAnnotated);
     var uIDs = getLinkedIDs(tokenContent);
     addToAnnotations(uniqueID, name, 'user', '-', true, uIDs);
-    setAnnotatedColor(uIDs);
+
+    var local = document.getElementById('localSwitch').checked;
+    if (local) {
+        setAnnotatedColor([uniqueID]);
+    } else {
+        setAnnotatedColor(uIDs);
+    }
     populateTable();
     renderAnnotationsTable();
 }
@@ -87,7 +88,7 @@ function deleteFromAnnotations(argsString) {
 
 
 
-function handleExistingAnnotations(existing_annotations){
+function handleExistingAnnotations(existing_annotations) {
     /*
     If any previous annotations for the same document exist, a number of actions are made:
         - The annotations are added to the dictionary "annotations".
@@ -95,8 +96,13 @@ function handleExistingAnnotations(existing_annotations){
         - The tokens that were annotated are colored accordingly.
      */
     annotations = JSON.parse(existing_annotations)['existingAnnotations'];
-    uIDs = getLocalUniqueIDs().concat(getGlobalUniqueIDs());
-    setAnnotatedColor(uIDs);
-    renderAnnotationsTable();
+    if (annotations) {
+        uIDs = getLocalUniqueIDs().concat(getGlobalUniqueIDs());
+        setAnnotatedColor(uIDs);
+        renderAnnotationsTable();
+    } else {
+        annotations = {'global': {}, 'local': {}};
+    }
+
 }
 

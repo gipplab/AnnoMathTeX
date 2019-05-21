@@ -15,7 +15,7 @@ function setAnnotatedColor(uIDs) {
     /*
     Set the color of annotations tokens.
      */
-    //console.log(uIDs);
+
     for (var i=0 in uIDs) {
         document.getElementById(uIDs[i]).style.color = annotationsColor;
     }
@@ -25,6 +25,7 @@ function setBasicColor(uIDs) {
     /*
     Set the color of tokens back to basic, if the user changed his mind.
      */
+    console.log(uIDs);
     for (var i=0 in uIDs) {
         document.getElementById(uIDs[i]).style.color = identifierColorBasic;
     }
@@ -213,8 +214,11 @@ function selected(argsString){
                 break;
             case cellColorSelectedLocal:
                 //reverse local annotation
+                console.log('set cell col basic');
                 setCellColorBasic(cellID);
+                setBasicColor([uniqueID]);
                 deleteLocalAnnotation(tokenContent, uniqueID);
+                console.log(annotations);
                 break;
         }
 
@@ -232,15 +236,12 @@ function selected(argsString){
 
                 var uIDs = getLinkedIDs(tokenContent);
                 addToAnnotations(uniqueID, name, source, rowNum, false, uIDs);
-                //todo: check if uniqueID is already contained
-                //setAnnotatedColor(uIDs + [uniqueID]);
-                setAnnotatedColor(uIDs.push(uniqueID));
+                setAnnotatedColor(uIDs);
                 break;
 
             case cellColorSelectedGlobal:
                 setCellColorBasic(cellID);
-                //todo: check if uniqueID is already contained
-                var uIDs = annotations['global'][tokenContent]['uniqueIDs'] + uniqueID;
+                var uIDs = annotations['global'][tokenContent]['uniqueIDs'];
                 setBasicColor(uIDs);
                 deleteGlobalAnnotation(tokenContent);
                 break;

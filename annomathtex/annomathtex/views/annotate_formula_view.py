@@ -214,21 +214,21 @@ class FileUploadView(View):
         :return: The rendered response containing the template name and the necessary form.
         """
         items = {k: jquery_unparam(v) for (k, v) in request.POST.items()}
-        marked = items['marked']
-        unmarked = items['unmarked']
-        annotated = items['annotated']
+        #marked = items['marked']
+        #unmarked = items['unmarked']
+        annotations = items['annotations']
         file_name = items['fileName']['f']
 
 
-        print(annotated)
+        print(annotations)
 
         __LOGGER__.debug(' ITEMS : {}'.format(items))
 
 
-        __MARKED__.update(marked)
-        __UNMARKED__.update(unmarked)
-        __ANNOTATED__.update(annotated)
-        __LOGGER__.debug(' ANNOTATED: {}'.format(annotated))
+        #__MARKED__.update(marked)
+        #__UNMARKED__.update(unmarked)
+        __ANNOTATED__.update(annotations)
+        __LOGGER__.debug(' ANNOTATED: {}'.format(annotations))
 
 
         annotation_file_path = create_annotation_file_path(file_name)
@@ -236,7 +236,7 @@ class FileUploadView(View):
             __LOGGER__.debug(' WRITING TO FILE {}'.format(annotation_file_path))
             json.dump(__ANNOTATED__, f)
 
-        eval_file_writer = EvalFileWriter(annotated, file_name)
+        eval_file_writer = EvalFileWriter(annotations, file_name)
         eval_file_writer.write()
 
 
@@ -352,7 +352,7 @@ class FileUploadView(View):
         if 'file_submit' in request.POST:
             return self.handle_file_submit(request)
 
-        elif 'marked' in request.POST:
+        elif 'annotations' in request.POST:
             return self.handle_marked(request)
 
 
