@@ -57,10 +57,15 @@ Rendering of table in popup modal
 
 
 
-function populateTableFormula(random=true) {
+function populateTableFormula(random=false) {
     /*
     only word window at this point
      */
+
+    sourcesWithNums = {};
+
+    console.log(recommendations);
+
     let wordWindow = recommendations['wordWindow'];
     console.log(mathEnv);
 
@@ -118,10 +123,6 @@ function populateTableFormula(random=true) {
         preservedResultList = null;
       }
     };
-
-
-
-
 }
 
 
@@ -142,8 +143,8 @@ function populateTable(random=true) {
     let wikidataResults = recommendations['wikidataResults'];
     let wordWindow = recommendations['wordWindow'];
     //let manual = recommendations['manual'];
-    if (tokenContent in manualRecommendations) {
-        var manual = manualRecommendations[tokenContent];
+    if (content in manualRecommendations) {
+        var manual = manualRecommendations[content];
     } else {
         var manual = recommendations['manual'];
     }
@@ -154,17 +155,21 @@ function populateTable(random=true) {
                       [wordWindow, 'WordWindow'],
                       [manual, 'Manual']];
 
+    var table= "<table><tr><td>Source 1</td><td>Source 2</td><td>Source 3</td><td>Source 4</td><td>Source 5</td></tr>";
+
     if (preservedResultList) {
         resultList = preservedResultList;
+        console.log(preservedResultList);
     } else if (random) {
         resultList = shuffle([[arXivEvaluationItems, 'ArXiv'],
                                     [wikipediaEvaluationItems, 'Wikipedia'],
                                     [wikidataResults, 'Wikidata'],
                                     [wordWindow, 'WordWindow'],
                                     [manual, 'Manual']]);
-        var table= "<table><tr><td>Source 1</td><td>Source 2</td><td>Source 3</td><td>Source 4</td><td>Source 5</td></tr>";
+        preservedResultList = resultList;
+        console.log(preservedResultList);
     } else {
-        var table= "<table><tr><td>arXiv</td><td>Wikipedia</td><td>Wikidata</td><td>WordWindow</td><td>Manual</td></tr>";
+        table= "<table><tr><td>arXiv</td><td>Wikipedia</td><td>Wikidata</td><td>WordWindow</td><td>Manual</td></tr>";
     }
 
 
@@ -232,15 +237,15 @@ function createCell(item, source, rowNum) {
 
     var backgroundColor = cellColorBasic;
     var containsHighlightedName = false;
-    if (tokenContent in annotations['global']) {
-        if (annotations['global'][tokenContent]['name'] == name) {
+    if (content in annotations['global']) {
+        if (annotations['global'][content]['name'] == name) {
             backgroundColor = cellColorSelectedGlobal;
             containsHighlightedName = true;
         }
 
-    } else if (tokenContent in annotations['local']) {
-        if (uniqueID in annotations['local'][tokenContent]) {
-            if (annotations['local'][tokenContent][uniqueID]['name'] == name) {
+    } else if (content in annotations['local']) {
+        if (uniqueID in annotations['local'][content]) {
+            if (annotations['local'][content][uniqueID]['name'] == name) {
                 backgroundColor = cellColorSelectedLocal;
             } else {
                 backgroundColor = cellColorBasic;
@@ -312,7 +317,7 @@ function selected(argsString){
                 console.log('set cell col basic');
                 setCellColorBasic(cellID);
                 setBasicColor([uniqueID]);
-                deleteLocalAnnotation(tokenContent, uniqueID);
+                deleteLocalAnnotation(content, uniqueID);
                 console.log(annotations);
                 break;
         }
@@ -323,22 +328,22 @@ function selected(argsString){
         switch (backgroundColor) {
             case cellColorBasic:
                 setCellColorSelectedGlobal(cellID);
-                //tokenAssignedItemGlobal[tokenContent] = name;
+                //tokenAssignedItemGlobal[content] = name;
 
-                if (tokenContent in annotations['global']) {
-                    deleteGlobalAnnotation(tokenContent);
+                if (content in annotations['global']) {
+                    deleteGlobalAnnotation(content);
                 }
 
-                var uIDs = getLinkedIDs(tokenContent);
+                var uIDs = getLinkedIDs(content);
                 addToAnnotations(uniqueID, name, source, rowNum, false, uIDs);
                 setAnnotatedColor(uIDs);
                 break;
 
             case cellColorSelectedGlobal:
                 setCellColorBasic(cellID);
-                var uIDs = annotations['global'][tokenContent]['uniqueIDs'];
+                var uIDs = annotations['global'][content]['uniqueIDs'];
                 setBasicColor(uIDs);
-                deleteGlobalAnnotation(tokenContent);
+                deleteGlobalAnnotation(content);
                 break;
         }
     }

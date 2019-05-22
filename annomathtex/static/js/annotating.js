@@ -9,7 +9,7 @@ function handleNoMatch(){
      */
 
     var name = document.getElementById('noMatchInput').value;
-    var uIDs = getLinkedIDs(tokenContent);
+    var uIDs = getLinkedIDs(content);
     addToAnnotations(uniqueID, name, 'user', '-', true, uIDs);
     addToMannualRecommendations(name);
     var local = document.getElementById('localSwitch').checked;
@@ -26,10 +26,10 @@ function handleNoMatch(){
 
 
 function addToMannualRecommendations(name) {
-    if (tokenContent in manualRecommendations){
-        manualRecommendations[tokenContent].push({'name': name});
+    if (content in manualRecommendations){
+        manualRecommendations[content].push({'name': name});
     } else {
-        manualRecommendations[tokenContent] = [{'name': name}];
+        manualRecommendations[content] = [{'name': name}];
     }
 }
 
@@ -50,25 +50,25 @@ function addToAnnotations(uID, name, source, rowNum, noMatch=false, uIDs = null,
 
     var local = document.getElementById('localSwitch').checked;
     if (local) {
-        if (tokenContent in annotations['local']){
-            annotations['local'][tokenContent][uID] = localDict();
+        if (content in annotations['local']){
+            annotations['local'][content][uID] = localDict();
         } else {
-            annotations['local'][tokenContent] = {};
-            annotations['local'][tokenContent][uID] = localDict();
+            annotations['local'][content] = {};
+            annotations['local'][content][uID] = localDict();
         }
     } else {
 
-        console.log(tokenContent);
+        console.log(content);
 
         //todo: unify with function localDict()
-        annotations['global'][tokenContent] = {
+        annotations['global'][content] = {
         'name': name,
         'mathEnv': mathEnv,
         'uniqueIDs': uIDs,
         'sourcesWithNums': noMatch ? {} : sourcesWithNums[name],
         'type': type
         };
-        //annotations['global'][tokenContent] = {localDict};
+        //annotations['global'][content] = {localDict};
     }
 }
 

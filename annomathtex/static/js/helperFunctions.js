@@ -76,11 +76,11 @@ function getGlobalUniqueIDs() {
 }
 
 
-function getLinkedIDs(content) {
+function getLinkedIDs(contentSymbol) {
     var uIDs = [];
-    if (content in linkedMathSymbols) {
-        for (var i in linkedMathSymbols[content]) {
-            uIDs.push(linkedMathSymbols[content][i]);
+    if (contentSymbol in linkedMathSymbols) {
+        for (var i in linkedMathSymbols[contentSymbol]) {
+            uIDs.push(linkedMathSymbols[contentSymbol][i]);
         }
     }
     return uIDs;

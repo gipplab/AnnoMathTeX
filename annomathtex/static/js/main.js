@@ -21,9 +21,9 @@ function handleLinkedTokens(func, dicToCheck) {
     functionality.
      */
 
-    if (tokenContent in dicToCheck) {
-        console.log(tokenContent +  ' in linkedMathSymbols');
-        var word = dicToCheck[tokenContent];
+    if (content in dicToCheck) {
+        console.log(content +  ' in linkedMathSymbols');
+        var word = dicToCheck[content];
         for (i in word) {
             var id = word[i];
             func(id)
@@ -44,25 +44,25 @@ function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
      */
 
 
-    var contentTmp = JSON.parse(jsonContent)['content'];
-    var mathEnvTmp = JSON.parse(jsonMathEnv)['math_env'];
+    var tokenContent = JSON.parse(jsonContent)['content'];
+    var mathEnvContent = JSON.parse(jsonMathEnv)['math_env'];
 
     //todo: unify content & tokenContent / tokenUniqueId & uniqueID
-    tokenContent = contentTmp;
-    uniqueID = tokenUniqueId;
-    mathEnv = mathEnvTmp;
+    //tokenContent = contentTmp;
+    //uniqueID = tokenUniqueId;
+    mathEnv = mathEnvContent;
 
 
     //Display the selected token in the element "highlightedText".
     //If the clicked token is the delimiter of a math environment (entire formula), the presented text will be the
     //string for the entire math environment and not the delimiter.
-    if (tokenType != 'Formula') {
-        var fillText = contentTmp
-        isFormula = true;
+    if (tokenType == 'Identifier') {
+        var fillText = tokenContent;
+        content = tokenContent;
     }
     else {
-        var fillText = mathEnvTmp;
-        isFormula = false;
+        var fillText = mathEnvContent;
+        content = mathEnvContent
     }
     document.getElementById("highlightedText").innerHTML = fillText;
 
@@ -70,9 +70,9 @@ function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
 
     let data_dict = { the_post : $("#" + tokenUniqueId).val(),
                   'csrfmiddlewaretoken': getCookie("csrftoken"),
-                  'queryDict': contentTmp,
+                  'queryDict': content,
                   'tokenType': tokenType,
-                  'mathEnv': mathEnvTmp,
+                  'mathEnv': mathEnv,
                   'uniqueId': tokenUniqueId
                   };
 
