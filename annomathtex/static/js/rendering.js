@@ -24,8 +24,15 @@ function setBasicColor(uIDs) {
     /*
     Set the color of tokens back to basic, if the user changed his mind.
      */
+
+    if (isFormula) {
+        var fillColor = formulaColorBasic;
+    } else {
+        var fillColor = identifierColorBasic
+    }
+
     for (var i=0 in uIDs) {
-        document.getElementById(uIDs[i]).style.color = identifierColorBasic;
+        document.getElementById(uIDs[i]).style.color = fillColor;
     }
 }
 
@@ -55,8 +62,16 @@ function setCellColorSelectedGlobal(cellID) {
 Rendering of table in popup modal
  */
 
+function handlePopupTable() {
+    if (isFormula) {
+        populateTableFormula();
+    } else {
+        populateTableIdentifier();
+    }
+}
 
 
+//todo: simplify these 2 methods
 function populateTableFormula(random=false) {
     /*
     only word window at this point
@@ -127,7 +142,7 @@ function populateTableFormula(random=false) {
 
 
 
-function populateTable(random=true) {
+function populateTableIdentifier(random=true) {
     /*
     The entire table, containing the recommendations, that is shown to the user in the popup modal is created as html
     code in this function. The function createCell() is called upon, to create the individual cells in the table.
@@ -347,7 +362,7 @@ function selected(argsString){
                 break;
         }
     }
-    populateTable();
+    handlePopupTable();
     renderAnnotationsTable();
 }
 

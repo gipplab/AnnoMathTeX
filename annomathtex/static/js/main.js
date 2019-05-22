@@ -59,10 +59,12 @@ function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
     if (tokenType == 'Identifier') {
         var fillText = tokenContent;
         content = tokenContent;
+        isFormula = false;
     }
     else {
         var fillText = mathEnvContent;
         content = mathEnvContent
+        isFormula = true;
     }
     document.getElementById("highlightedText").innerHTML = fillText;
 
@@ -88,15 +90,10 @@ function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
           window.jsonResults = json;
           recommendations = json;
 
-          switch (tokenType) {
-              case 'Identifier':
-                  populateTable();
-                  break;
-              case 'Formula':
-                  populateTableFormula();
-                  break;
-
+          if (tokenType == 'Identifier' || tokenType == 'Formula') {
+              handlePopupTable();
           }
+
       },
 
       //non-successful response

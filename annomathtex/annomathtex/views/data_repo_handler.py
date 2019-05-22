@@ -14,6 +14,7 @@ class DataRepoHandler:
             #from .key import local_token
             #self.token = local_token
             print('token not set')
+            return
 
         self.g = Github(self.token)
         self.repo = self.g.get_repo("ag-gipp/dataAnnoMathTex")
@@ -26,6 +27,8 @@ class DataRepoHandler:
             #print(e)
             contents = self.repo.get_contents(file_name)
             self.repo.update_file(file_name, "updating file {}".format(file_name), file_content, contents.sha)
+        except AttributeError as e:
+            print('token not set')
         return
 
     def delete_file(self, file_name):

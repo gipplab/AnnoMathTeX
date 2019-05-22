@@ -311,6 +311,7 @@ class FileUploadView(View):
             #if decide to include wikidata, use static wikidata handler
             #wikidata_results = MathSparql().aliases_search(math_env)
             word_window = self.get_word_window(unique_id)
+            print(word_window)
 
         __LOGGER__.debug(' wikidata query made in {}'.format(time()-start))
 

@@ -262,6 +262,9 @@ class Parser(object, metaclass=ABCMeta):
                 elif token.type == 'Identifier':
                     identifier_line_dict[token.unique_id] = line_num
 
+                elif token.type == 'Formula':
+                    identifier_line_dict[token.unique_id] = line_num
+
         return processed_lines, line_dict, identifier_line_dict
 
 

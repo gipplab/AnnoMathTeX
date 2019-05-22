@@ -19,7 +19,9 @@ function handleNoMatch(){
     } else {
         setAnnotatedColor(uIDs);
     }
-    populateTable();
+
+    handlePopupTable();
+
     renderAnnotationsTable();
 }
 
