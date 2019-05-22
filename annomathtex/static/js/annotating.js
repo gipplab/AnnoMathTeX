@@ -34,8 +34,7 @@ function addToMannualRecommendations(name) {
 }
 
 
-function addToAnnotations(uID, name, source, rowNum, noMatch=false, uIDs = null) {
-
+function addToAnnotations(uID, name, source, rowNum, noMatch=false, uIDs = null, type='Identifier') {
 
 
     function localDict() {
@@ -44,7 +43,8 @@ function addToAnnotations(uID, name, source, rowNum, noMatch=false, uIDs = null)
                 'mathEnv': mathEnv,
                 'source': source,
                 'rowNum': rowNum,
-                'sourcesWithNums': noMatch ? {} : sourcesWithNums[name]
+                'sourcesWithNums': noMatch ? {} : sourcesWithNums[name],
+                'type': type //identifier or formula
             };
     }
 
@@ -60,11 +60,15 @@ function addToAnnotations(uID, name, source, rowNum, noMatch=false, uIDs = null)
 
         console.log(tokenContent);
 
+        //todo: unify with function localDict()
         annotations['global'][tokenContent] = {
         'name': name,
+        'mathEnv': mathEnv,
         'uniqueIDs': uIDs,
-        'sourcesWithNums': noMatch ? {} : sourcesWithNums[name]
+        'sourcesWithNums': noMatch ? {} : sourcesWithNums[name],
+        'type': type
         };
+        //annotations['global'][tokenContent] = {localDict};
     }
 }
 

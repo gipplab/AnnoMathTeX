@@ -291,7 +291,7 @@ class FileUploadView(View):
         __LOGGER__.debug('making wikidata query for search string: {}'.format(search_string))
 
         concatenated_results, wikidata_results, word_window, \
-        arXiv_evaluation_items, wikipedia_evaluation_items = None, None, None, None, None
+        arXiv_evaluation_items, wikipedia_evaluation_items = [], [], [], [], []#None, None, None, None, None
 
         if token_type == 'Identifier':
             wikidata_results = StaticWikidataHandler().check_identifiers(search_string)
@@ -308,7 +308,9 @@ class FileUploadView(View):
             else:
                 math_env = k
             __LOGGER__.debug('math_env: {}'.format(math_env))
-            wikidata_results = MathSparql().aliases_search(math_env)
+            #if decide to include wikidata, use static wikidata handler
+            #wikidata_results = MathSparql().aliases_search(math_env)
+            word_window = self.get_word_window(unique_id)
 
         __LOGGER__.debug(' wikidata query made in {}'.format(time()-start))
 

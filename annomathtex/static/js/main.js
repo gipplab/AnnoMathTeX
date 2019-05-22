@@ -43,22 +43,26 @@ function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
     and the table is rendered with the correct search results.
      */
 
-    var content = JSON.parse(jsonContent)['content'];
-    var mathEnv = JSON.parse(jsonMathEnv)['math_env'];
+
+    var contentTmp = JSON.parse(jsonContent)['content'];
+    var mathEnvTmp = JSON.parse(jsonMathEnv)['math_env'];
 
     //todo: unify content & tokenContent / tokenUniqueId & uniqueID
-    tokenContent = content;
+    tokenContent = contentTmp;
     uniqueID = tokenUniqueId;
+    mathEnv = mathEnvTmp;
 
 
     //Display the selected token in the element "highlightedText".
     //If the clicked token is the delimiter of a math environment (entire formula), the presented text will be the
     //string for the entire math environment and not the delimiter.
     if (tokenType != 'Formula') {
-        var fillText = content
+        var fillText = contentTmp
+        isFormula = true;
     }
     else {
-        var fillText = mathEnv;
+        var fillText = mathEnvTmp;
+        isFormula = false;
     }
     document.getElementById("highlightedText").innerHTML = fillText;
 
@@ -66,9 +70,9 @@ function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
 
     let data_dict = { the_post : $("#" + tokenUniqueId).val(),
                   'csrfmiddlewaretoken': getCookie("csrftoken"),
-                  'queryDict': content,
+                  'queryDict': contentTmp,
                   'tokenType': tokenType,
-                  'mathEnv': mathEnv,
+                  'mathEnv': mathEnvTmp,
                   'uniqueId': tokenUniqueId
                   };
 
@@ -88,6 +92,10 @@ function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
               case 'Identifier':
                   populateTable();
                   break;
+              case 'Formula':
+                  populateTableFormula();
+                  break;
+
           }
       },
 

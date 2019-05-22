@@ -55,7 +55,78 @@ function setCellColorSelectedGlobal(cellID) {
 Rendering of table in popup modal
  */
 
-function populateTable(random=false) {
+
+
+function populateTableFormula(random=true) {
+    /*
+    only word window at this point
+     */
+    let wordWindow = recommendations['wordWindow'];
+    console.log(mathEnv);
+
+    if (mathEnv in manualRecommendations) {
+        var manual = manualRecommendations[mathEnv];
+    } else {
+        var manual = recommendations['manual']
+    }
+
+    var resultList = [[wordWindow, 'WordWindow'],
+                      [manual, 'Manual']];
+
+    if (preservedResultList) {
+        resultList = preservedResultList;
+    } else if (random) {
+        resultList = shuffle([[wordWindow, 'WordWindow'],
+                              [manual, 'Manual']]);
+        var table= "<table><tr><td>Source 1</td><td>Source 2</td></tr>";
+    } else {
+        var table= "<table><tr><td>WordWindow</td><td>Manual</td></tr>";
+    }
+
+    let source0 = resultList[0][0];
+    let source1 = resultList[1][0];
+
+    let name0 = resultList[0][1];
+    let name1 = resultList[1][1];
+
+
+    for (let i = 0; i<10; i++) {
+        if (source0.length >= i && source0.length > 0){
+            var tdSource0 = createCell(source0[i], name0, i);
+        }
+        if (source1.length >= i && source1.length > 0) {
+            var tdSource1 = createCell(source1[i], name1, i);
+        }
+        let tr = '<tr>' + tdSource0 + tdSource1 + '</tr>';
+        table += tr;
+    }
+
+
+    document.getElementById('tableholder').innerHTML = table;
+    var modal = document.getElementById("popupModal");
+    modal.style.display = "block";
+
+    var span = document.getElementById("span");
+    span.onclick = function () {
+      modal.style.display = "none";
+      preservedResultList = null;
+    };
+
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+        preservedResultList = null;
+      }
+    };
+
+
+
+
+}
+
+
+
+function populateTable(random=true) {
     /*
     The entire table, containing the recommendations, that is shown to the user in the popup modal is created as html
     code in this function. The function createCell() is called upon, to create the individual cells in the table.
@@ -89,7 +160,8 @@ function populateTable(random=false) {
         resultList = shuffle([[arXivEvaluationItems, 'ArXiv'],
                                     [wikipediaEvaluationItems, 'Wikipedia'],
                                     [wikidataResults, 'Wikidata'],
-                                    [wordWindow, 'WordWindow']]);
+                                    [wordWindow, 'WordWindow'],
+                                    [manual, 'Manual']]);
         var table= "<table><tr><td>Source 1</td><td>Source 2</td><td>Source 3</td><td>Source 4</td><td>Source 5</td></tr>";
     } else {
         var table= "<table><tr><td>arXiv</td><td>Wikipedia</td><td>Wikidata</td><td>WordWindow</td><td>Manual</td></tr>";
