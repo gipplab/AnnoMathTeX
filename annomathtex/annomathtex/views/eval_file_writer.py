@@ -117,7 +117,8 @@ class EvalFileWriter:
         """
         all_rows = self.handle_local() + self.handle_global()
         f = StringIO()
-        csv.writer(f).writerows(all_rows)
+        header = ['Identifier', 'Name', 'ArXiV', 'Wikipedia', 'Wikidata', 'WordWindow', 'type']
+        csv.writer(f).writerows([header] + all_rows)
         return f.getvalue()
 
 
