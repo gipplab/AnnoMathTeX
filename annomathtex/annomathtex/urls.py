@@ -14,7 +14,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 from .settings import common
 
-print(common.PROJECT_ROOT)
+#print(common.PROJECT_ROOT)
 
 urlpatterns = [
     # Examples:

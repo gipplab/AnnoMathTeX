@@ -22,7 +22,8 @@ class DataRepoHandler:
     def commit_file(self, file_name, file_content):
         try:
             self.repo.create_file(file_name, "commiting file {}".format(file_name), file_content)
-        except GithubException:
+        except GithubException as e:
+            #print(e)
             contents = self.repo.get_contents(file_name)
             self.repo.update_file(file_name, "updating file {}".format(file_name), file_content, contents.sha)
         return

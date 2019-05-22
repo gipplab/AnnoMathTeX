@@ -111,9 +111,21 @@ function handleExistingAnnotations(existing_annotations) {
         uIDs = getLocalUniqueIDs().concat(getGlobalUniqueIDs());
         setAnnotatedColor(uIDs);
         renderAnnotationsTable();
+    } else {
+        annotations = {};
     }
-    let g = 'global' in annotations;
-    let l = 'local' in annotations;
+
+    if ('global' in annotations) {
+        var g = true;
+    } else {
+        var g = false;
+    }
+
+    if ('local' in annotations) {
+        var l = true;
+    } else {
+        var l = false;
+    }
 
     if (!g) {
         annotations['global'] = {};
