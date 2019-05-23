@@ -8,7 +8,6 @@ The tokens (identifier, formula, word) that are annotated with an item from wiki
 wikipedia evaluation list or the word window are stored in this dictionary. Upon saving, the dictionary is sent to the
 backend for further processing (saving, writing to database).
  */
-var tokenAssignedItemGlobal = {};
 
 
 
@@ -42,6 +41,10 @@ function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
     The popup modal is opened, an post request is made to the backend to retreive suggestions for the selected token,
     and the table is rendered with the correct search results.
      */
+
+    if (tokenType == 'Word') {
+        return;
+    }
 
 
     var tokenContent = JSON.parse(jsonContent)['content'];

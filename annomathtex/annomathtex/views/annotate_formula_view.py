@@ -22,7 +22,7 @@ from ..recommendation.math_sparql import MathSparql
 from ..recommendation.ne_sparql import NESparql
 
 from ..views.eval_file_writer import EvalFileWriter
-from ..views.data_repo_handler import DataRepoHandler
+from ..views.data_repo_handler import DataRepoHandler, FormulaConceptHandler
 from ..config import *
 
 
@@ -219,36 +219,36 @@ class FileUploadView(View):
         annotations = items['annotations']
         file_name = items['fileName']['f']
 
-
-        print(annotations)
-
         __LOGGER__.debug(' ITEMS : {}'.format(items))
 
 
-        #__MARKED__.update(marked)
-        #__UNMARKED__.update(unmarked)
-        __ANNOTATED__.update(annotations)
-        __LOGGER__.debug(' ANNOTATED: {}'.format(annotations))
+        #replace __EQUALS__ again with =
+        if 'global' in annotations:
+            for k in annotations['global']:
+                annotations['global'][k.replace('__EQUALS__', '=')] = annotations['global'].pop(k)
+        if 'local' in annotations:
+            for k in annotations['local']:
+                annotations['local'][k.replace('__EQUALS__', '=')] = annotations['local'].pop(k)
 
 
         annotation_file_path = create_annotation_file_path(file_name)
         with open(annotation_file_path, 'w') as f:
             __LOGGER__.debug(' WRITING TO FILE {}'.format(annotation_file_path))
-            json.dump(__ANNOTATED__, f)
+            json.dump(annotations, f)
 
         #eval_file_writer = EvalFileWriter(annotations, file_name)
         #eval_file_writer.write()
 
+        f = FormulaConceptHandler(annotations)#.get_formulae()
+        #f.get_formulae()
 
-        eval_file_writer = EvalFileWriter(annotations, file_name)
+        """eval_file_writer = EvalFileWriter(annotations, file_name)
         eval_file_writer.write()
         csv_string = eval_file_writer.get_csv_for_repo()
-        print(csv_string)
         data_repo_handler = DataRepoHandler()
         file_name = re.sub(r'\..*', '.csv', file_name)
-        data_repo_handler.commit_file(file_name, csv_string)
-
-
+        data_repo_handler.commit_file(file_name, csv_string)"""
+        #data_repo_handler.commit_file(create_annotation_file_name(file_name), json.dumps(annotations))
 
 
         return HttpResponse(
@@ -311,7 +311,6 @@ class FileUploadView(View):
             #if decide to include wikidata, use static wikidata handler
             #wikidata_results = MathSparql().aliases_search(math_env)
             word_window = self.get_word_window(unique_id)
-            print(word_window)
 
         __LOGGER__.debug(' wikidata query made in {}'.format(time()-start))
 

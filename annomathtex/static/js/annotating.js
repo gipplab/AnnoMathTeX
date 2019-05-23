@@ -36,7 +36,13 @@ function addToMannualRecommendations(name) {
 }
 
 
-function addToAnnotations(uID, name, source, rowNum, noMatch=false, uIDs = null, type='Identifier') {
+function addToAnnotations(uID, name, source, rowNum, noMatch=false, uIDs = null) {
+
+    if (isFormula) {
+        var type = 'Formula';
+    } else {
+        var type = 'Identifier';
+    }
 
 
     function localDict() {
@@ -72,6 +78,8 @@ function addToAnnotations(uID, name, source, rowNum, noMatch=false, uIDs = null,
         };
         //annotations['global'][content] = {localDict};
     }
+
+    console.log(annotations);
 }
 
 

@@ -55,6 +55,40 @@ function shuffle(array) {
   return array;
 }
 
+//https://stackoverflow.com/questions/1144783/how-to-replace-all-occurrences-of-a-string-in-javascript
+function replaceAllEquals(ann) {
+    /*
+    this function is called from posting.js
+     */
+
+    var newGlobal = {};
+    var newLocal = {};
+
+    function replaceAll(str) {
+        console.log(str);
+        return str.replace(new RegExp('=', 'g'), '__EQUALS__');
+    }
+
+    //remove equals sign, becuase Django splits at equals sign
+    for (var name in ann['global']) {
+        var nameReplaced = replaceAll(name);
+        newGlobal[nameReplaced] = ann['global'][name];
+    }
+    for (var name in ann['local']) {
+        var nameReplaced = replaceAll(name);
+        newLocal[nameReplaced] = replaceAll(ann['local'][name]);
+    }
+
+    var newAnn = {'global': newGlobal, 'local': newLocal};
+
+    return newAnn;
+
+}
+
+
+
+
+
 
 function getLocalUniqueIDs(){
     var uniqueIDs = [];

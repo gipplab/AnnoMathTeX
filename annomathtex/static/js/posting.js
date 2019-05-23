@@ -5,13 +5,19 @@ $(document).ready(function () {
   });
 
 
+
+
+
+
     // AJAX for posting
     var fileNameDict = {'f': fileName};
     function create_post() {
+
+      console.log(annotations);
       let data_dict = { the_post : $('#post-text').val(),
                         //'csrfmiddlewaretoken': '{{ csrf_token }}',
                         'csrfmiddlewaretoken': getCookie("csrftoken"),
-                        'annotations': $.param(annotations),
+                        'annotations': $.param(replaceAllEquals(annotations)),
                         'fileName': $.param(fileNameDict)
                         };
 

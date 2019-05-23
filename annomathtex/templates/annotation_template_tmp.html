@@ -48,7 +48,7 @@
     <br>
     <div>
       <label for="noMatchInput">No match: </label>
-      <input type="text" id="noMatchInput" required size="20" placeholder="Name" minlength="3" maxlength="20">
+      <input type="text" id="noMatchInput" required size="20" placeholder="Name" minlength="3" maxlength="60">
       <!--<span class="validity"></span>-->
       <button id="noMatchSubmit">Submit</button>
     </div>
@@ -84,7 +84,7 @@
               //try catch not working yet, error happens when a backslash is in the text part
                 $("#{{ Token.unique_id }}").on('click', function (event) {
                   event.preventDefault();
-                  console.log('wikidata query sent out');
+                  //console.log('wikidata query sent out');
 
                   var jsonContent = "{{ Token.json_content|escapejs }}";
                   var jsonMathEnv = "{{ Token.json_math_env|escapejs  }}";
