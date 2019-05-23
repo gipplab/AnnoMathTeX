@@ -102,7 +102,7 @@ class EvalFileWriter:
                 for row in all_rows:
                     csv_writer.writerow(row)"""
 
-        header = ['Identifier', 'Name', 'ArXiV', 'Wikipedia', 'Wikidata', 'WordWindow', 'type']
+        header = ['Identifier / Formula', 'Name', 'ArXiV', 'Wikipedia', 'Wikidata', 'WordWindow', 'type']
         with open(evaluation_file_path, 'w') as f:
             csv_writer = csv.writer(f, delimiter=',')
             csv_writer.writerow(header)

@@ -23,6 +23,7 @@ from ..recommendation.ne_sparql import NESparql
 
 from ..views.eval_file_writer import EvalFileWriter
 from ..views.data_repo_handler import DataRepoHandler, FormulaConceptHandler
+from .helper_functions import handle_annotations
 from ..config import *
 
 
@@ -222,32 +223,25 @@ class FileUploadView(View):
         __LOGGER__.debug(' ITEMS : {}'.format(items))
 
 
-        #replace __EQUALS__ again with =
-        if 'global' in annotations:
-            for k in annotations['global']:
-                annotations['global'][k.replace('__EQUALS__', '=')] = annotations['global'].pop(k)
-        if 'local' in annotations:
-            for k in annotations['local']:
-                annotations['local'][k.replace('__EQUALS__', '=')] = annotations['local'].pop(k)
-
+        new_annotations = handle_annotations(annotations)
 
         annotation_file_path = create_annotation_file_path(file_name)
         with open(annotation_file_path, 'w') as f:
             __LOGGER__.debug(' WRITING TO FILE {}'.format(annotation_file_path))
-            json.dump(annotations, f)
+            json.dump(new_annotations, f)
 
         #eval_file_writer = EvalFileWriter(annotations, file_name)
         #eval_file_writer.write()
 
-        f = FormulaConceptHandler(annotations)#.get_formulae()
-        #f.get_formulae()
+        #f = FormulaConceptHandler(new_annotations)#.get_formulae()
+        #f.handle()
 
-        """eval_file_writer = EvalFileWriter(annotations, file_name)
+        eval_file_writer = EvalFileWriter(new_annotations, file_name)
         eval_file_writer.write()
         csv_string = eval_file_writer.get_csv_for_repo()
         data_repo_handler = DataRepoHandler()
         file_name = re.sub(r'\..*', '.csv', file_name)
-        data_repo_handler.commit_file(file_name, csv_string)"""
+        data_repo_handler.commit_to_repo(file_name, csv_string, new_annotations)
         #data_repo_handler.commit_file(create_annotation_file_name(file_name), json.dumps(annotations))
 
 
