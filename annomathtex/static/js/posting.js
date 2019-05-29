@@ -18,7 +18,8 @@ $(document).ready(function () {
                         //'csrfmiddlewaretoken': '{{ csrf_token }}',
                         'csrfmiddlewaretoken': getCookie("csrftoken"),
                         'annotations': $.param(replaceAllEquals(annotations)),
-                        'fileName': $.param(fileNameDict)
+                        'fileName': $.param(fileNameDict),
+                        'manualRecommendations': $.param(manualRecommendations)
                         };
 
       $.ajax({

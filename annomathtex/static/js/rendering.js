@@ -15,7 +15,6 @@ function setAnnotatedColor(uIDs) {
     /*
     Set the color of annotations tokens.
      */
-    //console.log(uIDs);
     for (var i=0 in uIDs) {
         document.getElementById(uIDs[i]).style.color = annotationsColor;
     }
@@ -86,6 +85,7 @@ function populateTableFormula(random=true) {
     //console.log(recommendations);
 
     let wordWindow = recommendations['wordWindow'];
+    let wikidataResults = recommendations['wikidataResults'];
     //console.log(mathEnv);
 
     if (mathEnv in manualRecommendations) {
@@ -95,23 +95,31 @@ function populateTableFormula(random=true) {
     }
 
     var resultList = [[wordWindow, 'WordWindow'],
+                      [wikidataResults, 'Wikidata'],
                       [manual, 'Manual']];
+
+    console.log(resultList);
+
+    var table= "<table><tr><td>Source 1</td><td>Source 2</td><td>Source 3</td></tr>";
 
     if (preservedResultList) {
         resultList = preservedResultList;
     } else if (random) {
         resultList = shuffle([[wordWindow, 'WordWindow'],
+                              [wikidataResults, 'Wikidata'],
                               [manual, 'Manual']]);
-        var table= "<table><tr><td>Source 1</td><td>Source 2</td></tr>";
+        preservedResultList = resultList;
     } else {
-        var table= "<table><tr><td>WordWindow</td><td>Manual</td></tr>";
+        var table= "<table><tr><td>WordWindow</td><td>Wikidata</td><td>Manual</td></tr>";
     }
 
     let source0 = resultList[0][0];
     let source1 = resultList[1][0];
+    let source2 = resultList[2][0];
 
     let name0 = resultList[0][1];
     let name1 = resultList[1][1];
+    let name2 = resultList[2][1];
 
 
     for (let i = 0; i<10; i++) {
@@ -121,7 +129,10 @@ function populateTableFormula(random=true) {
         if (source1.length >= i && source1.length > 0) {
             var tdSource1 = createCell(source1[i], name1, i);
         }
-        let tr = '<tr>' + tdSource0 + tdSource1 + '</tr>';
+        if (source2.length >= i && source2.length > 0) {
+            var tdSource2 = createCell(source2[i], name2, i);
+        }
+        let tr = '<tr>' + tdSource0 + tdSource1 + tdSource2 + '</tr>';
         table += tr;
     }
 
@@ -333,7 +344,6 @@ function selected(argsString){
                 //make local annotation
                 setCellColorSelectedLocal(cellID);
                 addToAnnotations(uniqueID, name, source, rowNum);
-                //console.log(uniqueID);
                 setAnnotatedColor([uniqueID]);
                 break;
             case cellColorSelectedLocal:
@@ -400,7 +410,7 @@ function renderAnnotationsTable() {
         return tr;
     }
 
-    var annotationsTable = "</br><table><tr><td>Token</td><td>Annotated with</td><td>Type</td><td>Delete</td></tr>";
+    var annotationsTable = "</br><table><tr><td>Identifier/Formula</td><td>Annotated with</td><td>Type</td><td>Delete</td></tr>";
 
     var l = annotations['local'];
     for (var token in l) {

@@ -25,6 +25,7 @@ class DataRepoHandler:
         self.g = Github(self.token)
         self.repo = self.g.get_repo("ag-gipp/dataAnnoMathTex")
         self.user = self.g.get_user()
+        self.evaluation_folder = 'evaluation'
 
     def commit_file(self, file_name, file_content):
         print('committing file {}'.format(file_name))
@@ -61,6 +62,9 @@ class DataRepoHandler:
 
         self.commit_file('formula_concepts.txt', json.dumps(formula_concepts))
         return
+
+    def commit_manual_recommendations(self, manual_recommendations):
+        pass
 
 
     def commit_to_repo(self, csv_file_name, csv_file_content, annotations):
@@ -160,7 +164,8 @@ class FormulaConceptHandler:
 
 
 
-
+class ManualRecommendationsHandler:
+    pass
 
 
 
@@ -168,10 +173,12 @@ class FormulaConceptHandler:
 if __name__ == '__main__':
     from key import local_token
     d = DataRepoHandler(local_token)
-    #d.delete_file('formula_concepts.txt')
+    #l = ['Angular_velocity.csv', 'Harmonic_oscillator.csv', 'Mass-energy_equivalence.csv', 'Quantum_harmonic_oscillator.csv', 'Velocity.csv', 'sun.csv']
+    #for i in l:
+    #d.delete_file('Sun.csv')
     #initial_formulae_file = json.dumps({'dummy_formula': {'TeXStrings': ['empty'], 'Identifiers': 'empty'}})
-    initial_formulae_file = json.dumps({})
-    d.commit_file('formula_concepts.txt', initial_formulae_file)
+    #initial_formulae_file = json.dumps({})
+    #d.commit_file('formula_concepts.txt', initial_formulae_file)
 
 
 

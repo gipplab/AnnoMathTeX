@@ -42,6 +42,8 @@ function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
     and the table is rendered with the correct search results.
      */
 
+    console.log(manualRecommendations);
+
     if (tokenType == 'Word') {
         return;
     }
@@ -54,7 +56,7 @@ function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
 
     //todo: unify content & tokenContent / tokenUniqueId & uniqueID
     //tokenContent = contentTmp;
-    //uniqueID = tokenUniqueId;
+    uniqueID = tokenUniqueId;
     mathEnv = mathEnvContent;
 
 

@@ -219,6 +219,7 @@ class FileUploadView(View):
         #unmarked = items['unmarked']
         annotations = items['annotations']
         file_name = items['fileName']['f']
+        manual_recommendations = items['manualRecommendations']
 
         __LOGGER__.debug(' ITEMS : {}'.format(items))
 
@@ -302,9 +303,11 @@ class FileUploadView(View):
             else:
                 math_env = k
             __LOGGER__.debug('math_env: {}'.format(math_env))
-            #if decide to include wikidata, use static wikidata handler
-            #wikidata_results = MathSparql().aliases_search(math_env)
+            #not static atm
+            #could also add .tex_string_search()
+            wikidata_results = MathSparql().aliases_search(math_env)
             word_window = self.get_word_window(unique_id)
+
 
         __LOGGER__.debug(' wikidata query made in {}'.format(time()-start))
 

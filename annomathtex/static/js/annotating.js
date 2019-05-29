@@ -10,6 +10,8 @@ function handleNoMatch(){
 
     var name = document.getElementById('noMatchInput').value;
     var uIDs = getLinkedIDs(content);
+
+
     addToAnnotations(uniqueID, name, 'user', '-', true, uIDs);
     addToMannualRecommendations(name);
     var local = document.getElementById('localSwitch').checked;
