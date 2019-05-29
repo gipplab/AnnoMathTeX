@@ -64,7 +64,12 @@ class DataRepoHandler:
         return
 
     def commit_manual_recommendations(self, manual_recommendations):
-        pass
+        encoded_content = self.repo.get_file_contents('manual_recommendations.txt')
+        decoded_content = encoded_content.decoded_content
+        existing_manual_recommendations = json.loads(decoded_content)
+
+        for item in manual_recommendations:
+            pass
 
 
     def commit_to_repo(self, csv_file_name, csv_file_content, annotations):
@@ -165,6 +170,10 @@ class FormulaConceptHandler:
 
 
 class ManualRecommendationsHandler:
+
+
+
+
     pass
 
 

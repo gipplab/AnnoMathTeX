@@ -31,8 +31,6 @@ function setBasicColor(uIDs) {
         var fillColor = identifierColorBasic
     }
 
-    //console.log(uIDs);
-
     for (var i=0 in uIDs) {
         document.getElementById(uIDs[i]).style.color = fillColor;
     }
@@ -104,6 +102,11 @@ function populateTableFormula(random=true) {
 
     if (preservedResultList) {
         resultList = preservedResultList;
+        for (var i in resultList){
+            if (resultList[i][1] == 'Manual') {
+                resultList[i] = [manual, 'Manual'];
+            }
+        }
     } else if (random) {
         resultList = shuffle([[wordWindow, 'WordWindow'],
                               [wikidataResults, 'Wikidata'],
@@ -168,6 +171,8 @@ function populateTableIdentifier(random=true) {
 
     sourcesWithNums = {};
 
+    console.log(annotations);
+
     let arXivEvaluationItems = recommendations['arXivEvaluationItems'];
     let wikipediaEvaluationItems = recommendations['wikipediaEvaluationItems'];
     let wikidataResults = recommendations['wikidataResults'];
@@ -179,6 +184,8 @@ function populateTableIdentifier(random=true) {
         var manual = recommendations['manual'];
     }
 
+    console.log(manual);
+
     var resultList = [[arXivEvaluationItems, 'ArXiv'],
                       [wikipediaEvaluationItems, 'Wikipedia'],
                       [wikidataResults, 'Wikidata'],
@@ -189,7 +196,11 @@ function populateTableIdentifier(random=true) {
 
     if (preservedResultList) {
         resultList = preservedResultList;
-        //console.log(preservedResultList);
+        for (var i in resultList){
+            if (resultList[i][1] == 'Manual') {
+                resultList[i] = [manual, 'Manual'];
+            }
+        }
     } else if (random) {
         resultList = shuffle([[arXivEvaluationItems, 'ArXiv'],
                                     [wikipediaEvaluationItems, 'Wikipedia'],
@@ -260,7 +271,6 @@ function createCell(item, source, rowNum) {
     The cells, that populate the table in the popup modal are created in this method.
      */
 
-    //console.log(annotations);
 
     if (item) {
         var name = item['name'];
@@ -395,6 +405,7 @@ function renderAnnotationsTable() {
     The table at the top of the document, that is constantly being updated with the latest annotations is generated in
     this function.
      */
+
 
     function createRow(token, name, local, uIDs) {
         var args = [

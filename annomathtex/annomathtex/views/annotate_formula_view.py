@@ -221,12 +221,14 @@ class FileUploadView(View):
         file_name = items['fileName']['f']
         manual_recommendations = items['manualRecommendations']
 
+        print(manual_recommendations)
+
         __LOGGER__.debug(' ITEMS : {}'.format(items))
 
 
         new_annotations = handle_annotations(annotations)
 
-        annotation_file_path = create_annotation_file_path(file_name)
+        """annotation_file_path = create_annotation_file_path(file_name)
         with open(annotation_file_path, 'w') as f:
             __LOGGER__.debug(' WRITING TO FILE {}'.format(annotation_file_path))
             json.dump(new_annotations, f)
@@ -242,7 +244,7 @@ class FileUploadView(View):
         csv_string = eval_file_writer.get_csv_for_repo()
         data_repo_handler = DataRepoHandler()
         file_name = re.sub(r'\..*', '.csv', file_name)
-        data_repo_handler.commit_to_repo(file_name, csv_string, new_annotations)
+        data_repo_handler.commit_to_repo(file_name, csv_string, new_annotations)"""
         #data_repo_handler.commit_file(create_annotation_file_name(file_name), json.dumps(annotations))
 
 
