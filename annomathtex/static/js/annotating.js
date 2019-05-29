@@ -21,7 +21,6 @@ function handleNoMatch(){
     }
 
     handlePopupTable();
-
     renderAnnotationsTable();
 }
 
@@ -44,7 +43,6 @@ function addToAnnotations(uID, name, source, rowNum, noMatch=false, uIDs = null)
         var type = 'Identifier';
     }
 
-
     function localDict() {
         return {
                 'name': name,
@@ -66,7 +64,7 @@ function addToAnnotations(uID, name, source, rowNum, noMatch=false, uIDs = null)
         }
     } else {
 
-        console.log(content);
+        //console.log(content);
 
         //todo: unify with function localDict()
         annotations['global'][content] = {
@@ -78,8 +76,6 @@ function addToAnnotations(uID, name, source, rowNum, noMatch=false, uIDs = null)
         };
         //annotations['global'][content] = {localDict};
     }
-
-    console.log(annotations);
 }
 
 
@@ -91,12 +87,11 @@ function deleteLocalAnnotation(token, uID) {
 
 function deleteGlobalAnnotation(token) {
     delete annotations['global'][token];
-    console.log(annotations);
 }
 
 function deleteFromAnnotations(argsString) {
-    var argsArray = argsString.split('----');
 
+    var argsArray = argsString.split('----');
     var token = argsArray[0];
     var local = (argsArray[1] == 'true');
     var uIDs = argsArray[2].split(',');
@@ -107,6 +102,11 @@ function deleteFromAnnotations(argsString) {
         deleteGlobalAnnotation(token);
         setBasicColor(uIDs);
     }
+
+    //console.log(token);
+    //console.log(local);
+    //console.log(annotations);
+
     renderAnnotationsTable();
 }
 

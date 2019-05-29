@@ -46,6 +46,8 @@ function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
         return;
     }
 
+    document.getElementById("noMatchInput").placeholder = "Name";
+
 
     var tokenContent = JSON.parse(jsonContent)['content'];
     var mathEnvContent = JSON.parse(jsonMathEnv)['math_env'];
@@ -66,7 +68,7 @@ function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
     }
     else {
         var fillText = mathEnvContent;
-        content = mathEnvContent
+        content = mathEnvContent//.split('\\').join('');
         isFormula = true;
     }
     document.getElementById("highlightedText").innerHTML = fillText;

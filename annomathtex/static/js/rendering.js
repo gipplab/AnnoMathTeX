@@ -15,6 +15,7 @@ function setAnnotatedColor(uIDs) {
     /*
     Set the color of annotations tokens.
      */
+    //console.log(uIDs);
     for (var i=0 in uIDs) {
         document.getElementById(uIDs[i]).style.color = annotationsColor;
     }
@@ -30,6 +31,8 @@ function setBasicColor(uIDs) {
     } else {
         var fillColor = identifierColorBasic
     }
+
+    //console.log(uIDs);
 
     for (var i=0 in uIDs) {
         document.getElementById(uIDs[i]).style.color = fillColor;
@@ -72,17 +75,18 @@ function handlePopupTable() {
 
 
 //todo: simplify these 2 methods
-function populateTableFormula(random=false) {
+function populateTableFormula(random=true) {
     /*
     only word window at this point
      */
 
+
     sourcesWithNums = {};
 
-    console.log(recommendations);
+    //console.log(recommendations);
 
     let wordWindow = recommendations['wordWindow'];
-    console.log(mathEnv);
+    //console.log(mathEnv);
 
     if (mathEnv in manualRecommendations) {
         var manual = manualRecommendations[mathEnv];
@@ -174,7 +178,7 @@ function populateTableIdentifier(random=true) {
 
     if (preservedResultList) {
         resultList = preservedResultList;
-        console.log(preservedResultList);
+        //console.log(preservedResultList);
     } else if (random) {
         resultList = shuffle([[arXivEvaluationItems, 'ArXiv'],
                                     [wikipediaEvaluationItems, 'Wikipedia'],
@@ -182,7 +186,7 @@ function populateTableIdentifier(random=true) {
                                     [wordWindow, 'WordWindow'],
                                     [manual, 'Manual']]);
         preservedResultList = resultList;
-        console.log(preservedResultList);
+        //console.log(preservedResultList);
     } else {
         table= "<table><tr><td>arXiv</td><td>Wikipedia</td><td>Wikidata</td><td>WordWindow</td><td>Manual</td></tr>";
     }
@@ -244,6 +248,9 @@ function createCell(item, source, rowNum) {
     /*
     The cells, that populate the table in the popup modal are created in this method.
      */
+
+    //console.log(annotations);
+
     if (item) {
         var name = item['name'];
     } else {
@@ -298,6 +305,8 @@ function createCell(item, source, rowNum) {
     td += name;
     td += "</td>";
 
+    //console.log(annotations);
+
     return td;
 }
 
@@ -322,43 +331,42 @@ function selected(argsString){
         switch (backgroundColor) {
             case cellColorBasic:
                 //make local annotation
-                //todo: is case that user changes his mind covered?
                 setCellColorSelectedLocal(cellID);
                 addToAnnotations(uniqueID, name, source, rowNum);
+                //console.log(uniqueID);
                 setAnnotatedColor([uniqueID]);
                 break;
             case cellColorSelectedLocal:
                 //reverse local annotation
-                console.log('set cell col basic');
                 setCellColorBasic(cellID);
                 setBasicColor([uniqueID]);
                 deleteLocalAnnotation(content, uniqueID);
-                console.log(annotations);
                 break;
         }
 
     } else {
         //global annotations
-
         switch (backgroundColor) {
             case cellColorBasic:
                 setCellColorSelectedGlobal(cellID);
+                console.log('cellColorBasic');
                 //tokenAssignedItemGlobal[content] = name;
-
                 if (content in annotations['global']) {
                     deleteGlobalAnnotation(content);
                 }
-
                 var uIDs = getLinkedIDs(content);
                 addToAnnotations(uniqueID, name, source, rowNum, false, uIDs);
                 setAnnotatedColor(uIDs);
                 break;
 
             case cellColorSelectedGlobal:
+                console.log('cellColorSelectedGlobal');
                 setCellColorBasic(cellID);
                 var uIDs = annotations['global'][content]['uniqueIDs'];
                 setBasicColor(uIDs);
                 deleteGlobalAnnotation(content);
+                //console.log(content);
+                //console.log(annotations);
                 break;
         }
     }
@@ -386,6 +394,7 @@ function renderAnnotationsTable() {
             ];
         var type = local ? 'Local' : 'Global';
         var argsString = args.join('----');
+        argsString = argsString.split('\\').join('\\\\');
         var tr ="<tr><td>" + token + "</td><td>" + name + "</td><td>" + type + "</td>";
         tr += "<td onclick='deleteFromAnnotations(\"" + argsString + "\")'>x</td></tr>";
         return tr;
