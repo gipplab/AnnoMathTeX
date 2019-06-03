@@ -6,6 +6,7 @@
 <head>
   <meta charset="UTF-8">
   <title>AnnoMathTex</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" type="text/css" href="{% static 'css/uploadstyle.css' %}">
 </head>
 
@@ -18,9 +19,19 @@
     <form class="hero-message" id="upload_form" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="hero-title">
+          <div>
+            <input type="file" name="file">
+            <button type="submit" name="file_submit">Upload</button>
+          </div>
 
-          <input type="file" name="file">
-          <button type="submit" name="file_submit">Upload</button>
+          </br>
+          </br>
+          </br>
+          </br>
+          </br>
+          <a href="https://github.com/philsMINT/AnnoMathTeX" target="_blank" rel="noopener noreferrer" class="fa fa-github"></a>
+          <a href="https://www.youtube.com/watch?v=hcyJQtRwYAo" target="_blank" rel="noopener noreferrer" class="fa fa-youtube"></a>
+
         </div>
 
     </form>
