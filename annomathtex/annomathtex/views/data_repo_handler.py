@@ -12,14 +12,14 @@ class DataRepoHandler:
         self.token = token
 
         #uncomment for local testing
-        #if not token:
-        #    from .key import local_token
-        #    self.token = local_token
+        if not token:
+            from .key import local_token
+            self.token = local_token
 
         #uncomment for wmflabs
-        if not token:
-            print('Token not set')
-            exit(2)
+        #if not token:
+        #    print('Token not set')
+        #    exit(2)
 
 
         self.g = Github(self.token)
@@ -63,13 +63,38 @@ class DataRepoHandler:
         self.commit_file('formula_concepts.txt', json.dumps(formula_concepts))
         return
 
-    def commit_manual_recommendations(self, manual_recommendations):
+    def commit_manual_recommendations(self, cleaned_manual_recommendations):
         encoded_content = self.repo.get_file_contents('manual_recommendations.txt')
         decoded_content = encoded_content.decoded_content
         existing_manual_recommendations = json.loads(decoded_content)
 
-        for item in manual_recommendations:
-            pass
+        print('cleaned_manual_recommendations: {}'.format(cleaned_manual_recommendations))
+
+        for id_or_f, name in cleaned_manual_recommendations:
+
+            if id_or_f in existing_manual_recommendations:
+                print("{} in existing_manual_recommendations".format(id_or_f))
+                for item in existing_manual_recommendations[id_or_f]:
+                    if name == item['name']:
+                        item['count'] += 1
+                        break
+            else:
+                print(cleaned_manual_recommendations)
+                existing_manual_recommendations[id_or_f] = [{'name': name,
+                                                             'count': 1}]
+
+
+        print('file: {}'.format(existing_manual_recommendations))
+
+        self.commit_file('manual_recommendations.txt', json.dumps(existing_manual_recommendations))
+
+
+    def get_manual_recommendations(self):
+        encoded_content = self.repo.get_file_contents('manual_recommendations.txt')
+        decoded_content = encoded_content.decoded_content
+        existing_manual_recommendations = json.loads(decoded_content)
+
+        return existing_manual_recommendations
 
 
     def commit_to_repo(self, csv_file_name, csv_file_content, annotations):
@@ -169,13 +194,20 @@ class FormulaConceptHandler:
 
 
 
-class ManualRecommendationsHandler:
+class ManualRecommendationsCleaner:
 
+    def __init__(self, manual_recommendations):
+        self.manual_recommendations = manual_recommendations
 
+    def get_recommendations(self):
+        cleaned_manual_recommendations = []
+        
+        for id_or_f in self.manual_recommendations:
+                for num in self.manual_recommendations[id_or_f]:
+                    name = self.manual_recommendations[id_or_f][num]['name']
+                    cleaned_manual_recommendations.append((id_or_f, name))
 
-
-    pass
-
+        return cleaned_manual_recommendations
 
 
 
@@ -187,6 +219,9 @@ if __name__ == '__main__':
     #d.delete_file('Sun.csv')
     #initial_formulae_file = json.dumps({'dummy_formula': {'TeXStrings': ['empty'], 'Identifiers': 'empty'}})
     #initial_formulae_file = json.dumps({})
+
+    initial_manual_recommendations_file = json.dumps({})
+    d.commit_file('manual_recommendations.txt', initial_manual_recommendations_file)
     #d.commit_file('formula_concepts.txt', initial_formulae_file)
 
 

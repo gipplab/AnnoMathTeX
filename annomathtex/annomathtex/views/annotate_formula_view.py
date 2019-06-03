@@ -16,13 +16,14 @@ from ..parsing.tex_parser import TEXParser
 from ..recommendation.arxiv_evaluation_handler import ArXivEvaluationListHandler
 from ..recommendation.wikipedia_evaluation_handler import WikipediaEvaluationListHandler
 from ..recommendation.static_wikidata_handler import StaticWikidataHandler
+from ..recommendation.manual_recommendations_handler import ManualRecommendationsHandler
 from ..forms.uploadfileform import UploadFileForm
 from ..forms.save_annotation_form import SaveAnnotationForm
 from ..recommendation.math_sparql import MathSparql
 from ..recommendation.ne_sparql import NESparql
 
 from ..views.eval_file_writer import EvalFileWriter
-from ..views.data_repo_handler import DataRepoHandler, FormulaConceptHandler
+from ..views.data_repo_handler import DataRepoHandler, FormulaConceptHandler, ManualRecommendationsCleaner
 from .helper_functions import handle_annotations
 from ..config import *
 
@@ -221,14 +222,17 @@ class FileUploadView(View):
         file_name = items['fileName']['f']
         manual_recommendations = items['manualRecommendations']
 
-        print(manual_recommendations)
+
+        m = ManualRecommendationsCleaner(manual_recommendations)
+        cleaned_manual_recommendations = m.get_recommendations()
+
 
         __LOGGER__.debug(' ITEMS : {}'.format(items))
 
 
         new_annotations = handle_annotations(annotations)
 
-        """annotation_file_path = create_annotation_file_path(file_name)
+        annotation_file_path = create_annotation_file_path(file_name)
         with open(annotation_file_path, 'w') as f:
             __LOGGER__.debug(' WRITING TO FILE {}'.format(annotation_file_path))
             json.dump(new_annotations, f)
@@ -244,8 +248,9 @@ class FileUploadView(View):
         csv_string = eval_file_writer.get_csv_for_repo()
         data_repo_handler = DataRepoHandler()
         file_name = re.sub(r'\..*', '.csv', file_name)
-        data_repo_handler.commit_to_repo(file_name, csv_string, new_annotations)"""
-        #data_repo_handler.commit_file(create_annotation_file_name(file_name), json.dumps(annotations))
+        data_repo_handler.commit_manual_recommendations(cleaned_manual_recommendations)
+        data_repo_handler.commit_to_repo(file_name, csv_string, new_annotations)
+        data_repo_handler.commit_file(create_annotation_file_name(file_name), json.dumps(annotations))
 
 
         return HttpResponse(
@@ -288,13 +293,14 @@ class FileUploadView(View):
         __LOGGER__.debug('making wikidata query for search string: {}'.format(search_string))
 
         concatenated_results, wikidata_results, word_window, \
-        arXiv_evaluation_items, wikipedia_evaluation_items = [], [], [], [], []#None, None, None, None, None
+        arXiv_evaluation_items, wikipedia_evaluation_items, manual_recommendations = [], [], [], [], [], []#None, None, None, None, None
 
         if token_type == 'Identifier':
             wikidata_results = StaticWikidataHandler().check_identifiers(search_string)
             arXiv_evaluation_items = ArXivEvaluationListHandler().check_identifiers(search_string)
             wikipedia_evaluation_items = WikipediaEvaluationListHandler().check_identifiers(search_string)
             word_window = self.get_word_window(unique_id)
+            manual_recommendations = ManualRecommendationsHandler().check_identifier_or_formula(search_string)
         elif token_type == 'Word':
             wikidata_results = NESparql().named_entity_search(search_string)
         elif token_type == 'Formula':
@@ -309,6 +315,9 @@ class FileUploadView(View):
             #could also add .tex_string_search()
             wikidata_results = MathSparql().aliases_search(math_env)
             word_window = self.get_word_window(unique_id)
+            manual_recommendations = DataRepoHandler().get_manual_recommendations()
+            manual_recommendations = ManualRecommendationsHandler(manual_recommendations).check_identifier_or_formula(search_string)
+
 
 
         __LOGGER__.debug(' wikidata query made in {}'.format(time()-start))
@@ -328,7 +337,7 @@ class FileUploadView(View):
                         'arXivEvaluationItems': fill_to_limit(arXiv_evaluation_items),
                         'wikipediaEvaluationItems': fill_to_limit(wikipedia_evaluation_items),
                         'wordWindow': fill_to_limit(word_window),
-                        'manual': fill_to_limit([])}),
+                        'manual': fill_to_limit(manual_recommendations)}),
             content_type='application/json'
         )
 

@@ -84,17 +84,21 @@ function populateTableFormula(random=true) {
 
     let wordWindow = recommendations['wordWindow'];
     let wikidataResults = recommendations['wikidataResults'];
-    //console.log(mathEnv);
+    var existingManual = recommendations['manual'];
 
     if (mathEnv in manualRecommendations) {
         var manual = manualRecommendations[mathEnv];
-    } else {
+        for (var i in manual) {
+            existingManual.unshift(manual[i]);
+        }
+        existingManual = existingManual.slice(0,10);
+    } /*else {
         var manual = recommendations['manual']
-    }
+    }*/
 
     var resultList = [[wordWindow, 'WordWindow'],
                       [wikidataResults, 'Wikidata'],
-                      [manual, 'Manual']];
+                      [existingManual, 'Manual']];
 
     console.log(resultList);
 
@@ -104,13 +108,13 @@ function populateTableFormula(random=true) {
         resultList = preservedResultList;
         for (var i in resultList){
             if (resultList[i][1] == 'Manual') {
-                resultList[i] = [manual, 'Manual'];
+                resultList[i] = [existingManual, 'Manual'];
             }
         }
     } else if (random) {
         resultList = shuffle([[wordWindow, 'WordWindow'],
                               [wikidataResults, 'Wikidata'],
-                              [manual, 'Manual']]);
+                              [existingManual, 'Manual']]);
         preservedResultList = resultList;
     } else {
         var table= "<table><tr><td>WordWindow</td><td>Wikidata</td><td>Manual</td></tr>";
@@ -177,11 +181,13 @@ function populateTableIdentifier(random=true) {
     let wikipediaEvaluationItems = recommendations['wikipediaEvaluationItems'];
     let wikidataResults = recommendations['wikidataResults'];
     let wordWindow = recommendations['wordWindow'];
-    //let manual = recommendations['manual'];
+    var existingManual = recommendations['manual'];
     if (content in manualRecommendations) {
         var manual = manualRecommendations[content];
-    } else {
-        var manual = recommendations['manual'];
+        for (var i in manual) {
+            existingManual.unshift(manual[i]);
+        }
+        existingManual = existingManual.slice(0,10);
     }
 
     console.log(manual);
