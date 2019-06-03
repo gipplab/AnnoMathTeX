@@ -220,7 +220,8 @@ if __name__ == '__main__':
     #initial_formulae_file = json.dumps({'dummy_formula': {'TeXStrings': ['empty'], 'Identifiers': 'empty'}})
     #initial_formulae_file = json.dumps({})
 
-    initial_manual_recommendations_file = json.dumps({})
+    #initial_manual_recommendations_file = json.dumps({})
+    initial_manual_recommendations_file = json.dumps({" \\foo{2} E ": [{"name": "fooform", "count": 1}]})
     d.commit_file('manual_recommendations.txt', initial_manual_recommendations_file)
     #d.commit_file('formula_concepts.txt', initial_formulae_file)
 

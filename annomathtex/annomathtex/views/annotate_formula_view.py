@@ -300,7 +300,8 @@ class FileUploadView(View):
             arXiv_evaluation_items = ArXivEvaluationListHandler().check_identifiers(search_string)
             wikipedia_evaluation_items = WikipediaEvaluationListHandler().check_identifiers(search_string)
             word_window = self.get_word_window(unique_id)
-            manual_recommendations = ManualRecommendationsHandler().check_identifier_or_formula(search_string)
+            manual_recommendations = DataRepoHandler().get_manual_recommendations()
+            manual_recommendations = ManualRecommendationsHandler(manual_recommendations).check_identifier_or_formula(search_string)
         elif token_type == 'Word':
             wikidata_results = NESparql().named_entity_search(search_string)
         elif token_type == 'Formula':

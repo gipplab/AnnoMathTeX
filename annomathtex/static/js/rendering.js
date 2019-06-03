@@ -176,11 +176,12 @@ function populateTableIdentifier(random=true) {
     sourcesWithNums = {};
 
     console.log(annotations);
+    console.log(recommendations);
 
-    let arXivEvaluationItems = recommendations['arXivEvaluationItems'];
-    let wikipediaEvaluationItems = recommendations['wikipediaEvaluationItems'];
-    let wikidataResults = recommendations['wikidataResults'];
-    let wordWindow = recommendations['wordWindow'];
+    var arXivEvaluationItems = recommendations['arXivEvaluationItems'];
+    var wikipediaEvaluationItems = recommendations['wikipediaEvaluationItems'];
+    var wikidataResults = recommendations['wikidataResults'];
+    var wordWindow = recommendations['wordWindow'];
     var existingManual = recommendations['manual'];
     if (content in manualRecommendations) {
         var manual = manualRecommendations[content];
@@ -196,7 +197,7 @@ function populateTableIdentifier(random=true) {
                       [wikipediaEvaluationItems, 'Wikipedia'],
                       [wikidataResults, 'Wikidata'],
                       [wordWindow, 'WordWindow'],
-                      [manual, 'Manual']];
+                      [existingManual, 'Manual']];
 
     var table= "<table><tr><td>Source 1</td><td>Source 2</td><td>Source 3</td><td>Source 4</td><td>Source 5</td></tr>";
 
@@ -204,7 +205,7 @@ function populateTableIdentifier(random=true) {
         resultList = preservedResultList;
         for (var i in resultList){
             if (resultList[i][1] == 'Manual') {
-                resultList[i] = [manual, 'Manual'];
+                resultList[i] = [existingManual, 'Manual'];
             }
         }
     } else if (random) {
@@ -212,7 +213,7 @@ function populateTableIdentifier(random=true) {
                                     [wikipediaEvaluationItems, 'Wikipedia'],
                                     [wikidataResults, 'Wikidata'],
                                     [wordWindow, 'WordWindow'],
-                                    [manual, 'Manual']]);
+                                    [existingManual, 'Manual']]);
         preservedResultList = resultList;
         //console.log(preservedResultList);
     } else {
