@@ -28,6 +28,7 @@ function handleLinkedTokens(func, dicToCheck) {
             func(id)
         }
     }
+
 }
 
 
