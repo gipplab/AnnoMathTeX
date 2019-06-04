@@ -1,26 +1,27 @@
 # Introduction
 
-Mathematical formulae are a significant part of scientific documents, books and web pages in the fields of science, technology, engineering and mathematics (STEM). 
-In current information retrieval approaches mathematical formulae are not considered, even though they are very common in texts within STEM fields.
-Since mathematical formulae contain a lot of important information, they should not be ignored when comparing documents.
-Currently, there is no large enough labeled dataset containing mathematical formulae annotated with their semantics available, that could be used to train machine learning models. 
+Mathematical formulae are a significant part of scientific documents (books, articles, web pages, etc.) in the fields of science, technology, engineering, and mathematics (STEM). 
+In most of the current information retrieval approaches, mathematical formulae are not considered, even though they are very common in texts within STEM fields.
+Since mathematical formulae contain a lot of important information, they should not be ignored when analyzing and comparing documents.
+Currently, there is no large labeled dataset available, containing mathematical formulae annotated with their semantics, that could be used to train machine learning models. 
 \>>AnnoMathTeX<< offers a first approach to facilitate the annotation of mathematical formulae in STEM documents.
-It recommends the concept associated to a certain identifier of formula to the user who is annotating the 
-document and thus creates a labeled dataset of identifiers and formula concepts in the process.
+It recommends names for formulae and their constituting identifiers (characters/symbols, e.g. constants and variables) to the user who is annotating the 
+document and thus enables the creation of a labeled dataset.
 
 
 ### Definitions
 
-##### Identifier
-Identifiers in mathematical formulae are the meanings attached to symbols contained in the expression. The identifier *E* means "*energy*" in the formula *E=mc2*.
+##### Identifiers
+Identifiers in mathematical formulae are the meanings attached to symbols contained within a formula. For example, the identifier *E* means "*energy*" in the formula *E=mc^2*.
 
 ##### Formula Concept
-The concept of a formula is the meaning that is associated with it. The formula *E=mc2* has the concept of "*mass-energy equivalence*" associated with it.
+The concept of a formula is the name or meaning (semantics) that can be associated with it. 
+For example, a possible concept name annotation for the formula *E=mc2* would be "*mass-energy equivalence*".
 
 
 # \>>AnnoMathTeX<<
-AnnoMathTeX is a standalone LaTeX text and formula annotation recommendation tool for STEM documents, implemented in python and django. 
-It allows users to annotate identifiers contained in mathematical formulae, as well as the entire formula contained in a document with their corresponding concept from a list of suggested recommendations. 
+AnnoMathTeX is a standalone web-based LaTeX text and formula annotation recommendation tool for STEM documents, implemented with the python framework django. 
+It allows users to annotate identifiers contained in mathematical formulae, as well as entire formulae contained in a document with possible concept names selected from a list of suggested recommendations. 
 
 <!---The recommendations are extracted from a number of different sources.
 
@@ -31,11 +32,11 @@ with the [Wikidata QID](https://en.wikipedia.org/wiki/Wikidata#Items).)--->
 
 
 <!--- Maybe exclude this? --->
-The recommendations for the concepts are taken from four different sources:
-* arXiv: A list containing identifiers appearing in the arXiv corpus with the corresponding concepts, ranked by frequency of appearence.
-* Wikipedia: A list containing identifiers appearing in Wikipedia articles with the corresponding concepts, ranked by frequency of appearence.
-* Wikidata: A Sparql query to the [Wikidata Query Services API](https://query.wikidata.org) retrieves a list of matching [wikidata items](https://en.wikipedia.org/wiki/Wikidata#Items).
-* Word Window: Nouns and proper nouns from the text surrounding the formula. The idea being, that the text surrounding the formula will often explain the formula its parts. Consider this example from the Wikipedia article on the [Mass-energy equivalence](https://en.wikipedia.org/wiki/Mass–energy_equivalence):
+The recommendations for the formulae and identifer concept names are taken from four different sources:
+* arXiv: A list containing names for all lower- and upper-case Lating and Greek letter identifiers appearing in the [arXiv corpus](http://ntcir-math.nii.ac.jp/data/) as text surrounding the identifiers, ranked by the frequency of their appearence.
+* Wikipedia: A list containing identifier names for all letters appearing in Wikipedia articles as surrounding text, ranked by the frequency of their appearence.
+* Wikidata: A SPARQL query to the [Wikidata Query Services API](https://query.wikidata.org) retrieves a list of matching [wikidata items](https://en.wikipedia.org/wiki/Wikidata#Items).
+* Word Window: Nouns and proper nouns from the text of the annotated document surrounding the formula. The idea being, that the text surrounding the formula will often explain the formula and its parts. Consider this example from the Wikipedia article on the [Mass-energy equivalence](https://en.wikipedia.org/wiki/Mass–energy_equivalence):
    
   "*In physics, **mass–energy equivalence** states that anything having **mass** has an equivalent amount of **energy** and vice versa, with these fundamental quantities directly relating to one another by Albert Einstein's famous formula:*
 
@@ -107,7 +108,7 @@ Depending on the size of the project, if it is small and simple enough the refer
 
 ### Start The Server
 
-In a terminal navigate to the folder where the manage.py file sits ([AnnoMathTeX/annomathtex](/AnnoMathTeX/annomathtex))
+In a terminal navigate to the folder where the manage.py file is located ([AnnoMathTeX/annomathtex](/AnnoMathTeX/annomathtex))
 and run the command
 ```python
 python manage.py runserver
@@ -115,7 +116,7 @@ python manage.py runserver
 
 ### Select a File
 
-Open a browser window and navigate to [http://127.0.0.1:8000](http://127.0.0.1:8000). 
+Open a browser window and navigate to [localhost:8000](http://127.0.0.1:8000). 
 
 Select the file that you would like to annotate with the file browser.
 
@@ -125,9 +126,8 @@ Select the file that you would like to annotate with the file browser.
 
 
 After selecting and uploading the file you will see the processed and rendered document in your browser window. You can now start annotating.
-Nouns, proper nouns and named entities are highlighted in the natural language part of the document. They are also shown as recommendations for annotation in the word window.
-Mathematical environments are enclosed with highlighted dollar signs, and the identifiers are highlighted with yet another colour.
-All other symbols in the mathematical environment are coloured in grey, as they are not interesting for the purpose of annotation.
+Mathematical environments are enclosed with highlighted dollar signs, and the identifiers are highlighted.
+All other characters that are not to be annotated in the mathematical environment are coloured in grey.
 
 <p align="center">
   <img src="https://github.com/philsMINT/AnnoMathTeX/blob/master/media/uploaded_file.png"/>
@@ -140,11 +140,11 @@ All other symbols in the mathematical environment are coloured in grey, as they 
   <img src="https://github.com/philsMINT/AnnoMathTeX/blob/master/media/global_select.gif"/>
 </p>
 
-To annotate an identifier, simply click on the highlighted character (e.g. "E") in the document and you will be presented with a table of recommendations.
-To select one of the suggested recommendations, select the matching cell, and it will be highlighted (along with all other mathcing cells from different sources).
-The annotated identifier will be highlighted in a different colour, and a table holding all the annotations is constructed at the top of the document.
-If you click a highlighted cell, your annotation will be reversed. 
-If none of the recommendations match, select the "*no match*" button at the top of the table.
+To annotate an identifier, simply click on the highlighted character (e.g. "E") in the document and you will see a pop-up with a table of recommendations.
+To select one of the suggested recommendations, click on the matching cell, and it will be highlighted (along with all other matching cells from different sources).
+The annotated identifier will be highlighted in green, and a table holding all the annotations that have been made is constructed at the top of the document.
+If you unselect/cancel annotations. 
+If none of the recommendations match, you can manually enter a name.
 
 <p align="center">
   <img src="https://github.com/philsMINT/AnnoMathTeX/blob/master/media/no_match.gif"/>
@@ -154,10 +154,10 @@ If none of the recommendations match, select the "*no match*" button at the top 
 Two different types of annotations are possible: A global annotation, and a local annotation. 
 
 #### Global Annotation
-By default the anotation mode is set to global annotation. This means that if you anntotate e.g. the identifier *E* with "*energy*", all occurences of this identifier in the document will receive this annotation.
+By default the anotation mode is set to global annotation. This means that if you anntotate, e.g. the identifier *E* with "*energy*", all occurences of this identifier in the document will automatically receive this annotation.
 
 #### Local annotation
-To annotate an identifier locally (meaning that only this occurence of the Identifier will be annotated), select the "*local*" option at the top of the table.
+To annotate an identifier locally (meaning that only this occurence of the identifier will be annotated), select the "*local*" option at the top of the table.
 
 <p align="center">
   <img src="https://github.com/philsMINT/AnnoMathTeX/blob/master/media/local.gif"/>
@@ -165,7 +165,7 @@ To annotate an identifier locally (meaning that only this occurence of the Ident
 
 
 ### Saving the annotations
-To save the anntotations, simply click the "*save*" button at the top left of the page. This will write the annotations to a json file and create a csv file that can be used for the evaluation.
+To save the anntotations, simply click the "*save*" button at the top left of the page. This will write the annotations to a json file and create a csv file containing an evaluation table with comparison of the performance of the different sources.
 
 <p align="center">
   <img src="https://github.com/philsMINT/AnnoMathTeX/blob/master/media/save.gif"/>
@@ -180,11 +180,11 @@ If you open the same file again at a later point in time, the annotations you ma
 
 For each file, an evaluation table of the following format is constructed.
 
-| Identifier | Name     | arXiv | Wikipedia | Wikidata | WordWindow | Type   |
-|:----------:|:--------:|:-----:|:---------:|:--------:|:----------:|:------:|
-| X          | variable | -     | 6         | -        | 1          | global |
-| p          | no match | -     | -         | -        | -          | global |
-| f          | function | 2     | -         | -        | -          | local  |
+| Identifier | Name               | arXiv | Wikipedia | Wikidata | WordWindow | Type   |
+|:----------:|:------------------:|:-----:|:---------:|:--------:|:----------:|:------:|
+| X          | variable           | -     | 6         | -        | 1          | global |
+| p          | *manual insertion* | -     | -         | -        | -          | global |
+| f          | function           | 2     | -         | -        | -          | local  |
 
 
 The identifier *X* was annotated globally with "*variable*", which was found in the recommendations from the Wikipedia list and from the word window (positions 6 and 1 in the column respectively).
