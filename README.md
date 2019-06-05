@@ -187,8 +187,8 @@ For each file, an evaluation table of the following format is constructed.
 | f          | function           | 2     | -         | -        | -          | local  |
 
 
-The identifier *X* was annotated globally with "*variable*", which was found in the recommendations from the Wikipedia list and from the word window (positions 6 and 1 in the column respectively).
-For the identifier *p* no matches were found; it was annotated with "*no match*".
+The identifier *X* was annotated globally with "*variable*", which was found in the recommendations from the Wikipedia list and from the word window (positions 6 and 1 in the respective columns).
+For the identifier *p*, no matches were found; it was annotated with a manual insertion.
 The identifier "*f*" was annotated locally with "*function*", which was found in the recommendations from the arXiv list at position 2.
 
 
@@ -213,4 +213,4 @@ See also the list of [contributors](https://github.com/philsMINT/AnnoMathTeX/con
 
 ## Acknowledgments
 
-We thank...
+We thank the Wikimedia for hosting our [web-based system](http://annomathtex.wmflabs.org/)
