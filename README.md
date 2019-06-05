@@ -35,7 +35,7 @@ with the [Wikidata QID](https://en.wikipedia.org/wiki/Wikidata#Items).)--->
 The recommendations for the formulae and identifer concept names are taken from four different sources:
 * arXiv: A list containing names for all lower- and upper-case Lating and Greek letter identifiers appearing in the [arXiv corpus](http://ntcir-math.nii.ac.jp/data/) as text surrounding the identifiers, ranked by the frequency of their appearence.
 * Wikipedia: A list containing identifier names for all letters appearing in Wikipedia articles as surrounding text, ranked by the frequency of their appearence.
-* Wikidata: A SPARQL query to the [Wikidata Query Services API](https://query.wikidata.org) retrieves a list of matching [wikidata items](https://en.wikipedia.org/wiki/Wikidata#Items).
+* Wikidata: A SPARQL query to the [Wikidata Query Services API](https://query.wikidata.org) retrieves a list of matching [Wikidata items](https://en.wikipedia.org/wiki/Wikidata#Items).
 * Word Window: Nouns and proper nouns from the text of the annotated document surrounding the formula. The idea being, that the text surrounding the formula will often explain the formula and its parts. Consider this example from the Wikipedia article on the [Mass-energy equivalence](https://en.wikipedia.org/wiki/Mass–energy_equivalence):
    
   "*In physics, **mass–energy equivalence** states that anything having **mass** has an equivalent amount of **energy** and vice versa, with these fundamental quantities directly relating to one another by Albert Einstein's famous formula:*
@@ -79,8 +79,9 @@ What makes your project stand out? Include logo/demo screenshot etc.-->
 </p>
 
 ## Getting Started
+The system is hosted by Wikimedia at [http://annomathtex.wmflabs.org/](http://annomathtex.wmflabs.org/).
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+If you want to run the system locally, these instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 ### Prerequisites
 
