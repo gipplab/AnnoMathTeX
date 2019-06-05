@@ -94,6 +94,8 @@ function deleteGlobalAnnotation(token) {
 function deleteFromAnnotations(argsString) {
 
     var argsArray = argsString.split('----');
+    console.log(argsArray);
+
     var token = argsArray[0];
     var local = (argsArray[1] == 'true');
     var uIDs = argsArray[2].split(',');

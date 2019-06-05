@@ -32,18 +32,12 @@ function handleLinkedTokens(func, dicToCheck) {
 }
 
 
-
-
-
-
 function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
     /*
     This function is called when the user mouse clicks a token (identifier, formula, named entity or any other word).
     The popup modal is opened, an post request is made to the backend to retreive suggestions for the selected token,
     and the table is rendered with the correct search results.
      */
-
-    console.log(manualRecommendations);
 
     if (tokenType == 'Word') {
         return;

@@ -15,6 +15,7 @@ function setAnnotatedColor(uIDs) {
     /*
     Set the color of annotations tokens.
      */
+    console.log(uIDs);
     for (var i=0 in uIDs) {
         document.getElementById(uIDs[i]).style.color = annotationsColor;
     }
@@ -30,6 +31,8 @@ function setBasicColor(uIDs) {
     } else {
         var fillColor = identifierColorBasic
     }
+
+    console.log(uIDs);
 
     for (var i=0 in uIDs) {
         document.getElementById(uIDs[i]).style.color = fillColor;
@@ -175,9 +178,6 @@ function populateTableIdentifier(random=true) {
 
     sourcesWithNums = {};
 
-    console.log(annotations);
-    console.log(recommendations);
-
     var arXivEvaluationItems = recommendations['arXivEvaluationItems'];
     var wikipediaEvaluationItems = recommendations['wikipediaEvaluationItems'];
     var wikidataResults = recommendations['wikidataResults'];
@@ -191,7 +191,6 @@ function populateTableIdentifier(random=true) {
         existingManual = existingManual.slice(0,10);
     }
 
-    console.log(manual);
 
     var resultList = [[arXivEvaluationItems, 'ArXiv'],
                       [wikipediaEvaluationItems, 'Wikipedia'],
@@ -382,7 +381,12 @@ function selected(argsString){
                     deleteGlobalAnnotation(content);
                 }
                 var uIDs = getLinkedIDs(content);
+                if (uIDs.length == 0) {
+                    uIDs.push(uniqueID)
+                }
+
                 addToAnnotations(uniqueID, name, source, rowNum, false, uIDs);
+                setAnnotatedColor([uniqueID]);
                 setAnnotatedColor(uIDs);
                 break;
 
@@ -390,10 +394,9 @@ function selected(argsString){
                 console.log('cellColorSelectedGlobal');
                 setCellColorBasic(cellID);
                 var uIDs = annotations['global'][content]['uniqueIDs'];
+                setBasicColor([uniqueID]);
                 setBasicColor(uIDs);
                 deleteGlobalAnnotation(content);
-                //console.log(content);
-                //console.log(annotations);
                 break;
         }
     }
@@ -420,6 +423,8 @@ function renderAnnotationsTable() {
                 local,
                 uIDs
             ];
+
+        console.log(args);
         var type = local ? 'Local' : 'Global';
         var argsString = args.join('----');
         argsString = argsString.split('\\').join('\\\\');
@@ -439,6 +444,7 @@ function renderAnnotationsTable() {
     }
 
     var g = annotations['global'];
+    console.log(annotations);
     for (var token in g) {
         tr = createRow(token, g[token]['name'], false, g[token]['uniqueIDs']);
         annotationsTable += tr;
