@@ -58,7 +58,9 @@ function shuffle(array) {
 //https://stackoverflow.com/questions/1144783/how-to-replace-all-occurrences-of-a-string-in-javascript
 function replaceAllEquals(ann) {
     /*
-    this function is called from posting.js
+    This function is called from posting.js
+    It replaces all equals signs in the annotations that the user made. This is necessary, because Django can't
+    recognise equals signs when receiving an ajax post.
      */
 
     var newGlobal = {};
@@ -85,12 +87,10 @@ function replaceAllEquals(ann) {
 
 }
 
-
-
-
-
-
 function getLocalUniqueIDs(){
+    /*
+    Get all the uniqueIDs for a certain token.
+     */
     var uniqueIDs = [];
     for (var token in annotations['local']) {
         for (uniqueID in annotations['local'][token]) {
@@ -101,6 +101,9 @@ function getLocalUniqueIDs(){
 }
 
 function getGlobalUniqueIDs() {
+    /*
+    Get all the uniqueIDs for a certain token.
+     */
     var uniqueIDs = new Array();
     for (var token in annotations['global']) {
         var tmpIDs = annotations['global'][token]['uniqueIDs'];
@@ -111,6 +114,10 @@ function getGlobalUniqueIDs() {
 
 
 function getLinkedIDs(contentSymbol) {
+    /*
+    Get the uniqueIDs of all the identifiers/formulae that appear multiple times in the document. This allows for global
+    annotating.
+     */
     var uIDs = [];
     if (contentSymbol in linkedMathSymbols) {
         for (var i in linkedMathSymbols[contentSymbol]) {

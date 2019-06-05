@@ -7,6 +7,9 @@ from github import Github, GithubException
 
 
 class DataRepoHandler:
+    """
+    Handles everything that needs to access the data repo ag-gipp/dataAnnoMathTex.
+    """
 
     def __init__(self, token=os.getenv('apikey', False)):
         self.token = token
@@ -106,8 +109,9 @@ class DataRepoHandler:
 
 
 class FormulaConceptHandler:
-
-    #todo: simplify
+    """
+    Prepares the formulae for adding to the formula concepts file.
+    """
 
     def __init__(self, annotations):
         self.annotations = annotations
@@ -195,6 +199,9 @@ class FormulaConceptHandler:
 
 
 class ManualRecommendationsCleaner:
+    """
+    Prepares the manual recommendations for adding them to the manual recommendations file.
+    """
 
     def __init__(self, manual_recommendations):
         self.manual_recommendations = manual_recommendations
@@ -212,6 +219,7 @@ class ManualRecommendationsCleaner:
 
 
 if __name__ == '__main__':
+    #For testing purposes
     from key import local_token
     d = DataRepoHandler(local_token)
     #l = ['Angular_velocity.csv', 'Harmonic_oscillator.csv', 'Mass-energy_equivalence.csv', 'Quantum_harmonic_oscillator.csv', 'Velocity.csv', 'sun.csv']
@@ -224,9 +232,3 @@ if __name__ == '__main__':
     initial_manual_recommendations_file = json.dumps({" \\foo{2} E ": [{"name": "fooform", "count": 1}]})
     d.commit_file('manual_recommendations.txt', initial_manual_recommendations_file)
     #d.commit_file('formula_concepts.txt', initial_formulae_file)
-
-
-
-
-
-

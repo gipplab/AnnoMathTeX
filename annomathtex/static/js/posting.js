@@ -1,3 +1,8 @@
+/*
+Contains functionality for sending a request to Django and receiving recommendations.
+ */
+
+
 $(document).ready(function () {
     $('#post-form').on('submit', function(event){
         event.preventDefault();

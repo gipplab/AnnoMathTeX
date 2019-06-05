@@ -1,11 +1,8 @@
 function handleNoMatch(){
     /*
-    The "No Match" button was clicked: The user did not find any of the recommendations to be fitting.
+    The user did not find any of the recommendations to be fitting and added his own suggestion.
     This means that this information has to be added to the "annotations" dictionary, which will later be written to the
     evaluation csv file, along with the other annotations.
-
-    This method is also called if the user deselects the "No Match" button, i.e. if he found a matching recommendation
-    after all.
      */
 
     var name = document.getElementById('noMatchInput').value;
@@ -38,7 +35,9 @@ function addToMannualRecommendations(name) {
 
 
 function addToAnnotations(uID, name, source, rowNum, noMatch=false, uIDs = null) {
-
+    /*
+    An annotation was made and the information is added to the annotations dictionary
+     */
     if (isFormula) {
         var type = 'Formula';
     } else {
@@ -106,10 +105,6 @@ function deleteFromAnnotations(argsString) {
         deleteGlobalAnnotation(token);
         setBasicColor(uIDs);
     }
-
-    //console.log(token);
-    //console.log(local);
-    //console.log(annotations);
 
     renderAnnotationsTable();
 }

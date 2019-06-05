@@ -61,11 +61,11 @@ function setCellColorSelectedGlobal(cellID) {
 }
 
 
-/*
-Rendering of table in popup modal
- */
-
 function handlePopupTable() {
+    /*
+    Either the function handling the rendering of the table for identifiers or the corresponding function for formulae
+    is called.
+     */
     if (isFormula) {
         populateTableFormula();
     } else {
@@ -77,13 +77,15 @@ function handlePopupTable() {
 //todo: simplify these 2 methods
 function populateTableFormula(random=true) {
     /*
-    only word window at this point
+    The entire table, containing the recommendations for a formula, that is shown to the user in the popup modal is
+    created as html code in this function. The function createCell() is called upon, to create the individual cells in the table.
+
+    random: The sources are shuffled and anonymized (The user does not know which recommendations come from which
+    source, which is important for the evaluation)
      */
 
 
     sourcesWithNums = {};
-
-    //console.log(recommendations);
 
     let wordWindow = recommendations['wordWindow'];
     let wikidataResults = recommendations['wikidataResults'];
@@ -169,8 +171,8 @@ function populateTableFormula(random=true) {
 
 function populateTableIdentifier(random=true) {
     /*
-    The entire table, containing the recommendations, that is shown to the user in the popup modal is created as html
-    code in this function. The function createCell() is called upon, to create the individual cells in the table.
+    The entire table, containing the recommendations for an identifier, that is shown to the user in the popup modal is
+    created as html code in this function. The function createCell() is called upon, to create the individual cells in the table.
 
     random: The sources are shuffled and anonymized (The user does not know which recommendations come from which
     source, which is important for the evaluation)
@@ -403,12 +405,6 @@ function selected(argsString){
     handlePopupTable();
     renderAnnotationsTable();
 }
-
-
-
-
-
-
 
 function renderAnnotationsTable() {
     /*
