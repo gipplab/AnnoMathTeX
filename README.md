@@ -194,15 +194,11 @@ The identifier "*f*" was annotated locally with "*function*", which was found in
 
 ## License
 
-This project is licensed under the Apache License 2.0 - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the Apache License 2.0.
 
 <!--## Built With
 
 * [Django](https://www.djangoproject.com) - The web framework used-->
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/AnnoMathTeX/contributing) for details on our code of conduct, and the process for submitting pull requests to us.
 
 ## Authors
 
@@ -213,4 +209,4 @@ See also the list of [contributors](https://github.com/philsMINT/AnnoMathTeX/con
 
 ## Acknowledgments
 
-We thank the Wikimedia for hosting our [web-based system](http://annomathtex.wmflabs.org/)
+We thank the Wikimedia for hosting our [web-based system](http://annomathtex.wmflabs.org/).
