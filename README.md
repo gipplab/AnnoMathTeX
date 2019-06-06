@@ -32,18 +32,17 @@ with the [Wikidata QID](https://en.wikipedia.org/wiki/Wikidata#Items).)--->
 
 
 <!--- Maybe exclude this? --->
-The recommendations for the formulae and identifer concept names are taken from four different sources:
-* arXiv: A list containing names for all lower- and upper-case Lating and Greek letter identifiers appearing in the [arXiv corpus](http://ntcir-math.nii.ac.jp/data/) as text surrounding the identifiers, ranked by the frequency of their appearence.
-* Wikipedia: A list containing identifier names for all letters appearing in Wikipedia articles as surrounding text, ranked by the frequency of their appearence.
+The recommendations for the formulae and identifer concept names are taken from five different sources:
+* arXiv: A list containing names for all lower- and upper-case Latin and Greek letter identifiers appearing in the [arXiv corpus](http://ntcir-math.nii.ac.jp/data/) as text surrounding the identifiers, ranked by the frequency of their appearence.
+* Wikipedia: A list containing identifier names for all letters appearing in mathematical Wikipedia articles as surrounding text, ranked by the frequency of their appearence.
 * Wikidata: A SPARQL query to the [Wikidata Query Services API](https://query.wikidata.org) retrieves a list of matching [Wikidata items](https://en.wikipedia.org/wiki/Wikidata#Items).
-* Word Window: Nouns and proper nouns from the text of the annotated document surrounding the formula. The idea being, that the text surrounding the formula will often explain the formula and its parts. Consider this example from the Wikipedia article on the [Mass-energy equivalence](https://en.wikipedia.org/wiki/Mass–energy_equivalence):
+* Word Window: Nouns and proper nouns from the text of the annotated document surrounding the formula. The idea being, that the text surrounding the formula will often explain the formula and its parts. Consider this example from the Wikipedia article on [mass-energy equivalence](https://en.wikipedia.org/wiki/Mass–energy_equivalence):
    
   "*In physics, **mass–energy equivalence** states that anything having **mass** has an equivalent amount of **energy** and vice versa, with these fundamental quantities directly relating to one another by Albert Einstein's famous formula:*
 
   *E=mc^2*"
   
   The sentence directly preceding the formula, contains the word *"**mass**"*, which corresponds to the identifier *"m"* and the word *"**energy**"*, which corresponds to the identifier *"E"*. Furthermore, *"**mass–energy equivalence**"* describes the meaning of the entire formula.
- 
 <!---The vision for >>AnnoMathTeX<< is that it will enable the creation of a large and labeled dataset of identifiers and formulae with their corresponding concepts.
 This dataset could be used to train models for all sorts of recommendation and recognition tasks involving mathematical symbols.--->
 
