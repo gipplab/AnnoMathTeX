@@ -300,11 +300,19 @@ class FileUploadView(View):
 
         __LOGGER__.debug('making wikidata query for search string: {}'.format(search_string))
 
-        concatenated_results, wikidata_results, word_window, \
-        arXiv_evaluation_items, wikipedia_evaluation_items, manual_recommendations = [], [], [], [], [], []#None, None, None, None, None
+        #concatenated_results, wikidata_results, word_window, \
+        #arXiv_evaluation_items, wikipedia_evaluation_items, manual_recommendations = [], [], [], [], [], []
+
+        arXiv_evaluation_items, wikipedia_evaluation_items, \
+        wikidata1_results, wikidata2_results, \
+        word_window, formula_concept_db, \
+        manual_recommendations = [], [], [], [], [], [], []
+
+
 
         if token_type == 'Identifier':
-            wikidata_results = StaticWikidataHandler().check_identifiers(search_string)
+            #wikidata_results = StaticWikidataHandler().check_identifiers(search_string)
+            wikidata1_results = StaticWikidataHandler().check_identifiers(search_string)
             arXiv_evaluation_items = ArXivEvaluationListHandler().check_identifiers(search_string)
             wikipedia_evaluation_items = WikipediaEvaluationListHandler().check_identifiers(search_string)
             word_window = self.get_word_window(unique_id)
@@ -322,8 +330,12 @@ class FileUploadView(View):
             __LOGGER__.debug('math_env: {}'.format(math_env))
             #not static atm
             #could also add .tex_string_search()
-            wikidata_results = MathSparql().aliases_search(math_env)
+            #wikidata_results = MathSparql().aliases_search(math_env)
+            wikidata1_results = MathSparql().aliases_search(math_env)
+            wikidata2_results = MathSparql().defining_formula_search(math_env)
             word_window = self.get_word_window(unique_id)
+            #todo
+            formula_concept_db = []
             manual_recommendations = DataRepoHandler().get_manual_recommendations()
             manual_recommendations = ManualRecommendationsHandler(manual_recommendations).check_identifier_or_formula(search_string)
 
@@ -334,21 +346,36 @@ class FileUploadView(View):
         __LOGGER__.debug(' word window: {}'.format(word_window))
         __LOGGER__.debug(' wikipedia: {}'.format(wikipedia_evaluation_items))
         __LOGGER__.debug(' arxiv: {}'.format(arXiv_evaluation_items))
-        __LOGGER__.debug(' wikidata: {}'.format(wikidata_results))
+        __LOGGER__.debug(' wikidata: {}'.format(wikidata1_results))
 
         def fill_to_limit(dict_list):
             dict_list += [{'name': ''} for _ in range(recommendations_limit-len(dict_list))]
             return dict_list
 
 
-        return HttpResponse(
+        """return HttpResponse(
             json.dumps({'wikidataResults': fill_to_limit(wikidata_results),
                         'arXivEvaluationItems': fill_to_limit(arXiv_evaluation_items),
                         'wikipediaEvaluationItems': fill_to_limit(wikipedia_evaluation_items),
                         'wordWindow': fill_to_limit(word_window),
                         'manual': fill_to_limit(manual_recommendations)}),
             content_type='application/json'
+        )"""
+
+
+        return HttpResponse(
+            json.dumps({'arXivEvaluationItems': fill_to_limit(arXiv_evaluation_items),
+                        'wikipediaEvaluationItems': fill_to_limit(wikipedia_evaluation_items),
+                        'wikidata1Results': fill_to_limit(wikidata1_results),
+                        'wikidata2Results': fill_to_limit(wikidata2_results),
+                        'wordWindow': fill_to_limit(word_window),
+                        'formulaConceptDB': fill_to_limit(formula_concept_db),
+                        'manual': fill_to_limit(manual_recommendations)}),
+            content_type='application/json'
         )
+
+
+
 
     def get(self, request, *args, **kwargs):
         """

@@ -87,8 +87,11 @@ function populateTableFormula(random=true) {
 
     sourcesWithNums = {};
 
+    //let wikidataResults = recommendations['wikidataResults'];
+    let wikidata1Results = recommendations['wikidata1Results'];
+    let wikidata2Results = recommendations['wikidata2Results'];
     let wordWindow = recommendations['wordWindow'];
-    let wikidataResults = recommendations['wikidataResults'];
+    let formulaConceptDB = recommendations['formulaConceptDB'];
     var existingManual = recommendations['manual'];
 
     if (mathEnv in manualRecommendations) {
@@ -101,13 +104,15 @@ function populateTableFormula(random=true) {
         var manual = recommendations['manual']
     }*/
 
-    var resultList = [[wordWindow, 'WordWindow'],
-                      [wikidataResults, 'Wikidata'],
+    var resultList = [[wikidata1Results, 'Wikidata1'],
+                      [wikidata2Results, 'Wikidata2'],
+                      [wordWindow, 'WordWindow'],
+                      [formulaConceptDB, 'FormulaConceptDB'],
                       [existingManual, 'Manual']];
 
     console.log(resultList);
 
-    var table= "<table><tr><td>Source 1</td><td>Source 2</td><td>Source 3</td></tr>";
+    var table= "<table><tr><td>Source 1</td><td>Source 2</td><td>Source 3</td><td>Source 4</td><td>Source 5</td></tr>";
 
     if (preservedResultList) {
         resultList = preservedResultList;
@@ -117,21 +122,27 @@ function populateTableFormula(random=true) {
             }
         }
     } else if (random) {
-        resultList = shuffle([[wordWindow, 'WordWindow'],
-                              [wikidataResults, 'Wikidata'],
+        resultList = shuffle([[wikidata1Results, 'Wikidata1'],
+                              [wikidata2Results, 'Wikidata2'],
+                              [wordWindow, 'WordWindow'],
+                              [formulaConceptDB, 'FormulaConceptDB'],
                               [existingManual, 'Manual']]);
         preservedResultList = resultList;
     } else {
-        var table= "<table><tr><td>WordWindow</td><td>Wikidata</td><td>Manual</td></tr>";
+        var table= "<table><tr><td>Wikidata1</td><td>Wikidata2</td><td>WordWindow</td><td>FormulaConceptDB</td><td>Manual</td></tr>";
     }
 
     let source0 = resultList[0][0];
     let source1 = resultList[1][0];
     let source2 = resultList[2][0];
+    let source3 = resultList[3][0];
+    let source4 = resultList[4][0];
 
     let name0 = resultList[0][1];
     let name1 = resultList[1][1];
     let name2 = resultList[2][1];
+    let name3 = resultList[3][1];
+    let name4 = resultList[4][1];
 
 
     for (let i = 0; i<10; i++) {
@@ -144,7 +155,13 @@ function populateTableFormula(random=true) {
         if (source2.length >= i && source2.length > 0) {
             var tdSource2 = createCell(source2[i], name2, i);
         }
-        let tr = '<tr>' + tdSource0 + tdSource1 + tdSource2 + '</tr>';
+        if (source3.length >= i && source3.length > 0) {
+            var tdSource3 = createCell(source3[i], name3, i);
+        }
+        if (source4.length >= i && source4.length > 0) {
+            var tdSource4 = createCell(source4[i], name4, i);
+        }
+        let tr = '<tr>' + tdSource0 + tdSource1 + tdSource2 + tdSource3 + tdSource4 + '</tr>';
         table += tr;
     }
 
@@ -182,7 +199,7 @@ function populateTableIdentifier(random=true) {
 
     var arXivEvaluationItems = recommendations['arXivEvaluationItems'];
     var wikipediaEvaluationItems = recommendations['wikipediaEvaluationItems'];
-    var wikidataResults = recommendations['wikidataResults'];
+    var wikidataResults = recommendations['wikidata1Results'];
     var wordWindow = recommendations['wordWindow'];
     var existingManual = recommendations['manual'];
     if (content in manualRecommendations) {
