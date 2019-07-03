@@ -101,6 +101,13 @@ class DataRepoHandler:
 
         return existing_manual_recommendations
 
+    def get_formula_concepts(self):
+        encoded_content = self.repo.get_file_contents('sources/formula_concepts.txt')
+        decoded_content = encoded_content.decoded_content
+        formula_concepts = json.loads(decoded_content)
+
+        return formula_concepts
+
     def commit_annotations(self, annotations_file_name, annotations):
         path = 'annotation/{}'.format(annotations_file_name)
         self.commit_file(path, annotations)
