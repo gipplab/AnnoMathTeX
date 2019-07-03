@@ -1,4 +1,5 @@
 import os
+import re
 from .settings.common import PROJECT_ROOT
 
 #Limit of the number of recommendations that are returned
@@ -13,10 +14,11 @@ evaluation_annotations_path = os.path.join(os.path.abspath(os.path.join(PROJECT_
 #evaluation_annotations_path = os.path.join(project_root, ['evaluation', 'annotations'])
 
 def create_annotation_file_name(file_name):
-    file_name = file_name.replace('.txt', '')
-    file_name = file_name.replace('.tex', '')
-    file_name = file_name.replace('.html', '')
-    annotation_file_name = file_name + '__annotation__.txt'
+    annotation_file_name = re.sub(r'\..*', '.txt', file_name)
+    #file_name = file_name.replace('.txt', '')
+    #file_name = file_name.replace('.tex', '')
+    #file_name = file_name.replace('.html', '')
+    #annotation_file_name = file_name + '__annotation__.txt'
     return annotation_file_name
 
 
@@ -25,10 +27,11 @@ def create_annotation_file_path(file_name):
 
 
 def create_evaluation_file_name(file_name):
-    file_name = file_name.replace('.txt', '')
-    file_name = file_name.replace('.tex', '')
-    file_name = file_name.replace('.html', '')
-    evaluation_file_name = file_name + '__evaluation__.csv'
+    evaluation_file_name = re.sub(r'\..*', '.csv', file_name)
+    #file_name = file_name.replace('.txt', '')
+    #file_name = file_name.replace('.tex', '')
+    #file_name = file_name.replace('.html', '')
+    #evaluation_file_name = file_name + '__evaluation__.csv'
     return evaluation_file_name
 
 def create_evaluation_file_path(file_name):

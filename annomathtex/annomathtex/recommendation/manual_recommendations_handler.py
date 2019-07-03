@@ -8,6 +8,10 @@ class ManualRecommendationsHandler:
 
 
     def check_identifier_or_formula(self, symbol):
+
+        print(symbol)
+        print(list(self.existing_manual_recommendations.keys())[0])
+
         if symbol in self.existing_manual_recommendations:
             results = self.existing_manual_recommendations[symbol]
             sorted_results = sorted(results, key=itemgetter('count'), reverse=True)

@@ -245,12 +245,20 @@ class FileUploadView(View):
 
         eval_file_writer = EvalFileWriter(new_annotations, file_name)
         eval_file_writer.write()
-        csv_string = eval_file_writer.get_csv_for_repo()
+        evaluation_csv_string = eval_file_writer.get_csv_for_repo()
         data_repo_handler = DataRepoHandler()
-        file_name = re.sub(r'\..*', '.csv', file_name)
+        #file_name = re.sub(r'\..*', '.csv', file_name)
+
+        annotation_file_name = create_annotation_file_name(file_name)
+        evaluation_file_name = create_evaluation_file_name(file_name)
+
         data_repo_handler.commit_manual_recommendations(cleaned_manual_recommendations)
-        data_repo_handler.commit_to_repo(file_name, csv_string, new_annotations)
-        data_repo_handler.commit_file(create_annotation_file_name(file_name), json.dumps(annotations))
+        data_repo_handler.commit_formula_concepts(annotations)
+        data_repo_handler.commit_annotations(annotation_file_name, json.dumps(annotations))
+        data_repo_handler.commit_evaluation(evaluation_file_name, evaluation_csv_string)
+
+        #data_repo_handler.commit_to_repo(file_name, csv_string, new_annotations)
+        #data_repo_handler.commit_file(create_annotation_file_name(file_name), json.dumps(annotations))
 
 
         return HttpResponse(

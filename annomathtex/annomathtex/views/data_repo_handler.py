@@ -50,7 +50,7 @@ class DataRepoHandler:
     def commit_formula_concepts(self, annotations):
         f = FormulaConceptHandler(annotations)
         formulae = f.get_formulae()
-        encoded_content = self.repo.get_file_contents('formula_concepts.txt')
+        encoded_content = self.repo.get_file_contents('sources/formula_concepts.txt')
         decoded_content = encoded_content.decoded_content
         formula_concepts = json.loads(decoded_content)
 
@@ -63,41 +63,52 @@ class DataRepoHandler:
             else:
                 formula_concepts[new_formula_name] = formulae[new_formula_name]
 
-        self.commit_file('formula_concepts.txt', json.dumps(formula_concepts))
+        self.commit_file('sources/formula_concepts.txt', json.dumps(formula_concepts))
         return
 
     def commit_manual_recommendations(self, cleaned_manual_recommendations):
-        encoded_content = self.repo.get_file_contents('manual_recommendations.txt')
+        #print('in commit_manual_recommendations')
+        encoded_content = self.repo.get_file_contents('sources/manual_recommendations.txt')
+        #print(encoded_content)
         decoded_content = encoded_content.decoded_content
+        #print(decoded_content)
         existing_manual_recommendations = json.loads(decoded_content)
 
-        print('cleaned_manual_recommendations: {}'.format(cleaned_manual_recommendations))
+        #print('cleaned_manual_recommendations: {}'.format(cleaned_manual_recommendations))
 
         for id_or_f, name in cleaned_manual_recommendations:
 
             if id_or_f in existing_manual_recommendations:
-                print("{} in existing_manual_recommendations".format(id_or_f))
+                #print("{} in existing_manual_recommendations".format(id_or_f))
                 for item in existing_manual_recommendations[id_or_f]:
                     if name == item['name']:
                         item['count'] += 1
                         break
             else:
-                print(cleaned_manual_recommendations)
+                #print(cleaned_manual_recommendations)
                 existing_manual_recommendations[id_or_f] = [{'name': name,
                                                              'count': 1}]
 
 
-        print('file: {}'.format(existing_manual_recommendations))
-
-        self.commit_file('manual_recommendations.txt', json.dumps(existing_manual_recommendations))
-
+        #print('file: {}'.format(existing_manual_recommendations))
+        self.commit_file('sources/manual_recommendations.txt', json.dumps(existing_manual_recommendations))
+        return
 
     def get_manual_recommendations(self):
-        encoded_content = self.repo.get_file_contents('manual_recommendations.txt')
+        encoded_content = self.repo.get_file_contents('sources/manual_recommendations.txt')
         decoded_content = encoded_content.decoded_content
         existing_manual_recommendations = json.loads(decoded_content)
 
         return existing_manual_recommendations
+
+    def commit_annotations(self, annotations_file_name, annotations):
+        path = 'annotation/{}'.format(annotations_file_name)
+        self.commit_file(path, annotations)
+        return
+
+    def commit_evaluation(self, evaluation_file_name, evaluation_csv_string):
+        path = 'evaluation/{}'.format(evaluation_file_name)
+        self.commit_file(path, evaluation_csv_string)
 
 
     def commit_to_repo(self, csv_file_name, csv_file_content, annotations):
@@ -147,11 +158,7 @@ class FormulaConceptHandler:
 
 
     def add_identifiers(self):
-
-        #print('FORMULA HANDLE')
-
         formulae = self.extract_formulae()
-
         if 'global' in self.annotations:
             g = self.annotations['global']
             for key in g:
@@ -176,8 +183,6 @@ class FormulaConceptHandler:
                             formulae[m]['identifiers'][key] = instance['name']
                         else:
                             formulae[m]['identifiers'] = {key: instance['name']}
-
-
         return formulae
 
 
@@ -194,7 +199,6 @@ class FormulaConceptHandler:
 
 
         return reversed_formulae
-
 
 
 
@@ -224,11 +228,11 @@ if __name__ == '__main__':
     d = DataRepoHandler(local_token)
     #l = ['Angular_velocity.csv', 'Harmonic_oscillator.csv', 'Mass-energy_equivalence.csv', 'Quantum_harmonic_oscillator.csv', 'Velocity.csv', 'sun.csv']
     #for i in l:
-    #d.delete_file('Sun.csv')
+    d.delete_file('evaluation/mass-energy-equivalence.csv')
     #initial_formulae_file = json.dumps({'dummy_formula': {'TeXStrings': ['empty'], 'Identifiers': 'empty'}})
     #initial_formulae_file = json.dumps({})
 
     #initial_manual_recommendations_file = json.dumps({})
-    initial_manual_recommendations_file = json.dumps({" \\foo{2} E ": [{"name": "fooform", "count": 1}]})
-    d.commit_file('manual_recommendations.txt', initial_manual_recommendations_file)
-    #d.commit_file('formula_concepts.txt', initial_formulae_file)
+    #initial_manual_recommendations_file = json.dumps({" \\foo{2} E ": [{"name": "fooform", "count": 1}]})
+    #d.commit_file('sources/manual_recommendations.txt', initial_manual_recommendations_file)
+    #d.commit_file('sources/formula_concepts.txt', initial_formulae_file)
