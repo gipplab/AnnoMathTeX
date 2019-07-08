@@ -17,6 +17,7 @@ from ..recommendation.arxiv_evaluation_handler import ArXivEvaluationListHandler
 from ..recommendation.wikipedia_evaluation_handler import WikipediaEvaluationListHandler
 from ..recommendation.static_wikidata_handler import StaticWikidataHandler
 from ..recommendation.manual_recommendations_handler import ManualRecommendationsHandler
+from ..recommendation.formula_concept_db_handler import FormulaConceptDBHandler
 from ..forms.uploadfileform import UploadFileForm
 from ..forms.save_annotation_form import SaveAnnotationForm
 from ..recommendation.math_sparql import MathSparql
@@ -227,9 +228,6 @@ class FileUploadView(View):
         cleaned_manual_recommendations = m.get_recommendations()
 
 
-        __LOGGER__.debug(' ITEMS : {}'.format(items))
-
-
         new_annotations = handle_annotations(annotations)
 
         annotation_file_path = create_annotation_file_path(file_name)
@@ -237,11 +235,6 @@ class FileUploadView(View):
             __LOGGER__.debug(' WRITING TO FILE {}'.format(annotation_file_path))
             json.dump(new_annotations, f)
 
-        #eval_file_writer = EvalFileWriter(annotations, file_name)
-        #eval_file_writer.write()
-
-        #f = FormulaConceptHandler(new_annotations)#.get_formulae()
-        #f.handle()
 
         eval_file_writer = EvalFileWriter(new_annotations, file_name)
         eval_file_writer.write()
@@ -335,7 +328,7 @@ class FileUploadView(View):
             wikidata2_results = MathSparql().defining_formula_search(math_env)
             word_window = self.get_word_window(unique_id)
             #todo
-            formula_concept_db = []
+            formula_concept_db = FormulaConceptDBHandler().query_tex_string(math_env)
             manual_recommendations = DataRepoHandler().get_manual_recommendations()
             manual_recommendations = ManualRecommendationsHandler(manual_recommendations).check_identifier_or_formula(search_string)
 
@@ -349,6 +342,7 @@ class FileUploadView(View):
         __LOGGER__.debug(' wikidata: {}'.format(wikidata1_results))
 
         def fill_to_limit(dict_list):
+            #print(dict_list)
             dict_list += [{'name': ''} for _ in range(recommendations_limit-len(dict_list))]
             return dict_list
 

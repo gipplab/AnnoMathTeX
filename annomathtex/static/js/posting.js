@@ -22,9 +22,10 @@ $(document).ready(function () {
       let data_dict = { the_post : $('#post-text').val(),
                         //'csrfmiddlewaretoken': '{{ csrf_token }}',
                         'csrfmiddlewaretoken': getCookie("csrftoken"),
-                        'annotations': $.param(replaceAllEquals(annotations)),
+                        'annotations': $.param(replaceAllEqualsAnn(annotations)),
                         'fileName': $.param(fileNameDict),
-                        'manualRecommendations': $.param(manualRecommendations)
+                        //'manualRecommendations': $.param(manualRecommendations)
+                        'manualRecommendations': $.param(replaceAllEqualsManualRecommendations(manualRecommendations))
                         };
 
       $.ajax({

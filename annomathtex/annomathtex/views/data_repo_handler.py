@@ -15,14 +15,14 @@ class DataRepoHandler:
         self.token = token
 
         #uncomment for local testing
-        if not token:
-            from .key import local_token
-            self.token = local_token
+        #if not token:
+        #    from .key import local_token
+        #    self.token = local_token
 
         #uncomment for wmflabs
-        #if not token:
-        #    print('Token not set')
-        #    exit(2)
+        if not token:
+            print('Token not set')
+            exit(2)
 
 
         self.g = Github(self.token)
@@ -31,13 +31,15 @@ class DataRepoHandler:
         self.evaluation_folder = 'evaluation'
 
     def commit_file(self, file_name, file_content):
-        print('committing file {}'.format(file_name))
+        #return
         try:
             self.repo.create_file(file_name, "commiting file {}".format(file_name), file_content)
         except GithubException as e:
             print(e)
             contents = self.repo.get_contents(file_name)
             self.repo.update_file(file_name, "updating file {}".format(file_name), file_content, contents.sha)
+            print("updating file {}".format(file_name))
+            print(file_content)
         except AttributeError as e:
             print(e)
         return
@@ -65,6 +67,18 @@ class DataRepoHandler:
 
         self.commit_file('sources/formula_concepts.txt', json.dumps(formula_concepts))
         return
+
+    def tmp(self):
+        encoded_content = self.repo.get_file_contents('sources/formula_concepts.txt')
+        decoded_content = encoded_content.decoded_content
+        formula_concepts = json.loads(decoded_content)
+
+        del formula_concepts['dummy_formula']
+
+        self.commit_file('sources/formula_concepts.txt', json.dumps(formula_concepts))
+
+        #print(formula_concepts)
+
 
     def commit_manual_recommendations(self, cleaned_manual_recommendations):
         #print('in commit_manual_recommendations')
@@ -98,14 +112,12 @@ class DataRepoHandler:
         encoded_content = self.repo.get_file_contents('sources/manual_recommendations.txt')
         decoded_content = encoded_content.decoded_content
         existing_manual_recommendations = json.loads(decoded_content)
-
         return existing_manual_recommendations
 
     def get_formula_concepts(self):
         encoded_content = self.repo.get_file_contents('sources/formula_concepts.txt')
         decoded_content = encoded_content.decoded_content
         formula_concepts = json.loads(decoded_content)
-
         return formula_concepts
 
     def commit_annotations(self, annotations_file_name, annotations):
@@ -137,14 +149,18 @@ class FormulaConceptHandler:
     def extract_formulae(self):
         formulae = {}
 
+
+        print('FORMULA CONCEPT HANDLER:\n')
+        print(self.annotations)
+
         if 'global' in self.annotations:
             g = self.annotations['global']
             for key in g:
                 instance = g[key]
                 if instance['type'] == 'Formula':
                     #print(instance)
-                    formulae[key] = {
-                        'name': instance['name']
+                    formulae[key.replace('__EQUALS__', '=')] = {
+                        'name': instance['name'].replace('__EQUALS__', '=')
                         #'sourcesWithNums': instance['sourcesWithNums']
                     }
 
@@ -154,12 +170,10 @@ class FormulaConceptHandler:
                 for unique_id in l[key]:
                     instance = l[key][unique_id]
                     if instance['type'] == 'Formula':
-                        formulae[key] = {
-                            'name': instance['name']
+                        formulae[key.replace('__EQUALS__', '=')] = {
+                            'name': instance['name'].replace('__EQUALS__', '=')
                             #'sourcesWithNums': instance['sourcesWithNums']
                         }
-
-
 
         return formulae
 
@@ -203,8 +217,6 @@ class FormulaConceptHandler:
             reversed_formulae[name] = {'TeXStrings': [formula_string],
                                        'Identifiers': identifiers}
 
-
-
         return reversed_formulae
 
 
@@ -219,10 +231,11 @@ class ManualRecommendationsCleaner:
 
     def get_recommendations(self):
         cleaned_manual_recommendations = []
-        
+
         for id_or_f in self.manual_recommendations:
                 for num in self.manual_recommendations[id_or_f]:
                     name = self.manual_recommendations[id_or_f][num]['name']
+                    id_or_f = id_or_f.replace('__EQUALS__', '=')
                     cleaned_manual_recommendations.append((id_or_f, name))
 
         return cleaned_manual_recommendations
@@ -233,9 +246,12 @@ if __name__ == '__main__':
     #For testing purposes
     from key import local_token
     d = DataRepoHandler(local_token)
+
+    d.tmp()
+
     #l = ['Angular_velocity.csv', 'Harmonic_oscillator.csv', 'Mass-energy_equivalence.csv', 'Quantum_harmonic_oscillator.csv', 'Velocity.csv', 'sun.csv']
     #for i in l:
-    d.delete_file('evaluation/mass-energy-equivalence.csv')
+    #d.delete_file('evaluation/mass-energy-equivalence.csv')
     #initial_formulae_file = json.dumps({'dummy_formula': {'TeXStrings': ['empty'], 'Identifiers': 'empty'}})
     #initial_formulae_file = json.dumps({})
 

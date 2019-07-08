@@ -56,7 +56,7 @@ function shuffle(array) {
 }
 
 //https://stackoverflow.com/questions/1144783/how-to-replace-all-occurrences-of-a-string-in-javascript
-function replaceAllEquals(ann) {
+function replaceAllEqualsAnn(ann) {
     /*
     This function is called from posting.js
     It replaces all equals signs in the annotations that the user made. This is necessary, because Django can't
@@ -86,6 +86,28 @@ function replaceAllEquals(ann) {
     return newAnn;
 
 }
+
+function replaceAllEqualsManualRecommendations(manualRecommendations) {
+    /*
+    This function is called from posting.js
+    It replaces all equals signs in the manual recommendations that the user made. This is necessary, because Django
+    can't recognise equals signs when receiving an ajax post.
+     */
+    function replaceAll(str) {
+        console.log(str);
+        return str.replace(new RegExp('=', 'g'), '__EQUALS__');
+    }
+
+    newManualRecommendations = {};
+    for (var identifierOrFormula in manualRecommendations) {
+        var replaced = replaceAll(identifierOrFormula);
+        newManualRecommendations[replaced] = manualRecommendations[identifierOrFormula];
+    }
+    return newManualRecommendations;
+
+}
+
+
 
 function getLocalUniqueIDs(){
     /*
