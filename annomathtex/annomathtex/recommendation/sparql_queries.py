@@ -85,6 +85,14 @@ identifier_query ="""
     LIMIT {}
     """
 
+all_formulae_query = """{}
+    SELECT DISTINCT ?item ?itemLabel ?itemDescription WHERE {{
+        ?item skos:altLabel ?alias.
+        ?item wdt:P2534 ?dummy0 .
+        SERVICE wikibase:label {{ bd:serviceParam wikibase:language "en" .}}
+    }}
+"""
+
 
 
 

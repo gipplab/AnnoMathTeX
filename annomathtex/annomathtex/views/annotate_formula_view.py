@@ -324,8 +324,10 @@ class FileUploadView(View):
             #not static atm
             #could also add .tex_string_search()
             #wikidata_results = MathSparql().aliases_search(math_env)
-            wikidata1_results = MathSparql().aliases_search(math_env)
-            wikidata2_results = MathSparql().defining_formula_search(math_env)
+            #wikidata1_results = MathSparql().aliases_search(math_env)
+            #wikidata2_results = MathSparql().defining_formula_search(math_env)
+            #todo: return annotated identifiers when querying formula
+            wikidata1_results, wikidata2_results = StaticWikidataHandler().check_formulae(math_env, [])
             word_window = self.get_word_window(unique_id)
             #todo
             formula_concept_db = FormulaConceptDBHandler().query_tex_string(math_env)

@@ -1,7 +1,6 @@
 from ..views.data_repo_handler import DataRepoHandler
 
 
-
 class FormulaConceptDBHandler(object):
 
     def __init__(self):

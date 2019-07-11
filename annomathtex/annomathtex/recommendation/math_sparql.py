@@ -70,5 +70,10 @@ class MathSparql(Sparql):
         return results_list
 
 
+    def all_formulae_search(self):
+        results_list = self.query(all_formulae_query, '')
+        return results_list
+
+
 
 
