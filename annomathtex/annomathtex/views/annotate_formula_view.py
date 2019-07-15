@@ -216,6 +216,7 @@ class FileUploadView(View):
         :param request: Request object. Request made by the user through the frontend.
         :return: The rendered response containing the template name and the necessary form.
         """
+        print('IN HANDLE MARKED')
         items = {k: jquery_unparam(v) for (k, v) in request.POST.items()}
         #marked = items['marked']
         #unmarked = items['unmarked']
@@ -290,6 +291,10 @@ class FileUploadView(View):
         token_type_dict = items['tokenType']
         token_type = [k for k in token_type_dict][0]
         unique_id = [k for k in items['uniqueId']][0]
+        annotations = items['annotations']
+
+        #print(annotations)
+
 
         __LOGGER__.debug('making wikidata query for search string: {}'.format(search_string))
 
@@ -327,7 +332,7 @@ class FileUploadView(View):
             #wikidata1_results = MathSparql().aliases_search(math_env)
             #wikidata2_results = MathSparql().defining_formula_search(math_env)
             #todo: return annotated identifiers when querying formula
-            wikidata1_results, wikidata2_results = StaticWikidataHandler().check_formulae(math_env, [])
+            wikidata1_results, wikidata2_results = StaticWikidataHandler().check_formulae(math_env, annotations)
             word_window = self.get_word_window(unique_id)
             #todo
             formula_concept_db = FormulaConceptDBHandler().query_tex_string(math_env)
@@ -397,11 +402,11 @@ class FileUploadView(View):
         if 'file_submit' in request.POST:
             return self.handle_file_submit(request)
 
+        elif 'queryDict' in request.POST:
+            return self.handle_query_dict(request)
+
         elif 'annotations' in request.POST:
             return self.handle_marked(request)
 
-
-        elif 'queryDict' in request.POST:
-            return self.handle_query_dict(request)
 
         return render(request, "file_upload_template.html", self.initial)

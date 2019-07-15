@@ -60,10 +60,23 @@ class StaticWikidataHandler:
         return []
 
 
-    def check_formulae(self, formula_string, identifiers, threshold_string=65, threshold_identifers = 1):
+    def extract_identifiers_from_formula(self, annotations, formula_string):
+        #todo: include local
+        annotations = annotations['global']
+        identfifiers = []
+        for id_or_formula in annotations:
+            if 'mathEnv' in annotations[id_or_formula] and annotations[id_or_formula]['mathEnv'] == formula_string:
+                identfifiers.append(id_or_formula)
+                identfifiers.append(annotations[id_or_formula]['name'])
+
+        return identfifiers
+
+
+    def check_formulae(self, formula_string, annotations, threshold_string=65, threshold_identifers = 1):
         results_string = []
         results_identifiers = []
         formula_dict = self.read_formula_file()
+        identifiers = self.extract_identifiers_from_formula(annotations, formula_string)
         for formula_name in formula_dict:
             formula = formula_dict[formula_name]
             tex_string = formula['formula']

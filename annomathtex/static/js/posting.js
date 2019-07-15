@@ -52,6 +52,7 @@ $(document).ready(function () {
 
 function getRecommendations(content, mathEnv, tokenType, tokenUniqueId) {
     console.log('in getRec');
+    console.log(annotations);
     let data_dict = { the_post : $("#" + tokenUniqueId).val(),
           'csrfmiddlewaretoken': getCookie("csrftoken"),
           'queryDict': content,
