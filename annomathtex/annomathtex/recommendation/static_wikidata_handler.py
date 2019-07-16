@@ -2,6 +2,7 @@ import os
 import json
 from ..config import recommendations_limit
 from ..settings.common import PROJECT_ROOT
+from ..parsing.mathhandling.custom_math_env_parser import CustomMathEnvParser
 from fuzzywuzzy import fuzz
 from operator import itemgetter
 
@@ -68,20 +69,28 @@ class StaticWikidataHandler:
             if 'mathEnv' in annotations[id_or_formula] and annotations[id_or_formula]['mathEnv'] == formula_string:
                 identfifiers.append(id_or_formula)
                 identfifiers.append(annotations[id_or_formula]['name'])
-
         return identfifiers
 
-
     def check_formulae(self, formula_string, annotations, threshold_string=65, threshold_identifers = 1):
+
+
+        def get_identifier_score(identifiers1, identifiers2):
+            score_identifers = len(
+                                    list(
+                                        set(identifiers1).intersection(identifiers2)
+                                    )
+            )
+            return score_identifers
+
         results_string = []
         results_identifiers = []
         formula_dict = self.read_formula_file()
         identifiers = self.extract_identifiers_from_formula(annotations, formula_string)
+        c = CustomMathEnvParser(formula_string)
+        identifiers_from_wikidata_formula, _ = c.get_split_math_env()
         for formula_name in formula_dict:
             formula = formula_dict[formula_name]
             tex_string = formula['formula']
-
-
 
             score_string = fuzz.token_sort_ratio(formula_string, tex_string)
             if score_string >= threshold_string:
@@ -89,11 +98,17 @@ class StaticWikidataHandler:
 
             formula_identifiers = formula['identifiers']['names']
             formula_quantity_symbols = formula['identifiers']['strings']
-            score_identifers = len(
+            """score_identifers = len(
                                    list(
                                         set(identifiers).intersection(formula_quantity_symbols+formula_identifiers)
                                    )
-            )
+            )"""
+
+            if len(formula_quantity_symbols+formula_identifiers) > len(identifiers_from_wikidata_formula):
+                score_identifers = get_identifier_score(identifiers, formula_quantity_symbols+formula_identifiers)
+            else:
+                score_identifers = get_identifier_score(identifiers, identifiers_from_wikidata_formula)
+
             if score_identifers >= threshold_identifers:
                 results_identifiers.append(({'name':formula_name}, score_identifers))
 
