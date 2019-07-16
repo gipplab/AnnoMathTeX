@@ -1,4 +1,5 @@
 from ..views.data_repo_handler import DataRepoHandler
+from fuzzywuzzy import fuzz
 
 
 class FormulaConceptDBHandler(object):
@@ -12,12 +13,14 @@ class FormulaConceptDBHandler(object):
         return formula_concepts
 
 
-    def query_tex_string(self, tex_string):
+    def query_tex_string(self, tex_string_1, threshold=65):
         recommendations = []
         for fc in self.formula_concepts:
-            if tex_string in self.formula_concepts[fc]['TeXStrings']:
-                #return fc
-                recommendations.append({'name': fc})
+
+            tex_strings = self.formula_concepts[fc]['TeXStrings']
+            for tex_string_2 in tex_strings:
+                if fuzz.token_sort_ratio(tex_string_1, tex_string_2) >= threshold:
+                    recommendations.append({'name': fc})
 
         return recommendations[:10]
 
