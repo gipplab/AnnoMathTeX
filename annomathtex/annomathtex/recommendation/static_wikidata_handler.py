@@ -3,6 +3,7 @@ import json
 from ..config import recommendations_limit
 from ..settings.common import PROJECT_ROOT
 from ..parsing.mathhandling.custom_math_env_parser import CustomMathEnvParser
+from ..views.data_repo_handler import DataRepoHandler
 from fuzzywuzzy import fuzz
 from operator import itemgetter
 
@@ -35,6 +36,15 @@ class StaticWikidataHandler:
             all_results = json.load(infile)
         return all_results
 
+    def get_identifiers_from_repo(self):
+        d = DataRepoHandler()
+        identifiers = d.get_wikidata_identifiers()
+        return identifiers
+
+    def get_formulae_from_repo(self):
+        d = DataRepoHandler()
+        formulae = d.get_wikidata_formulae()
+        return formulae
 
     def read_formula_file_test(self):
         path = os.path.join(os.getcwd(), 'evaluation_files', 'wikidata_formulae.json')
@@ -42,12 +52,10 @@ class StaticWikidataHandler:
             all_results = json.load(infile)
         return all_results
 
-
     def toLowerCase(self, dict_list):
         for d in dict_list:
             d['name'] = d['name'].lower()
         return dict_list
-
 
     def check_identifiers(self, symbol):
         """
@@ -55,9 +63,10 @@ class StaticWikidataHandler:
         :param symbol: The string of the symbol that was clicked by the user for annotation.
         :return: The corresponding matches from the dictionary of wikidata identifiers.
         """
-        identifier_file = self.read_identifier_file()
-        if symbol in identifier_file:
-            return self.toLowerCase(self.read_identifier_file()[symbol][:recommendations_limit])
+        #identifier_file = self.read_identifier_file()
+        identifers = self.get_identifiers_from_repo()
+        if symbol in identifers:
+            return self.toLowerCase(identifers[symbol][:recommendations_limit])
         return []
 
 
@@ -84,7 +93,8 @@ class StaticWikidataHandler:
 
         results_string = []
         results_identifiers = []
-        formula_dict = self.read_formula_file()
+        #formula_dict = self.read_formula_file()
+        formula_dict = self.get_formulae_from_repo()
         identifiers = self.extract_identifiers_from_formula(annotations, formula_string)
         c = CustomMathEnvParser(formula_string)
         identifiers_from_wikidata_formula, _ = c.get_split_math_env()
@@ -98,11 +108,6 @@ class StaticWikidataHandler:
 
             formula_identifiers = formula['identifiers']['names']
             formula_quantity_symbols = formula['identifiers']['strings']
-            """score_identifers = len(
-                                   list(
-                                        set(identifiers).intersection(formula_quantity_symbols+formula_identifiers)
-                                   )
-            )"""
 
             if len(formula_quantity_symbols+formula_identifiers) > len(identifiers_from_wikidata_formula):
                 score_identifers = get_identifier_score(identifiers, formula_quantity_symbols+formula_identifiers)
@@ -114,16 +119,11 @@ class StaticWikidataHandler:
 
 
         if len(results_string)>0:
-            results_string = [r[0] for r in sorted(results_string, key=itemgetter(1))]
-            #results_string = results_string.sort(reverse=True)[:10]
+            results_string = [r[0] for r in sorted(results_string, key=itemgetter(1))]#.reverse()
         if len(results_identifiers)>0:
-            #results_identifiers = results_identifiers.sort(reverse=True)[:10]
-            results_identifiers = [r[0] for r in sorted(results_identifiers, key=itemgetter(1))]
+            results_identifiers = [r[0] for r in sorted(results_identifiers, key=itemgetter(1))]#.reverse()
 
-        return results_string, results_identifiers
-
-
-
+        return list(reversed(results_string)), list(reversed(results_identifiers))
 
 
 

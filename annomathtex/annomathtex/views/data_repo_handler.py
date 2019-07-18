@@ -24,9 +24,9 @@ class DataRepoHandler:
                 exit(2)
 
         #uncomment for wmflabs
-        #if not token:
-        #    print('Token not set')
-        #    exit(2)
+        if not token:
+            print('Token not set')
+            exit(2)
 
 
         self.g = Github(self.token)
@@ -51,6 +51,13 @@ class DataRepoHandler:
     def delete_file(self, file_name):
         contents = self.repo.get_contents(file_name)
         self.repo.delete_file(file_name, "Deleting file {}".format(file_name), contents.sha)
+        return
+
+    def rename_file(self, old_file_name, new_file_name):
+        encoded_content = self.repo.get_file_contents(old_file_name)
+        decoded_content = encoded_content.decoded_content
+        self.delete_file(old_file_name)
+        self.commit_file(new_file_name, decoded_content)
         return
 
     def commit_formula_concepts(self, annotations):
@@ -81,34 +88,24 @@ class DataRepoHandler:
 
         self.commit_file('sources/formula_concepts.txt', json.dumps(formula_concepts))
 
-        #print(formula_concepts)
 
 
     def commit_manual_recommendations(self, cleaned_manual_recommendations):
-        #print('in commit_manual_recommendations')
         encoded_content = self.repo.get_file_contents('sources/manual_recommendations.txt')
-        #print(encoded_content)
         decoded_content = encoded_content.decoded_content
-        #print(decoded_content)
         existing_manual_recommendations = json.loads(decoded_content)
-
-        #print('cleaned_manual_recommendations: {}'.format(cleaned_manual_recommendations))
 
         for id_or_f, name in cleaned_manual_recommendations:
 
             if id_or_f in existing_manual_recommendations:
-                #print("{} in existing_manual_recommendations".format(id_or_f))
                 for item in existing_manual_recommendations[id_or_f]:
                     if name == item['name']:
                         item['count'] += 1
                         break
             else:
-                #print(cleaned_manual_recommendations)
                 existing_manual_recommendations[id_or_f] = [{'name': name,
                                                              'count': 1}]
 
-
-        #print('file: {}'.format(existing_manual_recommendations))
         self.commit_file('sources/manual_recommendations.txt', json.dumps(existing_manual_recommendations))
         return
 
@@ -132,12 +129,27 @@ class DataRepoHandler:
     def commit_evaluation(self, evaluation_file_name, evaluation_csv_string):
         path = 'evaluation/{}'.format(evaluation_file_name)
         self.commit_file(path, evaluation_csv_string)
+        return
 
 
     def commit_to_repo(self, csv_file_name, csv_file_content, annotations):
         self.commit_file(csv_file_name, csv_file_content)
         self.commit_formula_concepts(annotations)
         return
+
+    def get_wikidata_identifiers(self):
+        encoded_content = self.repo.get_file_contents('sources/wikidata_identifiers.json')
+        decoded_content = encoded_content.decoded_content
+        identifiers = json.loads(decoded_content.decode("utf-8"))
+        return identifiers
+
+    def get_wikidata_formulae(self):
+        encoded_content = self.repo.get_file_contents('sources/wikidata_formulae.json')
+        decoded_content = encoded_content.decoded_content
+        formulae = json.loads(decoded_content.decode("utf-8"))
+        return formulae
+
+
 
 
 
@@ -246,20 +258,17 @@ class ManualRecommendationsCleaner:
 
 
 
+def read_evaluation_file_json(file_name):
+    with open(os.getcwd() + '/evaluation_files/' + file_name) as infile:
+        file_json = json.load(infile)
+    return file_json
+
+
 if __name__ == '__main__':
     #For testing purposes
     from key import local_token
+    import os
     d = DataRepoHandler(local_token)
-
-    d.tmp()
-
-    #l = ['Angular_velocity.csv', 'Harmonic_oscillator.csv', 'Mass-energy_equivalence.csv', 'Quantum_harmonic_oscillator.csv', 'Velocity.csv', 'sun.csv']
-    #for i in l:
-    #d.delete_file('evaluation/mass-energy-equivalence.csv')
-    #initial_formulae_file = json.dumps({'dummy_formula': {'TeXStrings': ['empty'], 'Identifiers': 'empty'}})
-    #initial_formulae_file = json.dumps({})
-
-    #initial_manual_recommendations_file = json.dumps({})
-    #initial_manual_recommendations_file = json.dumps({" \\foo{2} E ": [{"name": "fooform", "count": 1}]})
-    #d.commit_file('sources/manual_recommendations.txt', initial_manual_recommendations_file)
-    #d.commit_file('sources/formula_concepts.txt', initial_formulae_file)
+    i = d.get_wikidata_identifiers()
+    print(i)
+    print(type(i))
