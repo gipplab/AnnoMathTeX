@@ -67,7 +67,6 @@ function replaceAllEqualsAnn(ann) {
     var newLocal = {};
 
     function replaceAll(str) {
-        console.log(str);
         return str.replace(new RegExp('=', 'g'), '__EQUALS__');
     }
 

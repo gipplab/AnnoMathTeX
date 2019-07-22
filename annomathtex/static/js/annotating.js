@@ -5,6 +5,7 @@ function handleNoMatch(){
     evaluation csv file, along with the other annotations.
      */
 
+
     var name = document.getElementById('noMatchInput').value;
     var uIDs = getLinkedIDs(content);
 
@@ -26,7 +27,8 @@ function handleNoMatch(){
 
 
 function addToMannualRecommendations(name) {
-    if (content in manualRecommendations){
+    console.log('in addToMannualRecommendations');
+    if (content in manualRecommendations) {
         manualRecommendations[content].push({'name': name});
     } else {
         manualRecommendations[content] = [{'name': name}];

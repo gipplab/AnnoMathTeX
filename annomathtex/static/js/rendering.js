@@ -15,7 +15,6 @@ function setAnnotatedColor(uIDs) {
     /*
     Set the color of annotations tokens.
      */
-    console.log(uIDs);
     for (var i=0 in uIDs) {
         document.getElementById(uIDs[i]).style.color = annotationsColor;
     }
@@ -31,8 +30,6 @@ function setBasicColor(uIDs) {
     } else {
         var fillColor = identifierColorBasic
     }
-
-    console.log(uIDs);
 
     for (var i=0 in uIDs) {
         document.getElementById(uIDs[i]).style.color = fillColor;
@@ -94,12 +91,16 @@ function populateTableFormula(random=false) {
     let formulaConceptDB = recommendations['formulaConceptDB'];
     var existingManual = recommendations['manual'];
 
+    console.log(existingManual);
+
     if (mathEnv in manualRecommendations) {
+        console.log(mathEnv);
         var manual = manualRecommendations[mathEnv];
         for (var i in manual) {
             existingManual.unshift(manual[i]);
         }
         existingManual = existingManual.slice(0,10);
+        console.log(existingManual);
     } /*else {
         var manual = recommendations['manual']
     }*/
@@ -110,7 +111,10 @@ function populateTableFormula(random=false) {
                       [formulaConceptDB, 'FormulaConceptDB'],
                       [existingManual, 'Manual']];
 
-    console.log(resultList);
+    console.log(resultList[4][0]);
+
+    tmpResultList = resultList[4][0];
+
 
     var table= "<table><tr><td>Source 1</td><td>Source 2</td><td>Source 3</td><td>Source 4</td><td>Source 5</td></tr>";
 
@@ -391,6 +395,8 @@ function selected(argsString){
 
     } else {
         //global annotations
+        console.log(manualRecommendations);
+        console.log(recommendations['manual']);
         switch (backgroundColor) {
             case cellColorBasic:
                 setCellColorSelectedGlobal(cellID);
@@ -419,6 +425,7 @@ function selected(argsString){
                 break;
         }
     }
+
     handlePopupTable();
     renderAnnotationsTable();
 }
@@ -428,16 +435,12 @@ function renderAnnotationsTable() {
     The table at the top of the document, that is constantly being updated with the latest annotations is generated in
     this function.
      */
-
-
     function createRow(token, name, local, uIDs) {
         var args = [
                 token,
                 local,
                 uIDs
             ];
-
-        console.log(args);
         var type = local ? 'Local' : 'Global';
         var argsString = args.join('----');
         argsString = argsString.split('\\').join('\\\\');
@@ -457,7 +460,6 @@ function renderAnnotationsTable() {
     }
 
     var g = annotations['global'];
-    console.log(annotations);
     for (var token in g) {
         tr = createRow(token, g[token]['name'], false, g[token]['uniqueIDs']);
         annotationsTable += tr;
