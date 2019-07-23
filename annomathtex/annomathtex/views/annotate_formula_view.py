@@ -341,12 +341,6 @@ class FileUploadView(View):
 
 
 
-        __LOGGER__.debug(' wikidata query made in {}'.format(time()-start))
-        __LOGGER__.debug(' word window: {}'.format(word_window))
-        __LOGGER__.debug(' wikipedia: {}'.format(wikipedia_evaluation_items))
-        __LOGGER__.debug(' arxiv: {}'.format(arXiv_evaluation_items))
-        __LOGGER__.debug(' wikidata: {}'.format(wikidata1_results))
-
         def fill_to_limit(dict_list):
             #print(dict_list)
             dict_list += [{'name': ''} for _ in range(recommendations_limit-len(dict_list))]
@@ -361,6 +355,7 @@ class FileUploadView(View):
                         'manual': fill_to_limit(manual_recommendations)}),
             content_type='application/json'
         )"""
+
 
 
         return HttpResponse(

@@ -91,7 +91,8 @@ function populateTableFormula(random=false) {
     let formulaConceptDB = recommendations['formulaConceptDB'];
     var existingManual = recommendations['manual'];
 
-    console.log(existingManual);
+    //console.log(existingManual);
+    console.log(recommendations);
 
     if (mathEnv in manualRecommendations) {
         console.log(mathEnv);
@@ -375,6 +376,9 @@ function selected(argsString){
     var rowNum = argsArray[6];
 
     var local = document.getElementById('localSwitch').checked;
+
+    console.log(argsArray);
+    console.log(recommendations);
 
     if (local) {
         //local annotations

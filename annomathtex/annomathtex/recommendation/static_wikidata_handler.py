@@ -117,11 +117,11 @@ class StaticWikidataHandler:
             if score_identifers >= threshold_identifers:
                 results_identifiers.append(({'name':formula_name}, score_identifers))
 
-
         if len(results_string)>0:
             results_string = [r[0] for r in sorted(results_string, key=itemgetter(1))]#.reverse()
         if len(results_identifiers)>0:
             results_identifiers = [r[0] for r in sorted(results_identifiers, key=itemgetter(1))]#.reverse()
+
 
         return list(reversed(results_string)), list(reversed(results_identifiers))
 
