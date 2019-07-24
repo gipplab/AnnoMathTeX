@@ -72,7 +72,7 @@ function handlePopupTable() {
 
 
 //todo: simplify these 2 methods
-function populateTableFormula(random=false) {
+function populateTableFormula(random=true) {
     /*
     The entire table, containing the recommendations for a formula, that is shown to the user in the popup modal is
     created as html code in this function. The function createCell() is called upon, to create the individual cells in the table.
@@ -89,10 +89,7 @@ function populateTableFormula(random=false) {
     let wikidata2Results = recommendations['wikidata2Results'];
     let wordWindow = recommendations['wordWindow'];
     let formulaConceptDB = recommendations['formulaConceptDB'];
-    var existingManual = recommendations['manual'];
-
-    //console.log(existingManual);
-    console.log(recommendations);
+    var existingManual = [...new Set(recommendations['manual'])];
 
     if (mathEnv in manualRecommendations) {
         console.log(mathEnv);
@@ -206,7 +203,8 @@ function populateTableIdentifier(random=true) {
     var wikipediaEvaluationItems = recommendations['wikipediaEvaluationItems'];
     var wikidataResults = recommendations['wikidata1Results'];
     var wordWindow = recommendations['wordWindow'];
-    var existingManual = recommendations['manual'];
+    var existingManual = [...new Set(recommendations['manual'])];
+
     if (content in manualRecommendations) {
         var manual = manualRecommendations[content];
         for (var i in manual) {

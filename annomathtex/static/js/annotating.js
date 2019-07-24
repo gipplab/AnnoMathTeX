@@ -4,11 +4,8 @@ function handleNoMatch(){
     This means that this information has to be added to the "annotations" dictionary, which will later be written to the
     evaluation csv file, along with the other annotations.
      */
-
-
     var name = document.getElementById('noMatchInput').value;
     var uIDs = getLinkedIDs(content);
-
 
     addToAnnotations(uniqueID, name, 'user', '-', true, uIDs);
     addToMannualRecommendations(name);
@@ -27,12 +24,20 @@ function handleNoMatch(){
 
 
 function addToMannualRecommendations(name) {
-    console.log('in addToMannualRecommendations');
+
+    //get all names from manual recommendations
+    console.log(recommendations);
+
+
     if (content in manualRecommendations) {
         manualRecommendations[content].push({'name': name});
     } else {
         manualRecommendations[content] = [{'name': name}];
     }
+    /*if (! content in manualRecommendations) {
+        manualRecommendations[content] = [{'name': name}];
+    }*/
+    console.log(manualRecommendations);
 }
 
 
