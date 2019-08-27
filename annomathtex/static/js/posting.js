@@ -128,7 +128,8 @@ function getWikipediaArticle(name) {
 
 
     $.ajax({
-      url : '/annotation_template_tmp.html/', // the endpoint
+      //url : '/annotation_template_tmp.html/', // the endpoint
+      url : '/test_template.html',
       type : "POST", // http method
       data : data_dict, // data sent with the post request
 

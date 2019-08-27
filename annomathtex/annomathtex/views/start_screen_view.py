@@ -41,12 +41,12 @@ class StartScreenView(View):
         article_name = list(items['wikipediaArticleName'].keys())[0]
         #wikipedia_article = WikipediaAPIHandler().get_wikipedia_article(article_name)
         wikipedia_article = DataRepoHandler().get_wikipedia_article(article_name)
-        #line_dict, identifier_line_dict, processed_file = WikipediaParser(wikipedia_article, article_name).process()
-        #dicts = {'identifiers': identifier_line_dict, 'lines': line_dict}
+        line_dict, identifier_line_dict, processed_file = WikipediaParser(wikipedia_article, article_name).process()
+        dicts = {'identifiers': identifier_line_dict, 'lines': line_dict}
 
-        #self.dicts_to_cache(dicts)
+        self.dicts_to_cache(dicts)
 
-        print('get_rendered_wikipedia_article')
+        print('start screen view: get_rendered_wikipedia_article')
         #print(processed_file)
 
         #return render(request,
@@ -54,7 +54,7 @@ class StartScreenView(View):
         #              '/annotation/',
         #              {'File': processed_file})
 
-        return redirect('/annotation/')
+        return redirect('/')
 
 
     def get_repo_content(self):

@@ -91,8 +91,8 @@ function getWikipediaArticleFromRepo(fileName) {
 
       //successful response
       success : function(json) {
-          //console.log('success');
-          document.location.href = 'annotation_template_tmp.html';
+          console.log('success!');
+          document.location.href = '/test/';//'annotation_template_tmp.html';
       },
 
       //non-successful response
