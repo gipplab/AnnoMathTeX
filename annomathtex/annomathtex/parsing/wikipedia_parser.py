@@ -10,7 +10,9 @@ class WikipediaParser(Parser):
     This class is a subclass of the abstract base class Parser. It is used to parse and process wikitext.
     """
     def decode(self, wikipedia_article):
+        file = wikipedia_article.decode()
         print('0 : wikipedia_article type: {}'.format(type(wikipedia_article)))
+        print('1 : after decoding: {}'.format(type(file)))
         #print('1 : wikipedia_article : {}'.format(wikipedia_article))
 
         def decode_txt(f, encoding="ascii", errors="ignore"):
@@ -25,9 +27,10 @@ class WikipediaParser(Parser):
             return f.decode(encoding=encoding, errors=errors)
 
         #file = request_file.read()
-        file = decode_txt(wikipedia_article)
+        #file = decode_txt(wikipedia_article)
 
-        print('wikipedia_article type: {}'.format(type(file)))
+        #print('wikipedia_article type: {}'.format(type(file)))
+
         return file
 
     def extract_math_envs(self):

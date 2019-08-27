@@ -47,8 +47,8 @@ class FileUploadView(View):
     form_class = UploadFileForm
     initial = {'key': 'value'}
     save_annotation_form = {'form': SaveAnnotationForm()}
-    template_name = 'file_upload_wiki_suggestions_2.html'
-    #template_name = 'annotation_template_tmp.html'
+    #template_name = 'file_upload_wiki_suggestions_2.html'
+    template_name = 'annotation_template_tmp.html'
 
     def get_concatenated_recommendations(self, type, wikidata_results, arXiv_evaluation_items,
                                          wikipedia_evaluation_items, word_window):
@@ -160,6 +160,17 @@ class FileUploadView(View):
         with open(path, 'rb') as infile:
             dicts = pickle.load(infile)
         return dicts
+
+    def read_file_name_cache(self):
+        with open(file_name_cache_path, 'r') as infile:
+            file_name = infile.read()
+        return file_name
+
+    def write_file_name_cache(self, file_name):
+        with open(file_name_cache_path, 'w') as outfile:
+            outfile.truncate(0)
+            outfile.write(file_name)
+        return
 
 
     def handle_file_submit(self, request):
@@ -386,7 +397,7 @@ class FileUploadView(View):
         )
 
 
-    def get_rendered_wikipedia_article(self, request):
+    def get_rendered_wikipedia_article_old(self, request):
         items = {k: jquery_unparam(v) for (k, v) in request.POST.items()}
         article_name = list(items['wikipediaArticleName'].keys())[0]
         wikipedia_article = WikipediaAPIHandler().get_wikipedia_article(article_name)
@@ -408,6 +419,15 @@ class FileUploadView(View):
         #                    content_type='application/json'
         #)
 
+    def get_rendered_wikipedia_article(self, article_name):
+        wikipedia_article = DataRepoHandler().get_wikipedia_article(article_name)
+        line_dict, identifier_line_dict, processed_file = WikipediaParser(wikipedia_article, article_name).process()
+        dicts = {'identifiers': identifier_line_dict, 'lines': line_dict}
+
+        self.dicts_to_cache(dicts)
+
+        return processed_file
+
     def get_repo_content(self):
         """
         Get the repo content for the datarepo/annotation folder, i.e. all files that have been annotated in the past.
@@ -426,8 +446,12 @@ class FileUploadView(View):
         :param request: Request object. Request made by the user through the frontend.
         :return: The rendered response containing the template name and the necessary form.
         """
-        form = TestForm()
-        return render(request, self.template_name, {'form': form})
+        #form = TestForm()
+        #return render(request, self.template_name, {'form': form})
+        article_name = self.read_file_name_cache()
+        print('file_name: {}'.format(article_name))
+        processed_file = self.get_rendered_wikipedia_article(article_name)
+        return render(request, self.template_name, {'File': processed_file, 'test': 3})
 
 
 
@@ -456,7 +480,14 @@ class FileUploadView(View):
             return self.handle_wikipedia_query(request)
 
         elif 'wikipediaArticleName' in request.POST:
-            return self.get_rendered_wikipedia_article(request)
+            #todo: put in separate method (consistency)
+            items = {k: jquery_unparam(v) for (k, v) in request.POST.items()}
+            article_name = list(items['wikipediaArticleName'].keys())[0]
+            self.write_file_name_cache(article_name)
+            return render(request, "annotation_template_tmp.html", self.initial)
+
+
+            #return self.get_rendered_wikipedia_article(request)
 
 
         elif 'getRepoContent' in request.POST:

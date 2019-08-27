@@ -54,7 +54,7 @@ class StartScreenView(View):
         #              '/annotation/',
         #              {'File': processed_file})
 
-        return redirect('/')
+        return redirect('/', {'File': processed_file, 'test': 2})
 
 
     def get_repo_content(self):

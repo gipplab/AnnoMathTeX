@@ -285,9 +285,18 @@ def read_evaluation_file_json(file_name):
     return file_json
 
 
+def decode_wikipedia_article(wikipedia_article):
+    print(type(wikipedia_article))
+    wikipedia_article = wikipedia_article.decode()
+    print(type(wikipedia_article))
+    print(wikipedia_article)
+
+
 if __name__ == '__main__':
     #For testing purposes
     from key import local_token
     import os
     d = DataRepoHandler(local_token)
-    d.get_wikipedia_article('Angular_velocity.txt')
+    a = d.get_wikipedia_article('Angular velocity')
+
+    decode_wikipedia_article(a)

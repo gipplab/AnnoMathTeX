@@ -29,7 +29,7 @@ urlpatterns = [
 
     # enable the admin interface
     url(r'^admin/', admin.site.urls),
-    #url(r'/annotation/', FileUploadView.as_view()),
+    url(r'^annotation/', FileUploadView.as_view()),
     url(r'^test/', TestView.as_view()),
     url(r'', StartScreenView.as_view())
 ]

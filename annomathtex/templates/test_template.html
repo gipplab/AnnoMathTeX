@@ -6,7 +6,58 @@
 </head>
 <body>
 
-<div>TEST</div>
+{% for Line in File.body %}
+    <div>
+        {% for Token in Line %}
+          {% if not Token.content == None %}
+            {% if Token.type == 'Formula' or Token.type == 'Identifier'%}
+              <span
+                class="inline"
+                id="{{ Token.unique_id }}"
+                onmouseover=""
+                style="color: {{ Token.highlight }}; cursor: pointer;"
+              >
+                  {{ Token.content }}
+              </span>
+            {% else %}
+              <span
+                class="inline"
+                id="{{ Token.unique_id }}"
+                style="color: {{ Token.highlight }};"
+              >
+                  {{ Token.content }}
+              </span>
+            {% endif %}
+            <script>
+              //this part of js has to be in the loop, otherwise the unique_id will be lost
+              //try catch not working yet, error happens when a backslash is in the text part
+                $("#{{ Token.unique_id }}").on('click', function (event) {
+                  event.preventDefault();
+                  //console.log('wikidata query sent out');
+
+                  var jsonContent = "{{ Token.json_content|escapejs }}";
+                  var jsonMathEnv = "{{ Token.json_math_env|escapejs  }}";
+
+
+                  try {
+                    clickToken(jsonContent,
+                              jsonMathEnv,
+                              "{{ Token.unique_id }}",
+                              "{{ Token.type }}"
+                              );
+                  } catch (e) {
+                    console.log(e);
+                  }
+                });
+            </script>
+
+          {% endif %}
+          {% if Token.endline %}
+              </br>
+          {% endif %}
+        {% endfor %}
+    </div>
+{% endfor %}
 
 </body>
 </html>

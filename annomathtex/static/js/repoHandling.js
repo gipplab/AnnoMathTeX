@@ -83,7 +83,8 @@ function getWikipediaArticleFromRepo(fileName) {
 
     $.ajax(
         {
-      url : 'annotation/', // the endpoint
+      url : '/annotation/', // the endpoint
+      //url : '/test/',
       type : "POST", // http method
       data : data_dict, // data sent with the post request
 
@@ -92,7 +93,8 @@ function getWikipediaArticleFromRepo(fileName) {
       //successful response
       success : function(json) {
           console.log('success!');
-          document.location.href = '/test/';//'annotation_template_tmp.html';
+          document.location.href = '/annotation/';//'annotation_template_tmp.html';
+          //document.location.href = '/test/';
       },
 
       //non-successful response
