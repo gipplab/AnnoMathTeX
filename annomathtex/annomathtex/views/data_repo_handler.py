@@ -172,6 +172,11 @@ class DataRepoHandler:
 
         return decoded_content
 
+    def add_wikipedia_article_to_repo(self, article, article_name):
+        path = 'annotation/{}.txt'.format(article_name)
+        self.commit_file(path, article)
+        return
+
 
 
 

@@ -475,6 +475,7 @@ class FileUploadView(View):
         elif 'annotations' in request.POST:
             return self.handle_marked(request)
 
+        #todo: remove this method from this view (and others that aren't used)
         elif 'wikipediaSubmit' in request.POST:
             print("WIKIPEDIA SUBMIT")
             return self.handle_wikipedia_query(request)

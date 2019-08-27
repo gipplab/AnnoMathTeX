@@ -505,9 +505,10 @@ function renderWikipediaResultsTable(wikipediaResults) {
 
 function selectedWikipediaResult(name){
     console.log(name);
+    document.getElementById('wikipediaInput').value = name;
     var modal = document.getElementById("popupWikipedia");
     modal.style.display = "none";
-    getWikipediaArticle(name);
+    //getWikipediaArticle(name);
 }
 
 function renderWikipediaArticle(wikipediaArticle){

@@ -81,7 +81,9 @@ function getRecommendations(content, mathEnv, tokenType, tokenUniqueId) {
 }
 
 
-function searchWikipedia() {
+//commented out because function was moved to repoHandling.js
+
+/*function searchWikipedia() {
     var name = document.getElementById('wikipediaInput').value;
     console.log(name);
 
@@ -113,7 +115,7 @@ function searchWikipedia() {
           console.log(xhr.status + ": " + xhr.responseText);
       }
     });
-}
+}*/
 
 
 

@@ -68,6 +68,27 @@ class StartScreenView(View):
                             content_type='application/json'
         )
 
+    def handle_wikipedia_query(self, request):
+        items = {k: jquery_unparam(v) for (k, v) in request.POST.items()}
+        search_string = list(items['wikipediaSubmit'].keys())[0]
+
+        w = WikipediaAPIHandler()
+        r = w.get_suggestions(search_string)
+        #print(r)
+        return HttpResponse(
+                            json.dumps({'wikipediaResults': r}),
+                            content_type='application/json'
+        )
+
+    def add_article_to_repo(self, request):
+        items = {k: jquery_unparam(v) for (k, v) in request.POST.items()}
+        article_name = list(items['addArticleToRepo'].keys())[0]
+        w = WikipediaAPIHandler()
+        article = w.get_wikipedia_article(article_name)
+        DataRepoHandler().add_wikipedia_article_to_repo(article, article_name)
+        form = TestForm()
+        return render(request, self.template_name, {'form': form})
+
 
     def get(self, request, *args, **kwargs):
         """
@@ -95,6 +116,16 @@ class StartScreenView(View):
         elif 'getRepoContent' in request.POST:
             print('getRepoContent')
             return self.get_repo_content()
+
+        elif 'wikipediaSubmit' in request.POST:
+            print("WIKIPEDIA SUBMIT")
+            return self.handle_wikipedia_query(request)
+
+        elif 'addArticleToRepo' in request.POST:
+            print('addArticleToRepo')
+            return self.add_article_to_repo(request)
+
+        print(request.POST)
 
 
         print('before bottom return')

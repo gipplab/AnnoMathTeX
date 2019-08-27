@@ -12,8 +12,16 @@
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script type="text/javascript" src="{% static 'js/helperFunctions.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/repoHandling.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/rendering.js' %}"></script>
 </head>
 
+
+<div id="popupWikipedia" class="modal">
+  <div class="modal-content">
+    <span class="close" id="spanW">&times;</span>
+    <div id="wikipediaTableHolder"></div>
+  </div>
+</div>
 
 <div id="popupW" class="modal">
   <!-- Modal content -->
@@ -32,8 +40,14 @@
         {% csrf_token %}
         <div class="hero-title">
           <div>
-            <button id="TESTEST">TEST</button>
+            <button id="showFiles">Show Files</button>
           </div>
+            <form id="wikipediaForm" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="text" id="wikipediaInput" required size="20" minlength="3" maxlength="60">
+                <button id="wikipediaSubmit" name="wikipediaSubmit">Search Wikipedia</button>
+                <button id="addArticleToRepo" name="addArticleToRepo">Add Article</button>
+            </form>
           </br>
           </br>
           <a  href="https://www.youtube.com/watch?v=hcyJQtRwYAo" target="_blank" rel="noopener noreferrer" class="fa fa-youtube">
@@ -58,7 +72,7 @@
 
 
   <script>
-    $("#TESTEST").on('click', function (event) {
+    $("#showFiles").on('click', function (event) {
         event.preventDefault();
 
         try {
@@ -66,6 +80,16 @@
         } catch (e) {
           console.log(e);
         }
+      });
+
+    $("#wikipediaSubmit").on('click', function (event) {
+        event.preventDefault();
+        searchWikipedia();
+      });
+
+    $("#addArticleToRepo").on('click', function (event) {
+        event.preventDefault();
+        addArticle();
       });
   </script>
 
