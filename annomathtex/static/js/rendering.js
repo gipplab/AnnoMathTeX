@@ -98,7 +98,6 @@ function populateTableFormula(random=true) {
             existingManual.unshift(manual[i]);
         }
         existingManual = existingManual.slice(0,10);
-        console.log(existingManual);
     } /*else {
         var manual = recommendations['manual']
     }*/
@@ -109,7 +108,6 @@ function populateTableFormula(random=true) {
                       [formulaConceptDB, 'FormulaConceptDB'],
                       [existingManual, 'Manual']];
 
-    console.log(resultList[4][0]);
 
     tmpResultList = resultList[4][0];
 
@@ -375,8 +373,6 @@ function selected(argsString){
 
     var local = document.getElementById('localSwitch').checked;
 
-    console.log(argsArray);
-    console.log(recommendations);
 
     if (local) {
         //local annotations
@@ -468,4 +464,53 @@ function renderAnnotationsTable() {
     }
 
     document.getElementById("annotationsHolder").innerHTML = annotationsTable;
+}
+
+
+function renderWikipediaResultsTable(wikipediaResults) {
+
+    console.log(wikipediaResults);
+
+    var annotationsTable = "<table><tr><td>Name</td></tr>";
+    for (var r in wikipediaResults) {
+        //var tr = "<tr><td>" + wikipediaResults[r] + "</td></tr>";
+        var tr = "<tr><td onclick='selectedWikipediaResult(\"" + wikipediaResults[r] + "\")' >";
+        tr += wikipediaResults[r];
+        tr += "</td></tr>";
+        annotationsTable += tr;
+    }
+
+    /*var form = "<tr><form method'POST' id='post-form1'>";
+    form += "{% csrf_token %}";
+    form += "<td><button type='submit' name='post-td-submit'>TEST</button></td></form></tr>";
+    annotationsTable += form;*/
+
+
+    document.getElementById('wikipediaTableHolder').innerHTML = annotationsTable;
+    var modal = document.getElementById("popupWikipedia");
+    modal.style.display = "block";
+
+    var span = document.getElementById("spanW");
+    span.onclick = function () {
+      modal.style.display = "none";
+    };
+
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    };
+}
+
+
+function selectedWikipediaResult(name){
+    console.log(name);
+    var modal = document.getElementById("popupWikipedia");
+    modal.style.display = "none";
+    getWikipediaArticle(name);
+}
+
+function renderWikipediaArticle(wikipediaArticle){
+    console.log('IN renderWikipediaArticle');
+    console.log(wikipediaArticle);
 }

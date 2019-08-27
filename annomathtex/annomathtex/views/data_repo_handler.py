@@ -1,6 +1,7 @@
 import os
 import urllib3
 import json
+import re
 urllib3.disable_warnings()
 from github import Github, GithubException
 
@@ -24,9 +25,9 @@ class DataRepoHandler:
                 exit(2)
 
         #uncomment for wmflabs
-        if not token:
-            print('Token not set')
-            exit(2)
+        #if not token:
+        #    print('Token not set')
+        #    exit(2)
 
 
         self.g = Github(self.token)
@@ -149,7 +150,27 @@ class DataRepoHandler:
         formulae = json.loads(decoded_content.decode("utf-8"))
         return formulae
 
+    def list_directory(self, dirname='annotation/'):
+        dir_contents = self.repo.get_dir_contents(dirname)
+        def clean_name(content_file):
+            file_name = re.search(r'(?<=annotation/).*?(?=\.txt)', str(content_file))
+            file_name = file_name.group()#[0]
+            file_name = file_name.replace('_', ' ')
+            return file_name
 
+        file_names = list(map(clean_name, dir_contents))
+        return file_names
+
+    def get_wikipedia_article(self, article_name):
+        article_name = article_name.replace(' ', '_')
+        path = 'annotation/{}.txt'.format(article_name)
+        print(path)
+        encoded_content = self.repo.get_file_contents(path)
+        decoded_content = encoded_content.decoded_content
+
+        print('DataRepoHandler type: {}'.format(type(decoded_content)))
+
+        return decoded_content
 
 
 
@@ -269,6 +290,4 @@ if __name__ == '__main__':
     from key import local_token
     import os
     d = DataRepoHandler(local_token)
-    i = d.get_wikidata_identifiers()
-    print(i)
-    print(type(i))
+    d.get_wikipedia_article('Angular_velocity.txt')

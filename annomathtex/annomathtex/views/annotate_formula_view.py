@@ -13,6 +13,7 @@ from time import time
 
 from ..parsing.txt_parser import TXTParser
 from ..parsing.tex_parser import TEXParser
+from ..parsing.wikipedia_parser import WikipediaParser
 from ..recommendation.arxiv_evaluation_handler import ArXivEvaluationListHandler
 from ..recommendation.wikipedia_evaluation_handler import WikipediaEvaluationListHandler
 from ..recommendation.static_wikidata_handler import StaticWikidataHandler
@@ -25,6 +26,7 @@ from ..recommendation.ne_sparql import NESparql
 
 from ..views.eval_file_writer import EvalFileWriter
 from ..views.data_repo_handler import DataRepoHandler, FormulaConceptHandler, ManualRecommendationsCleaner
+from ..views.wikipedia_api_handler import WikipediaAPIHandler
 from .helper_functions import handle_annotations
 from ..config import *
 
@@ -45,7 +47,8 @@ class FileUploadView(View):
     form_class = UploadFileForm
     initial = {'key': 'value'}
     save_annotation_form = {'form': SaveAnnotationForm()}
-    template_name = 'file_upload_template.html'
+    template_name = 'file_upload_wiki_suggestions_2.html'
+    #template_name = 'annotation_template_tmp.html'
 
     def get_concatenated_recommendations(self, type, wikidata_results, arXiv_evaluation_items,
                                          wikipedia_evaluation_items, word_window):
@@ -366,10 +369,55 @@ class FileUploadView(View):
                         'wordWindow': fill_to_limit(word_window),
                         'formulaConceptDB': fill_to_limit(formula_concept_db),
                         'manual': fill_to_limit(manual_recommendations)}),
-            content_type='application/json'
+                        content_type='application/json'
         )
 
 
+    def handle_wikipedia_query(self, request):
+        items = {k: jquery_unparam(v) for (k, v) in request.POST.items()}
+        #search_string = list(items['text'].keys())[0]
+        search_string = list(items['wikipediaSubmit'].keys())[0]
+        w = WikipediaAPIHandler()
+        r = w.get_suggestions(search_string)
+        #print(r)
+        return HttpResponse(
+                            json.dumps({'wikipediaResults': r}),
+                            content_type='application/json'
+        )
+
+
+    def get_rendered_wikipedia_article(self, request):
+        items = {k: jquery_unparam(v) for (k, v) in request.POST.items()}
+        article_name = list(items['wikipediaArticleName'].keys())[0]
+        wikipedia_article = WikipediaAPIHandler().get_wikipedia_article(article_name)
+        line_dict, identifier_line_dict, processed_file = WikipediaParser(wikipedia_article, article_name).process()
+        dicts = {'identifiers': identifier_line_dict, 'lines': line_dict}
+
+        self.dicts_to_cache(dicts)
+
+        print('get_rendered_wikipedia_article')
+        #print(processed_file)
+
+        return render(request,
+                      #'annotation_template.html',
+                      'annotation_template_tmp.html',
+                      {'File': processed_file})
+
+        #return HttpResponse(
+        #                    json.dumps({'wikipediaArticle': processed_file}),
+        #                    content_type='application/json'
+        #)
+
+    def get_repo_content(self):
+        """
+        Get the repo content for the datarepo/annotation folder, i.e. all files that have been annotated in the past.
+        :return:
+        """
+        file_names = DataRepoHandler().list_directory()
+        return HttpResponse(
+                            json.dumps({'fileNames': file_names}),
+                            content_type='application/json'
+        )
 
 
     def get(self, request, *args, **kwargs):
@@ -393,6 +441,7 @@ class FileUploadView(View):
                  applicable).
         """
         __LOGGER__.debug('in post {}'.format(os.getcwd()))
+        print('in post')
         if 'file_submit' in request.POST:
             return self.handle_file_submit(request)
 
@@ -402,5 +451,18 @@ class FileUploadView(View):
         elif 'annotations' in request.POST:
             return self.handle_marked(request)
 
+        elif 'wikipediaSubmit' in request.POST:
+            print("WIKIPEDIA SUBMIT")
+            return self.handle_wikipedia_query(request)
 
-        return render(request, "file_upload_template.html", self.initial)
+        elif 'wikipediaArticleName' in request.POST:
+            return self.get_rendered_wikipedia_article(request)
+
+
+        elif 'getRepoContent' in request.POST:
+            print('getRepoContent')
+            return self.get_repo_content()
+
+
+
+        return render(request, "file_upload_wiki_suggestions_2.html", self.initial)

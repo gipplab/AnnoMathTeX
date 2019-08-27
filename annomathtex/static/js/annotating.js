@@ -25,8 +25,6 @@ function handleNoMatch(){
 
 function addToMannualRecommendations(name) {
 
-    //get all names from manual recommendations
-    console.log(recommendations);
 
 
     if (content in manualRecommendations) {
@@ -34,10 +32,7 @@ function addToMannualRecommendations(name) {
     } else {
         manualRecommendations[content] = [{'name': name}];
     }
-    /*if (! content in manualRecommendations) {
-        manualRecommendations[content] = [{'name': name}];
-    }*/
-    console.log(manualRecommendations);
+
 }
 
 

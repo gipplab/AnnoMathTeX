@@ -1,0 +1,72 @@
+{% load staticfiles %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AnnoMathTex</title>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script type="text/javascript" src="{% static 'js/helperFunctions.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/posting.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/rendering.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/annotating.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/mystyle.css' %}">
+
+
+  <script>
+    //var tokenContent;
+    var uniqueID;
+    var mathEnv;
+    var recommendations = {};
+    var annotations = {};
+    var linkedWords = JSON.parse("{{ File.linked_words|escapejs }}")['linkedWords'];
+    var linkedMathSymbols = JSON.parse("{{ File.linked_math_symbols|escapejs }}")['linkedMathSymbols'];
+    var fileName = "{{ File.file_name|escapejs }}";
+    var tokenUniqueId;
+    var preservedResultList;
+    var sourceWithNums = {};
+    var manualRecommendations = {};
+    var isFormula;
+    var content;
+    var tmpResultList;
+  </script>
+
+</head>
+
+<body>
+
+
+<div id="popupWikipedia" class="modal">
+  <div class="modal-content">
+    <span class="close" id="spanW">&times;</span>
+    <div id="wikipediaTableHolder"></div>
+  </div>
+</div>
+
+{% block content %}
+
+    <form id="wikipediaForm" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="text" id="wikipediaInput" required size="20" minlength="3" maxlength="60">
+        <button id="wikipediaSubmit" name="wikipediaSubmit">name</button>
+    </form>
+
+{% endblock %}
+
+<script>
+  $("#wikipediaSubmit").on('click', function (event) {
+    event.preventDefault();
+    searchWikipedia();
+  })
+
+  //var modal = document.getElementById("popupWikipedia");
+  //modal.style.display = "none";
+
+</script>
+
+
+</body>
+</html>

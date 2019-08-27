@@ -1,0 +1,78 @@
+{% load staticfiles %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AnnoMathTex</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/uploadstyle.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/mystyle.css' %}">
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script type="text/javascript" src="{% static 'js/helperFunctions.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/repoHandling.js' %}"></script>
+</head>
+
+
+<div id="popupW" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div id="tableholderW"></div>
+  </div>
+</div>
+
+
+
+{% block content %}
+
+
+  <div class="hero flex-center">
+    <form class="hero-message" id="upload_form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="hero-title">
+          <div>
+            <button id="TESTEST">TEST</button>
+          </div>
+          </br>
+          </br>
+          <a  href="https://www.youtube.com/watch?v=hcyJQtRwYAo" target="_blank" rel="noopener noreferrer" class="fa fa-youtube">
+            <p>
+              <small>
+                Demo
+              </small>
+            </p>
+          </a>
+
+          <a href="https://github.com/philsMINT/AnnoMathTeX" target="_blank" rel="noopener noreferrer" class="fa fa-github">
+            <p>
+              <small>
+                Source
+              </small>
+            </p>
+          </a>
+        </div>
+
+    </form>
+  </div>
+
+
+  <script>
+    $("#TESTEST").on('click', function (event) {
+        event.preventDefault();
+
+        try {
+          getRepoContent();
+        } catch (e) {
+          console.log(e);
+        }
+      });
+  </script>
+
+
+{% endblock %}
+
+
+
+</body>
+</html>

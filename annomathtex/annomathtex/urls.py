@@ -8,6 +8,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from .views.annotate_formula_view import FileUploadView
+from .views.start_screen_view import StartScreenView
 
 from django.contrib.staticfiles.urls import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
@@ -27,7 +28,8 @@ urlpatterns = [
 
     # enable the admin interface
     url(r'^admin/', admin.site.urls),
-    url(r'', FileUploadView.as_view())
+    url(r'/annotation/', FileUploadView.as_view()),
+    url(r'', StartScreenView.as_view())
 ]
 
 urlpatterns += staticfiles_urlpatterns()

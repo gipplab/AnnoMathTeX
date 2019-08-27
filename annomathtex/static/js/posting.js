@@ -10,10 +10,6 @@ $(document).ready(function () {
   });
 
 
-
-
-
-
     // AJAX for posting
     var fileNameDict = {'f': fileName};
     function create_post() {
@@ -46,6 +42,7 @@ $(document).ready(function () {
           }
       });
     }
+
 });
 
 
@@ -82,3 +79,75 @@ function getRecommendations(content, mathEnv, tokenType, tokenUniqueId) {
       }
     });
 }
+
+
+function searchWikipedia() {
+    var name = document.getElementById('wikipediaInput').value;
+    console.log(name);
+
+
+    let data_dict = { the_post : $("#" + tokenUniqueId).val(),
+          'csrfmiddlewaretoken': getCookie("csrftoken"),
+          'wikipediaSubmit': name
+          };
+
+
+    $.ajax({
+      url : "file_upload/", // the endpoint
+      type : "POST", // http method
+      data : data_dict, // data sent with the post request
+
+      //successful response
+      success : function(json) {
+          $("#" + tokenUniqueId).val(''); // remove the value from the input
+          //console.log('in success');
+          //return json;
+          //console.log(json);
+          renderWikipediaResultsTable(json['wikipediaResults']);
+      },
+
+      //non-successful response
+      error : function(xhr,errmsg,err) {
+          $('#results').html("<div class='alert-box alert radius' data-alert>error: "+errmsg+
+              " <a href='#' class='close'>&times;</a></div>");
+          console.log(xhr.status + ": " + xhr.responseText);
+      }
+    });
+}
+
+
+
+function getWikipediaArticle(name) {
+
+    console.log('IN WIKIPEDIA ARTICLE');
+
+    let data_dict = { the_post : $("#" + tokenUniqueId).val(),
+          'csrfmiddlewaretoken': getCookie("csrftoken"),
+          'wikipediaArticleName': name
+          };
+
+
+    $.ajax({
+      url : '/annotation_template_tmp.html/', // the endpoint
+      type : "POST", // http method
+      data : data_dict, // data sent with the post request
+
+      //successful response
+      success : function(json) {
+          $("#" + tokenUniqueId).val(''); // remove the value from the input
+          //console.log('in success');
+          //return json;
+          console.log(json);
+          renderWikipediaArticle(json);
+      },
+
+      //non-successful response
+      error : function(xhr,errmsg,err) {
+          $('#results').html("<div class='alert-box alert radius' data-alert>error: "+errmsg+
+              " <a href='#' class='close'>&times;</a></div>");
+          console.log(xhr.status + ": " + xhr.responseText);
+      }
+    });
+}
+
+

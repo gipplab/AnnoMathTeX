@@ -302,5 +302,12 @@ class Parser(object, metaclass=ABCMeta):
         file = File(processed_lines_unique_ids,
                                linked_words,
                                linked_math_symbols,
-                               self.file_name, existing_annotations)
+                               self.file_name,
+                               existing_annotations)
+
+
+        #print('*\n'*10)
+        #print(file)
+        #print('\n'*10)
+
         return (line_dict, identifier_line_dict, file)
