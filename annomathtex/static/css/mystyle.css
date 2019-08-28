@@ -37,6 +37,8 @@ display: none;
 }
 
 /* Modal Content */
+/* might have to make 2 modal-content classes. One for repo content (this one) and one for recommendations (remove
+   height attribute) */
 .modal-content {
     background-color: #fefefe;
     margin: auto;

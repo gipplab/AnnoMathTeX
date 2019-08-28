@@ -232,8 +232,6 @@ class FileUploadView(View):
         """
         print('IN HANDLE MARKED')
         items = {k: jquery_unparam(v) for (k, v) in request.POST.items()}
-        #marked = items['marked']
-        #unmarked = items['unmarked']
         annotations = items['annotations']
         file_name = items['fileName']['f']
         manual_recommendations = items['manualRecommendations']
@@ -252,7 +250,7 @@ class FileUploadView(View):
 
 
         eval_file_writer = EvalFileWriter(new_annotations, file_name)
-        eval_file_writer.write()
+        #eval_file_writer.write()
         evaluation_csv_string = eval_file_writer.get_csv_for_repo()
         data_repo_handler = DataRepoHandler()
         #file_name = re.sub(r'\..*', '.csv', file_name)
@@ -264,10 +262,6 @@ class FileUploadView(View):
         data_repo_handler.commit_formula_concepts(annotations)
         data_repo_handler.commit_annotations(annotation_file_name, json.dumps(annotations))
         data_repo_handler.commit_evaluation(evaluation_file_name, evaluation_csv_string)
-
-        #data_repo_handler.commit_to_repo(file_name, csv_string, new_annotations)
-        #data_repo_handler.commit_file(create_annotation_file_name(file_name), json.dumps(annotations))
-
 
         return HttpResponse(
             json.dumps({'testkey': 'testvalue'}),
@@ -307,7 +301,7 @@ class FileUploadView(View):
         unique_id = [k for k in items['uniqueId']][0]
         annotations = items['annotations']
 
-        #print(annotations)
+        print('SEARCH STRING: {}'.format(search_string))
 
 
         __LOGGER__.debug('making wikidata query for search string: {}'.format(search_string))
@@ -353,12 +347,20 @@ class FileUploadView(View):
             manual_recommendations = DataRepoHandler().get_manual_recommendations()
             manual_recommendations = ManualRecommendationsHandler(manual_recommendations).check_identifier_or_formula(search_string)
 
+            print('W1: {}'.format(wikidata1_results))
+            print('W2: {}'.format(wikidata2_results))
+            print('WW: {}'.format(word_window))
+            print('FCDB: {}'.format(formula_concept_db))
+            print('M: {}'.format(manual_recommendations))
+
 
 
         def fill_to_limit(dict_list):
             #print(dict_list)
             dict_list += [{'name': ''} for _ in range(recommendations_limit-len(dict_list))]
             return dict_list
+
+
 
 
         return HttpResponse(
@@ -445,6 +447,7 @@ class FileUploadView(View):
             return self.handle_file_submit(request)
 
         elif 'queryDict' in request.POST:
+            #print(request.POST)
             return self.handle_query_dict(request)
 
         elif 'annotations' in request.POST:

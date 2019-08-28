@@ -63,10 +63,12 @@ function replaceAllEqualsAnn(ann) {
     recognise equals signs when receiving an ajax post.
      */
 
+
     var newGlobal = {};
     var newLocal = {};
 
     function replaceAll(str) {
+        //console.log(str, typeof str);
         return str.replace(new RegExp('=', 'g'), '__EQUALS__');
     }
 
@@ -76,8 +78,9 @@ function replaceAllEqualsAnn(ann) {
         newGlobal[nameReplaced] = ann['global'][name];
     }
     for (var name in ann['local']) {
+        //for (var num in ann['local'])
         var nameReplaced = replaceAll(name);
-        newLocal[nameReplaced] = replaceAll(ann['local'][name]);
+        newLocal[nameReplaced] = ann['local'][name];
     }
 
     var newAnn = {'global': newGlobal, 'local': newLocal};

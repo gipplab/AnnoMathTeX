@@ -16,12 +16,12 @@ class DataRepoHandler:
         self.token = token
 
         #uncomment for local testing
-        if not token:
-            try:
-                from .key import local_token
-                self.token = local_token
-            except Exception:
-                print('Token not set')
+        #if not token:
+        #    try:
+        #        from .key import local_token
+        #        self.token = local_token
+        #    except Exception:
+        #        print('Token not set')
 
         #uncomment for wmflabs
         if not token:
@@ -333,7 +333,7 @@ if __name__ == '__main__':
     #a = d.get_wikipedia_article('Angular velocity')
     #decode_wikipedia_article(a)
 
-    d.delete_file('files/Angular frequency.txt')
+    d.delete_file('files/Test.txt')
 
 
 

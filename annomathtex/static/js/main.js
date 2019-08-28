@@ -43,6 +43,9 @@ function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
         return;
     }
 
+    console.log(jsonContent);
+    console.log(jsonMathEnv);
+
     document.getElementById("noMatchInput").placeholder = "Name";
 
 
@@ -68,7 +71,12 @@ function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
         content = mathEnvContent//.split('\\').join('');
         isFormula = true;
     }
+    console.log(fillText);
+    console.log(mathEnvContent);
+    console.log(tokenContent);
     document.getElementById("highlightedText").innerHTML = fillText;
+
+    //console.log(annotations);
 
 
     let data_dict = { the_post : $("#" + tokenUniqueId).val(),

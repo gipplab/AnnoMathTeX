@@ -60,7 +60,8 @@ class CustomMathEnvParser:
         """
 
         def remove_math_tags(math_env):
-            math_env = math_env.replace('<math>', '')
+            #math_env = math_env.replace('<math>', '')
+            math_env = re.sub('<math.*?>', '', math_env)
             math_env = math_env.replace('</math>', '')
             return math_env
 

@@ -34,6 +34,7 @@ function getRepoContent() {
     });
 
 
+    //todo: put this class in rendering.js
     function renderRepoFileNames(fileNames) {
         /*var table = "<table cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"325\">";
         table += "<tr><td>";
@@ -44,7 +45,7 @@ function getRepoContent() {
         table += "<div style=\"width:320px; height:200px; overflow:auto;\">";
         table += "<table cellspacing=\"0\" cellpadding=\"1\" border=\"1\" width=\"300\" >";*/
 
-        var table = "<table><tr><td>Name</td></tr>";
+        var table = "<table><tr><td>Documents In The Repository</td></tr>";
 
 
         for (var i in fileNames){
@@ -164,7 +165,6 @@ function addArticle() {
       //successful response
       success : function(json) {
           //$("#" + tokenUniqueId).val(''); // remove the value from the input
-          console.log('success');
           //alert('success');
           //return json;
           //console.log(json);

@@ -161,8 +161,10 @@ class Parser(object, metaclass=ABCMeta):
         :return: 2 formula objects, one for each delimiter.
         """
         def create_formula(math_env):
-            math_env = math_env.replace('<math>', '')
+            #math_env = math_env.replace('<math>', '')
+            math_env = re.sub('<math.*?>', '', math_env)
             math_env = math_env.replace('</math>', '')
+            #print('math_env: {}'.format(math_env))
 
             return Formula(
                 str(uuid1()),
@@ -206,14 +208,17 @@ class Parser(object, metaclass=ABCMeta):
         identifiers, split_math_env = CustomMathEnvParser(math_env).get_split_math_env()
         self.__LOGGER__.debug(' process_math_env, split_math_env: {} '.format(split_math_env))
 
+        #str_math_env = str(math_env).replace('<math>', '')
+        str_math_env = re.sub('<math.*?>', '', str(math_env))
+        str_math_env = str_math_env.replace('</math>', '')
+
         processed_maths_env = []
+        print('split_math_env: {}'.format(split_math_env))
         for symbol in split_math_env:
 
             colour = '#c94f0c' if identifiers and symbol in identifiers else '#5c6670'
             endline = True if symbol == '\n' else False
 
-            str_math_env = str(math_env).replace('<math>', '')
-            str_math_env = str_math_env.replace('</math>', '')
 
             id_symbol = Identifier(
                 str(uuid1()),
