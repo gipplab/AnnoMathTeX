@@ -12,6 +12,7 @@ from ..models.file import File
 from ..recommendation.arxiv_evaluation_handler import ArXivEvaluationListHandler
 from ..recommendation.wikipedia_evaluation_handler import WikipediaEvaluationListHandler
 from ..parsing.mathhandling.custom_math_env_parser import CustomMathEnvParser
+from ..views.data_repo_handler import DataRepoHandler
 from ..config import *
 
 
@@ -25,6 +26,9 @@ class Parser(object, metaclass=ABCMeta):
         :param request_file: The file that the user selects to annotate.
         :param file_type: The type of the file (tex, txt, html).
         """
+        print('\n'*5)
+        print('in Parser, file_name: {}'.format(file_name))
+        print('\n'*5)
         logging.basicConfig(level=logging.INFO)
         self.__LOGGER__ = logging.getLogger(__name__)
         self.tagger = NLTK_NER()
@@ -79,6 +83,8 @@ class Parser(object, metaclass=ABCMeta):
             self.__LOGGER__.debug('ANNOTATIONS: {}'.format(json_annotations))
             return json_annotations
 
+    def get_annotation_file_from_repo(self):
+        return DataRepoHandler().get_annotation_file(self.file_name)
 
     def remove_math_envs(self):
         """
@@ -297,7 +303,8 @@ class Parser(object, metaclass=ABCMeta):
 
         processed_lines_unique_ids, line_dict, identifier_line_dict = self.add_unique_ids(processed_lines)
         linked_words, linked_math_symbols = self.form_links(processed_lines_unique_ids)
-        existing_annotations = self.read_annotation_file()
+        #existing_annotations = self.read_annotation_file()
+        existing_annotations = self.get_annotation_file_from_repo()
         print('EXISTING ANNOTATIONS: {}'.format(existing_annotations))
         file = File(processed_lines_unique_ids,
                                linked_words,

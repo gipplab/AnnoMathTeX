@@ -121,7 +121,9 @@ function handleExistingAnnotations(existing_annotations) {
         - The table at the top of the document containing the current annotations is filled with the existing ones.
         - The tokens that were annotated are colored accordingly.
      */
-    annotations = JSON.parse(existing_annotations)['existingAnnotations'];
+    //annotations = JSON.parse(existing_annotations)['existingAnnotations'];
+    tmp = JSON.parse(existing_annotations)['existingAnnotations'];
+    annotations = JSON.parse(tmp);
     if (annotations) {
         uIDs = getLocalUniqueIDs().concat(getGlobalUniqueIDs());
         setAnnotatedColor(uIDs);
@@ -129,6 +131,9 @@ function handleExistingAnnotations(existing_annotations) {
     } else {
         annotations = {};
     }
+
+    console.log(typeof annotations);
+    console.log(typeof existing_annotations);
 
     if ('global' in annotations) {
         var g = true;

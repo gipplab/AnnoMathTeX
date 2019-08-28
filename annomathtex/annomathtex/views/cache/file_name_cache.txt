@@ -1,1 +1,1 @@
-Angular velocity
+Harmonic oscillator

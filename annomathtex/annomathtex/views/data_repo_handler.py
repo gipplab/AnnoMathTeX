@@ -16,18 +16,18 @@ class DataRepoHandler:
         self.token = token
 
         #uncomment for local testing
-        if not token:
-            try:
-                from .key import local_token
-                self.token = local_token
-            except Exception:
-                print('Token not set')
-                exit(2)
+        #if not token:
+        #    try:
+        #        from .key import local_token
+        #        self.token = local_token
+        #    except Exception:
+        #        print('Token not set')
+        #        exit(2)
 
         #uncomment for wmflabs
-        #if not token:
-        #    print('Token not set')
-        #    exit(2)
+        if not token:
+            print('Token not set')
+            exit(2)
 
 
         self.g = Github(self.token)
@@ -150,10 +150,12 @@ class DataRepoHandler:
         formulae = json.loads(decoded_content.decode("utf-8"))
         return formulae
 
-    def list_directory(self, dirname='annotation/'):
+    def list_directory(self, dirname='files'):
         dir_contents = self.repo.get_dir_contents(dirname)
+        print(dir_contents)
         def clean_name(content_file):
-            file_name = re.search(r'(?<=annotation/).*?(?=\.txt)', str(content_file))
+            regex = r'(?<={}/).*?(?=\.txt)'.format(dirname)
+            file_name = re.search(regex, str(content_file))
             file_name = file_name.group()#[0]
             file_name = file_name.replace('_', ' ')
             return file_name
@@ -163,17 +165,29 @@ class DataRepoHandler:
 
     def get_wikipedia_article(self, article_name):
         article_name = article_name.replace(' ', '_')
-        path = 'annotation/{}.txt'.format(article_name)
-        print(path)
+        path = 'files/{}.txt'.format(article_name)
         encoded_content = self.repo.get_file_contents(path)
         decoded_content = encoded_content.decoded_content
-
-        print('DataRepoHandler type: {}'.format(type(decoded_content)))
-
         return decoded_content
 
+    def get_annotation_file(self, article_name):
+
+        #annotation_directory = self.list_directory('annotation')
+        #for a in annotation_directory:
+        #    print(a, article_name, a == article_name + ' annotation ')
+
+        if article_name + ' annotation ' in self.list_directory('annotation'):
+            annotation_file_name = article_name.replace(' ', '_')
+            annotation_file_name = '{}_annotation_.txt'.format(annotation_file_name)
+            path = 'annotation/{}'.format(annotation_file_name)
+            encoded_content = self.repo.get_file_contents(path)
+            decoded_content = encoded_content.decoded_content
+            decoded_content_str = decoded_content.decode()
+            return decoded_content_str
+
+
     def add_wikipedia_article_to_repo(self, article, article_name):
-        path = 'annotation/{}.txt'.format(article_name)
+        path = 'files/{}.txt'.format(article_name)
         self.commit_file(path, article)
         return
 
@@ -297,11 +311,30 @@ def decode_wikipedia_article(wikipedia_article):
     print(wikipedia_article)
 
 
+
+def move_files_to_file_folder():
+    from key import local_token
+    import os
+    drh = DataRepoHandler(local_token)
+    dir = drh.list_directory()
+    annotation_files = filter(lambda f: 'annotation' not in f, dir)
+    for fn in annotation_files:
+        original_fn = fn + '.txt'
+        #new_fn = original_fn.replace('__', '_')
+        old_path = 'annotation/{}'.format(original_fn)
+        new_path = 'files/{}'.format(original_fn)
+        drh.rename_file(old_file_name=old_path, new_file_name=new_path)
+
+
 if __name__ == '__main__':
     #For testing purposes
     from key import local_token
     import os
     d = DataRepoHandler(local_token)
-    a = d.get_wikipedia_article('Angular velocity')
+    #a = d.get_wikipedia_article('Angular velocity')
+    #decode_wikipedia_article(a)
 
-    decode_wikipedia_article(a)
+    d.delete_file('files/tmp.txt')
+
+
+

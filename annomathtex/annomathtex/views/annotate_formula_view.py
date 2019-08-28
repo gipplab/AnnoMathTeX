@@ -361,17 +361,6 @@ class FileUploadView(View):
             return dict_list
 
 
-        """return HttpResponse(
-            json.dumps({'wikidataResults': fill_to_limit(wikidata_results),
-                        'arXivEvaluationItems': fill_to_limit(arXiv_evaluation_items),
-                        'wikipediaEvaluationItems': fill_to_limit(wikipedia_evaluation_items),
-                        'wordWindow': fill_to_limit(word_window),
-                        'manual': fill_to_limit(manual_recommendations)}),
-            content_type='application/json'
-        )"""
-
-
-
         return HttpResponse(
             json.dumps({'arXivEvaluationItems': fill_to_limit(arXiv_evaluation_items),
                         'wikipediaEvaluationItems': fill_to_limit(wikipedia_evaluation_items),
@@ -386,15 +375,12 @@ class FileUploadView(View):
 
     def handle_wikipedia_query(self, request):
         items = {k: jquery_unparam(v) for (k, v) in request.POST.items()}
-        #search_string = list(items['text'].keys())[0]
         search_string = list(items['wikipediaSubmit'].keys())[0]
         w = WikipediaAPIHandler()
         r = w.get_suggestions(search_string)
-        #print(r)
         return HttpResponse(
                             json.dumps({'wikipediaResults': r}),
-                            content_type='application/json'
-        )
+                            content_type='application/json')
 
 
     def get_rendered_wikipedia_article_old(self, request):
@@ -403,21 +389,10 @@ class FileUploadView(View):
         wikipedia_article = WikipediaAPIHandler().get_wikipedia_article(article_name)
         line_dict, identifier_line_dict, processed_file = WikipediaParser(wikipedia_article, article_name).process()
         dicts = {'identifiers': identifier_line_dict, 'lines': line_dict}
-
         self.dicts_to_cache(dicts)
-
-        print('get_rendered_wikipedia_article')
-        #print(processed_file)
-
         return render(request,
-                      #'annotation_template.html',
                       'annotation_template_tmp.html',
                       {'File': processed_file})
-
-        #return HttpResponse(
-        #                    json.dumps({'wikipediaArticle': processed_file}),
-        #                    content_type='application/json'
-        #)
 
     def get_rendered_wikipedia_article(self, article_name):
         wikipedia_article = DataRepoHandler().get_wikipedia_article(article_name)

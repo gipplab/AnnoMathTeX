@@ -162,7 +162,7 @@ function addArticle() {
       success : function(json) {
           //$("#" + tokenUniqueId).val(''); // remove the value from the input
           console.log('success');
-          alert('success');
+          //alert('success');
           //return json;
           //console.log(json);
       },
