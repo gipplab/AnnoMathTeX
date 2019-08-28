@@ -16,13 +16,12 @@ class DataRepoHandler:
         self.token = token
 
         #uncomment for local testing
-        #if not token:
-        #    try:
-        #        from .key import local_token
-        #        self.token = local_token
-        #    except Exception:
-        #        print('Token not set')
-        #        exit(2)
+        if not token:
+            try:
+                from .key import local_token
+                self.token = local_token
+            except Exception:
+                print('Token not set')
 
         #uncomment for wmflabs
         if not token:
@@ -187,7 +186,7 @@ class DataRepoHandler:
 
 
     def add_wikipedia_article_to_repo(self, article, article_name):
-        path = 'files/{}.txt'.format(article_name)
+        path = 'files/{}.txt'.format(article_name.replace(' ', '_'))
         self.commit_file(path, article)
         return
 
@@ -334,7 +333,7 @@ if __name__ == '__main__':
     #a = d.get_wikipedia_article('Angular velocity')
     #decode_wikipedia_article(a)
 
-    d.delete_file('files/tmp.txt')
+    d.delete_file('files/Angular frequency.txt')
 
 
 

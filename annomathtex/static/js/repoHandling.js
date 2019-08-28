@@ -35,22 +35,25 @@ function getRepoContent() {
 
 
     function renderRepoFileNames(fileNames) {
-        var table = "<table cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"325\">";
+        /*var table = "<table cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"325\">";
         table += "<tr><td>";
         table += "<table cellspacing=\"0\" cellpadding=\"1\" border=\"1\" width=\"300\" >";
         table += "<tr style=\"color:white;background-color:grey\">";
         table += "<th>Existing Files</th>";
         table += "</tr></table></td></tr><tr><td>";
-        table += "<div style=\"width:320px; height:80px; overflow:auto;\">";
-        table += "<table cellspacing=\"0\" cellpadding=\"1\" border=\"1\" width=\"300\" >";
+        table += "<div style=\"width:320px; height:200px; overflow:auto;\">";
+        table += "<table cellspacing=\"0\" cellpadding=\"1\" border=\"1\" width=\"300\" >";*/
+
+        var table = "<table><tr><td>Name</td></tr>";
+
 
         for (var i in fileNames){
             let fileName = fileNames[i];
             table += "<tr><td type='submit' onclick='getWikipediaArticleFromRepo(\"" + fileName + "\")'>" + fileName + "</td></tr>";
         }
 
-        //table += "<tr><td>new item</td></tr>";
-        table += "</table></div></td></tr></table>";
+        table += "</table>";
+        //table += "</table></div></td></tr></table>";
 
 
         document.getElementById('tableholderW').innerHTML = table;

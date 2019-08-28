@@ -480,6 +480,7 @@ function renderWikipediaResultsTable(wikipediaResults) {
         annotationsTable += tr;
     }
 
+
     /*var form = "<tr><form method'POST' id='post-form1'>";
     form += "{% csrf_token %}";
     form += "<td><button type='submit' name='post-td-submit'>TEST</button></td></form></tr>";
