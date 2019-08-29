@@ -25,9 +25,9 @@ class DataRepoHandler:
                 print('Token not set')
 
         #uncomment for wmflabs
-        #if not token:
-        #    print('Token not set')
-        #    exit(2)
+        if not self.token:
+            print('Token not set')
+            exit(2)
 
 
         self.g = Github(self.token)
