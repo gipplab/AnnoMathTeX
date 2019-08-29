@@ -15,7 +15,6 @@ class DataRepoHandler:
     def __init__(self, token=os.getenv('apikey', False)):
         self.token = token
 
-        #uncomment for local testing
         if not token:
             print('token: ', token)
             try:
@@ -24,7 +23,7 @@ class DataRepoHandler:
             except Exception:
                 print('Token not set')
 
-        #uncomment for wmflabs
+
         if not self.token:
             print('Token not set')
             exit(2)

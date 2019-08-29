@@ -66,7 +66,8 @@ class CustomMathEnvParser:
             return math_env
 
         greek_letters_regex = self.get_greek_letters(self.greek_letters_path)
-        identifier_r = r'(\b[a-z]\b|(?<=_)[a-z]|(?<=[^a-z])[a-z](?=_)|{})'.format(greek_letters_regex)
+        #identifier_r = r'(\b[a-z]\b|(?<=_)[a-z]|(?<=[^a-z])[a-z](?=_)|{})'.format(greek_letters_regex)
+        identifier_r = r'([a-z]{{1,2}}|{})'.format(greek_letters_regex)
         r = re.compile(identifier_r, re.IGNORECASE)
         self.math_env = remove_math_tags(self.math_env)
         id_pos_len = [(i.group(), i.start(), len(i.group())) for i in r.finditer(self.math_env)]
@@ -99,6 +100,19 @@ class CustomMathEnvParser:
 
 
 def test():
+    ex1 = "\,v=dx^{(4)}/dt"  # dx and dt don't get recognized
+    ex2 = "E_r^2 - (pc)^2 &= (m_0 c^2)^2"   # pc
+    ex3 = "E_r = pc"   # E and pc
+    ex4 = "m_0 = 0"    # m
+
+    # regexes:
+    # 1: simple variable: \b[a-z]\b
+
+    i, s = CustomMathEnvParser(ex1).get_split_math_env()
+    print(i)
+    print(s)
+
+
     pass
 
 
