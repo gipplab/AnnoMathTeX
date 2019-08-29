@@ -7,10 +7,6 @@ from ..views.data_repo_handler import DataRepoHandler
 from fuzzywuzzy import fuzz
 from operator import itemgetter
 
-#recommendations_limit = 10
-#PROJECT_ROOT = ''
-
-#todo: commit static wikidata files to data repo and get from there
 
 class StaticWikidataHandler:
     """
