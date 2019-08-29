@@ -16,17 +16,18 @@ class DataRepoHandler:
         self.token = token
 
         #uncomment for local testing
-        #if not token:
-        #    try:
-        #        from .key import local_token
-        #        self.token = local_token
-        #    except Exception:
-        #        print('Token not set')
+        if not token:
+            print('token: ', token)
+            try:
+                from .key import local_token
+                self.token = local_token
+            except Exception:
+                print('Token not set')
 
         #uncomment for wmflabs
-        if not token:
-            print('Token not set')
-            exit(2)
+        #if not token:
+        #    print('Token not set')
+        #    exit(2)
 
 
         self.g = Github(self.token)
