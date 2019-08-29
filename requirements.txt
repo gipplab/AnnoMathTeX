@@ -20,3 +20,4 @@ TeXSoup==0.1.4
 SPARQLWrapper==1.8.2
 PyGithub==1.43.7
 fuzzywuzzy==0.17.0
+wikipedia==1.4.0
