@@ -2,6 +2,9 @@ import os
 import numpy as np
 
 path = "annotations"
+#path = "C:\\Users/Philipp/Downloads/evaluation_demopaper"
+#path = "C:\\Users/Philipp/Dropbox/PhD/Projects/Annotation Recommender/dataAnnoMathTex"
+
 header = "Identifier,Name,ArXiV,Wikipedia,Wikidata,WordWindow,type"
 empty = ""
 source_comparison_statistic = {}
@@ -19,6 +22,7 @@ source_comparison_statistic["WordWindow_counter"] = 0
 accepted = 0
 declined = 0
 total = 0
+docs = 0
 
 # iterate over eval files in folder
 for csv_file in os.listdir(path):
@@ -26,6 +30,7 @@ for csv_file in os.listdir(path):
 
         with open(path+"/"+csv_file,"r") as f:
             print('file open')
+            docs += 1
             table = f.read().splitlines()
             for line in table:
                 if line != header and line != empty:
@@ -51,11 +56,14 @@ for csv_file in os.listdir(path):
                         source_comparison_statistic["WordWindow_counter"] += 1
 
                     # accepted/declined counter
-                    for result in eval[2:5]:
+                    accepted_bool = False
+                    for result in eval[2:6]:
                         if result != "-":
-                            accepted += 1
-                        else:
-                            declined += 1
+                            accepted_bool = True
+                    if accepted_bool == True:
+                        accepted += 1
+                    else:
+                        declined += 1
 
 sum = source_comparison_statistic["ArXiV_counter"]+source_comparison_statistic["Wikipedia_counter"]+source_comparison_statistic["Wikidata_counter"]+source_comparison_statistic["WordWindow_counter"]
 source_comparison_statistic["ArXiV_percentage"] = np.divide(source_comparison_statistic["ArXiV_counter"],sum)
