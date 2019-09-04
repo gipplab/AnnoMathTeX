@@ -4,7 +4,7 @@ from ..config import recommendations_limit
 from ..settings.common import PROJECT_ROOT
 from ..parsing.mathhandling.custom_math_env_parser import CustomMathEnvParser
 from ..views.data_repo_handler import DataRepoHandler
-from fuzzywuzzy import fuzz
+#from fuzzywuzzy import fuzz
 from operator import itemgetter
 
 
@@ -98,7 +98,8 @@ class StaticWikidataHandler:
             formula = formula_dict[formula_name]
             tex_string = formula['formula']
 
-            score_string = fuzz.token_sort_ratio(formula_string, tex_string)
+            #score_string = fuzz.token_sort_ratio(formula_string, tex_string)
+            score_string = 0
             if score_string >= threshold_string:
                 results_string.append(({'name':formula_name}, score_string))
 
