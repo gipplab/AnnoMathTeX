@@ -72,7 +72,6 @@ class CustomMathEnvParser:
         math_symbols_regex = self.load_math_symbols(self.greek_letters_path)
         identifier_r = r'(\b[a-z]{{1,2}}\b|(?<=_)[a-z]|(?<=[^a-z])[a-z](?=_)|\b[a-z]{{1,2}}(?=_)|{})'.format(greek_letters_regex)
         #identifier_r = r'{}({}|[a-z]{{1,2}})'.format(greek_letters_regex, math_symbols_regex)
-        #print(identifier_r)
         r = re.compile(identifier_r, re.IGNORECASE)
         self.math_env = remove_math_tags(self.math_env)
         id_pos_len = [(i.group(), i.start(), len(i.group())) for i in r.finditer(self.math_env)]
