@@ -17,10 +17,10 @@ class CustomMathEnvParser:
         :param math_env: The math environment that is being parsed.
         """
         self.math_env = math_env
-        #self.greek_letters_path = os.path.join(os.getcwd(), 'annomathtex', 'parsing', 'mathhandling', 'latex_math_symbols.json')
-        self.greek_letters_path = os.path.join(PROJECT_ROOT, 'annomathtex', 'parsing', 'mathhandling',
-                                               'latex_math_symbols.json')
-        self.greek_letters_path_testing = os.path.join(os.getcwd(), 'latex_math_symbols.json')
+        self.greek_letters_path = os.path.join(PROJECT_ROOT, 'annomathtex', 'parsing', 'mathhandling', 'latex_math_symbols.json')
+        #testing
+        #self.greek_letters_path_testing = os.path.join(os.getcwd(), 'latex_math_symbols.json')
+        #self.greek_letters_path = self.greek_letters_path_testing
 
     def load_math_symbols(self, path):
         """
@@ -35,9 +35,11 @@ class CustomMathEnvParser:
 
         all_dict = json.loads(s)
         keys = list(all_dict.keys())
+        keys.remove('greek_letters')
+        #print(keys)
         all_symbols = [s.replace('\\', '\\\\') for key in keys for s in all_dict[key]]
         all_symbols_string = '|'.join(all_symbols)
-        all_symbols_string = r'({})'.format(all_symbols_string)
+        all_symbols_string = r'(?:{})'.format(all_symbols_string)
         return all_symbols_string
 
     def get_greek_letters(self, path):
@@ -49,6 +51,7 @@ class CustomMathEnvParser:
         greek_letters_set = set(map(lambda g: g[1:].lower(), greek_letters))
         greek_letters_regex = r'|'.join(g for g in greek_letters_set)
         return greek_letters_regex
+
 
     def get_id_pos_len(self):
         """
@@ -66,8 +69,10 @@ class CustomMathEnvParser:
             return math_env
 
         greek_letters_regex = self.get_greek_letters(self.greek_letters_path)
-        #identifier_r = r'(\b[a-z]\b|(?<=_)[a-z]|(?<=[^a-z])[a-z](?=_)|{})'.format(greek_letters_regex)
-        identifier_r = r'([a-z]{{1,2}}|{})'.format(greek_letters_regex)
+        math_symbols_regex = self.load_math_symbols(self.greek_letters_path)
+        identifier_r = r'(\b[a-z]{{1,2}}\b|(?<=_)[a-z]|(?<=[^a-z])[a-z](?=_)|\b[a-z]{{1,2}}(?=_)|{})'.format(greek_letters_regex)
+        #identifier_r = r'{}({}|[a-z]{{1,2}})'.format(greek_letters_regex, math_symbols_regex)
+        #print(identifier_r)
         r = re.compile(identifier_r, re.IGNORECASE)
         self.math_env = remove_math_tags(self.math_env)
         id_pos_len = [(i.group(), i.start(), len(i.group())) for i in r.finditer(self.math_env)]
@@ -108,12 +113,11 @@ def test():
     # regexes:
     # 1: simple variable: \b[a-z]\b
 
-    i, s = CustomMathEnvParser(ex1).get_split_math_env()
-    print(i)
-    print(s)
-
-
-    pass
+    s = CustomMathEnvParser(ex1)
+    #m = s.load_math_symbols(s.greek_letters_path_testing)
+    g = s.get_id_pos_len()
+    m = s.load_math_symbols(s.greek_letters_path_testing)
+    print(m)
 
 
 if __name__ == "__main__":
