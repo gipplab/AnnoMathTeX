@@ -1,4 +1,4 @@
-python-Levenshtein==0.12.0
+fuzzywuzzy==0.17.0
 nltk==3.4.5
 SPARQLWrapper==1.8.2
 html2text==2018.1.9
