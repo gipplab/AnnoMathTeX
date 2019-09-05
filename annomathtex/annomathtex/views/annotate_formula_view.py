@@ -162,14 +162,24 @@ class FileUploadView(View):
         return dicts
 
     def read_file_name_cache(self):
-        with open(file_name_cache_path, 'r') as infile:
-            file_name = infile.read()
+        if os.path.isfile(file_name_cache_path):
+            with open(file_name_cache_path, 'r') as infile:
+                file_name = infile.read()
+        else:
+            with open(file_name_cache_path_deployed_sys, 'r') as infile:
+                file_name = infile.read()
         return file_name
 
+
     def write_file_name_cache(self, file_name):
-        with open(file_name_cache_path, 'w') as outfile:
-            outfile.truncate(0)
-            outfile.write(file_name)
+        if os.path.isfile(file_name_cache_path):
+            with open(file_name_cache_path, 'w') as outfile:
+                outfile.truncate(0)
+                outfile.write(file_name)
+        else:
+            with open(file_name_cache_path_deployed_sys, 'w') as outfile:
+                outfile.truncate(0)
+                outfile.write(file_name)
         return
 
 

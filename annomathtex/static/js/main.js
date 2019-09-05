@@ -46,7 +46,7 @@ function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
     console.log(jsonContent);
     console.log(jsonMathEnv);
 
-    document.getElementById("noMatchInput").placeholder = "Name";
+    document.getElementById("noMatchInput").placeholder = "Enter Name";
 
 
     var tokenContent = JSON.parse(jsonContent)['content'];

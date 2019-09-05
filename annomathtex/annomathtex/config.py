@@ -44,3 +44,5 @@ def create_evaluation_file_path(file_name):
 view_cache_path = os.path.join(PROJECT_ROOT, 'annomathtex', 'views', 'cache')
 
 file_name_cache_path = os.path.join(os.getcwd(), 'annomathtex', 'views', 'cache', 'file_name_cache.txt')
+
+file_name_cache_path_deployed_sys = os.path.join(os.getcwd(), 'annomathtex', 'annomathtex', 'views', 'cache', 'file_name_cache.txt')

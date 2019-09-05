@@ -45,7 +45,7 @@ function getRepoContent() {
         table += "<div style=\"width:320px; height:200px; overflow:auto;\">";
         table += "<table cellspacing=\"0\" cellpadding=\"1\" border=\"1\" width=\"300\" >";*/
 
-        var table = "<table><tr><td>Documents In The Repository</td></tr>";
+        var table = "<table><tr><td><strong><b>Documents In The Repository</b></strong></td></tr>";
 
 
         for (var i in fileNames){
