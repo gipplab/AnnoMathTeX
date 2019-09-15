@@ -165,8 +165,39 @@ body {
   color: white;
 }
 
-.icon {
-    position: absolute;
-    left: 0px;
-    bottom: 0px;
+.fa-thermometer {
+    background: #2196F3;
+    color: white;
 }
+
+
+
+.search-icon {
+  padding: 20px;
+  font-size: 20px;
+  width: 60px;
+  text-align: center;
+  text-decoration: none;
+  margin: 5px 2px;
+  background: black;
+}
+
+
+.fa-magnifying2 {
+    background: white;
+    color: black;
+    content: url('https://api.iconify.design/ps:magnifying-glass.svg?height=14');
+    vertical-align: -0.062em;
+}
+
+.fa-magnifying-4:before,
+.fa-magnifying:before,
+.fa-magnifying-full:before{content:"\f2c7"}
+.fa-magnifying-3:before,
+.fa-magnifying-three-quarters:before{content:"\f2c8"}
+.fa-magnifying-2:before,
+.fa-magnifying-half:before{content:"\f2c9"}
+.fa-magnifying-1:before,
+.fa-magnifying-quarter:before{content:"\f2ca"}
+.fa-magnifying-0:before,
+.fa-magnifying-empty:before{content:"\f2cb"}.

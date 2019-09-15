@@ -10,6 +10,7 @@
   <link rel="stylesheet" type="text/css" href="{% static 'css/uploadstyle.css' %}">
   <link rel="stylesheet" type="text/css" href="{% static 'css/mystyle.css' %}">
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://code.iconify.design/1/1.0.3/iconify.min.js"></script>
   <script type="text/javascript" src="{% static 'js/helperFunctions.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/repoHandling.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/rendering.js' %}"></script>
@@ -39,17 +40,35 @@
     <form class="hero-message" id="upload_form" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="hero-title">
-          <div>
-            <button id="showFiles">Show Files</button>
-          </div>
             <form id="wikipediaForm" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <input type="text" id="wikipediaInput" required size="20" minlength="3" maxlength="60">
-                <button id="wikipediaSubmit" name="wikipediaSubmit">Search Wikipedia</button>
-                <button id="addArticleToRepo" name="addArticleToRepo">Add Article</button>
+
+              <input type="text" id="wikipediaInput" placeholder="Search Wikipedia" value required size="20" minlength="3" maxlength="60">
+
+                <!--<button id="wikipediaSubmit" name="wikipediaSubmit">
+                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 512 512"><path d="M414 354q-18-18-41-11l-32-32q43-53 43-119 0-80-56-136T192 0 56 56 0 192t56 136 136 56q70 0 119-43l32 32q-6 24 11 41l85 85q13 13 30 13 18 0 30-13 13-13 13-30t-13-30zm-222-13q-62 0-105.5-43.5T43 192 86.5 86.5 192 43t105.5 43.5T341 192t-43.5 105.5T192 341z" fill="#626262"/></svg>
+                </button>
+                <button id="addArticleToRepo" name="addArticleToRepo">Add Article</button>-->
+
+
+              <button id="wikipediaSubmit" name="wikipediaSubmit">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="12px" height="12px" viewBox="-0.5 -0.5 12 12" content="&lt;mxfile modified=&quot;2019-09-15T11:12:01.398Z&quot; host=&quot;www.draw.io&quot; agent=&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36&quot; etag=&quot;mGC-YD0z17Si86g2LCjw&quot; version=&quot;11.2.8&quot; type=&quot;device&quot; pages=&quot;1&quot;&gt;&lt;diagram id=&quot;4-oyBVOH-g0G9dCA5E1E&quot; name=&quot;Page-1&quot;&gt;jZPdjpswEIWfhsuNAEOTXhaa/khttVIqVe3NyoEJWLU9lnES0qfvsAwQulqpN8j+5niYGR9HojT9Ry9d+xVr0FEa130k3kdpus129B3AbQRiy6Dxqh5RsoCD+gMMY6ZnVUO3EgZEHZRbwwqthSqsmPQer2vZCfX6r0428AIcKqlf0h+qDu1Id3m88E+gmnb6cxJzxMhJzKBrZY3XOyT2kSg9YhhXpi9BD7Ob5jKe+/BKdC7Mgw3/c+Cz+e5+hTf75EGU34pjpR77nw/bMctF6jM3zMWG2zSBue44EkUtuxZq3rTBaFomtOyCx99QokZPxKKlw8VJaT2hKBVZ9jZ/Fmt5BP2InQoKLcUq6gBIVFzAB0Wz//KP4IghoLkTvNOqGQIBHVHJuzkPnoNWlsqZPDFUS324oSXTN4NTNxcAaTZGNladbso2T42WHbmlcKiGPPsLpeu4PwdeGSB6cLIiMefk6VFV0L96Lcl82fRIACmNv5GED6Q79gc/kGTyy3WxW55v+F7aO6/l2SZjo7PJmzn74gNasBWm7WK559jduxX7vw==&lt;/diagram&gt;&lt;/mxfile&gt;" style="background-color: rgb(255, 255, 255);"><defs/><g><path d="M 10.84 9.36 L 11.56 10.07 C 11.59 10.11 11.58 10.17 11.56 10.2 L 10.58 11.17 C 10.48 11.28 10.13 11.42 9.82 11.24 L 9.37 10.82 Z M 4.55 8.03 C 6.34 8.03 8.05 6.5 8.05 4.47 C 8.05 2.51 6.49 0.87 4.5 0.87 C 2.47 0.87 0.88 2.49 0.88 4.45 C 0.88 6.21 2.23 8.03 4.55 8.03 Z M 4.58 8.93 C 1.82 8.93 0 6.77 0 4.47 C 0 2.26 1.73 0 4.49 0 C 6.97 0 8.94 2.03 8.94 4.44 C 8.94 5.44 8.62 6.4 8.05 7.15 L 8.72 7.82 C 8.98 7.71 9.28 7.79 9.43 7.95 L 10.56 9.09 L 9.1 10.55 L 7.49 8.97 L 7.79 8.67 L 7.15 8.03 C 6.33 8.67 5.28 8.93 4.58 8.93 Z" fill="#4495d1" stroke="none" pointer-events="none"/></g></svg>
+              </button>
+
+
+              <button id="addArticleToRepo" name="addArticleToRepo">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="12px" height="12px" viewBox="-0.5 -0.5 12 12" content="&lt;mxfile modified=&quot;2019-09-15T11:19:21.172Z&quot; host=&quot;www.draw.io&quot; agent=&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36&quot; etag=&quot;5iyOMKH6zJkCNJTQj0f2&quot; version=&quot;11.2.8&quot; type=&quot;device&quot; pages=&quot;1&quot;&gt;&lt;diagram id=&quot;4-oyBVOH-g0G9dCA5E1E&quot; name=&quot;Page-1&quot;&gt;7ZZNU4MwEIZ/DUcdIEXbo2L9OOg4U2ccvUXYQsbAMulWqL/eUMJXqda2By9yYJInmzfJuxtai/lJcaN4Ft9jCNJy7bCw2JXluuejsX6XYFUBdm5ApERYIacFM/EJBtqGLkUIi14gIUoSWR8GmKYQUI9xpTDvh81R9lfNeAQDMAu4HNJnEVJc0bFnt/wWRBTXKzu2GUl4HWzAIuYh5h3EphbzFSJVraTwQZbe1b5U866/GW02piCl30y4S56yVzqbOifMf7h8C8Rj8XLisErmg8ulObHZLa1qCyKFy8yEgSIothnP3+pwe7gxpzmuLhPABEitdIgRcidmSl0izPTz1nCnroe4b7ZJtEly1Gi3PuiGsWIfW+zdtmgZXYS6c5nHgmCW8aAcyfU10CymRK945ejmghS+N9XjaTIXUvooUa2V2Hz9lBxT6vDRaOJ1FLaNfJuWrv0/ZH6YlD803fmF6Wl4Ud5q3UsxhZ+MPjvCUAgHX4Xj7fS2uFkzBZKT+Ogvus1hs8IjCr2d5gp5o1Ovd4cmG0la4FIFYGZ1PxK7hNwNIeIqAhoIrRPeHPuIGnD/a+DAGnDdjdS1udy3CsbjHUIHV4Hutr94VXj7t4FNvwA=&lt;/diagram&gt;&lt;/mxfile&gt;" style="background-color: rgb(255, 255, 255);"><defs/><g><ellipse cx="5.7" cy="5.7" rx="5.5" ry="5.5" fill="#ffffff" stroke="#4495d1" pointer-events="none"/><path d="M 5.65 9.2 L 5.65 2.2" fill="none" stroke="#4495d1" stroke-miterlimit="10" pointer-events="none"/><path d="M 2.45 5.65 L 9 5.65" fill="none" stroke="#4495d1" stroke-miterlimit="10" pointer-events="none"/></g></svg>
+              </button>
+
+              <button id="showFiles" name="showFiles">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="27px" height="27px" viewBox="-0.5 -0.5 27 27" content="&lt;mxfile modified=&quot;2019-09-15T11:28:47.795Z&quot; host=&quot;www.draw.io&quot; agent=&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36&quot; etag=&quot;Zj7R6GI_Pr_m_hNJz5F5&quot; version=&quot;11.2.8&quot; type=&quot;device&quot; pages=&quot;1&quot;&gt;&lt;diagram id=&quot;4-oyBVOH-g0G9dCA5E1E&quot; name=&quot;Page-1&quot;&gt;jZNRb5swEMc/DY9EGJKSPiYsaSdtU6VumtY3BxuwanzIXBqyT78zmABqK40H7Pvd2Xc+/x0kWd09WN5U30FIHcSR6ILkSxDH6XpLfweuA0hSD0qrxIDYBJ7VX+lh5OlZCdkuAhFAo2qWMAdjZI4Lxq2FyzKsAL3M2vBSvgPPOdfv6W8lsBrodhNN/FGqshozs8h7aj4Ge9BWXMBlhpJDkGQWAIdZ3WVSu96NfRnWHT/x3gqz0uD/LPha/2xe8O7AwiT7sT/l6qn7E7J02OaN67M/sa8Wr2MLqPDGTVXd92pfYa3JZDR9kxYVNWunVWmIITQz+o2fpH6CVqEC5z0BItQUoJ1jz/PX0sLZiAw02D5XUvQfhfTJdm0z3GlEhI9GoTopxhCyK0Qnhp07enzMhYlXiuRQKCOkXeWUMT4KjpwGx1sa27wiEYVSnHPuigsT17iUGnj8ZVChliJkIduELN6uGlNSthYtvMpZqev1/aZvwuAZ1bEhUiitPzpUAQY/2sHfAbVNdp/eLrtpht6ahFqivVKIXxDfe5n5d5beefsyqZYOM7BqrtgRcv9Sytvek5ho4vU0mpNue9/s8SeHfw==&lt;/diagram&gt;&lt;/mxfile&gt;" style="background-color: rgb(255, 255, 255);"><defs/><g><image x="-0.09999999999999998" y="-0.09999999999999998" width="25.6" height="25.6" xlink:href="https://cdn2.iconfinder.com/data/icons/school-education-32/70/Untitled-1-15-128.png" preserveAspectRatio="none" pointer-events="none"/></g></svg>
+              </button>
+
             </form>
           </br>
           </br>
+
+
           <a  href="https://www.youtube.com/watch?v=hcyJQtRwYAo" target="_blank" rel="noopener noreferrer" class="fa fa-youtube">
             <p>
               <small>
