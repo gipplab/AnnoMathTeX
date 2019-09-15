@@ -165,7 +165,7 @@ function addArticle() {
       //successful response
       success : function(json) {
           //$("#" + tokenUniqueId).val(''); // remove the value from the input
-          //alert('success');
+          alert('Success! Article \"' + name + '\" successfully added to repository.');
           //return json;
           //console.log(json);
       },

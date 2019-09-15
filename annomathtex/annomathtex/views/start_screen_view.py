@@ -119,6 +119,7 @@ class StartScreenView(View):
 
         elif 'wikipediaSubmit' in request.POST:
             print("WIKIPEDIA SUBMIT")
+            print(request.POST)
             return self.handle_wikipedia_query(request)
 
         elif 'addArticleToRepo' in request.POST:

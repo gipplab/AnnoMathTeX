@@ -9,6 +9,7 @@ class WikipediaAPIHandler():
 
 
     def get_suggestions(self, search_string, limit=5):
+        print('WikipediaAPIHandler() --- search_string: {}'.format(search_string))
         return wikipedia.search(search_string, results=5)
 
 

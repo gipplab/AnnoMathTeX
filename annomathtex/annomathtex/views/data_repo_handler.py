@@ -334,7 +334,7 @@ if __name__ == '__main__':
     #a = d.get_wikipedia_article('Angular velocity')
     #decode_wikipedia_article(a)
 
-    d.delete_file('files/Test.txt')
+    d.delete_file('files/List_of_Test_cricket_records.txt')
 
 
 

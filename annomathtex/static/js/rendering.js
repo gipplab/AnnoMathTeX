@@ -471,7 +471,7 @@ function renderWikipediaResultsTable(wikipediaResults) {
 
     console.log(wikipediaResults);
 
-    var annotationsTable = "<table><tr><td>Available Wikipedia Articles</td></tr>";
+    var annotationsTable = "<table><tr><td><strong><b>Available Wikipedia Articles</b></strong></td></tr>";
     for (var r in wikipediaResults) {
         //var tr = "<tr><td>" + wikipediaResults[r] + "</td></tr>";
         var tr = "<tr><td onclick='selectedWikipediaResult(\"" + wikipediaResults[r] + "\")' >";
