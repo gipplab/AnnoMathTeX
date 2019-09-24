@@ -36,7 +36,11 @@
 
 <form method="POST" id="post-form">
     {% csrf_token %}
-    <button type="submit" name="post-form-submit2" onclick="alert('Annotations Saved')">Save</button>
+    <button type="submit" name="post-form-submit2" onclick="alert('Annotations Saved')">
+      <a href="https://forms.gle/MGDSmy8686DCA4477" target="_blank" rel="noopener noreferrer">
+        Save
+      </a>
+    </button>
 </form>
 
 <div id="annotationsHolder"></div></br>
