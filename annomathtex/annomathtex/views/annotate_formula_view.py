@@ -32,6 +32,8 @@ from ..config import *
 
 from .helper_classes.token_clicked_handler import TokenClickedHandler
 from .helper_classes.file_handler import FileHandler
+from .helper_classes.cache_handler import CacheHandler
+from .helper_classes.wikipedia_query_handler import WikipediaQueryHandler
 
 
 logging.basicConfig(level=logging.INFO)
@@ -265,10 +267,7 @@ class FileUploadView(View):
         :param request: Request object. Request made by the user through the frontend.
         :return: The rendered response containing the template name and the necessary form.
         """
-        #form = TestForm()
-        #return render(request, self.template_name, {'form': form})
-        article_name = self.read_file_name_cache()
-        #processed_file = self.get_rendered_wikipedia_article(article_name)
+        article_name = CacheHandler().read_file_name_cache()
         processed_file = FileHandler(request).get_processed_wikipedia_article(article_name)
         return render(request, self.template_name, {'File': processed_file, 'test': 3})
 
@@ -287,12 +286,10 @@ class FileUploadView(View):
         #print(items)
 
         if 'file_submit' in request.POST:
-            #return self.handle_file_submit(request)
             return FileHandler(request).process_local_file()
 
         elif 'queryDict' in request.POST:
-            print('queryDIct')
-            #return self.handle_query_dict(request)
+            print('queryDict')
             return TokenClickedHandler(request).get_recommendations()
 
         elif 'annotations' in request.POST:
@@ -300,9 +297,11 @@ class FileUploadView(View):
             return self.handle_marked(request)
 
         #todo: remove this method from this view (and others that aren't used)
+        #todo: check if not used
         elif 'wikipediaSubmit' in request.POST:
             print("WIKIPEDIA SUBMIT")
-            return self.handle_wikipedia_query(request)
+            #return self.handle_wikipedia_query(request)
+            return WikipediaQueryHandler(request).get_suggestions()
 
         elif 'wikipediaArticleName' in request.POST:
             #todo: put in separate method (consistency)
