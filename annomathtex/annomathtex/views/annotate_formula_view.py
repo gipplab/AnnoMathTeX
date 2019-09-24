@@ -19,6 +19,7 @@ from .helper_classes.file_handler import FileHandler
 from .helper_classes.cache_handler import CacheHandler
 from .helper_classes.wikipedia_query_handler import WikipediaQueryHandler
 from .helper_classes.wikipedia_article_name_handler import WikipediaArticleNameHandler
+from .helper_classes.repo_content_handler import RepoContentHandler
 
 
 logging.basicConfig(level=logging.INFO)
@@ -52,8 +53,6 @@ class FileUploadView(View):
         annotations = items['annotations']
         file_name = items['fileName']['f']
         manual_recommendations = items['manualRecommendations']
-
-        #print(annotations)
 
 
         m = ManualRecommendationsCleaner(manual_recommendations)
@@ -147,7 +146,7 @@ class FileUploadView(View):
 
         elif 'getRepoContent' in request.POST:
             print('getRepoContent')
-            return self.get_repo_content()
+            return RepoContentHandler().get_repo_content()
 
 
 
