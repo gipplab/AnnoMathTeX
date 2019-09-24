@@ -1,4 +1,4 @@
-from ..views.data_repo_handler import DataRepoHandler
+from ..views.helper_classes.data_repo_handler import DataRepoHandler
 from fuzzywuzzy import fuzz
 
 

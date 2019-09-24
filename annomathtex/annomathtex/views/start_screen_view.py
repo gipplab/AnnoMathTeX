@@ -10,8 +10,8 @@ from jquery_unparam import jquery_unparam
 from ..forms.uploadfileform import UploadFileForm
 
 from ..parsing.wikipedia_parser import WikipediaParser
-from ..views.wikipedia_api_handler import WikipediaAPIHandler
-from ..views.data_repo_handler import DataRepoHandler
+from ..views.helper_classes.wikipedia_api_handler import WikipediaAPIHandler
+from ..views.helper_classes.data_repo_handler import DataRepoHandler
 
 from ..config import *
 

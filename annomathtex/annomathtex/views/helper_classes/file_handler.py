@@ -1,15 +1,10 @@
-import json
-
 from django.shortcuts import render
-from django.views.generic import View
-
-
 
 from ...forms.uploadfileform import UploadFileForm
 from ...forms.save_annotation_form import SaveAnnotationForm
 
 from ...views.helper_classes.cache_handler import CacheHandler
-from ...views.data_repo_handler import DataRepoHandler
+from ...views.helper_classes.data_repo_handler import DataRepoHandler
 
 from ...parsing.txt_parser import TXTParser
 from ...parsing.tex_parser import TEXParser

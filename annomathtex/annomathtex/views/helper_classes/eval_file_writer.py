@@ -1,7 +1,7 @@
 import csv
 import os
 from io import StringIO
-from ..config import evaluation_annotations_path, create_evaluation_file_path, create_evaluation_file_name
+from ...config import evaluation_annotations_path, create_evaluation_file_path, create_evaluation_file_name
 
 
 class EvalFileWriter:

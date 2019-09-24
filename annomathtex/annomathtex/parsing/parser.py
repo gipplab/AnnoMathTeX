@@ -1,4 +1,3 @@
-import re
 import logging
 import json
 from os import listdir
@@ -12,7 +11,7 @@ from ..models.file import File
 from ..recommendation.arxiv_evaluation_handler import ArXivEvaluationListHandler
 from ..recommendation.wikipedia_evaluation_handler import WikipediaEvaluationListHandler
 from ..parsing.mathhandling.custom_math_env_parser import CustomMathEnvParser
-from ..views.data_repo_handler import DataRepoHandler
+from ..views.helper_classes.data_repo_handler import DataRepoHandler
 from ..config import *
 
 

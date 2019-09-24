@@ -3,7 +3,7 @@ import json
 from django.http import HttpResponse
 from jquery_unparam import jquery_unparam
 
-from ...views.wikipedia_api_handler import WikipediaAPIHandler
+from ...views.helper_classes.wikipedia_api_handler import WikipediaAPIHandler
 
 
 class WikipediaQueryHandler:

@@ -1,14 +1,10 @@
-import json
 import pickle
-import os
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.views.generic import View
-from django.http import HttpResponse
-from ..forms.testform import TestForm
 from jquery_unparam import jquery_unparam
 
-from ..views.data_repo_handler import DataRepoHandler
+from ..views.helper_classes.data_repo_handler import DataRepoHandler
 from ..parsing.wikipedia_parser import WikipediaParser
 
 from ..forms.uploadfileform import UploadFileForm

@@ -1,10 +1,7 @@
 import json
 
-from django.shortcuts import render
-from django.views.generic import View
 from django.http import HttpResponse
 from jquery_unparam import jquery_unparam
-from itertools import zip_longest
 
 from ...recommendation.arxiv_evaluation_handler import ArXivEvaluationListHandler
 from ...recommendation.wikipedia_evaluation_handler import WikipediaEvaluationListHandler
@@ -12,7 +9,7 @@ from ...recommendation.static_wikidata_handler import StaticWikidataHandler
 from ...recommendation.manual_recommendations_handler import ManualRecommendationsHandler
 from ...recommendation.formula_concept_db_handler import FormulaConceptDBHandler
 
-from ...views.data_repo_handler import DataRepoHandler
+from ...views.helper_classes.data_repo_handler import DataRepoHandler
 from ...views.helper_classes.cache_handler import CacheHandler
 
 from ...config import *

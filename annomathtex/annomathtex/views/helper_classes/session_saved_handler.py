@@ -1,9 +1,9 @@
 import json
 from jquery_unparam import jquery_unparam
 from django.http import HttpResponse
-from ...views.data_repo_handler import DataRepoHandler, ManualRecommendationsCleaner
-from ...views.helper_functions import handle_annotations
-from ...views.eval_file_writer import EvalFileWriter
+from ...views.helper_classes.data_repo_handler import DataRepoHandler, ManualRecommendationsCleaner
+from ...views.helper_classes.helper_functions import handle_annotations
+from ...views.helper_classes.eval_file_writer import EvalFileWriter
 
 from ...config import *
 

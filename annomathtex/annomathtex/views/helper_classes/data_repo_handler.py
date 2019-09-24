@@ -17,7 +17,7 @@ class DataRepoHandler:
 
         if not token:
             try:
-                from .key import local_token
+                from ...views.helper_classes.key import local_token
                 self.token = local_token
             except Exception:
                 print('Token not set')
@@ -308,7 +308,6 @@ def decode_wikipedia_article(wikipedia_article):
 
 def move_files_to_file_folder():
     from key import local_token
-    import os
     drh = DataRepoHandler(local_token)
     dir = drh.list_directory()
     annotation_files = filter(lambda f: 'annotation' not in f, dir)

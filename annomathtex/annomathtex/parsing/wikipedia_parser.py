@@ -2,7 +2,6 @@ from ..parsing.parser import Parser
 from bs4 import BeautifulSoup
 import warnings
 warnings.filterwarnings("ignore")
-from ..views.data_repo_handler import DataRepoHandler
 
 
 class WikipediaParser(Parser):

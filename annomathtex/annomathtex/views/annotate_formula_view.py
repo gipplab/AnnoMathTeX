@@ -1,18 +1,10 @@
-import json
 import logging
 
 
 from django.shortcuts import render
 from django.views.generic import View
-from django.http import HttpResponse
-from jquery_unparam import jquery_unparam
 from ..forms.uploadfileform import UploadFileForm
 from ..forms.save_annotation_form import SaveAnnotationForm
-
-from ..views.eval_file_writer import EvalFileWriter
-from ..views.data_repo_handler import DataRepoHandler, FormulaConceptHandler, ManualRecommendationsCleaner
-from .helper_functions import handle_annotations
-from ..config import *
 
 from .helper_classes.token_clicked_handler import TokenClickedHandler
 from .helper_classes.file_handler import FileHandler
