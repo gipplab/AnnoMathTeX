@@ -43,17 +43,7 @@ class StartScreenView(View):
         wikipedia_article = DataRepoHandler().get_wikipedia_article(article_name)
         line_dict, identifier_line_dict, processed_file = WikipediaParser(wikipedia_article, article_name).process()
         dicts = {'identifiers': identifier_line_dict, 'lines': line_dict}
-
         self.dicts_to_cache(dicts)
-
-        print('start screen view: get_rendered_wikipedia_article')
-        #print(processed_file)
-
-        #return render(request,
-        #              #'annotation_template.html',
-        #              '/annotation/',
-        #              {'File': processed_file})
-
         return redirect('/', {'File': processed_file, 'test': 2})
 
 

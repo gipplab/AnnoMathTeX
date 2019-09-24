@@ -14,3 +14,5 @@ def handle_annotations(annotations):
 
 
     return {'global': new_global, 'local': new_local}
+
+

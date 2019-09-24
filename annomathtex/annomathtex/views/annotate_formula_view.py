@@ -30,6 +30,8 @@ from ..views.wikipedia_api_handler import WikipediaAPIHandler
 from .helper_functions import handle_annotations
 from ..config import *
 
+from .helper_classes.token_clicked_handler import TokenClickedHandler
+
 
 logging.basicConfig(level=logging.INFO)
 __LOGGER__ = logging.getLogger(__name__)
@@ -279,108 +281,6 @@ class FileUploadView(View):
             content_type='application/json'
         )
 
-    def handle_query_dict(self, request):
-        """
-        This method handles the use case, when the user selects a token (word, identifier or formula) to annotate.
-        Depending on the type of the token, different types of data are sent back to the frontend.
-
-        Identifier:
-            - Wikidata query is made
-            - ArXiv evaluation list is checked for matches8
-            - Wikipedia evaluation list is checked for matches
-            - Word window is computed
-
-        Formula:
-            - Wikidata query is made
-            - Word window is computed
-
-        Word (must not necessarily be named entity, as found by tagger):
-            - Wikidata query is made
-
-
-        For identifier and formulae, additionaly the concatenated results are computed, taking results from each of the
-        sources and combining them in one column.
-
-        :param request: Request object. Request made by the user through the frontend.
-        :return: The rendered response containing the template name, the necessary form and the response data.
-        """
-        items = {k: jquery_unparam(v) for (k, v) in request.POST.items()}
-        search_string = [k for k in items['queryDict']][0]
-        #search_string = items['queryDict']['dummy']
-        token_type_dict = items['tokenType']
-        token_type = [k for k in token_type_dict][0]
-        unique_id = [k for k in items['uniqueId']][0]
-        annotations = items['annotations']
-
-
-        print('ITEMS: {}'.format(items))
-        print('SEARCH STRING: {}'.format(search_string))
-
-
-        __LOGGER__.debug('making wikidata query for search string: {}'.format(search_string))
-
-        #concatenated_results, wikidata_results, word_window, \
-        #arXiv_evaluation_items, wikipedia_evaluation_items, manual_recommendations = [], [], [], [], [], []
-
-        arXiv_evaluation_items, wikipedia_evaluation_items, \
-        wikidata1_results, wikidata2_results, \
-        word_window, formula_concept_db, \
-        manual_recommendations = [], [], [], [], [], [], []
-
-
-
-        if token_type == 'Identifier':
-            #wikidata_results = StaticWikidataHandler().check_identifiers(search_string)
-            wikidata1_results = StaticWikidataHandler().check_identifiers(search_string)
-            arXiv_evaluation_items = ArXivEvaluationListHandler().check_identifiers(search_string)
-            wikipedia_evaluation_items = WikipediaEvaluationListHandler().check_identifiers(search_string)
-            word_window = self.get_word_window(unique_id)
-            manual_recommendations = DataRepoHandler().get_manual_recommendations()
-            manual_recommendations = ManualRecommendationsHandler(manual_recommendations).check_identifier_or_formula(search_string)
-        elif token_type == 'Word':
-            wikidata_results = NESparql().named_entity_search(search_string)
-        elif token_type == 'Formula':
-            math_env = items['mathEnv']['dummy']
-            #print('items: {}'.format(items))
-            print('math_env: {}'.format(math_env))
-            """k = list(m.keys())[0]
-            if m[k]:
-                math_env = k + '=' + m[k]
-            else:
-                math_env = k"""
-            wikidata1_results, wikidata2_results = StaticWikidataHandler().check_formulae(math_env, annotations)
-            word_window = self.get_word_window(unique_id)
-            formula_concept_db = FormulaConceptDBHandler().query_tex_string(math_env)
-            manual_recommendations = DataRepoHandler().get_manual_recommendations()
-            manual_recommendations = ManualRecommendationsHandler(manual_recommendations).check_identifier_or_formula(search_string)
-
-            print('W1: {}'.format(wikidata1_results))
-            print('W2: {}'.format(wikidata2_results))
-            print('WW: {}'.format(word_window))
-            print('FCDB: {}'.format(formula_concept_db))
-            print('M: {}'.format(manual_recommendations))
-
-
-
-        def fill_to_limit(dict_list):
-            #print(dict_list)
-            dict_list += [{'name': ''} for _ in range(recommendations_limit-len(dict_list))]
-            return dict_list
-
-
-
-
-        return HttpResponse(
-            json.dumps({'arXivEvaluationItems': fill_to_limit(arXiv_evaluation_items),
-                        'wikipediaEvaluationItems': fill_to_limit(wikipedia_evaluation_items),
-                        'wikidata1Results': fill_to_limit(wikidata1_results),
-                        'wikidata2Results': fill_to_limit(wikidata2_results),
-                        'wordWindow': fill_to_limit(word_window),
-                        'formulaConceptDB': fill_to_limit(formula_concept_db),
-                        'manual': fill_to_limit(manual_recommendations)}),
-                        content_type='application/json'
-        )
-
 
     def handle_wikipedia_query(self, request):
         items = {k: jquery_unparam(v) for (k, v) in request.POST.items()}
@@ -449,12 +349,14 @@ class FileUploadView(View):
         """
         #items = {k: jquery_unparam(v) for (k, v) in request.POST.items()}
         #print(items)
+
         if 'file_submit' in request.POST:
             return self.handle_file_submit(request)
 
         elif 'queryDict' in request.POST:
             print('queryDIct')
-            return self.handle_query_dict(request)
+            #return self.handle_query_dict(request)
+            return TokenClickedHandler(request).get_recommendations()
 
         elif 'annotations' in request.POST:
             print('annotations')
