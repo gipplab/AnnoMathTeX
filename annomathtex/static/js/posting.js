@@ -18,10 +18,10 @@ $(document).ready(function () {
       let data_dict = { the_post : $('#post-text').val(),
                         //'csrfmiddlewaretoken': '{{ csrf_token }}',
                         'csrfmiddlewaretoken': getCookie("csrftoken"),
-                        'annotations': $.param(replaceAllEqualsAnn(annotations)),
+                        'annotations': $.param(replaceAllEqualsPlusAnn(annotations)),
                         'fileName': $.param(fileNameDict),
                         //'manualRecommendations': $.param(manualRecommendations)
-                        'manualRecommendations': $.param(replaceAllEqualsManualRecommendations(manualRecommendations))
+                        'manualRecommendations': $.param(replaceAllEqualsPlusManualRecommendations(manualRecommendations))
                         };
 
       $.ajax({

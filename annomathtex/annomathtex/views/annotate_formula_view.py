@@ -306,11 +306,14 @@ class FileUploadView(View):
         """
         items = {k: jquery_unparam(v) for (k, v) in request.POST.items()}
         search_string = [k for k in items['queryDict']][0]
+        #search_string = items['queryDict']['dummy']
         token_type_dict = items['tokenType']
         token_type = [k for k in token_type_dict][0]
         unique_id = [k for k in items['uniqueId']][0]
         annotations = items['annotations']
 
+
+        print('ITEMS: {}'.format(items))
         print('SEARCH STRING: {}'.format(search_string))
 
 
@@ -337,14 +340,14 @@ class FileUploadView(View):
         elif token_type == 'Word':
             wikidata_results = NESparql().named_entity_search(search_string)
         elif token_type == 'Formula':
-            m = items['mathEnv']
+            math_env = items['mathEnv']['dummy']
             #print('items: {}'.format(items))
-            print('m: {}'.format(m))
-            k = list(m.keys())[0]
+            print('math_env: {}'.format(math_env))
+            """k = list(m.keys())[0]
             if m[k]:
                 math_env = k + '=' + m[k]
             else:
-                math_env = k
+                math_env = k"""
             wikidata1_results, wikidata2_results = StaticWikidataHandler().check_formulae(math_env, annotations)
             word_window = self.get_word_window(unique_id)
             formula_concept_db = FormulaConceptDBHandler().query_tex_string(math_env)
@@ -450,10 +453,11 @@ class FileUploadView(View):
             return self.handle_file_submit(request)
 
         elif 'queryDict' in request.POST:
-            #print(request.POST)
+            print('queryDIct')
             return self.handle_query_dict(request)
 
         elif 'annotations' in request.POST:
+            print('annotations')
             return self.handle_marked(request)
 
         #todo: remove this method from this view (and others that aren't used)

@@ -56,11 +56,11 @@ function shuffle(array) {
 }
 
 //https://stackoverflow.com/questions/1144783/how-to-replace-all-occurrences-of-a-string-in-javascript
-function replaceAllEqualsAnn(ann) {
+function replaceAllEqualsPlusAnn(ann) {
     /*
     This function is called from posting.js
-    It replaces all equals signs in the annotations that the user made. This is necessary, because Django can't
-    recognise equals signs when receiving an ajax post.
+    It replaces all equals and plus signs in the annotations that the user made. This is necessary, because Django can't
+    recognise equals and plus signs when receiving an ajax post.
      */
 
 
@@ -69,7 +69,9 @@ function replaceAllEqualsAnn(ann) {
 
     function replaceAll(str) {
         //console.log(str, typeof str);
-        return str.replace(new RegExp('=', 'g'), '__EQUALS__');
+        var noEquals = str.replace(new RegExp('=', 'g'), '__EQUALS__');
+        //var newStr = noEquals.replace(new RegExp('/\+/', 'g'), '__PLUS__');
+        return noEquals;
     }
 
     //remove equals sign, becuase Django splits at equals sign
@@ -89,15 +91,16 @@ function replaceAllEqualsAnn(ann) {
 
 }
 
-function replaceAllEqualsManualRecommendations(manualRecommendations) {
+function replaceAllEqualsPlusManualRecommendations(manualRecommendations) {
     /*
     This function is called from posting.js
     It replaces all equals signs in the manual recommendations that the user made. This is necessary, because Django
     can't recognise equals signs when receiving an ajax post.
      */
     function replaceAll(str) {
-        console.log(str);
-        return str.replace(new RegExp('=', 'g'), '__EQUALS__');
+        var noEquals = str.replace(new RegExp('=', 'g'), '__EQUALS__');
+        //var newStr = noEquals.replace(new RegExp('/\+/', 'g'), '__EQUALS__');
+        return noEquals;
     }
 
     newManualRecommendations = {};

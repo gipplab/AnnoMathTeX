@@ -73,6 +73,10 @@ function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
         isFormula = true;
     }
 
+    console.log(tokenContent);
+    console.log(mathEnvContent);
+    console.log(content);
+
 
     document.getElementById("highlightedText").innerHTML = fillText;
 
@@ -80,9 +84,9 @@ function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
                   'csrfmiddlewaretoken': getCookie("csrftoken"),
                   'queryDict': content,
                   'tokenType': tokenType,
-                  'mathEnv': mathEnv,
+                  'mathEnv': $.param({'dummy':mathEnv}),
                   'uniqueId': tokenUniqueId,
-                  'annotations': $.param(replaceAllEqualsAnn(annotations))
+                  'annotations': $.param(replaceAllEqualsPlusAnn(annotations))
                   };
 
     console.log(data_dict);

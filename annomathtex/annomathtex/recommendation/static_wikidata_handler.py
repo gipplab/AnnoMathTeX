@@ -74,7 +74,10 @@ class StaticWikidataHandler:
             #print('annotations: {}'.format(annotations))
             #print('formula_string: {}'.format(formula_string))
             for id_or_formula in annotations:
+                print('mathEnv: {}'.format(annotations[id_or_formula]['mathEnv']))
+                print('formula_string: {}'.format(formula_string))
                 if 'mathEnv' in annotations[id_or_formula] and annotations[id_or_formula]['mathEnv'] == formula_string:
+                    #print('mathEnv in annotations id_or_formula')
                     identfifiers.append(id_or_formula)
                     identfifiers.append(annotations[id_or_formula]['name'])
 
@@ -121,7 +124,8 @@ class StaticWikidataHandler:
             #print('Formula Quantity Symbols: {}'.format(formula_quantity_symbols))
             #print('Identifiers from wikidata formula: {}'.format(identifiers_from_wikidata_formula))
 
-            if len(formula_quantity_symbols+formula_identifiers) > len(identifiers_from_wikidata_formula):
+            #flawed logic
+            """if len(formula_quantity_symbols+formula_identifiers) > len(identifiers_from_wikidata_formula):
                 score_identifers = get_identifier_score(identifiers, formula_quantity_symbols+formula_identifiers)
                 if formula_name == 'sphere':
                     print('score identifiers if: {}'.format(score_identifers))
@@ -132,9 +136,15 @@ class StaticWikidataHandler:
                     print(formula)
                     print('formula_identifiers: {}'.format(formula_identifiers))
                     print('formula_quantity_symbols: {}'.format(formula_quantity_symbols))
-                    print('identifiers: {}'.format(identifiers))
+                    print('identifiers: {}'.format(identifiers))"""
 
-            #print('Score Identifiers: {}'.format(score_identifers))
+            score_identifers = get_identifier_score(identifiers, formula_quantity_symbols + formula_identifiers)
+            if formula_name == 'sphere':
+                print('score identifiers else: {}'.format(score_identifers))
+                print(formula)
+                print('formula_identifiers: {}'.format(formula_identifiers))
+                print('formula_quantity_symbols: {}'.format(formula_quantity_symbols))
+                print('identifiers: {}'.format(identifiers))
 
             if score_identifers >= threshold_identifers:
                 results_identifiers.append(({'name':formula_name}, score_identifers))
