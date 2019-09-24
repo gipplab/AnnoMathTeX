@@ -31,6 +31,7 @@ from .helper_functions import handle_annotations
 from ..config import *
 
 from .helper_classes.token_clicked_handler import TokenClickedHandler
+from .helper_classes.file_handler import FileHandler
 
 
 logging.basicConfig(level=logging.INFO)
@@ -185,52 +186,6 @@ class FileUploadView(View):
         return
 
 
-    def handle_file_submit(self, request):
-        """
-        In this method the user selected file is checked for the type of the file (txt, tex, html,...) and the
-        appropriate parser for the file type is selected. After the file is processed by the parser it is returned to
-        the frontend for rendering.
-
-        The dictionaries line_dict and identifier_line_dict are needed for the creation of the word window
-        surrounding a token (it is constructed when the user mouse clicks a token (identifier or formula).
-
-        line_dict is a dictionary of line numbers as keys and a list of the named entities that appear on the
-
-        identifier_line_dict is a dictionary of the unique ids of identifiers as keys and the line number they
-        appear on as values.
-
-        :param request: Request object; request made by the user through the frontend.
-        :return: The rendered response to the frontend.
-        """
-        __LOGGER__.debug('file submit')
-        form = UploadFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            request_file = request.FILES['file']
-            file_name = str(request_file)
-            if file_name.endswith('.tex'):
-                __LOGGER__.info(' tex file ')
-                line_dict, identifier_line_dict, processed_file = TEXParser(request_file, file_name).process()
-            elif file_name.endswith('.txt'):
-                __LOGGER__.info(' text file ')
-                line_dict, identifier_line_dict, processed_file = TXTParser(request_file, file_name).process()
-            else:
-                line_dict, identifier_line_dict, processed_file = None, None, None
-
-
-            dicts = {'identifiers': identifier_line_dict, 'lines': line_dict}
-
-            self.dicts_to_cache(dicts)
-
-
-
-            return render(request,
-                          #'annotation_template.html',
-                          'annotation_template_tmp.html',
-                          {'File': processed_file})
-
-
-        return render(request, "render_file_template.html", self.save_annotation_form)
-
     def handle_marked(self, request):
         """
         This method receives data from the frontend, when the user mouse clicks the "save" button.
@@ -292,26 +247,6 @@ class FileUploadView(View):
                             content_type='application/json')
 
 
-    def get_rendered_wikipedia_article_old(self, request):
-        items = {k: jquery_unparam(v) for (k, v) in request.POST.items()}
-        article_name = list(items['wikipediaArticleName'].keys())[0]
-        wikipedia_article = WikipediaAPIHandler().get_wikipedia_article(article_name)
-        line_dict, identifier_line_dict, processed_file = WikipediaParser(wikipedia_article, article_name).process()
-        dicts = {'identifiers': identifier_line_dict, 'lines': line_dict}
-        self.dicts_to_cache(dicts)
-        return render(request,
-                      'annotation_template_tmp.html',
-                      {'File': processed_file})
-
-    def get_rendered_wikipedia_article(self, article_name):
-        wikipedia_article = DataRepoHandler().get_wikipedia_article(article_name)
-        line_dict, identifier_line_dict, processed_file = WikipediaParser(wikipedia_article, article_name).process()
-        dicts = {'identifiers': identifier_line_dict, 'lines': line_dict}
-
-        self.dicts_to_cache(dicts)
-
-        return processed_file
-
     def get_repo_content(self):
         """
         Get the repo content for the datarepo/annotation folder, i.e. all files that have been annotated in the past.
@@ -333,7 +268,8 @@ class FileUploadView(View):
         #form = TestForm()
         #return render(request, self.template_name, {'form': form})
         article_name = self.read_file_name_cache()
-        processed_file = self.get_rendered_wikipedia_article(article_name)
+        #processed_file = self.get_rendered_wikipedia_article(article_name)
+        processed_file = FileHandler(request).get_processed_wikipedia_article(article_name)
         return render(request, self.template_name, {'File': processed_file, 'test': 3})
 
 
@@ -351,7 +287,8 @@ class FileUploadView(View):
         #print(items)
 
         if 'file_submit' in request.POST:
-            return self.handle_file_submit(request)
+            #return self.handle_file_submit(request)
+            return FileHandler(request).process_local_file()
 
         elif 'queryDict' in request.POST:
             print('queryDIct')
@@ -374,8 +311,6 @@ class FileUploadView(View):
             self.write_file_name_cache(article_name)
             return render(request, "annotation_template_tmp.html", self.initial)
 
-
-            #return self.get_rendered_wikipedia_article(request)
 
 
         elif 'getRepoContent' in request.POST:
