@@ -14,11 +14,11 @@ evaluation_annotations_path = os.path.join(os.path.abspath(os.path.join(PROJECT_
 #evaluation_annotations_path = os.path.join(project_root, ['evaluation', 'annotations'])
 
 def create_annotation_file_name(file_name):
-    annotation_file_name = re.sub(r'\..*', '.txt', file_name)
+    #annotation_file_name = re.sub(r'\..*', '.txt', file_name)
     #file_name = file_name.replace('.txt', '')
     #file_name = file_name.replace('.tex', '')
     #file_name = file_name.replace('.html', '')
-    #annotation_file_name = file_name + '__annotation__.txt'
+    annotation_file_name = re.sub(r'\s', '_', file_name) + '.txt'
     return annotation_file_name
 
 
@@ -31,7 +31,7 @@ def create_evaluation_file_name(file_name):
     #file_name = file_name.replace('.txt', '')
     #file_name = file_name.replace('.tex', '')
     #file_name = file_name.replace('.html', '')
-    #evaluation_file_name = file_name + '__evaluation__.csv'
+    evaluation_file_name = re.sub(r'\s', '_', file_name) + '.csv'
     return evaluation_file_name
 
 def create_evaluation_file_path(file_name):

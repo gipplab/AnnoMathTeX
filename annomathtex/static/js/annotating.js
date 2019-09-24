@@ -1,13 +1,26 @@
+function noMatchInputListener() {
+    /*
+    Starts the timer when the user starts inputting a manual recommendation
+     */
+
+    window.manualRecommendationStartTime = Date.now();
+    //var manualRecommendationStartTime = Date.now();
+    //console.log(manualRecommendationStartTime);
+}
+
+
 function handleNoMatch(){
     /*
     The user did not find any of the recommendations to be fitting and added his own suggestion.
     This means that this information has to be added to the "annotations" dictionary, which will later be written to the
     evaluation csv file, along with the other annotations.
      */
+
+    let manualRecommendationsSubmitTime = Date.now() - window.manualRecommendationStartTime;
     var name = document.getElementById('noMatchInput').value;
     var uIDs = getLinkedIDs(content);
 
-    addToAnnotations(uniqueID, name, 'user', '-', true, uIDs);
+    addToAnnotations(uniqueID, name, 'user', '-', manualRecommendationsSubmitTime, true, uIDs);
     addToMannualRecommendations(name);
     var local = document.getElementById('localSwitch').checked;
 
@@ -20,7 +33,6 @@ function handleNoMatch(){
     handlePopupTable();
     renderAnnotationsTable();
 }
-
 
 
 function addToMannualRecommendations(name) {
@@ -36,7 +48,7 @@ function addToMannualRecommendations(name) {
 }
 
 
-function addToAnnotations(uID, name, source, rowNum, noMatch=false, uIDs = null) {
+function addToAnnotations(uID, name, source, rowNum, time, noMatch=false, uIDs = null) {
     /*
     An annotation was made and the information is added to the annotations dictionary
      */
@@ -52,6 +64,7 @@ function addToAnnotations(uID, name, source, rowNum, noMatch=false, uIDs = null)
                 'mathEnv': mathEnv,
                 'source': source,
                 'rowNum': rowNum,
+                'time': time,
                 'sourcesWithNums': noMatch ? {} : sourcesWithNums[name],
                 'type': type //identifier or formula
             };
@@ -74,6 +87,7 @@ function addToAnnotations(uID, name, source, rowNum, noMatch=false, uIDs = null)
         'name': name,
         'mathEnv': mathEnv,
         'uniqueIDs': uIDs,
+        'time': time,
         'sourcesWithNums': noMatch ? {} : sourcesWithNums[name],
         'type': type
         };

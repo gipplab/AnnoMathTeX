@@ -81,7 +81,7 @@ function populateTableFormula(random=false) {
     source, which is important for the evaluation)
      */
 
-
+    window.tokenClickedTime = Date.now();
     sourcesWithNums = {};
 
     //let wikidataResults = recommendations['wikidataResults'];
@@ -194,7 +194,7 @@ function populateTableIdentifier(random=false) {
     random: The sources are shuffled and anonymized (The user does not know which recommendations come from which
     source, which is important for the evaluation)
      */
-
+    window.tokenClickedTime = Date.now();
     sourcesWithNums = {};
 
     var arXivEvaluationItems = recommendations['arXivEvaluationItems'];
@@ -362,6 +362,10 @@ function selected(argsString){
     This function is called when the user annotates a token with an element from the created table (e.g. from the
     retrieved wikidata results).
      */
+
+
+    var recommendationSelectedTime = Date.now() - window.tokenClickedTime;
+
     var argsArray = argsString.split('---');
     var name = argsArray[0];
     var qid = argsArray[1];
@@ -380,7 +384,7 @@ function selected(argsString){
             case cellColorBasic:
                 //make local annotation
                 setCellColorSelectedLocal(cellID);
-                addToAnnotations(uniqueID, name, source, rowNum);
+                addToAnnotations(uniqueID, name, source, rowNum, recommendationSelectedTime);
                 setAnnotatedColor([uniqueID]);
                 break;
             case cellColorSelectedLocal:
@@ -408,7 +412,7 @@ function selected(argsString){
                     uIDs.push(uniqueID)
                 }
 
-                addToAnnotations(uniqueID, name, source, rowNum, false, uIDs);
+                addToAnnotations(uniqueID, name, source, rowNum, recommendationSelectedTime, false, uIDs);
                 setAnnotatedColor([uniqueID]);
                 setAnnotatedColor(uIDs);
                 break;
@@ -479,12 +483,6 @@ function renderWikipediaResultsTable(wikipediaResults) {
         tr += "</td></tr>";
         annotationsTable += tr;
     }
-
-
-    /*var form = "<tr><form method'POST' id='post-form1'>";
-    form += "{% csrf_token %}";
-    form += "<td><button type='submit' name='post-td-submit'>TEST</button></td></form></tr>";
-    annotationsTable += form;*/
 
 
     document.getElementById('wikipediaTableHolder').innerHTML = annotationsTable;

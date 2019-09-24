@@ -68,7 +68,10 @@ class EvalFileWriter:
         for token_content in self.loc:
             for id in self.loc[token_content]:
                 sources_with_nums = self.fill_remaining(self.loc[token_content][id]['sourcesWithNums'])
-                row = [token_content, self.loc[token_content][id]['name']] + sources_with_nums + ['local']
+                row = [token_content, self.loc[token_content][id]['name']] + \
+                      sources_with_nums + \
+                      ['local'] + \
+                      [self.loc[token_content][id]['time']]
                 rows.append(row)
 
         return rows
@@ -81,12 +84,15 @@ class EvalFileWriter:
         """
         rows = []
         for token_content in self.glob:
+            #print(self.glob[token_content])
             try:
                 sources_with_nums = self.fill_remaining(self.glob[token_content]['sourcesWithNums'])
             except Exception:
                 sources_with_nums = self.fill_remaining({})
 
-            row = [token_content, self.glob[token_content]['name']] + sources_with_nums + ['global']
+            row = [token_content, self.glob[token_content]['name']] + \
+                  sources_with_nums + ['global'] + \
+                  [self.glob[token_content]['time']]
             rows.append(row)
 
 
@@ -108,14 +114,14 @@ class EvalFileWriter:
             with open(evaluation_file_path, 'a') as f:
                 f.write(all_rows)
         else:
-            header = ['Identifier', 'Name', 'ArXiV', 'Wikipedia', 'Wikidata', 'WordWindow', 'type']
+            header = ['Identifier', 'Name', 'ArXiV', 'Wikipedia', 'Wikidata', 'WordWindow', 'type', 'time']
             with open(evaluation_file_path, 'w') as f:
                 csv_writer = csv.writer(f, delimiter=',')
                 csv_writer.writerow(header)
                 for row in all_rows:
                     csv_writer.writerow(row)"""
 
-        header = ['Identifier / Formula', 'Name', 'ArXiV', 'Wikipedia', 'Wikidata', 'WordWindow', 'type']
+        header = ['Identifier / Formula', 'Name', 'ArXiV', 'Wikipedia', 'Wikidata', 'WordWindow', 'type', 'time']
         with open(evaluation_file_path, 'w') as f:
             csv_writer = csv.writer(f, delimiter=',')
             csv_writer.writerow(header)
@@ -134,7 +140,8 @@ class EvalFileWriter:
         header = ['Identifier / Formula',
                   'Name',
                   'ArXiV', 'Wikipedia', 'Wikidata1', 'Wikidata2',  'WordWindow', 'FormulaConceptDB',
-                  'type']
+                  'type',
+                  'time']
         csv.writer(f).writerows([header] + all_rows)
         return f.getvalue()
 

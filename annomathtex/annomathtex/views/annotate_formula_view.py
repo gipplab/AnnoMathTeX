@@ -246,6 +246,8 @@ class FileUploadView(View):
         file_name = items['fileName']['f']
         manual_recommendations = items['manualRecommendations']
 
+        #print(annotations)
+
 
         m = ManualRecommendationsCleaner(manual_recommendations)
         cleaned_manual_recommendations = m.get_recommendations()
@@ -267,7 +269,6 @@ class FileUploadView(View):
 
         annotation_file_name = create_annotation_file_name(file_name)
         evaluation_file_name = create_evaluation_file_name(file_name)
-
         data_repo_handler.commit_manual_recommendations(cleaned_manual_recommendations)
         data_repo_handler.commit_formula_concepts(annotations)
         data_repo_handler.commit_annotations(annotation_file_name, json.dumps(annotations))
@@ -303,7 +304,6 @@ class FileUploadView(View):
         :param request: Request object. Request made by the user through the frontend.
         :return: The rendered response containing the template name, the necessary form and the response data.
         """
-        start = time()
         items = {k: jquery_unparam(v) for (k, v) in request.POST.items()}
         search_string = [k for k in items['queryDict']][0]
         token_type_dict = items['tokenType']
@@ -338,21 +338,15 @@ class FileUploadView(View):
             wikidata_results = NESparql().named_entity_search(search_string)
         elif token_type == 'Formula':
             m = items['mathEnv']
+            #print('items: {}'.format(items))
+            print('m: {}'.format(m))
             k = list(m.keys())[0]
             if m[k]:
                 math_env = k + '=' + m[k]
             else:
                 math_env = k
-            __LOGGER__.debug('math_env: {}'.format(math_env))
-            #not static atm
-            #could also add .tex_string_search()
-            #wikidata_results = MathSparql().aliases_search(math_env)
-            #wikidata1_results = MathSparql().aliases_search(math_env)
-            #wikidata2_results = MathSparql().defining_formula_search(math_env)
-            #todo: return annotated identifiers when querying formula
             wikidata1_results, wikidata2_results = StaticWikidataHandler().check_formulae(math_env, annotations)
             word_window = self.get_word_window(unique_id)
-            #todo
             formula_concept_db = FormulaConceptDBHandler().query_tex_string(math_env)
             manual_recommendations = DataRepoHandler().get_manual_recommendations()
             manual_recommendations = ManualRecommendationsHandler(manual_recommendations).check_identifier_or_formula(search_string)
@@ -436,7 +430,6 @@ class FileUploadView(View):
         #form = TestForm()
         #return render(request, self.template_name, {'form': form})
         article_name = self.read_file_name_cache()
-        print('file_name: {}'.format(article_name))
         processed_file = self.get_rendered_wikipedia_article(article_name)
         return render(request, self.template_name, {'File': processed_file, 'test': 3})
 
@@ -451,8 +444,8 @@ class FileUploadView(View):
         :return: The rendered response containing the template name, the necessary form and the response data (if
                  applicable).
         """
-        __LOGGER__.debug('in post {}'.format(os.getcwd()))
-        print('in post')
+        #items = {k: jquery_unparam(v) for (k, v) in request.POST.items()}
+        #print(items)
         if 'file_submit' in request.POST:
             return self.handle_file_submit(request)
 

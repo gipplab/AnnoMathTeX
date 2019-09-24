@@ -11,10 +11,6 @@ class WikipediaParser(Parser):
     """
     def decode(self, wikipedia_article):
         file = wikipedia_article.decode()
-        print('0 : wikipedia_article type: {}'.format(type(wikipedia_article)))
-        print('1 : after decoding: {}'.format(type(file)))
-        #print('1 : wikipedia_article : {}'.format(wikipedia_article))
-
         def decode_txt(f, encoding="ascii", errors="ignore"):
             """
             Decoding unique to txt files. Encode to ascii and ignore all errors. Only very few characters aren't
@@ -26,10 +22,6 @@ class WikipediaParser(Parser):
             """
             return f.decode(encoding=encoding, errors=errors)
 
-        #file = request_file.read()
-        #file = decode_txt(wikipedia_article)
-
-        #print('wikipedia_article type: {}'.format(type(file)))
 
         return file
 

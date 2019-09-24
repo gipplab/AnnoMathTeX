@@ -26,9 +26,7 @@ class Parser(object, metaclass=ABCMeta):
         :param request_file: The file that the user selects to annotate.
         :param file_type: The type of the file (tex, txt, html).
         """
-        print('\n'*5)
         print('in Parser, file_name: {}'.format(file_name))
-        print('\n'*5)
         logging.basicConfig(level=logging.INFO)
         self.__LOGGER__ = logging.getLogger(__name__)
         self.tagger = NLTK_NER()
@@ -206,14 +204,13 @@ class Parser(object, metaclass=ABCMeta):
         #Select the class that should process (extract the identifiers and split) the math environment.
         #identifiers, split_math_env = FormulaSplitter(math_env).get_split_math_env()
         identifiers, split_math_env = CustomMathEnvParser(math_env).get_split_math_env()
-        self.__LOGGER__.debug(' process_math_env, split_math_env: {} '.format(split_math_env))
+        #self.__LOGGER__.debug(' process_math_env, split_math_env: {} '.format(split_math_env))
 
         #str_math_env = str(math_env).replace('<math>', '')
         str_math_env = re.sub('<math.*?>', '', str(math_env))
         str_math_env = str_math_env.replace('</math>', '')
 
         processed_maths_env = []
-        print('split_math_env: {}'.format(split_math_env))
         for symbol in split_math_env:
 
             colour = '#c94f0c' if identifiers and symbol in identifiers else '#5c6670'
@@ -310,7 +307,6 @@ class Parser(object, metaclass=ABCMeta):
         linked_words, linked_math_symbols = self.form_links(processed_lines_unique_ids)
         #existing_annotations = self.read_annotation_file()
         existing_annotations = self.get_annotation_file_from_repo()
-        print('EXISTING ANNOTATIONS: {}'.format(existing_annotations))
         file = File(processed_lines_unique_ids,
                                linked_words,
                                linked_math_symbols,

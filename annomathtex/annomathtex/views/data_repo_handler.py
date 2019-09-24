@@ -16,7 +16,6 @@ class DataRepoHandler:
         self.token = token
 
         if not token:
-            print('token: ', token)
             try:
                 from .key import local_token
                 self.token = local_token
@@ -151,11 +150,10 @@ class DataRepoHandler:
 
     def list_directory(self, dirname='files'):
         dir_contents = self.repo.get_dir_contents(dirname)
-        print(dir_contents)
         def clean_name(content_file):
             regex = r'(?<={}/).*?(?=\.txt)'.format(dirname)
             file_name = re.search(regex, str(content_file))
-            file_name = file_name.group()#[0]
+            file_name = file_name.group()
             file_name = file_name.replace('_', ' ')
             return file_name
 
@@ -171,11 +169,8 @@ class DataRepoHandler:
 
     def get_annotation_file(self, article_name):
 
-        #annotation_directory = self.list_directory('annotation')
-        #for a in annotation_directory:
-        #    print(a, article_name, a == article_name + ' annotation ')
 
-        if article_name + ' annotation ' in self.list_directory('annotation'):
+        if article_name + ' annotation ' in self.list_directory(dirname='annotation'):
             annotation_file_name = article_name.replace(' ', '_')
             annotation_file_name = '{}_annotation_.txt'.format(annotation_file_name)
             path = 'annotation/{}'.format(annotation_file_name)
@@ -334,7 +329,7 @@ if __name__ == '__main__':
     #a = d.get_wikipedia_article('Angular velocity')
     #decode_wikipedia_article(a)
 
-    d.delete_file('files/List_of_Test_cricket_records.txt')
+    d.delete_file('annotation/Angular velocity')
 
 
 

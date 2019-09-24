@@ -39,12 +39,13 @@ function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
     and the table is rendered with the correct search results.
      */
 
+    //let tokenClickedTime = Date.now();
+    //moved to rendering (when window is open, to be consistent with manual recommendation)
+    //window.tokenClickedTime = Date.now();
+
     if (tokenType == 'Word') {
         return;
     }
-
-    console.log(jsonContent);
-    console.log(jsonMathEnv);
 
     document.getElementById("noMatchInput").placeholder = "Enter Name";
 
@@ -62,22 +63,18 @@ function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
     //If the clicked token is the delimiter of a math environment (entire formula), the presented text will be the
     //string for the entire math environment and not the delimiter.
     if (tokenType == 'Identifier') {
-        var fillText = tokenContent;
+        var fillText = 'Identifier: ' + tokenContent;
         content = tokenContent;
         isFormula = false;
     }
     else {
-        var fillText = mathEnvContent;
+        var fillText = 'Formula: ' + mathEnvContent;
         content = mathEnvContent//.split('\\').join('');
         isFormula = true;
     }
-    console.log(fillText);
-    console.log(mathEnvContent);
-    console.log(tokenContent);
+
+
     document.getElementById("highlightedText").innerHTML = fillText;
-
-    //console.log(annotations);
-
 
     let data_dict = { the_post : $("#" + tokenUniqueId).val(),
                   'csrfmiddlewaretoken': getCookie("csrftoken"),
@@ -87,6 +84,8 @@ function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
                   'uniqueId': tokenUniqueId,
                   'annotations': $.param(replaceAllEqualsAnn(annotations))
                   };
+
+    console.log(data_dict);
 
 
     $.ajax({

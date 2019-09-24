@@ -19,6 +19,7 @@ SELECT ?item ?itemLabel ?formula ?itemDescription ?identifier ?identifierLabel ?
   OPTIONAL{?item wdt:P527 ?identifier .} 
   SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
 }
+LIMIT 5
 """
 
 identifier_query = """
@@ -77,6 +78,12 @@ class Sparql(object):
         """
         formulae = self.query(formula_query)
         identifiers = self.process_identifiers()
+        #print(formulae)
+        #print(identifiers)
+
+        #print(identifiers['Q173817'])
+
+
 
         formula_concepts = {}
         for i, r in enumerate(formulae):
@@ -85,6 +92,8 @@ class Sparql(object):
             url = r['item']['value']
             qid = url.split('/')[-1]
             item_label = r['itemLabel']['value']
+
+            print(item_label)
 
 
             formula = r['formula']
@@ -100,10 +109,16 @@ class Sparql(object):
             if 'identifier' in r:
                 identifier_value = r['identifier']['value']
                 identifier_qid = re.findall(r'[Q|P][0-9]+$', identifier_value)[0]
+
+                print(identifier_value)
+                print(identifier_qid)
+
                 try:
                     identifier = identifiers[identifier_qid]
+                    print(identifier)
                 except KeyError as _:
                     continue
+
 
 
 
@@ -131,6 +146,9 @@ class Sparql(object):
                         print(e)
 
 
+
+
+
         return formula_concepts
 
 
@@ -141,6 +159,10 @@ class Sparql(object):
 s = Sparql()
 f = s.process_formulae()
 
-path = os.path.join(os.getcwd(), 'annomathtex', 'annomathtex', 'recommendation', 'evaluation_files', 'wikidata_formulae.json')
-with open(path, 'w') as outfile:
-    json.dump(f, outfile)
+
+#for k in f:
+#    print(k, f[k])
+
+#path = os.path.join(os.getcwd(), 'annomathtex', 'annomathtex', 'recommendation', 'evaluation_files', 'wikidata_formulae.json')
+#with open(path, 'w') as outfile:
+#    json.dump(f, outfile)

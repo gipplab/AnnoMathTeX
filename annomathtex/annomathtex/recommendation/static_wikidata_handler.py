@@ -68,12 +68,16 @@ class StaticWikidataHandler:
 
     def extract_identifiers_from_formula(self, annotations, formula_string):
         #todo: include local
-        annotations = annotations['global']
         identfifiers = []
-        for id_or_formula in annotations:
-            if 'mathEnv' in annotations[id_or_formula] and annotations[id_or_formula]['mathEnv'] == formula_string:
-                identfifiers.append(id_or_formula)
-                identfifiers.append(annotations[id_or_formula]['name'])
+        if 'global' in annotations:
+            annotations = annotations['global']
+            #print('annotations: {}'.format(annotations))
+            #print('formula_string: {}'.format(formula_string))
+            for id_or_formula in annotations:
+                if 'mathEnv' in annotations[id_or_formula] and annotations[id_or_formula]['mathEnv'] == formula_string:
+                    identfifiers.append(id_or_formula)
+                    identfifiers.append(annotations[id_or_formula]['name'])
+
         return identfifiers
 
     def check_formulae(self, formula_string, annotations, threshold_string=65, threshold_identifers = 1):
@@ -92,11 +96,19 @@ class StaticWikidataHandler:
         #formula_dict = self.read_formula_file()
         formula_dict = self.get_formulae_from_repo()
         identifiers = self.extract_identifiers_from_formula(annotations, formula_string)
+        #print('Extracted Identifiers from Formula: {}'.format(identifiers))
+        #print('Formula Dictionary: {}'.format(formula_dict))
+
+
         c = CustomMathEnvParser(formula_string)
         identifiers_from_wikidata_formula, _ = c.get_split_math_env()
+        print('identifiers_from_wikidata_formula: {}'.format(identifiers_from_wikidata_formula))
+
         for formula_name in formula_dict:
             formula = formula_dict[formula_name]
             tex_string = formula['formula']
+
+
 
             score_string = fuzz.token_sort_ratio(formula_string, tex_string)
             if score_string >= threshold_string:
@@ -105,10 +117,24 @@ class StaticWikidataHandler:
             formula_identifiers = formula['identifiers']['names']
             formula_quantity_symbols = formula['identifiers']['strings']
 
+            #print('Formula Identifiers: {}'.format(formula_identifiers))
+            #print('Formula Quantity Symbols: {}'.format(formula_quantity_symbols))
+            #print('Identifiers from wikidata formula: {}'.format(identifiers_from_wikidata_formula))
+
             if len(formula_quantity_symbols+formula_identifiers) > len(identifiers_from_wikidata_formula):
                 score_identifers = get_identifier_score(identifiers, formula_quantity_symbols+formula_identifiers)
+                if formula_name == 'sphere':
+                    print('score identifiers if: {}'.format(score_identifers))
             else:
                 score_identifers = get_identifier_score(identifiers, identifiers_from_wikidata_formula)
+                if formula_name == 'sphere':
+                    print('score identifiers else: {}'.format(score_identifers))
+                    print(formula)
+                    print('formula_identifiers: {}'.format(formula_identifiers))
+                    print('formula_quantity_symbols: {}'.format(formula_quantity_symbols))
+                    print('identifiers: {}'.format(identifiers))
+
+            #print('Score Identifiers: {}'.format(score_identifers))
 
             if score_identifers >= threshold_identifers:
                 results_identifiers.append(({'name':formula_name}, score_identifers))

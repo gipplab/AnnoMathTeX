@@ -38,7 +38,6 @@ for identifier in annotation_catalog.items():
     #if not "_" in identifier[0] and not "^" in identifier[0]:
     # include only Latin and Greek letters
     if identifier[0] in valid:
-        print("At identifier " + identifier[0])
         matches = {}
         # split candidate text sentence into words
         for candidate_text in identifier[1].values():
