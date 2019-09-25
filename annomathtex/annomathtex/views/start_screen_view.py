@@ -13,6 +13,7 @@ from ..parsing.wikipedia_parser import WikipediaParser
 from ..views.helper_classes.wikipedia_api_handler import WikipediaAPIHandler
 from ..views.helper_classes.data_repo_handler import DataRepoHandler
 from ..views.helper_classes.repo_content_handler import RepoContentHandler
+from ..views.helper_classes.wikipedia_query_handler import WikipediaQueryHandler
 
 from ..config import *
 
@@ -47,18 +48,6 @@ class StartScreenView(View):
         self.dicts_to_cache(dicts)
         return redirect('/', {'File': processed_file, 'test': 2})
 
-
-    def handle_wikipedia_query(self, request):
-        items = {k: jquery_unparam(v) for (k, v) in request.POST.items()}
-        search_string = list(items['wikipediaSubmit'].keys())[0]
-
-        w = WikipediaAPIHandler()
-        r = w.get_suggestions(search_string)
-        #print(r)
-        return HttpResponse(
-                            json.dumps({'wikipediaResults': r}),
-                            content_type='application/json'
-        )
 
     def add_article_to_repo(self, request):
         items = {k: jquery_unparam(v) for (k, v) in request.POST.items()}
@@ -100,12 +89,12 @@ class StartScreenView(View):
 
         elif 'wikipediaSubmit' in request.POST:
             print("WIKIPEDIA SUBMIT")
-            print(request.POST)
-            return self.handle_wikipedia_query(request)
+            return WikipediaQueryHandler(request).get_suggestions()
 
         elif 'addArticleToRepo' in request.POST:
             print('addArticleToRepo')
-            return self.add_article_to_repo(request)
+            #return self.add_article_to_repo(request)
+            return DataRepoHandler().add_wikipedia_article_to_repo(request, self.template_name, TestForm())
 
         return render(request, "file_upload_wiki_suggestions_2.html", self.initial)
 

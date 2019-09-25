@@ -4,6 +4,10 @@ import json
 import re
 urllib3.disable_warnings()
 from github import Github, GithubException
+from jquery_unparam import jquery_unparam
+from ...views.helper_classes.wikipedia_api_handler import WikipediaAPIHandler
+from django.shortcuts import render
+from ...forms.testform import TestForm
 
 
 
@@ -180,10 +184,19 @@ class DataRepoHandler:
             return decoded_content_str
 
 
-    def add_wikipedia_article_to_repo(self, article, article_name):
+    def add_wikipedia_article_to_repo_old(self, article, article_name):
         path = 'files/{}.txt'.format(article_name.replace(' ', '_'))
         self.commit_file(path, article)
         return
+
+    def add_wikipedia_article_to_repo(self, request, template_name, form):
+        items = {k: jquery_unparam(v) for (k, v) in request.POST.items()}
+        article_name = list(items['addArticleToRepo'].keys())[0]
+        w = WikipediaAPIHandler()
+        article = w.get_wikipedia_article(article_name)
+        path = 'files/{}.txt'.format(article_name.replace(' ', '_'))
+        self.commit_file(path, article)
+        return render(request, template_name, {'form': form})
 
 
 
@@ -328,7 +341,7 @@ if __name__ == '__main__':
     #a = d.get_wikipedia_article('Angular velocity')
     #decode_wikipedia_article(a)
 
-    d.delete_file('annotation/Angular velocity')
+    d.delete_file('files/Sphere.txt')
 
 
 
