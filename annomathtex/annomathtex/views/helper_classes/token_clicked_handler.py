@@ -15,8 +15,6 @@ logging.basicConfig(level=logging.INFO)
 token_clicked_handler_logger = logging.getLogger(__name__)
 
 class TokenClickedHandler:
-    #todo: better naming (queryDict, etc.)
-
     """
     This class handles the use case, when the user selects a token (word, identifier or formula) to annotate.
     Depending on the type of the token, different types of data are sent back to the frontend.
@@ -42,76 +40,99 @@ class TokenClickedHandler:
     :return: The rendered response containing the template name, the necessary form and the response data.
     """
 
-    def __init__(self, request, items):
+    def __init__(self, items):
         self.items = items
-        self.arXiv_evaluation_items, \
-        self.wikipedia_evaluation_items, \
-        self.wikidata1_results, \
-        self.wikidata2_results, \
-        self.word_window, \
-        self.formula_concept_db, \
-        self.manual_recommendations = [], [], [], [], [], [], []
 
 
     def get_recommendations(self):
-        #todo: simplify
+
+
+
+        recommendations_dict = {'arXivEvaluationItems': [],
+                        'wikipediaEvaluationItems': [],
+                        'wikidata1Results': [],
+                        'wikidata2Results': [],
+                        'wordWindow': [],
+                        'formulaConceptDB': [],
+                        'manual': []}
+
+
+        search_string = [k for k in self.items['searchString']][0]
         token_type_dict = self.items['tokenType']
         token_type = [k for k in token_type_dict][0]
         unique_id = [k for k in self.items['uniqueId']][0]
+        math_env = self.items['mathEnv']['dummy']
+        annotations = self.items['annotations']
 
         token_clicked_handler_logger.info('Type: {}'.format(token_type))
 
+        all_manual_recommendations = DataRepoHandler().get_manual_recommendations()
+
         if token_type == 'Identifier':
-            self.handle_identifier()
+            recommendations_dict['arXivEvaluationItems'] = ArXivEvaluationListHandler().check_identifiers(search_string)
+            recommendations_dict['wikipediaEvaluationItems'] = WikipediaEvaluationListHandler().check_identifiers(search_string)
+            recommendations_dict['wikidata1Results'] = StaticWikidataHandler().check_identifiers(search_string)
 
         elif token_type == 'Formula':
-            self.handle_formula()
+            recommendations_dict['wikidata1Results'], recommendations_dict['wikidata2Results'] = StaticWikidataHandler().check_formulae(math_env, annotations)
+            recommendations_dict['formulaConceptDB'] = FormulaConceptDBHandler().query_tex_string(math_env)
 
-        self.word_window = self.get_word_window(unique_id)
-
-        return HttpResponse(
-            json.dumps({'arXivEvaluationItems': self.fill_to_limit(self.arXiv_evaluation_items),
-                        'wikipediaEvaluationItems': self.fill_to_limit(self.wikipedia_evaluation_items),
-                        'wikidata1Results': self.fill_to_limit(self.wikidata1_results),
-                        'wikidata2Results': self.fill_to_limit(self.wikidata2_results),
-                        'wordWindow': self.fill_to_limit(self.word_window),
-                        'formulaConceptDB': self.fill_to_limit(self.formula_concept_db),
-                        'manual': self.fill_to_limit(self.manual_recommendations)}),
-                        content_type='application/json'
-        )
+        else:
+            token_clicked_handler_logger.info('Faulty token_type: {}'.format(token_type))
 
 
-    def handle_identifier(self):
-        search_string = [k for k in self.items['queryDict']][0]
-        unique_id = [k for k in self.items['uniqueId']][0]
-        #is this bad form?
-        self.wikidata1_results = StaticWikidataHandler().check_identifiers(search_string)
-        self.arXiv_evaluation_items = ArXivEvaluationListHandler().check_identifiers(search_string)
-        self.wikipedia_evaluation_items = WikipediaEvaluationListHandler().check_identifiers(search_string)
-        manual_recommendations = DataRepoHandler().get_manual_recommendations()
-        self.manual_recommendations = ManualRecommendationsHandler(manual_recommendations).check_identifier_or_formula(
-            search_string)
+        recommendations_dict['wordWindow'] = self.get_word_window(unique_id)
+        recommendations_dict['manual'] = ManualRecommendationsHandler(
+                                                all_manual_recommendations).check_identifier_or_formula(search_string)
 
-        return
+        data_repo_handler = DataRepoHandler()
+        all_wikidata_identifiers = data_repo_handler.get_wikidata_identifiers_by_name()
+        all_wikidata_formulae = data_repo_handler.get_wikidata_formulae()
 
-    def handle_formula(self):
-        math_env = self.items['mathEnv']['dummy']
-        annotations = self.items['annotations']
-        #todo: remove redundancy
-        unique_id = [k for k in self.items['uniqueId']][0]
-        self.wikidata1_results, self.wikidata2_results = StaticWikidataHandler().check_formulae(math_env, annotations)
-        self.formula_concept_db = FormulaConceptDBHandler().query_tex_string(math_env)
-        manual_recommendations = DataRepoHandler().get_manual_recommendations()
-        self.manual_recommendations = ManualRecommendationsHandler(manual_recommendations).check_identifier_or_formula(
-            math_env)
 
-        return
+        def pp(dict_list, source):
+            """
+            post process: add QID and fill to recommendations limit
+            :param dict_list: ditionary list of recommendations from one source
+            :return:
+            """
+            def add_qid_identifier(r):
+                """
+                :param r: single recommendation
+                :return:
+                """
+                name = r['name']
+                if name in all_wikidata_identifiers:
+                    r['qid'] = all_wikidata_identifiers[name]['qid']
+                else:
+                    r['qid'] = 'NA'
+                #token_clicked_handler_logger.info(r)
+                return r
 
-    def fill_to_limit(self, dict_list):
-        recommendations_limit = 10
-        dict_list += [{'name': ''} for _ in range(recommendations_limit - len(dict_list))]
-        return dict_list
+            def add_qid_formula(r):
+                """
+                :param r: single recommendation
+                :return:
+                """
+                name = r['name']
+                if name in all_wikidata_formulae:
+                    r['qid'] = all_wikidata_formulae[name]['qid']
+                else:
+                    r['qid'] = 'NA'
+                #token_clicked_handler_logger.info(r)
+                return r
 
+            if source not in ['wikidata1Results', 'wikidata2Results']:
+                if token_type == 'Identifier':
+                    dict_list = list(map(add_qid_identifier, dict_list))
+                else:
+                    dict_list = list(map(add_qid_formula, dict_list))
+            dict_list += [{'name': ''} for _ in range(recommendations_limit - len(dict_list))]
+            return dict_list
+
+        recommendations_dict_pp = dict(map(lambda kv: (kv[0], pp(kv[1], kv[0])), recommendations_dict.items()))
+        response = HttpResponse(json.dumps(recommendations_dict_pp), content_type='application/json')
+        return response, recommendations_dict_pp
 
     def get_word_window(self, unique_id):
         """

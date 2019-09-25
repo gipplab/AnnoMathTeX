@@ -73,25 +73,18 @@ function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
         isFormula = true;
     }
 
-    console.log(tokenContent);
-    console.log(mathEnvContent);
-    console.log(content);
-
 
     document.getElementById("highlightedText").innerHTML = fillText;
 
     let data_dict = { the_post : $("#" + tokenUniqueId).val(),
                   'csrfmiddlewaretoken': getCookie("csrftoken"),
                   'action': 'getRecommendations',
-                  'queryDict': content,
+                  'searchString': content,
                   'tokenType': tokenType,
                   'mathEnv': $.param({'dummy':mathEnv}),
                   'uniqueId': tokenUniqueId,
                   'annotations': $.param(replaceAllEqualsPlusAnn(annotations))
                   };
-
-    console.log(data_dict);
-
 
     $.ajax({
       url : "file_upload/", // the endpoint

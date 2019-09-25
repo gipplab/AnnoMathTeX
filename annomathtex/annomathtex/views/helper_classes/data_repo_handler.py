@@ -143,6 +143,12 @@ class DataRepoHandler:
         identifiers = json.loads(decoded_content.decode("utf-8"))
         return identifiers
 
+    def get_wikidata_identifiers_by_name(self):
+        encoded_content = self.repo.get_file_contents('sources/wikidata_identifiers_by_name.json')
+        decoded_content = encoded_content.decoded_content
+        identifiers = json.loads(decoded_content.decode("utf-8"))
+        return identifiers
+
     def get_wikidata_formulae(self):
         encoded_content = self.repo.get_file_contents('sources/wikidata_formulae.json')
         decoded_content = encoded_content.decoded_content
@@ -316,6 +322,38 @@ def move_files_to_file_folder():
         drh.rename_file(old_file_name=old_path, new_file_name=new_path)
 
 
+def wikidata_identifiers_by_name_old(d):
+    identifiers = d.get_wikidata_identifiers()
+
+    def f(i):
+        symbol = i[0]
+        if i[1]:
+            name = i[1][0]['name']
+            del i[1][0]['name']
+            i[1][0]['symbol'] = symbol
+            return (name, i[1])
+
+        return i
+
+    identifiers_by_name = dict(filter(lambda i: len(i[1]) > 0, map(f, identifiers.items())))
+    d.commit_file('sources/wikidata_identifiers_by_name.json', json.dumps(identifiers_by_name))
+
+
+
+def wikidata_identifiers_by_name(d):
+    identifiers = d.get_wikidata_identifiers()
+
+    identifiers_by_name = {}
+    for symbol in identifiers:
+        for item in identifiers[symbol]:
+            name = item['name']
+            del item['name']
+            item['symbol'] = symbol
+            identifiers_by_name[name] = item
+
+
+    d.commit_file('sources/wikidata_identifiers_by_name.json', json.dumps(identifiers_by_name))
+
 
 if __name__ == '__main__':
     #For testing purposes
@@ -324,8 +362,10 @@ if __name__ == '__main__':
     d = DataRepoHandler(local_token)
     #a = d.get_wikipedia_article('Angular velocity')
     #decode_wikipedia_article(a)
+    #d.delete_file('files/Sphere.txt')
+    d.delete_file('sources/wikidata_identifiers_by_name.json')
 
-    d.delete_file('files/Sphere.txt')
+    wikidata_identifiers_by_name(d)
 
 
 

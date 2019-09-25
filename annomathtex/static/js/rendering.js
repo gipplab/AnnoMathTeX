@@ -63,6 +63,10 @@ function handlePopupTable() {
     Either the function handling the rendering of the table for identifiers or the corresponding function for formulae
     is called.
      */
+
+    console.log(recommendations);
+
+
     if (isFormula) {
         populateTableFormula();
     } else {
@@ -300,13 +304,14 @@ function createCell(item, source, rowNum) {
 
     if (item) {
         var name = item['name'];
+        var qid = item['qid'];
     } else {
         var name = '';
+        var qid = '';
     }
 
     var backgroundColor = cellColorBasic;
     var containsHighlightedName = false;
-    console.log(annotations['global']);
     if (content in annotations['global']) {
         if (annotations['global'][content]['name'] == name) {
             backgroundColor = cellColorSelectedGlobal;
@@ -323,7 +328,6 @@ function createCell(item, source, rowNum) {
         }
     }
     rowNum += 1;
-    var qid = '';
     var cellID = "cell" + source + rowNum;
     var args = [
         name,
@@ -350,7 +354,9 @@ function createCell(item, source, rowNum) {
     var td = "<td id=" + cellID;
     td += " style='background-color:" + backgroundColor + "'";
     td += "onclick='selected(\"" + argsString + "\")' >";
-    td += name;
+    if (name) {
+        td += name + ' - ' + qid;
+    }
     td += "</td>";
 
     //console.log(annotations);
