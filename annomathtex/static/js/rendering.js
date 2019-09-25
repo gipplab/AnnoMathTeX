@@ -301,7 +301,6 @@ function createCell(item, source, rowNum) {
     The cells, that populate the table in the popup modal are created in this method.
      */
 
-
     if (item) {
         var name = item['name'];
         var qid = item['qid'];

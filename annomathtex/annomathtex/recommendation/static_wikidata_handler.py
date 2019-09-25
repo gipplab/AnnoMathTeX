@@ -108,13 +108,14 @@ class StaticWikidataHandler:
 
         for formula_name in formula_dict:
             formula = formula_dict[formula_name]
+            qid = formula['qid']
             tex_string = formula['formula']
 
 
 
             score_string = fuzz.token_sort_ratio(formula_string, tex_string)
             if score_string >= threshold_string:
-                results_string.append(({'name':formula_name}, score_string))
+                results_string.append(({'name':formula_name, 'qid':qid}, score_string))
 
             formula_identifiers = formula['identifiers']['names']
             formula_quantity_symbols = formula['identifiers']['strings']
@@ -143,7 +144,7 @@ class StaticWikidataHandler:
                 print('identifiers: {}'.format(identifiers))"""
 
             if score_identifers >= threshold_identifers:
-                results_identifiers.append(({'name':formula_name}, score_identifers))
+                results_identifiers.append(({'name':formula_name, 'qid':qid}, score_identifers))
 
         if len(results_string)>0:
             results_string = [r[0] for r in sorted(results_string, key=itemgetter(1))]#.reverse()

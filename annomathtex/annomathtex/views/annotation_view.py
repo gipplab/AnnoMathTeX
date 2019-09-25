@@ -59,11 +59,12 @@ class AnnotationView(View):
         elif action == 'getRecommendations':
             response, recommendations_dict = TokenClickedHandler(items).get_recommendations()
             #annotation_view_logger.info(recommendations_dict)
-            for k in recommendations_dict:
-                print(k, recommendations_dict[k])
+            #for k in recommendations_dict:
+            #    print(k, recommendations_dict[k])
             return response
 
         elif action == 'saveSession':
+            print(items)
             return SessionSavedHandler(request, items).save()
 
         elif action == 'getRenderedWikipediaArticle':
