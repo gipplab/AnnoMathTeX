@@ -88,6 +88,7 @@ function getWikipediaArticle(name) {
 
     let data_dict = { the_post : $("#" + tokenUniqueId).val(),
           'csrfmiddlewaretoken': getCookie("csrftoken"),
+          'action': 'getRenderedWikipediaArticle',
           'wikipediaArticleName': name
           };
 

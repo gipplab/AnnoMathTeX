@@ -9,9 +9,7 @@ from ..forms.save_annotation_form import SaveAnnotationForm
 from .helper_classes.token_clicked_handler import TokenClickedHandler
 from .helper_classes.file_handler import FileHandler
 from .helper_classes.cache_handler import CacheHandler
-from .helper_classes.wikipedia_query_handler import WikipediaQueryHandler
 from .helper_classes.wikipedia_article_name_handler import WikipediaArticleNameHandler
-from .helper_classes.repo_content_handler import RepoContentHandler
 from .helper_classes.session_saved_handler import SessionSavedHandler
 
 
@@ -54,29 +52,24 @@ class FileUploadView(View):
         #print(items)
 
         if 'file_submit' in request.POST:
+            print('file_submit')
+            print('annotate_formula_view')
             return FileHandler(request).process_local_file()
 
         elif 'queryDict' in request.POST:
             print('queryDict')
+            print('annotate_formula_view')
             return TokenClickedHandler(request).get_recommendations()
 
         elif 'annotations' in request.POST:
             print('annotations')
+            print('annotate_formula_view')
             return SessionSavedHandler(request).save()
 
-        #todo: check if not used
-        elif 'wikipediaSubmit' in request.POST:
-            print("WIKIPEDIA SUBMIT")
-            return WikipediaQueryHandler(request).get_suggestions()
 
         elif 'wikipediaArticleName' in request.POST:
             print('wikipediaArticleName')
+            print('annotate_formula_view')
             return WikipediaArticleNameHandler(request).handle_name()
-
-        elif 'getRepoContent' in request.POST:
-            print('getRepoContent')
-            return RepoContentHandler().get_repo_content()
-
-
 
         return render(request, "file_upload_wiki_suggestions_2.html", self.initial)

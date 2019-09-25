@@ -9,14 +9,13 @@ from django.shortcuts import render, redirect
 
 class WikipediaArticleHandler:
 
-    def __init__(self, request):
+    def __init__(self, request, items):
         self.request = request
+        self.items = items
 
 
     def get_rendered_wikipedia_article(self):
-        items = {k: jquery_unparam(v) for (k, v) in self.request.POST.items()}
-        article_name = list(items['wikipediaArticleName'].keys())[0]
-        #wikipedia_article = WikipediaAPIHandler().get_wikipedia_article(article_name)
+        article_name = list(self.items['wikipediaArticleName'].keys())[0]
         wikipedia_article = DataRepoHandler().get_wikipedia_article(article_name)
         line_dict, identifier_line_dict, processed_file = WikipediaParser(wikipedia_article, article_name).process()
         dicts = {'identifiers': identifier_line_dict, 'lines': line_dict}
@@ -24,8 +23,7 @@ class WikipediaArticleHandler:
         return redirect('/', {'File': processed_file, 'test': 2})
 
     def add_wikipedia_article(self, template_name, form):
-        items = {k: jquery_unparam(v) for (k, v) in self.request.POST.items()}
-        article_name = list(items['addArticleToRepo'].keys())[0]
+        article_name = list(self.items['wikipediaArticleName'].keys())[0]
         w = WikipediaAPIHandler()
         article = w.get_wikipedia_article(article_name)
         DataRepoHandler().add_wikipedia_article_to_repo(article, article_name)

@@ -6,7 +6,7 @@ function getRepoContent() {
     console.log('getRepoCOntent');
 
     let data_dict = {'csrfmiddlewaretoken': getCookie("csrftoken"),
-              'getRepoContent': ""
+              'action': 'getRepoContent'
               };
 
 
@@ -119,7 +119,8 @@ function searchWikipedia() {
 
     let data_dict = { //the_post : $("#" + tokenUniqueId).val(),
           'csrfmiddlewaretoken': getCookie("csrftoken"),
-          'wikipediaSubmit': name
+          'action': 'getWikipediaSuggestions',
+          'searchString': name
           };
 
 
@@ -153,7 +154,8 @@ function addArticle() {
 
     let data_dict = { //the_post : $("#" + tokenUniqueId).val(),
           'csrfmiddlewaretoken': getCookie("csrftoken"),
-          'addArticleToRepo': name
+          'action': 'addArticleToRepo',
+          'wikipediaArticleName': name
           };
 
 

@@ -82,6 +82,7 @@ function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
 
     let data_dict = { the_post : $("#" + tokenUniqueId).val(),
                   'csrfmiddlewaretoken': getCookie("csrftoken"),
+                  'action': 'getRecommendations',
                   'queryDict': content,
                   'tokenType': tokenType,
                   'mathEnv': $.param({'dummy':mathEnv}),

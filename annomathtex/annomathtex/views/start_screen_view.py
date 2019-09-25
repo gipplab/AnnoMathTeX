@@ -1,22 +1,14 @@
-import json
-import pickle
-
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.views.generic import View
-from django.http import HttpResponse
-from ..forms.testform import TestForm
 from jquery_unparam import jquery_unparam
 
+
+from ..forms.testform import TestForm
+
 from ..forms.uploadfileform import UploadFileForm
-
-from ..parsing.wikipedia_parser import WikipediaParser
-from ..views.helper_classes.wikipedia_api_handler import WikipediaAPIHandler
-from ..views.helper_classes.data_repo_handler import DataRepoHandler
-from ..views.helper_classes.repo_content_handler import RepoContentHandler
-from ..views.helper_classes.wikipedia_query_handler import WikipediaQueryHandler
-from ..views.helper_classes.wikipedia_article_handler import WikipediaArticleHandler
-
-from ..config import *
+from .helper_classes.repo_content_handler import RepoContentHandler
+from .helper_classes.wikipedia_query_handler import WikipediaQueryHandler
+from .helper_classes.wikipedia_article_handler import WikipediaArticleHandler
 
 
 class StartScreenView(View):
@@ -44,21 +36,20 @@ class StartScreenView(View):
         :return: The rendered response containing the template name, the necessary form and the response data (if
                  applicable).
         """
-        if 'wikipediaArticleName' in request.POST:
-            print('wikipediaArticleName')
-            return WikipediaArticleHandler(request).get_rendered_wikipedia_article()
+        items = {k: jquery_unparam(v) for (k, v) in self.request.POST.items()}
+        action = list(items['action'].keys())[0]
 
-        elif 'getRepoContent' in request.POST:
-            print('getRepoContent')
+        if action == 'getRepoContent':
+            print('get repo content')
             return RepoContentHandler().get_repo_content()
 
-        elif 'wikipediaSubmit' in request.POST:
-            print("WIKIPEDIA SUBMIT")
-            return WikipediaQueryHandler(request).get_suggestions()
+        elif action == 'getWikipediaSuggestions':
+            print("get wikipedia suggestions")
+            return WikipediaQueryHandler(request, items).get_suggestions()
 
-        elif 'addArticleToRepo' in request.POST:
-            print('addArticleToRepo')
-            return WikipediaArticleHandler(request).add_wikipedia_article(self.template_name, TestForm())
+        elif action == 'addArticleToRepo':
+            print('add article to repo')
+            return WikipediaArticleHandler(request, items).add_wikipedia_article(self.template_name, TestForm())
 
         return render(request, "file_upload_wiki_suggestions_2.html", self.initial)
 
