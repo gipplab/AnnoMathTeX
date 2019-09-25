@@ -25,31 +25,6 @@ class StartScreenView(View):
     initial = {'key': 'value'}
     template_name = 'file_upload_wiki_suggestions_2.html'
 
-
-
-    def dicts_to_cache(self, dicts):
-        """
-        Write the dictionary, that is used to form the word window when the user clicks a token, to the cache.
-        :param dicts: Line dictionary and identifier line dictionary.
-        :return: None; files are pickled and stored in cache.
-        """
-        path = view_cache_path + 'dicts'
-        with open(path, 'wb') as outfile:
-            pickle.dump(dicts, outfile)
-        #__LOGGER__.debug(' Wrote file to {}'.format(path))
-
-
-    def get_rendered_wikipedia_article(self, request):
-        items = {k: jquery_unparam(v) for (k, v) in request.POST.items()}
-        article_name = list(items['wikipediaArticleName'].keys())[0]
-        #wikipedia_article = WikipediaAPIHandler().get_wikipedia_article(article_name)
-        wikipedia_article = DataRepoHandler().get_wikipedia_article(article_name)
-        line_dict, identifier_line_dict, processed_file = WikipediaParser(wikipedia_article, article_name).process()
-        dicts = {'identifiers': identifier_line_dict, 'lines': line_dict}
-        self.dicts_to_cache(dicts)
-        return redirect('/', {'File': processed_file, 'test': 2})
-
-
     def get(self, request, *args, **kwargs):
         """
         This method handles get request from the frontend.
@@ -71,11 +46,10 @@ class StartScreenView(View):
         """
         if 'wikipediaArticleName' in request.POST:
             print('wikipediaArticleName')
-            return self.get_rendered_wikipedia_article(request)
+            return WikipediaArticleHandler(request).get_rendered_wikipedia_article()
 
         elif 'getRepoContent' in request.POST:
             print('getRepoContent')
-            #return self.get_repo_content()
             return RepoContentHandler().get_repo_content()
 
         elif 'wikipediaSubmit' in request.POST:
@@ -84,7 +58,6 @@ class StartScreenView(View):
 
         elif 'addArticleToRepo' in request.POST:
             print('addArticleToRepo')
-            #return self.add_article_to_repo(request)
             return WikipediaArticleHandler(request).add_wikipedia_article(self.template_name, TestForm())
 
         return render(request, "file_upload_wiki_suggestions_2.html", self.initial)
