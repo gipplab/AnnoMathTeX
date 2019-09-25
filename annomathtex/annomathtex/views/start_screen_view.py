@@ -12,6 +12,7 @@ from ..forms.uploadfileform import UploadFileForm
 from ..parsing.wikipedia_parser import WikipediaParser
 from ..views.helper_classes.wikipedia_api_handler import WikipediaAPIHandler
 from ..views.helper_classes.data_repo_handler import DataRepoHandler
+from ..views.helper_classes.repo_content_handler import RepoContentHandler
 
 from ..config import *
 
@@ -46,17 +47,6 @@ class StartScreenView(View):
         self.dicts_to_cache(dicts)
         return redirect('/', {'File': processed_file, 'test': 2})
 
-
-    def get_repo_content(self):
-        """
-        Get the repo content for the datarepo/annotation folder, i.e. all files that have been annotated in the past.
-        :return:
-        """
-        file_names = DataRepoHandler().list_directory()
-        return HttpResponse(
-                            json.dumps({'fileNames': file_names}),
-                            content_type='application/json'
-        )
 
     def handle_wikipedia_query(self, request):
         items = {k: jquery_unparam(v) for (k, v) in request.POST.items()}
@@ -105,7 +95,8 @@ class StartScreenView(View):
 
         elif 'getRepoContent' in request.POST:
             print('getRepoContent')
-            return self.get_repo_content()
+            #return self.get_repo_content()
+            return RepoContentHandler().get_repo_content()
 
         elif 'wikipediaSubmit' in request.POST:
             print("WIKIPEDIA SUBMIT")
@@ -116,9 +107,5 @@ class StartScreenView(View):
             print('addArticleToRepo')
             return self.add_article_to_repo(request)
 
-        print(request.POST)
-
-
-        print('before bottom return')
         return render(request, "file_upload_wiki_suggestions_2.html", self.initial)
 
