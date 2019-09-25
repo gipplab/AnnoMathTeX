@@ -24,23 +24,23 @@ class SessionSavedHandler:
     #      but haven't tested yet
 
 
-    def __init__(self, request):
+    def __init__(self, request, items):
         self.request = request
+        self.items = items
 
 
 
     def save(self):
-        items = {k: jquery_unparam(v) for (k, v) in self.request.POST.items()}
-        annotations = items['annotations']
-        file_name = items['fileName']['f']
-        manual_recommendations = items['manualRecommendations']
+        annotations = self.items['annotations']
+        file_name = self.items['fileName']['f']
+        manual_recommendations = self.items['manualRecommendations']
 
         m = ManualRecommendationsCleaner(manual_recommendations)
         cleaned_manual_recommendations = m.get_recommendations()
         cleaned_annotations = handle_annotations(annotations)
 
-        #self.save_files_locally(file_name, cleaned_annotations)
-        #self.save_files_to_repo(file_name, cleaned_annotations, cleaned_manual_recommendations)
+        self.save_files_locally(file_name, cleaned_annotations)
+        self.save_files_to_repo(file_name, cleaned_annotations, cleaned_manual_recommendations)
 
         return HttpResponse(
             json.dumps({'testkey': 'testvalue'}),

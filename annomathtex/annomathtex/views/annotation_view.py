@@ -1,11 +1,10 @@
 import logging
-
-
+from jquery_unparam import jquery_unparam
 from django.shortcuts import render
 from django.views.generic import View
+
 from ..forms.uploadfileform import UploadFileForm
 from ..forms.save_annotation_form import SaveAnnotationForm
-
 from .helper_classes.token_clicked_handler import TokenClickedHandler
 from .helper_classes.file_handler import FileHandler
 from .helper_classes.cache_handler import CacheHandler
@@ -17,7 +16,7 @@ logging.basicConfig(level=logging.INFO)
 __LOGGER__ = logging.getLogger(__name__)
 
 
-class FileUploadView(View):
+class AnnotationView(View):
     """
     This view is where everything going on in the frontend is handled.
     """
@@ -48,28 +47,28 @@ class FileUploadView(View):
         :return: The rendered response containing the template name, the necessary form and the response data (if
                  applicable).
         """
-        #items = {k: jquery_unparam(v) for (k, v) in request.POST.items()}
-        #print(items)
+        items = {k: jquery_unparam(v) for (k, v) in request.POST.items()}
+        action = list(items['action'].keys())[0]
+        print('action: {}'.format(action))
 
         if 'file_submit' in request.POST:
             print('file_submit')
             print('annotate_formula_view')
             return FileHandler(request).process_local_file()
 
-        elif 'queryDict' in request.POST:
-            print('queryDict')
+        elif action == 'getRecommendations':
+            print('get recommendations')
             print('annotate_formula_view')
-            return TokenClickedHandler(request).get_recommendations()
+            return TokenClickedHandler(request, items).get_recommendations()
 
-        elif 'annotations' in request.POST:
-            print('annotations')
+        elif action == 'saveSession':
+            print('save session')
             print('annotate_formula_view')
-            return SessionSavedHandler(request).save()
+            return SessionSavedHandler(request, items).save()
 
-
-        elif 'wikipediaArticleName' in request.POST:
-            print('wikipediaArticleName')
+        elif action == 'getRenderedWikipediaArticle':
+            print('get rendered wikipedia article')
             print('annotate_formula_view')
-            return WikipediaArticleNameHandler(request).handle_name()
+            return WikipediaArticleNameHandler(request, items).handle_name()
 
         return render(request, "file_upload_wiki_suggestions_2.html", self.initial)

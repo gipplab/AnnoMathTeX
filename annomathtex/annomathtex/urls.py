@@ -7,7 +7,7 @@ The `urlpatterns` list routes URLs to views. For more information please see:
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-from .views.annotate_formula_view import FileUploadView
+from .views.annotation_view import AnnotationView
 from .views.start_screen_view import StartScreenView
 from .views.test_view import TestView
 
@@ -29,7 +29,7 @@ urlpatterns = [
 
     # enable the admin interface
     url(r'^admin/', admin.site.urls),
-    url(r'^annotation/', FileUploadView.as_view()),
+    url(r'^annotation/', AnnotationView.as_view()),
     url(r'^test/', TestView.as_view()),
     url(r'', StartScreenView.as_view())
 ]

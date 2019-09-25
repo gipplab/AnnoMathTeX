@@ -81,6 +81,7 @@ function getWikipediaArticleFromRepo(fileName) {
     console.log(fileName);
 
     let data_dict = {'csrfmiddlewaretoken': getCookie("csrftoken"),
+              'action': 'getRenderedWikipediaArticle',
               'wikipediaArticleName': fileName
               };
 

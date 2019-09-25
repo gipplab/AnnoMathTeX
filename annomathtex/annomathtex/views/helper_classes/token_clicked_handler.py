@@ -43,9 +43,9 @@ class TokenClickedHandler:
     :return: The rendered response containing the template name, the necessary form and the response data.
     """
 
-    def __init__(self, request):
+    def __init__(self, request, items):
         print('TOKENCLICKEDHANDLER')
-        self.items = {k: jquery_unparam(v) for (k, v) in request.POST.items()}
+        self.items = items
         self.arXiv_evaluation_items, \
         self.wikipedia_evaluation_items, \
         self.wikidata1_results, \

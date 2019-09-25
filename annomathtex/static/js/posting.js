@@ -18,6 +18,7 @@ $(document).ready(function () {
       let data_dict = { the_post : $('#post-text').val(),
                         //'csrfmiddlewaretoken': '{{ csrf_token }}',
                         'csrfmiddlewaretoken': getCookie("csrftoken"),
+                        'action': 'saveSession',
                         'annotations': $.param(replaceAllEqualsPlusAnn(annotations)),
                         'fileName': $.param(fileNameDict),
                         //'manualRecommendations': $.param(manualRecommendations)

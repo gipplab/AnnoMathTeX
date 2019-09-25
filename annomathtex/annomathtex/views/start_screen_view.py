@@ -2,9 +2,7 @@ from django.shortcuts import render
 from django.views.generic import View
 from jquery_unparam import jquery_unparam
 
-
 from ..forms.testform import TestForm
-
 from ..forms.uploadfileform import UploadFileForm
 from .helper_classes.repo_content_handler import RepoContentHandler
 from .helper_classes.wikipedia_query_handler import WikipediaQueryHandler

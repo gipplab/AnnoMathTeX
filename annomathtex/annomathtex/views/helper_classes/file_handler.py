@@ -59,11 +59,9 @@ class FileHandler:
             else:
                 line_dict, identifier_line_dict, processed_file = None, None, None
 
-
             dicts = {'identifiers': identifier_line_dict, 'lines': line_dict}
 
             CacheHandler.dicts_to_cache(dicts)
-
 
             return render(self.request,
                           #'annotation_template.html',
