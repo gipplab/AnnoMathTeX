@@ -1,3 +1,4 @@
+import logging
 import os
 import json
 from ..config import recommendations_limit
@@ -7,6 +8,9 @@ from ..views.helper_classes.data_repo_handler import DataRepoHandler
 from fuzzywuzzy import fuzz
 from operator import itemgetter
 
+
+logging.basicConfig(level=logging.INFO)
+static_wikidata_handler_logger = logging.getLogger(__name__)
 
 class StaticWikidataHandler:
     """
@@ -71,11 +75,9 @@ class StaticWikidataHandler:
         identfifiers = []
         if 'global' in annotations:
             annotations = annotations['global']
-            #print('annotations: {}'.format(annotations))
-            #print('formula_string: {}'.format(formula_string))
             for id_or_formula in annotations:
-                print('mathEnv: {}'.format(annotations[id_or_formula]['mathEnv']))
-                print('formula_string: {}'.format(formula_string))
+                static_wikidata_handler_logger.info('mathEnv: {}'.format(annotations[id_or_formula]['mathEnv']))
+                static_wikidata_handler_logger.info('formula_string: {}'.format(formula_string))
                 if 'mathEnv' in annotations[id_or_formula] and annotations[id_or_formula]['mathEnv'] == formula_string:
                     #print('mathEnv in annotations id_or_formula')
                     identfifiers.append(id_or_formula)
@@ -96,16 +98,13 @@ class StaticWikidataHandler:
 
         results_string = []
         results_identifiers = []
-        #formula_dict = self.read_formula_file()
         formula_dict = self.get_formulae_from_repo()
         identifiers = self.extract_identifiers_from_formula(annotations, formula_string)
-        #print('Extracted Identifiers from Formula: {}'.format(identifiers))
-        #print('Formula Dictionary: {}'.format(formula_dict))
 
 
         c = CustomMathEnvParser(formula_string)
         identifiers_from_wikidata_formula, _ = c.get_split_math_env()
-        print('identifiers_from_wikidata_formula: {}'.format(identifiers_from_wikidata_formula))
+        static_wikidata_handler_logger.info('identifiers_from_wikidata_formula: {}'.format(identifiers_from_wikidata_formula))
 
         for formula_name in formula_dict:
             formula = formula_dict[formula_name]
@@ -120,9 +119,6 @@ class StaticWikidataHandler:
             formula_identifiers = formula['identifiers']['names']
             formula_quantity_symbols = formula['identifiers']['strings']
 
-            #print('Formula Identifiers: {}'.format(formula_identifiers))
-            #print('Formula Quantity Symbols: {}'.format(formula_quantity_symbols))
-            #print('Identifiers from wikidata formula: {}'.format(identifiers_from_wikidata_formula))
 
             #flawed logic
             """if len(formula_quantity_symbols+formula_identifiers) > len(identifiers_from_wikidata_formula):
@@ -139,12 +135,12 @@ class StaticWikidataHandler:
                     print('identifiers: {}'.format(identifiers))"""
 
             score_identifers = get_identifier_score(identifiers, formula_quantity_symbols + formula_identifiers)
-            if formula_name == 'sphere':
+            """if formula_name == 'sphere':
                 print('score identifiers else: {}'.format(score_identifers))
                 print(formula)
                 print('formula_identifiers: {}'.format(formula_identifiers))
                 print('formula_quantity_symbols: {}'.format(formula_quantity_symbols))
-                print('identifiers: {}'.format(identifiers))
+                print('identifiers: {}'.format(identifiers))"""
 
             if score_identifers >= threshold_identifers:
                 results_identifiers.append(({'name':formula_name}, score_identifers))

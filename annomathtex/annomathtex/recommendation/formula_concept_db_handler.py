@@ -27,7 +27,6 @@ class FormulaConceptDBHandler(object):
 
 
         """formula_concept_names = list(formula_concepts.keys())
-        print(formula_concepts)
         if tex_string in formula_concept_names:
             formula = formula_concepts[tex_string]
             existing_tex_strings = formula['TeXSTrings']
@@ -47,4 +46,3 @@ if __name__ == '__main__':
     from views.data_repo_handler import DataRepoHandler
     f = FormulaConceptDBHandler()
     c = f.query_tex_string('E = m c^2')
-    print(c)

@@ -1,5 +1,10 @@
-from ..config import recommendations_limit
+import logging
 from operator import itemgetter
+
+from ..config import recommendations_limit
+
+logging.basicConfig(level=logging.INFO)
+manual_recommendations_handler_logger = logging.getLogger(__name__)
 
 class ManualRecommendationsHandler:
 
@@ -9,8 +14,9 @@ class ManualRecommendationsHandler:
 
     def check_identifier_or_formula(self, symbol):
 
-        print(symbol)
-        print(list(self.existing_manual_recommendations.keys())[0])
+
+        manual_recommendations_handler_logger.info('Symbol: {}'.format(symbol))
+        manual_recommendations_handler_logger.info('Existing manual recommendations: {}'.format(list(self.existing_manual_recommendations.keys())[0]))
 
         if symbol in self.existing_manual_recommendations:
             results = self.existing_manual_recommendations[symbol]

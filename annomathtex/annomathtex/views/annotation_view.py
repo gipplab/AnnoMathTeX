@@ -13,7 +13,7 @@ from .helper_classes.session_saved_handler import SessionSavedHandler
 
 
 logging.basicConfig(level=logging.INFO)
-__LOGGER__ = logging.getLogger(__name__)
+annotation_view_logger = logging.getLogger(__name__)
 
 
 class AnnotationView(View):
@@ -34,6 +34,7 @@ class AnnotationView(View):
         """
         article_name = CacheHandler().read_file_name_cache()
         processed_file = FileHandler(request).get_processed_wikipedia_article(article_name)
+        annotation_view_logger.info('GET, filename: {}'.format(article_name))
         return render(request, self.template_name, {'File': processed_file, 'test': 3})
 
 
@@ -49,26 +50,18 @@ class AnnotationView(View):
         """
         items = {k: jquery_unparam(v) for (k, v) in request.POST.items()}
         action = list(items['action'].keys())[0]
-        print('action: {}'.format(action))
+        annotation_view_logger.info('POST, action: {}'.format(action))
 
         if 'file_submit' in request.POST:
-            print('file_submit')
-            print('annotate_formula_view')
             return FileHandler(request).process_local_file()
 
         elif action == 'getRecommendations':
-            print('get recommendations')
-            print('annotate_formula_view')
             return TokenClickedHandler(request, items).get_recommendations()
 
         elif action == 'saveSession':
-            print('save session')
-            print('annotate_formula_view')
             return SessionSavedHandler(request, items).save()
 
         elif action == 'getRenderedWikipediaArticle':
-            print('get rendered wikipedia article')
-            print('annotate_formula_view')
             return WikipediaArticleNameHandler(request, items).handle_name()
 
         return render(request, "file_upload_wiki_suggestions_2.html", self.initial)

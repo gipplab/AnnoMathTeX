@@ -14,6 +14,9 @@ from ..parsing.mathhandling.custom_math_env_parser import CustomMathEnvParser
 from ..views.helper_classes.data_repo_handler import DataRepoHandler
 from ..config import *
 
+logging.basicConfig(level=logging.INFO)
+parser_logger = logging.getLogger(__name__)
+
 
 class Parser(object, metaclass=ABCMeta):
     """
@@ -25,9 +28,6 @@ class Parser(object, metaclass=ABCMeta):
         :param request_file: The file that the user selects to annotate.
         :param file_type: The type of the file (tex, txt, html).
         """
-        print('in Parser, file_name: {}'.format(file_name))
-        logging.basicConfig(level=logging.INFO)
-        self.__LOGGER__ = logging.getLogger(__name__)
         self.tagger = NLTK_NER()
         self.file = self.decode(request_file)
         self.file_name = file_name
@@ -77,7 +77,7 @@ class Parser(object, metaclass=ABCMeta):
         if annotation_file_name in listdir(evaluation_annotations_path):
             with open(file_path, 'r') as f:
                 json_annotations =json.load(f)
-            self.__LOGGER__.debug('ANNOTATIONS: {}'.format(json_annotations))
+            parser_logger.debug('ANNOTATIONS: {}'.format(json_annotations))
             return json_annotations
 
     def get_annotation_file_from_repo(self):
@@ -90,11 +90,11 @@ class Parser(object, metaclass=ABCMeta):
         """
         for i, m in enumerate(self.math_envs):
             math_env = m
-            self.__LOGGER__.debug(' in remove_math_envs() current math_env: {}'.format(m))
+            parser_logger.debug(' in remove_math_envs() current math_env: {}'.format(m))
             try:
                 self.file = self.file.replace(math_env, ' __MATH_ENV__ ', 1)
             except Exception as e:
-                self.__LOGGER__.error('math_env {} couldnt be replaced: {}'.format(math_env, e))
+                parser_logger.error('math_env {} couldnt be replaced: {}'.format(math_env, e))
                 continue
 
 
@@ -161,7 +161,6 @@ class Parser(object, metaclass=ABCMeta):
             #math_env = math_env.replace('<math>', '')
             math_env = re.sub('<math.*?>', '', math_env)
             math_env = math_env.replace('</math>', '')
-            #print('math_env: {}'.format(math_env))
 
             return Formula(
                 str(uuid1()),
@@ -312,9 +311,5 @@ class Parser(object, metaclass=ABCMeta):
                                self.file_name,
                                existing_annotations)
 
-
-        #print('*\n'*10)
-        #print(file)
-        #print('\n'*10)
 
         return (line_dict, identifier_line_dict, file)

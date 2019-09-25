@@ -1,15 +1,16 @@
+import logging
 import requests
 from bs4 import BeautifulSoup
 import wikipedia
 
 
+logging.basicConfig(level=logging.INFO)
+wikidata_api_handler_logger = logging.getLogger(__name__)
+
 class WikipediaAPIHandler():
 
-
-
-
     def get_suggestions(self, search_string, limit=5):
-        print('WikipediaAPIHandler() --- search_string: {}'.format(search_string))
+        wikidata_api_handler_logger.info('search_string: {}'.format(search_string))
         return wikipedia.search(search_string, results=5)
 
 

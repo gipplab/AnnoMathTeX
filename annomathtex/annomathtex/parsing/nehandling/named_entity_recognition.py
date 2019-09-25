@@ -1,7 +1,7 @@
 """
 This file contains several named entity taggers, that can be used to find NEs in the document.
 """
-
+import logging
 import nltk
 from ...models.word import Word
 from uuid import uuid1
@@ -35,6 +35,10 @@ punctuation_nums = ['!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+',
 
 wikitext_cmds = ['sub', 'center', 'nbsp', 'ref', 'IEEE', 'ndash', 'Cite']
 ignore = latex_cmds_ignore + stopWords + punctuation_nums + wikitext_cmds
+
+
+logging.basicConfig(level=logging.INFO)
+ne_recognition_logger = logging.getLogger(__name__)
 
 
 class Tagger(object, metaclass=ABCMeta):
@@ -101,7 +105,7 @@ class Tagger(object, metaclass=ABCMeta):
 
 
         except Exception as e:
-            print(e)
+            ne_recognition_logger.error(e)
 
         return words
 

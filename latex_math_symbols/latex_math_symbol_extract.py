@@ -56,8 +56,6 @@ def write_to_json(symbol_dict):
         json.dump(symbol_dict, outfile)
 
 
-#for k in symbol_dict:
-#    print(k, symbol_dict[k])
 
 
 d, _split = extract_symbols(split_symbols)
@@ -66,14 +64,8 @@ d, _split = extract_symbols(split_symbols)
 #delimiters.append('\W')
 #d_string = '|'.join(c for c in delimiters)
 #d_string = '({})'.format(d_string)
-#print(d_string)
 #d_string = re.compile(d_string)
 
 split_regex = re.compile('(\W)')
 
 e_1 = "{{B_s^2}\over{4 \pi ( \\rho_n+\\rho_I )}}"
-
-#x = re.split(d_string, e_1)
-
-#print(x)
-#print('|'.join(c for c in delimiters))

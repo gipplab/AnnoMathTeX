@@ -2,9 +2,12 @@ import os
 import urllib3
 import json
 import re
+import logging
 urllib3.disable_warnings()
 from github import Github, GithubException
 
+logging.basicConfig(level=logging.INFO)
+data_repo_handler_logger = logging.getLogger(__name__)
 
 class DataRepoHandler:
     """
@@ -19,11 +22,11 @@ class DataRepoHandler:
                 from ...views.helper_classes.key import local_token
                 self.token = local_token
             except Exception:
-                print('Token not set')
+                data_repo_handler_logger.info('Token not set')
 
 
         if not self.token:
-            print('Token not set')
+            data_repo_handler_logger.info('Token not set')
             exit(2)
 
 
@@ -37,13 +40,12 @@ class DataRepoHandler:
         try:
             self.repo.create_file(file_name, "commiting file {}".format(file_name), file_content)
         except GithubException as e:
-            print(e)
+            data_repo_handler_logger.info(e)
             contents = self.repo.get_contents(file_name)
             self.repo.update_file(file_name, "updating file {}".format(file_name), file_content, contents.sha)
-            print("updating file {}".format(file_name))
-            print(file_content)
+            data_repo_handler_logger.info("updating file {}".format(file_name))
         except AttributeError as e:
-            print(e)
+            data_repo_handler_logger.info(e)
         return
 
     def delete_file(self, file_name):
@@ -199,16 +201,11 @@ class FormulaConceptHandler:
     def extract_formulae(self):
         formulae = {}
 
-
-        print('FORMULA CONCEPT HANDLER:\n')
-        print(self.annotations)
-
         if 'global' in self.annotations:
             g = self.annotations['global']
             for key in g:
                 instance = g[key]
                 if instance['type'] == 'Formula':
-                    #print(instance)
                     formulae[key.replace('__EQUALS__', '=')] = {
                         'name': instance['name'].replace('__EQUALS__', '=')
                         #'sourcesWithNums': instance['sourcesWithNums']

@@ -306,6 +306,7 @@ function createCell(item, source, rowNum) {
 
     var backgroundColor = cellColorBasic;
     var containsHighlightedName = false;
+    console.log(annotations['global']);
     if (content in annotations['global']) {
         if (annotations['global'][content]['name'] == name) {
             backgroundColor = cellColorSelectedGlobal;

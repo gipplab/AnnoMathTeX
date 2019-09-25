@@ -1,19 +1,18 @@
 import json
-
+import logging
 from django.http import HttpResponse
-from jquery_unparam import jquery_unparam
 
 from ...recommendation.arxiv_evaluation_handler import ArXivEvaluationListHandler
 from ...recommendation.wikipedia_evaluation_handler import WikipediaEvaluationListHandler
 from ...recommendation.static_wikidata_handler import StaticWikidataHandler
 from ...recommendation.manual_recommendations_handler import ManualRecommendationsHandler
 from ...recommendation.formula_concept_db_handler import FormulaConceptDBHandler
-
 from ...views.helper_classes.data_repo_handler import DataRepoHandler
 from ...views.helper_classes.cache_handler import CacheHandler
-
 from ...config import *
 
+logging.basicConfig(level=logging.INFO)
+token_clicked_handler_logger = logging.getLogger(__name__)
 
 class TokenClickedHandler:
     #todo: better naming (queryDict, etc.)
@@ -44,7 +43,6 @@ class TokenClickedHandler:
     """
 
     def __init__(self, request, items):
-        print('TOKENCLICKEDHANDLER')
         self.items = items
         self.arXiv_evaluation_items, \
         self.wikipedia_evaluation_items, \
@@ -61,18 +59,15 @@ class TokenClickedHandler:
         token_type = [k for k in token_type_dict][0]
         unique_id = [k for k in self.items['uniqueId']][0]
 
+        token_clicked_handler_logger.info('Type: {}'.format(token_type))
+
         if token_type == 'Identifier':
             self.handle_identifier()
 
         elif token_type == 'Formula':
             self.handle_formula()
 
-        #not implemented atm
-        #elif token_type == 'Word':
-        #    wikidata_results = NESparql().named_entity_search(search_string)
-
         self.word_window = self.get_word_window(unique_id)
-
 
         return HttpResponse(
             json.dumps({'arXivEvaluationItems': self.fill_to_limit(self.arXiv_evaluation_items),
@@ -93,8 +88,6 @@ class TokenClickedHandler:
         self.wikidata1_results = StaticWikidataHandler().check_identifiers(search_string)
         self.arXiv_evaluation_items = ArXivEvaluationListHandler().check_identifiers(search_string)
         self.wikipedia_evaluation_items = WikipediaEvaluationListHandler().check_identifiers(search_string)
-        #todo: implement
-        #self.word_window = self.get_word_window(unique_id)
         manual_recommendations = DataRepoHandler().get_manual_recommendations()
         self.manual_recommendations = ManualRecommendationsHandler(manual_recommendations).check_identifier_or_formula(
             search_string)
@@ -107,7 +100,6 @@ class TokenClickedHandler:
         #todo: remove redundancy
         unique_id = [k for k in self.items['uniqueId']][0]
         self.wikidata1_results, self.wikidata2_results = StaticWikidataHandler().check_formulae(math_env, annotations)
-        #self.word_window = self.get_word_window(unique_id)
         self.formula_concept_db = FormulaConceptDBHandler().query_tex_string(math_env)
         manual_recommendations = DataRepoHandler().get_manual_recommendations()
         self.manual_recommendations = ManualRecommendationsHandler(manual_recommendations).check_identifier_or_formula(
@@ -116,7 +108,6 @@ class TokenClickedHandler:
         return
 
     def fill_to_limit(self, dict_list):
-        # print(dict_list)
         recommendations_limit = 10
         dict_list += [{'name': ''} for _ in range(recommendations_limit - len(dict_list))]
         return dict_list

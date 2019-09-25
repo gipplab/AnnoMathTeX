@@ -1,3 +1,4 @@
+import logging
 from django.shortcuts import render
 
 from ...forms.uploadfileform import UploadFileForm
@@ -9,6 +10,10 @@ from ...views.helper_classes.data_repo_handler import DataRepoHandler
 from ...parsing.txt_parser import TXTParser
 from ...parsing.tex_parser import TEXParser
 from ...parsing.wikipedia_parser import WikipediaParser
+
+
+logging.basicConfig(level=logging.INFO)
+file_handler_logger = logging.getLogger(__name__)
 
 
 class FileHandler:
@@ -30,7 +35,6 @@ class FileHandler:
     """
 
     def __init__(self, request):
-        print('FILEHANDLER')
         self.request = request
         self.save_annotation_form = {'form': SaveAnnotationForm()}
 

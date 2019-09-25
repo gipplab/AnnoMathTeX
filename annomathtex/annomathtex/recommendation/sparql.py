@@ -5,6 +5,10 @@ import re
 import logging
 
 
+logging.basicConfig(level=logging.INFO)
+sparql_logger = logging.getLogger(__name__)
+
+
 class Sparql(object, metaclass=ABCMeta):
     """
     Abstract base class for classes that need to access wikidata query services
@@ -15,8 +19,6 @@ class Sparql(object, metaclass=ABCMeta):
     def __init__(self):
         # Used to access the wikidata query service API
         self.sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
-        logging.basicConfig(level=logging.INFO)
-        self.__LOGGER__ = logging.getLogger(__name__)
 
     def remove_special_characters(self, search_string):
         """
@@ -56,7 +58,7 @@ class Sparql(object, metaclass=ABCMeta):
             query_results = self.sparql.query().convert()
             results = query_results['results']['bindings']
         except Exception as e:
-            self.__LOGGER__.error(e)
+            sparql_logger.error(e)
 
         results_list = []
         for i, r in enumerate(results):

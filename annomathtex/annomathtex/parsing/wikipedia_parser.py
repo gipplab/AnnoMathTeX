@@ -1,8 +1,11 @@
+import logging
 from ..parsing.parser import Parser
 from bs4 import BeautifulSoup
 import warnings
 warnings.filterwarnings("ignore")
 
+logging.basicConfig(level=logging.INFO)
+wikipedia_parser_logger = logging.getLogger(__name__)
 
 class WikipediaParser(Parser):
     """
@@ -37,7 +40,7 @@ class WikipediaParser(Parser):
             return math_env
 
         math_envs = [remove_special_chars(str(tag)) for tag in list(soup.find_all('math'))]
-        self.__LOGGER__.debug(math_envs)
+        wikipedia_parser_logger.debug(math_envs)
         return math_envs
 
     def extract_tags_to_remove(self):
