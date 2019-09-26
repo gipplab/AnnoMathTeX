@@ -36,10 +36,9 @@
 
 <form method="POST" id="post-form">
     {% csrf_token %}
-    <button type="submit" name="post-form-submit2" onclick="alert('Annotations Saved')">
-      <a href="https://forms.gle/MGDSmy8686DCA4477" target="_blank" rel="noopener noreferrer">
-        Save
-      </a>
+    <button type="submit" name="post-form-submit2" onclick="save();">
+      Save
+    </button>
     </button>
 </form>
 
@@ -48,6 +47,7 @@
 <div id="popupModal" class="modal">
   <!-- Modal content -->
   <div class="modal-content">
+    <h3 id="popupModalHeader"></h3>
     <span class="close" id="span">&times;</span>
     <label><input id="localSwitch" type="checkbox" >Local</label>
     <br>
@@ -130,6 +130,12 @@
 <script>
     var existingAnnotations = "{{ File.existing_annotations|escapejs }}";
     handleExistingAnnotations(existingAnnotations);
+
+    function save() {
+      alert('Annotations Saved');
+      var win = window.open("https://forms.gle/MGDSmy8686DCA4477", '_blank');
+      win.focus();
+    }
 </script>
 
 </body>

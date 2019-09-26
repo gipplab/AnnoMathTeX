@@ -51,20 +51,19 @@ class AnnotationView(View):
         items = {k: jquery_unparam(v) for (k, v) in request.POST.items()}
         action = list(items['action'].keys())[0]
         annotation_view_logger.info('POST, action: {}'.format(action))
-        annotation_view_logger.info(items)
+        #annotation_view_logger.info(items)
 
         if 'file_submit' in request.POST:
             return FileHandler(request).process_local_file()
 
         elif action == 'getRecommendations':
             response, recommendations_dict = TokenClickedHandler(items).get_recommendations()
-            #annotation_view_logger.info(recommendations_dict)
-            #for k in recommendations_dict:
-            #    print(k, recommendations_dict[k])
             return response
 
         elif action == 'saveSession':
-            print(items)
+            #annotation_view_logger.info(items)
+            annotation_view_logger.info(items['annotations']['global'][' E __EQUALS__ m c^2'])
+            #annotation_view_logger.info(items['annotations']['global']['energy'])
             return SessionSavedHandler(request, items).save()
 
         elif action == 'getRenderedWikipediaArticle':

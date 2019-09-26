@@ -66,12 +66,16 @@ function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
         var fillText = 'Identifier: ' + tokenContent;
         content = tokenContent;
         isFormula = false;
+        var headerText = 'IDENTIFIER ANNOTATION';
     }
     else {
         var fillText = 'Formula: ' + mathEnvContent;
         content = mathEnvContent//.split('\\').join('');
         isFormula = true;
+        var headerText = 'FORMULA ANNOTATION';
     }
+
+    document.getElementById('popupModalHeader').innerHTML = headerText;
 
 
     document.getElementById("highlightedText").innerHTML = fillText;

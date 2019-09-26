@@ -192,6 +192,9 @@ class DataRepoHandler:
         self.commit_file(path, article)
         return
 
+    def formula_concept_db_first_commit(self, formulae):
+        self.commit_file('sources/formula_concepts.txt', formulae)
+
 
 
 
@@ -358,6 +361,7 @@ def wikidata_identifiers_by_name(d):
 if __name__ == '__main__':
     #For testing purposes
     from key import local_token
+
     import os
     d = DataRepoHandler(local_token)
     #a = d.get_wikipedia_article('Angular velocity')

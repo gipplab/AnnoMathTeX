@@ -1,11 +1,16 @@
 import json
-from jquery_unparam import jquery_unparam
+import logging
 from django.http import HttpResponse
-from ...views.helper_classes.data_repo_handler import DataRepoHandler, ManualRecommendationsCleaner
-from ...views.helper_classes.helper_functions import handle_annotations
-from ...views.helper_classes.eval_file_writer import EvalFileWriter
+from .data_repo_handler import DataRepoHandler, ManualRecommendationsCleaner
+from .helper_functions import handle_annotations
+from .eval_file_writer import EvalFileWriter
+from .formula_concept_handler import FormulaConceptHandler
 
 from ...config import *
+
+
+logging.basicConfig(level=logging.INFO)
+session_saved_handler_logger = logging.getLogger(__name__)
 
 class SessionSavedHandler:
     """
@@ -29,14 +34,34 @@ class SessionSavedHandler:
         self.items = items
 
 
+    def add_qids(self, manual_recommendations):
+        # not necessary???
+        # if the wikidata item wasn't found based on the name, it won't be found now
+        pass
+
+
+    def formula_concept_db_initial_commit(self, annotations):
+        """
+        :param annotations:
+        :return:
+        """
+        formulae = FormulaConceptHandler(annotations).get_formulae()
+        print(formulae)
+
+
     def save(self):
         annotations = self.items['annotations']
-        file_name = self.items['fileName']['f']
+
+        session_saved_handler_logger.info(self.items['annotations']['global'][' E __EQUALS__ m c^2'])
+
         manual_recommendations = self.items['manualRecommendations']
 
         m = ManualRecommendationsCleaner(manual_recommendations)
         cleaned_manual_recommendations = m.get_recommendations()
-        cleaned_annotations = handle_annotations(annotations)
+
+        #cleaned_annotations = handle_annotations(annotations)
+
+        self.formula_concept_db_initial_commit(annotations)
 
         #self.save_files_locally(file_name, cleaned_annotations)
         #self.save_files_to_repo(file_name, cleaned_annotations, cleaned_manual_recommendations)

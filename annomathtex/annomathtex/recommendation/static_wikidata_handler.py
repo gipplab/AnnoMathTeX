@@ -76,7 +76,7 @@ class StaticWikidataHandler:
         if 'global' in annotations:
             annotations = annotations['global']
             for id_or_formula in annotations:
-                static_wikidata_handler_logger.info('mathEnv: {}'.format(annotations[id_or_formula]['mathEnv']))
+                #static_wikidata_handler_logger.info('mathEnv: {}'.format(annotations[id_or_formula]['mathEnv']))
                 static_wikidata_handler_logger.info('formula_string: {}'.format(formula_string))
                 if 'mathEnv' in annotations[id_or_formula] and annotations[id_or_formula]['mathEnv'] == formula_string:
                     #print('mathEnv in annotations id_or_formula')

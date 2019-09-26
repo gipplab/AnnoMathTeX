@@ -4,6 +4,7 @@ function noMatchInputListener() {
      */
 
     window.manualRecommendationStartTime = Date.now();
+    window.manualSelectionTime = Date.now() - window.tokenClickedTime;
     //var manualRecommendationStartTime = Date.now();
     //console.log(manualRecommendationStartTime);
 }
@@ -20,7 +21,7 @@ function handleNoMatch(){
     var name = document.getElementById('noMatchInput').value;
     var uIDs = getLinkedIDs(content);
 
-    addToAnnotations(uniqueID, name, 'user', '-', manualRecommendationsSubmitTime, true, uIDs);
+    addToAnnotations(uniqueID, name, 'user', '-', 'N/A', manualRecommendationsSubmitTime, manualSelectionTime, true, uIDs);
     addToMannualRecommendations(name);
     var local = document.getElementById('localSwitch').checked;
 
@@ -40,16 +41,19 @@ function addToMannualRecommendations(name) {
 
 
     if (content in manualRecommendations) {
-        manualRecommendations[content].push({'name': name});
+        manualRecommendations[content].push({'name': name, 'qid': 'N/A'});
     } else {
-        manualRecommendations[content] = [{'name': name}];
+        manualRecommendations[content] = [{'name': name, 'qid': 'N/A'}];
     }
 
 }
 
 
-function addToAnnotations(uID, name, source, rowNum, time, noMatch=false, uIDs = null) {
+function addToAnnotations(uID, name, source, rowNum, qid, selectionTime, manualSelectionTime=-1000, noMatch=false, uIDs = null) {
     /*
+    manualSelectionTime: the time from when the token was clicked until MANUAL INSERTION was selected
+    (only for manual annotation)
+
     An annotation was made and the information is added to the annotations dictionary
      */
     if (isFormula) {
@@ -64,7 +68,9 @@ function addToAnnotations(uID, name, source, rowNum, time, noMatch=false, uIDs =
                 'mathEnv': mathEnv,
                 'source': source,
                 'rowNum': rowNum,
+                'qid': qid,
                 'time': time,
+                'manualSelectionTime': manualSelectionTime,
                 'sourcesWithNums': noMatch ? {} : sourcesWithNums[name],
                 'type': type //identifier or formula
             };
@@ -87,6 +93,7 @@ function addToAnnotations(uID, name, source, rowNum, time, noMatch=false, uIDs =
         'name': name,
         'mathEnv': mathEnv,
         'uniqueIDs': uIDs,
+        'qid': qid,
         'time': time,
         'sourcesWithNums': noMatch ? {} : sourcesWithNums[name],
         'type': type

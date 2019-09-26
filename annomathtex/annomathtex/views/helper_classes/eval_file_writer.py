@@ -71,7 +71,7 @@ class EvalFileWriter:
                 row = [token_content, self.loc[token_content][id]['name']] + \
                       sources_with_nums + \
                       ['local'] + \
-                      [self.loc[token_content][id]['time']]
+                      [self.loc[token_content][id]['time'],  self.loc[token_content][id]['time']]
                 rows.append(row)
 
         return rows
@@ -92,7 +92,7 @@ class EvalFileWriter:
 
             row = [token_content, self.glob[token_content]['name']] + \
                   sources_with_nums + ['global'] + \
-                  [self.glob[token_content]['time']]
+                  [self.glob[token_content]['time'], self.glob[token_content]['manualSelectionTime']]
             rows.append(row)
 
 
@@ -121,7 +121,10 @@ class EvalFileWriter:
                 for row in all_rows:
                     csv_writer.writerow(row)"""
 
-        header = ['Identifier / Formula', 'Name', 'ArXiV', 'Wikipedia', 'Wikidata', 'WordWindow', 'type', 'time']
+        header = ['Identifier / Formula',
+                  'Name',
+                  'ArXiV', 'Wikipedia', 'Wikidata', 'WordWindow',
+                  'type', 'time', 'manualSelectionTime']
         with open(evaluation_file_path, 'w') as f:
             csv_writer = csv.writer(f, delimiter=',')
             csv_writer.writerow(header)
@@ -141,7 +144,7 @@ class EvalFileWriter:
                   'Name',
                   'ArXiV', 'Wikipedia', 'Wikidata1', 'Wikidata2',  'WordWindow', 'FormulaConceptDB',
                   'type',
-                  'time']
+                  'time', 'manualSelectionTime']
         csv.writer(f).writerows([header] + all_rows)
         return f.getvalue()
 

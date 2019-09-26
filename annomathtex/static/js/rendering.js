@@ -354,7 +354,7 @@ function createCell(item, source, rowNum) {
     td += " style='background-color:" + backgroundColor + "'";
     td += "onclick='selected(\"" + argsString + "\")' >";
     if (name) {
-        td += name + ' - ' + qid;
+        td += name + ' (' + qid + ')';
     }
     td += "</td>";
 
@@ -390,7 +390,7 @@ function selected(argsString){
             case cellColorBasic:
                 //make local annotation
                 setCellColorSelectedLocal(cellID);
-                addToAnnotations(uniqueID, name, source, rowNum, recommendationSelectedTime);
+                addToAnnotations(uniqueID, name, source, rowNum, qid, recommendationSelectedTime);
                 setAnnotatedColor([uniqueID]);
                 break;
             case cellColorSelectedLocal:
@@ -418,7 +418,7 @@ function selected(argsString){
                     uIDs.push(uniqueID)
                 }
 
-                addToAnnotations(uniqueID, name, source, rowNum, recommendationSelectedTime, false, uIDs);
+                addToAnnotations(uniqueID, name, source, rowNum, qid, recommendationSelectedTime, false, uIDs);
                 setAnnotatedColor([uniqueID]);
                 setAnnotatedColor(uIDs);
                 break;
