@@ -62,7 +62,7 @@ class AnnotationView(View):
 
         elif action == 'saveSession':
             #annotation_view_logger.info(items)
-            annotation_view_logger.info(items['annotations']['global'][' E __EQUALS__ m c^2'])
+            #annotation_view_logger.info(items['annotations']['global'][' E __EQUALS__ m c^2'])
             #annotation_view_logger.info(items['annotations']['global']['energy'])
             return SessionSavedHandler(request, items).save()
 

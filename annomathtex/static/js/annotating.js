@@ -69,7 +69,7 @@ function addToAnnotations(uID, name, source, rowNum, qid, selectionTime, manualS
                 'source': source,
                 'rowNum': rowNum,
                 'qid': qid,
-                'time': time,
+                'time': selectionTime,
                 'manualSelectionTime': manualSelectionTime,
                 'sourcesWithNums': noMatch ? {} : sourcesWithNums[name],
                 'type': type //identifier or formula
@@ -94,7 +94,8 @@ function addToAnnotations(uID, name, source, rowNum, qid, selectionTime, manualS
         'mathEnv': mathEnv,
         'uniqueIDs': uIDs,
         'qid': qid,
-        'time': time,
+        'time': selectionTime,
+        'manualSelectionTime': manualSelectionTime,
         'sourcesWithNums': noMatch ? {} : sourcesWithNums[name],
         'type': type
         };

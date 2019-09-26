@@ -5,6 +5,7 @@ import re
 import logging
 urllib3.disable_warnings()
 from github import Github, GithubException
+from .formula_concept_handler import FormulaConceptHandler
 
 logging.basicConfig(level=logging.INFO)
 data_repo_handler_logger = logging.getLogger(__name__)
@@ -78,6 +79,7 @@ class DataRepoHandler:
 
         self.commit_file('sources/formula_concepts.txt', json.dumps(formula_concepts))
         return
+
 
     def tmp(self):
         encoded_content = self.repo.get_file_contents('sources/formula_concepts.txt')
@@ -196,87 +198,6 @@ class DataRepoHandler:
         self.commit_file('sources/formula_concepts.txt', formulae)
 
 
-
-
-
-class FormulaConceptHandler:
-    """
-    Prepares the formulae for adding to the formula concepts file.
-    """
-
-    def __init__(self, annotations):
-        self.annotations = annotations
-
-    def extract_formulae(self):
-        formulae = {}
-
-        if 'global' in self.annotations:
-            g = self.annotations['global']
-            for key in g:
-                instance = g[key]
-                if instance['type'] == 'Formula':
-                    formulae[key.replace('__EQUALS__', '=')] = {
-                        'name': instance['name'].replace('__EQUALS__', '=')
-                        #'sourcesWithNums': instance['sourcesWithNums']
-                    }
-
-        if 'local' in self.annotations:
-            l = self.annotations['local']
-            for key in l:
-                for unique_id in l[key]:
-                    instance = l[key][unique_id]
-                    if instance['type'] == 'Formula':
-                        formulae[key.replace('__EQUALS__', '=')] = {
-                            'name': instance['name'].replace('__EQUALS__', '=')
-                            #'sourcesWithNums': instance['sourcesWithNums']
-                        }
-
-        return formulae
-
-
-    def add_identifiers(self):
-        formulae = self.extract_formulae()
-        if 'global' in self.annotations:
-            g = self.annotations['global']
-            for key in g:
-                instance = g[key]
-                m = instance['mathEnv']
-                is_identifier = True if instance['type'] == 'Identifier' else False
-                if m in formulae and is_identifier:
-                    if 'identifiers' in formulae[m]:
-                        formulae[m]['identifiers'][key] = instance['name']
-                    else:
-                        formulae[m]['identifiers'] = {key: instance['name']}
-
-        if 'local' in self.annotations:
-            l = self.annotations['local']
-            for key in l:
-                for unique_id in l[key]:
-                    instance = l[key][unique_id]
-                    m = instance['mathEnv']
-                    is_identifier = True if instance['type'] == 'Identifier' else False
-                    if m in formulae and is_identifier:
-                        if 'identifiers' in formulae[m]:
-                            formulae[m]['identifiers'][key] = instance['name']
-                        else:
-                            formulae[m]['identifiers'] = {key: instance['name']}
-        return formulae
-
-
-    def get_formulae(self):
-        formulae = self.add_identifiers()
-        reversed_formulae = {}
-
-        for formula_string in formulae:
-            name = formulae[formula_string]['name']
-            identifiers = formulae[formula_string]['identifiers']
-            reversed_formulae[name] = {'TeXStrings': [formula_string],
-                                       'Identifiers': identifiers}
-
-        return reversed_formulae
-
-
-
 class ManualRecommendationsCleaner:
     """
     Prepares the manual recommendations for adding them to the manual recommendations file.
@@ -367,9 +288,9 @@ if __name__ == '__main__':
     #a = d.get_wikipedia_article('Angular velocity')
     #decode_wikipedia_article(a)
     #d.delete_file('files/Sphere.txt')
-    d.delete_file('sources/wikidata_identifiers_by_name.json')
+    d.delete_file('sources/formula_concepts.txt')
 
-    wikidata_identifiers_by_name(d)
+    #wikidata_identifiers_by_name(d)
 
 
 
