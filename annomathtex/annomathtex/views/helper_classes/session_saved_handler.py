@@ -51,6 +51,7 @@ class SessionSavedHandler:
 
     def save(self):
         annotations = self.items['annotations']
+        file_name = self.items['fileName']['f']
 
         #session_saved_handler_logger.info(self.items['annotations']['global'][' E __EQUALS__ m c^2'])
 
@@ -64,9 +65,9 @@ class SessionSavedHandler:
         #session_saved_handler_logger.info(cleaned_annotations)
 
 
-        self.formula_concept_db_initial_commit(annotations)
+        #self.formula_concept_db_initial_commit(annotations)
         #self.save_files_locally(file_name, cleaned_annotations)
-        #self.save_files_to_repo(file_name, cleaned_annotations, cleaned_manual_recommendations)
+        self.save_files_to_repo(file_name, cleaned_annotations, cleaned_manual_recommendations)
 
         return HttpResponse(
             json.dumps({'testkey': 'testvalue'}),

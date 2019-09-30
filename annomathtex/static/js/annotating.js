@@ -62,6 +62,8 @@ function addToAnnotations(uID, name, source, rowNum, qid, selectionTime, manualS
         var type = 'Identifier';
     }
 
+    console.log(uIDs);
+
     function localDict() {
         return {
                 'name': name,

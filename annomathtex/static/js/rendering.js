@@ -372,6 +372,7 @@ function selected(argsString){
 
     var recommendationSelectedTime = Date.now() - window.tokenClickedTime;
 
+
     var argsArray = argsString.split('---');
     var name = argsArray[0];
     var qid = argsArray[1];
@@ -383,6 +384,7 @@ function selected(argsString){
 
     var local = document.getElementById('localSwitch').checked;
 
+    console.log(uniqueID);
 
     if (local) {
         //local annotations
@@ -418,7 +420,9 @@ function selected(argsString){
                     uIDs.push(uniqueID)
                 }
 
-                addToAnnotations(uniqueID, name, source, rowNum, qid, recommendationSelectedTime, false, uIDs);
+                console.log(uIDs);
+
+                addToAnnotations(uniqueID, name, source, rowNum, qid, recommendationSelectedTime, -1000, false, uIDs);
                 setAnnotatedColor([uniqueID]);
                 setAnnotatedColor(uIDs);
                 break;
