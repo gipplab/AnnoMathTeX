@@ -1,1 +1,1 @@
-Sphere
+Quantum harmonic oscillator
