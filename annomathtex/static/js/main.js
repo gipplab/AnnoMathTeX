@@ -47,7 +47,7 @@ function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
         return;
     }
 
-    document.getElementById("noMatchInput").placeholder = "Enter Name";
+    document.getElementById("noMatchInput").value = "";
 
 
     var tokenContent = JSON.parse(jsonContent)['content'];
