@@ -48,12 +48,30 @@ class SessionSavedHandler:
         formulae = FormulaConceptHandler(annotations).get_formulae()
         DataRepoHandler().commit_file('sources/formula_concepts.txt', json.dumps(formulae))
 
+    def post_process_annotations(self, annotations):
+
+        def apostroph(item):
+            return item['name'].replace('__APOSTROPH__', '\'')
+        if 'global' in annotations:
+            for symbol in annotations['global']:
+                item = annotations['global'][symbol]
+                item['name'] = apostroph(item)
+
+        if 'local' in annotations:
+            for symbol in annotations['local']:
+                for id in annotations['local'][symbol]:
+                    item = annotations['local'][symbol][id]
+                    item['name'] = apostroph(item)
+
+        return annotations
 
     def save(self):
-        annotations = self.items['annotations']
+        annotations = self.post_process_annotations(self.items['annotations'])
         file_name = self.items['fileName']['f']
 
-        #session_saved_handler_logger.info(self.items['annotations']['global'][' E __EQUALS__ m c^2'])
+
+
+        session_saved_handler_logger.info(self.items['annotations'])
 
         manual_recommendations = self.items['manualRecommendations']
 
@@ -67,7 +85,7 @@ class SessionSavedHandler:
 
         #self.formula_concept_db_initial_commit(annotations)
         #self.save_files_locally(file_name, cleaned_annotations)
-        self.save_files_to_repo(file_name, cleaned_annotations, cleaned_manual_recommendations)
+        #self.save_files_to_repo(file_name, cleaned_annotations, cleaned_manual_recommendations)
 
         return HttpResponse(
             json.dumps({'testkey': 'testvalue'}),

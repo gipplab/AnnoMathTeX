@@ -47,8 +47,6 @@ function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
         return;
     }
 
-    console.log(tokenUniqueId);
-
     document.getElementById("noMatchInput").placeholder = "Enter Name";
 
 

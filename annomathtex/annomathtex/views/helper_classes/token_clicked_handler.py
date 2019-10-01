@@ -118,7 +118,7 @@ class TokenClickedHandler:
                 if name in all_wikidata_formulae:
                     r['qid'] = all_wikidata_formulae[name]['qid']
                 else:
-                    r['qid'] = 'NA'
+                    r['qid'] = 'N/A'
                 #token_clicked_handler_logger.info(r)
                 return r
 

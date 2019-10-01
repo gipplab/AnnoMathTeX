@@ -64,9 +64,6 @@ function handlePopupTable() {
     is called.
      */
 
-    console.log(recommendations);
-
-
     if (isFormula) {
         populateTableFormula();
     } else {
@@ -95,8 +92,8 @@ function populateTableFormula(random=false) {
     let formulaConceptDB = recommendations['formulaConceptDB'];
     var existingManual = [...new Set(recommendations['manual'])];
 
+
     if (mathEnv in manualRecommendations) {
-        console.log(mathEnv);
         var manual = manualRecommendations[mathEnv];
         for (var i in manual) {
             existingManual.unshift(manual[i]);
@@ -135,6 +132,8 @@ function populateTableFormula(random=false) {
     } else {
         var table= "<table><tr><td>Wikidata1</td><td>Wikidata2</td><td>WordWindow</td><td>FormulaConceptDB</td><td>Manual</td></tr>";
     }
+
+    //console.log(resultList);
 
     let source0 = resultList[0][0];
     let source1 = resultList[1][0];
@@ -354,7 +353,7 @@ function createCell(item, source, rowNum) {
     td += " style='background-color:" + backgroundColor + "'";
     td += "onclick='selected(\"" + argsString + "\")' >";
     if (name) {
-        td += name + ' (' + qid + ')';
+        td += name.replace(new RegExp('__APOSTROPH__', 'g'), '\''); + ' (' + qid + ')';
     }
     td += "</td>";
 
@@ -384,7 +383,8 @@ function selected(argsString){
 
     var local = document.getElementById('localSwitch').checked;
 
-    console.log(uniqueID);
+    console.log(name);
+
 
     if (local) {
         //local annotations
@@ -405,8 +405,6 @@ function selected(argsString){
 
     } else {
         //global annotations
-        console.log(manualRecommendations);
-        console.log(recommendations['manual']);
         switch (backgroundColor) {
             case cellColorBasic:
                 setCellColorSelectedGlobal(cellID);
@@ -420,15 +418,12 @@ function selected(argsString){
                     uIDs.push(uniqueID)
                 }
 
-                console.log(uIDs);
-
                 addToAnnotations(uniqueID, name, source, rowNum, qid, recommendationSelectedTime, -1000, false, uIDs);
                 setAnnotatedColor([uniqueID]);
                 setAnnotatedColor(uIDs);
                 break;
 
             case cellColorSelectedGlobal:
-                console.log('cellColorSelectedGlobal');
                 setCellColorBasic(cellID);
                 var uIDs = annotations['global'][content]['uniqueIDs'];
                 setBasicColor([uniqueID]);
@@ -456,7 +451,7 @@ function renderAnnotationsTable() {
         var type = local ? 'Local' : 'Global';
         var argsString = args.join('----');
         argsString = argsString.split('\\').join('\\\\');
-        var tr ="<tr><td>" + token + "</td><td>" + name + "</td><td>" + type + "</td>";
+        var tr ="<tr><td>" + token + "</td><td>" + name.replace(new RegExp('__APOSTROPH__', 'g'), '\'') + "</td><td>" + type + "</td>";
         tr += "<td onclick='deleteFromAnnotations(\"" + argsString + "\")'>x</td></tr>";
         return tr;
     }

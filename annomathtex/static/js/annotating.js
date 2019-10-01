@@ -19,6 +19,8 @@ function handleNoMatch(){
 
     let manualRecommendationsSubmitTime = Date.now() - window.manualRecommendationStartTime;
     var name = document.getElementById('noMatchInput').value;
+    name = name.replace(new RegExp('\'', 'g'), '__APOSTROPH__');
+    console.log(name);
     var uIDs = getLinkedIDs(content);
 
     addToAnnotations(uniqueID, name, 'user', '-', 'N/A', manualRecommendationsSubmitTime, manualSelectionTime, true, uIDs);
@@ -61,8 +63,6 @@ function addToAnnotations(uID, name, source, rowNum, qid, selectionTime, manualS
     } else {
         var type = 'Identifier';
     }
-
-    console.log(uIDs);
 
     function localDict() {
         return {
@@ -155,9 +155,6 @@ function handleExistingAnnotations(existing_annotations) {
     } else {
         annotations = {};
     }
-
-    console.log(typeof annotations);
-    console.log(typeof existing_annotations);
 
     if ('global' in annotations) {
         var g = true;
