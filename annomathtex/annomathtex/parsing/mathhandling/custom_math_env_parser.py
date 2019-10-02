@@ -53,6 +53,41 @@ class CustomMathEnvParser:
         return greek_letters_regex
 
 
+    def split_double_chars(self, id_pos_len):
+
+        id_pos_len_new = []
+
+        for i, item in enumerate(id_pos_len):
+            id, pos, l = item
+            if l == 2:
+
+                id_1 = id[0]
+                pos_1 = pos
+                l_1 = 1
+
+                id_2 = id[1]
+                pos_2 = pos+1
+                l_2 = 1
+
+
+                #print(id_1, id_2)
+
+                id_pos_len_1 = (id_1, pos_1, l_1)
+                id_pos_len_2 = (id_2, pos_2, l_2)
+
+                print(1, id_pos_len)
+                print(2, id_pos_len[:i])
+                print(3, id_pos_len_1)
+                print(4, id_pos_len_2)
+                print(5, id_pos_len[i+1:])
+
+                id_pos_len = id_pos_len[:i] + [id_pos_len_1, id_pos_len_2] + id_pos_len[i+1:]
+
+        return id_pos_len
+
+
+
+
     def get_id_pos_len(self):
         """
         This method extracts the identifiers from a math environment using a regex. In addition the position of each identifier
@@ -74,7 +109,24 @@ class CustomMathEnvParser:
         #identifier_r = r'{}({}|[a-z]{{1,2}})'.format(greek_letters_regex, math_symbols_regex)
         r = re.compile(identifier_r, re.IGNORECASE)
         self.math_env = remove_math_tags(self.math_env)
-        id_pos_len = [(i.group(), i.start(), len(i.group())) for i in r.finditer(self.math_env)]
+        #id_pos_len = [(i.group(), i.start(), len(i.group())) for i in r.finditer(self.math_env)]
+
+        id_pos_len = []
+
+        for i in r.finditer(self.math_env):
+
+            id = i.group()
+            pos = i.start()
+            _len = len(id)
+
+            if _len == 2:
+                id_pos_len.append((id[0], pos, 1))
+                id_pos_len.append((id[1], pos+1, 1))
+            else:
+                id_pos_len.append((id, pos, _len))
+
+        #post processed: split 2 char identifiers (e.g. dx)
+        #id_pos_len_pp = self.split_double_chars(id_pos_len)
         return id_pos_len
 
 
@@ -115,8 +167,8 @@ def test():
     s = CustomMathEnvParser(ex1)
     #m = s.load_math_symbols(s.greek_letters_path_testing)
     g = s.get_id_pos_len()
-    m = s.load_math_symbols(s.greek_letters_path_testing)
-    print(m)
+    #m = s.load_math_symbols(s.greek_letters_path_testing)
+    print(g)
 
 
 if __name__ == "__main__":
