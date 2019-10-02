@@ -110,6 +110,9 @@ function populateTableFormula(random=false) {
                       [existingManual, 'Manual']];
 
 
+    console.log(resultList);
+
+
     tmpResultList = resultList[4][0];
 
 
@@ -353,7 +356,7 @@ function createCell(item, source, rowNum) {
     td += " style='background-color:" + backgroundColor + "'";
     td += "onclick='selected(\"" + argsString + "\")' >";
     if (name) {
-        td += name.replace(new RegExp('__APOSTROPH__', 'g'), '\''); + ' (' + qid + ')';
+        td += name.replace(new RegExp('__APOSTROPH__', 'g'), '\'') + ' (' + qid + ')';
     }
     td += "</td>";
 

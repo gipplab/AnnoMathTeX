@@ -119,3 +119,35 @@ function getWikipediaArticle(name) {
 }
 
 
+
+function checkManualRecommendationQID(name) {
+
+    let data_dict = {
+          'csrfmiddlewaretoken': getCookie("csrftoken"),
+          'action': 'checkManualRecommendationQID',
+          'name': name,
+          'isFormula': isFormula
+          };
+
+
+    $.ajax({
+      //url : '/annotation_template_tmp.html/', // the endpoint
+      url : '/',
+      type : "POST", // http method
+      data : data_dict, // data sent with the post request
+
+      //successful response
+      success : function(json) {
+          addNoMatchToAnnotations(json);
+      },
+
+      //non-successful response
+      error : function(xhr,errmsg,err) {
+          $('#results').html("<div class='alert-box alert radius' data-alert>error: "+errmsg+
+              " <a href='#' class='close'>&times;</a></div>");
+          console.log(xhr.status + ": " + xhr.responseText);
+      }
+    });
+}
+
+

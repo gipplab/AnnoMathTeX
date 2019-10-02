@@ -8,6 +8,7 @@ from ..forms.uploadfileform import UploadFileForm
 from .helper_classes.repo_content_handler import RepoContentHandler
 from .helper_classes.wikipedia_query_handler import WikipediaQueryHandler
 from .helper_classes.wikipedia_article_handler import WikipediaArticleHandler
+from .helper_classes.wikidata_qid_handler import WikidataQIDHandler
 
 logging.basicConfig(level=logging.INFO)
 start_screen_view_logger = logging.getLogger(__name__)
@@ -51,6 +52,10 @@ class StartScreenView(View):
 
         elif action == 'addArticleToRepo':
             return WikipediaArticleHandler(request, items).add_wikipedia_article(self.template_name, TestForm())
+
+        elif action == 'checkManualRecommendationQID':
+            response = WikidataQIDHandler(request, items).add_qids()
+            return response
 
         return render(request, "file_upload_wiki_suggestions_2.html", self.initial)
 

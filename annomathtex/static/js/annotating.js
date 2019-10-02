@@ -10,21 +10,20 @@ function noMatchInputListener() {
 }
 
 
-function handleNoMatch(){
-    /*
-    The user did not find any of the recommendations to be fitting and added his own suggestion.
-    This means that this information has to be added to the "annotations" dictionary, which will later be written to the
-    evaluation csv file, along with the other annotations.
-     */
+function addNoMatchToAnnotations(result) {
 
-    let manualRecommendationsSubmitTime = Date.now() - window.manualRecommendationStartTime;
-    var name = document.getElementById('noMatchInput').value;
+    //var tmp = JSON.parse(result)['qid'];
+    console.log(result);
+
+    let qid = result['qid'];
+    let name = result['name'];
+
+
     name = name.replace(new RegExp('\'', 'g'), '__APOSTROPH__');
-    console.log(name);
     var uIDs = getLinkedIDs(content);
 
-    addToAnnotations(uniqueID, name, 'user', '-', 'N/A', manualRecommendationsSubmitTime, manualSelectionTime, true, uIDs);
-    addToMannualRecommendations(name);
+    addToAnnotations(uniqueID, name, 'user', '-', qid, manualRecommendationsSubmitTime, manualSelectionTime, true, uIDs);
+    addToMannualRecommendations(name, qid);
     var local = document.getElementById('localSwitch').checked;
 
     if (local) {
@@ -35,17 +34,32 @@ function handleNoMatch(){
 
     handlePopupTable();
     renderAnnotationsTable();
+
 }
 
 
-function addToMannualRecommendations(name) {
+function handleNoMatch(){
+    /*
+    The user did not find any of the recommendations to be fitting and added his own suggestion.
+    This means that this information has to be added to the "annotations" dictionary, which will later be written to the
+    evaluation csv file, along with the other annotations.
+     */
+    window.manualRecommendationsSubmitTime = Date.now() - window.manualRecommendationStartTime;
+    var name = document.getElementById('noMatchInput').value;
 
+    checkManualRecommendationQID(name);
+
+
+}
+
+
+function addToMannualRecommendations(name, qid) {
 
 
     if (content in manualRecommendations) {
-        manualRecommendations[content].push({'name': name, 'qid': 'N/A'});
+        manualRecommendations[content].push({'name': name, 'qid': qid});
     } else {
-        manualRecommendations[content] = [{'name': name, 'qid': 'N/A'}];
+        manualRecommendations[content] = [{'name': name, 'qid': qid}];
     }
 
 }

@@ -10,6 +10,7 @@ from .helper_classes.file_handler import FileHandler
 from .helper_classes.cache_handler import CacheHandler
 from .helper_classes.wikipedia_article_name_handler import WikipediaArticleNameHandler
 from .helper_classes.session_saved_handler import SessionSavedHandler
+from .helper_classes.wikidata_qid_handler import WikidataQIDHandler
 
 
 logging.basicConfig(level=logging.INFO)
@@ -51,13 +52,20 @@ class AnnotationView(View):
         items = {k: jquery_unparam(v) for (k, v) in request.POST.items()}
         action = list(items['action'].keys())[0]
         annotation_view_logger.info('POST, action: {}'.format(action))
-        annotation_view_logger.info(items)
+        #annotation_view_logger.info(items)
+        #annotation_view_logger.info(request.POST)
 
         if 'file_submit' in request.POST:
             return FileHandler(request).process_local_file()
 
         elif action == 'getRecommendations':
             response, recommendations_dict = TokenClickedHandler(items).get_recommendations()
+            return response
+
+        elif action == 'checkManualRecommendationQID':
+            print('FFFFFFFFFFF')
+            response = WikidataQIDHandler(request, items).add_qids()
+            print('GGGGGGGGGGGG')
             return response
 
         elif action == 'saveSession':
