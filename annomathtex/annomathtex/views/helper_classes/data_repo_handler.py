@@ -179,9 +179,11 @@ class DataRepoHandler:
     def get_annotation_file(self, article_name):
 
 
-        if article_name + ' annotation ' in self.list_directory(dirname='annotation'):
+        #if article_name + ' annotation ' in self.list_directory(dirname='annotation'):
+        if article_name in self.list_directory(dirname='annotation'):
             annotation_file_name = article_name.replace(' ', '_')
-            annotation_file_name = '{}_annotation_.txt'.format(annotation_file_name)
+            #annotation_file_name = '{}_annotation_.txt'.format(annotation_file_name)
+            annotation_file_name = '{}.txt'.format(annotation_file_name)
             path = 'annotation/{}'.format(annotation_file_name)
             encoded_content = self.repo.get_file_contents(path)
             decoded_content = encoded_content.decoded_content
