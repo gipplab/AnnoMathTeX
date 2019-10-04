@@ -10,6 +10,32 @@ function noMatchInputListener() {
 }
 
 
+function rejectHighlightingListener() {
+    /*
+    Starts the timer when the user starts inputting a manual recommendation
+     */
+
+    var name = 'N/A';
+    var qid = 'N/A';
+    var uIDs = getLinkedIDs(content);
+
+    addToAnnotations(uniqueID, name, 'user', '-', qid, false, false, true, uIDs);
+    addToMannualRecommendations(name, qid);
+    var local = document.getElementById('localSwitch').checked;
+
+    if (local) {
+        setAnnotatedColor([uniqueID]);
+    } else {
+        setAnnotatedColor(uIDs);
+    }
+
+    handlePopupTable();
+    renderAnnotationsTable();
+
+
+}
+
+
 function addNoMatchToAnnotations(result) {
 
     //var tmp = JSON.parse(result)['qid'];

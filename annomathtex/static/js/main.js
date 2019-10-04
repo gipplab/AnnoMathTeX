@@ -49,7 +49,6 @@ function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
 
     document.getElementById("noMatchInput").value = "";
 
-
     var tokenContent = JSON.parse(jsonContent)['content'];
     var mathEnvContent = JSON.parse(jsonMathEnv)['math_env'];
 
@@ -67,18 +66,19 @@ function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
         content = tokenContent;
         isFormula = false;
         var headerText = 'IDENTIFIER ANNOTATION';
+        var rejectHighlightingButtonText = 'Not an identifier';
     }
     else {
         var fillText = 'Formula: ' + mathEnvContent;
         content = mathEnvContent//.split('\\').join('');
         isFormula = true;
         var headerText = 'FORMULA ANNOTATION';
+        var rejectHighlightingButtonText = 'Not a formula';
     }
 
     document.getElementById('popupModalHeader').innerHTML = headerText;
-
-
     document.getElementById("highlightedText").innerHTML = fillText;
+    document.getElementById("rejectHighlightingButton").innerHTML = rejectHighlightingButtonText;
 
     let data_dict = { the_post : $("#" + tokenUniqueId).val(),
                   'csrfmiddlewaretoken': getCookie("csrftoken"),
