@@ -1,8 +1,12 @@
 import os
 import json
+import logging
 from ..config import recommendations_limit
 from ..settings.common import PROJECT_ROOT
 
+
+logging.basicConfig(level=logging.INFO)
+wikipedia_evaluation_list_handler_logger = logging.getLogger(__name__)
 
 class WikipediaEvaluationListHandler:
     """
@@ -29,6 +33,7 @@ class WikipediaEvaluationListHandler:
         :param symbol: The string of the symbol that was clicked by the user for annotation.
         :return: The corresponding matches from the dictionary of Wikipedia identifiers.
         """
+        symbol = symbol if symbol in self.identifier_dict else '\\{}'.format(symbol)
         if symbol in self.identifier_dict:
             identifier_dict_symbol = self.identifier_dict[symbol]
             new_d = []
