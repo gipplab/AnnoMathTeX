@@ -73,6 +73,8 @@ function handleNoMatch(){
     window.manualRecommendationsSubmitTime = Date.now() - window.manualRecommendationStartTime;
     var name = document.getElementById('noMatchInput').value;
 
+    document.getElementById("noMatchInput").value = "";
+
     checkManualRecommendationQID(name);
 
 
