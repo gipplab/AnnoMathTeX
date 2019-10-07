@@ -19,8 +19,11 @@ function rejectHighlightingListener() {
     var qid = 'N/A';
     var uIDs = getLinkedIDs(content);
 
-    addToAnnotations(uniqueID, name, 'user', '-', qid, false, false, true, uIDs);
-    addToMannualRecommendations(name, qid);
+    if (!checkIfAnnotationExists(name)) {
+        addToAnnotations(uniqueID, name, 'user', '-', qid, false, false, true, uIDs);
+        addToMannualRecommendations(name, qid);
+    }
+
     var local = document.getElementById('localSwitch').checked;
 
     if (local) {
@@ -217,6 +220,36 @@ function handleExistingAnnotations(existing_annotations) {
     if (!l) {
         annotations['local'] = {};
     }
+
+}
+
+
+function checkIfAnnotationExists(name) {
+    console.log(name);
+    //console.log(annotations['global'][content]['name']);
+    console.log(annotations['global']);
+    console.log(content);
+
+    var exists;
+
+
+
+    if (content in annotations['global']) {
+        if (annotations['global'][content]['name'] == name) {
+            exists = true;
+        }
+
+    } else if (content in annotations['local']) {
+        if (uniqueID in annotations['local'][content]) {
+            if (annotations['local'][content][uniqueID]['name'] == name) {
+                exists = true;
+
+            }
+        }
+    } else {
+        exists = false;
+    }
+    return exists;
 
 }
 
