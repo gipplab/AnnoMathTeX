@@ -328,7 +328,7 @@ if __name__ == '__main__':
     #a = d.get_wikipedia_article('Angular velocity')
     #decode_wikipedia_article(a)
     #d.delete_file('files/Sphere.txt')
-    #d.delete_file('sources/formula_concepts.txt')
+    #d.delete_file('sources/math_wikidata_items.json')
     #wikidata_identifiers_by_name(d)
 
     #commit_all_wikidata_items()

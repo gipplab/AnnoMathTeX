@@ -143,36 +143,63 @@ SELECT DISTINCT ?item ?itemLabel ?itemDescription WHERE {
       UNION
   {?item wdt:P31 wd:Q12479}
       UNION
+  {?item wdt:P361 wd:Q12479}
+      UNION
   {?item wdt:P31 wd:Q8087}
+      UNION
+  {?item wdt:P361 wd:Q8087}
       UNION
   {?item wdt:P31 wd:Q3968}
       UNION
+  {?item wdt:P361 wd:Q3968}
+      UNION
   {?item wdt:P31 wd:Q149972}
+      UNION
+  {?item wdt:P361 wd:Q149972}
       UNION
   {?item wdt:P31 wd:Q217413}
       UNION
+  {?item wdt:P361 wd:Q217413}
+      UNION
   {?item wdt:P31 wd:Q8087}
+      UNION
+  {?item wdt:P361 wd:Q8087}
       UNION
   {?item wdt:P31 wd:Q12482}
       UNION
+  {?item wdt:P361 wd:Q12482}
+      UNION
   {?item wdt:P31 wd:Q12483}
+      UNION
+  {?item wdt:P361 wd:Q12483}
       UNION
   {?item wdt:P31 wd:Q5862903}
       UNION
+  {?item wdt:P361 wd:Q5862903}
+      UNION
   {?item wdt:P31 wd:Q131476}
+      UNION
+  {?item wdt:P361 wd:Q131476}
       UNION
   {?item wdt:P31 wd:Q42989}
       UNION
+  {?item wdt:P361 wd:Q42989}
+      UNION
   {?item wdt:P31 wd:Q7754}
+      UNION
+  {?item wdt:P361 wd:Q7754}
       UNION
   {?item wdt:P31 wd:Q395}
       UNION
+  {?item wdt:P361 wd:Q395}
+      UNION
   {?item wdt:P31 wd:Q11348}
       UNION
-  {?item wdt:P361 wd:Q395}
+  {?item wdt:P361 wd:Q11348}
   .
   SERVICE wikibase:label { bd:serviceParam wikibase:language "en" .}
 }
+
 
 
 
