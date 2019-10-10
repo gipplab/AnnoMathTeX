@@ -5,7 +5,7 @@ import re
 import logging
 urllib3.disable_warnings()
 from github import Github, GithubException
-from .formula_concept_handler import FormulaConceptHandler
+#from .formula_concept_handler import FormulaConceptHandler
 
 logging.basicConfig(level=logging.INFO)
 data_repo_handler_logger = logging.getLogger(__name__)
@@ -281,6 +281,20 @@ def wikidata_identifiers_by_name(d):
     d.commit_file('sources/wikidata_identifiers_by_name.json', json.dumps(identifiers_by_name))
 
 
+def commit_all_wikidata_items():
+    path = '/volumes/Stuff/all.json'
+
+    with open(path) as infile:
+        print(infile.read()[:100])
+        data = json.load(infile)
+        print(data['Douglas Adams'])
+
+
+
+
+
+
+
 if __name__ == '__main__':
     #For testing purposes
     from key import local_token
@@ -290,9 +304,8 @@ if __name__ == '__main__':
     #a = d.get_wikipedia_article('Angular velocity')
     #decode_wikipedia_article(a)
     #d.delete_file('files/Sphere.txt')
-    d.delete_file('sources/formula_concepts.txt')
-
+    #d.delete_file('sources/formula_concepts.txt')
     #wikidata_identifiers_by_name(d)
 
-
+    commit_all_wikidata_items()
 
