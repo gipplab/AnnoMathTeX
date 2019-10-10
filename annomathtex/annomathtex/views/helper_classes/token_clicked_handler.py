@@ -88,6 +88,10 @@ class TokenClickedHandler:
         data_repo_handler = DataRepoHandler()
         all_wikidata_identifiers = data_repo_handler.get_wikidata_identifiers_by_name()
         all_wikidata_formulae = data_repo_handler.get_wikidata_formulae()
+        all_math_items = data_repo_handler.get_math_wikidata_items()
+
+        token_clicked_handler_logger.info(type(all_math_items))
+        token_clicked_handler_logger.info(all_math_items["metabiaugmented hexagonal prism"])
 
 
         def pp(dict_list, source):
@@ -122,11 +126,28 @@ class TokenClickedHandler:
                 #token_clicked_handler_logger.info(r)
                 return r
 
-            if source not in ['wikidata1Results', 'wikidata2Results']:
-                if token_type == 'Identifier':
-                    dict_list = list(map(add_qid_identifier, dict_list))
+            def add_qid_all_math(r):
+
+                token_clicked_handler_logger.info(r)
+
+                name = r['name']
+                if name in all_math_items:
+                    r['qid'] = all_math_items[name]
                 else:
-                    dict_list = list(map(add_qid_formula, dict_list))
+                    r['qid'] = 'N/A'
+                #token_clicked_handler_logger.info(r)
+                return r
+
+
+            #if source not in ['wikidata1Results', 'wikidata2Results']:
+            #    if token_type == 'Identifier':
+            #        dict_list = list(map(add_qid_identifier, dict_list))
+            #    else:
+            #        dict_list = list(map(add_qid_formula, dict_list))
+            if source not in ['wikidata1Results', 'wikidata2Results']:
+                dict_list = list(map(add_qid_all_math, dict_list))
+
+
             dict_list += [{'name': ''} for _ in range(recommendations_limit - len(dict_list))]
             return dict_list
 

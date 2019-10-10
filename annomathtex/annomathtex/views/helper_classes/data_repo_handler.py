@@ -157,6 +157,12 @@ class DataRepoHandler:
         formulae = json.loads(decoded_content.decode("utf-8"))
         return formulae
 
+    def get_math_wikidata_items(self):
+        encoded_content = self.repo.get_file_contents('sources/math_wikidata_items.json')
+        decoded_content = encoded_content.decoded_content
+        items = json.loads(decoded_content.decode("utf-8"))
+        return items
+
     def list_directory(self, dirname='files'):
         dir_contents = self.repo.get_dir_contents(dirname)
         def clean_name(content_file):
@@ -289,6 +295,24 @@ def commit_all_wikidata_items():
         data = json.load(infile)
         print(data['Douglas Adams'])
 
+def commit_wikidata_math_items(d):
+    path = '/Users/ianmackerracher/PycharmProjects/AnnoMathTeX/files/math_wikidata_items.json'
+
+    items = {}
+
+    with open(path) as infile:
+        data = json.load(infile)
+        for item in data:
+            try:
+                qid = re.search(r'(?<=/entity/)[Q|P][0-9]+'  ,item['item']).group()
+                name = item['itemLabel']
+                items[name] = qid
+            except Exception:
+                print(item)
+
+        d.commit_file('sources/math_wikidata_items.json', json.dumps(items))
+
+
 
 
 
@@ -307,5 +331,5 @@ if __name__ == '__main__':
     #d.delete_file('sources/formula_concepts.txt')
     #wikidata_identifiers_by_name(d)
 
-    commit_all_wikidata_items()
-
+    #commit_all_wikidata_items()
+    commit_wikidata_math_items(d)
