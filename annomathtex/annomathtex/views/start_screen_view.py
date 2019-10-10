@@ -45,7 +45,10 @@ class StartScreenView(View):
         start_screen_view_logger.info('POST, action: {}'.format(action))
 
         if action == 'getRepoContent':
-            return RepoContentHandler().get_repo_content()
+            return RepoContentHandler(items).get_repo_content()
+
+        elif action == 'deleteFileFromRepo':
+            return RepoContentHandler(items).move_file_to_archive()
 
         elif action == 'getWikipediaSuggestions':
             return WikipediaQueryHandler(request, items).get_suggestions()

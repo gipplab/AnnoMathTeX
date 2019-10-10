@@ -502,7 +502,8 @@ function renderWikipediaResultsTable(wikipediaResults) {
         //var tr = "<tr><td>" + wikipediaResults[r] + "</td></tr>";
         var tr = "<tr><td onclick='selectedWikipediaResult(\"" + wikipediaResults[r] + "\")' >";
         tr += wikipediaResults[r];
-        tr += "</td></tr>";
+        tr += "</td>";
+        tr += "</tr>";
         annotationsTable += tr;
     }
 

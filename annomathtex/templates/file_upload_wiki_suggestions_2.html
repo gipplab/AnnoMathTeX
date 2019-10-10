@@ -126,6 +126,20 @@
         addArticle();
         //alert('success');
       });
+
+
+  function rightClickArticleName(fileName) {
+  var txt;
+  if (confirm("Delete?")) {
+    event.preventDefault();
+    deleteFileFromRepo(fileName)
+  } else {
+    event.preventDefault();
+  }
+  //document.getElementById("demo").innerHTML = txt;
+}
+
+
   </script>
 
 
