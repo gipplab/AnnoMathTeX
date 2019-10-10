@@ -1,8 +1,14 @@
 import json
+import logging
 import re
 import string
 import os
 from ...settings.common import PROJECT_ROOT
+
+
+logging.basicConfig(level=logging.INFO)
+custom_math_env_parser_logger = logging.getLogger(__name__)
+
 
 
 class CustomMathEnvParser:
@@ -21,6 +27,9 @@ class CustomMathEnvParser:
         #testing
         #self.greek_letters_path_testing = os.path.join(os.getcwd(), 'latex_math_symbols.json')
         #self.greek_letters_path = self.greek_letters_path_testing
+
+        # list of variables to not split
+        self.ignore_list = []
 
     def load_math_symbols(self, path):
         """
@@ -50,6 +59,9 @@ class CustomMathEnvParser:
         greek_letters = all_dict['greek_letters']
         greek_letters_set = set(map(lambda g: g[1:].lower(), greek_letters))
         greek_letters_regex = r'|'.join(g for g in greek_letters_set)
+
+        self.ignore_list += list(greek_letters_set)
+
         return greek_letters_regex
 
 
@@ -119,7 +131,9 @@ class CustomMathEnvParser:
             pos = i.start()
             _len = len(id)
 
-            if _len == 2:
+            custom_math_env_parser_logger.info(id)
+
+            if _len == 2 and id not in self.ignore_list:
                 id_pos_len.append((id[0], pos, 1))
                 id_pos_len.append((id[1], pos+1, 1))
             else:

@@ -71,7 +71,7 @@ function deleteFileFromRepo(fileName) {
       //successful response
       success : function(json) {
           console.log('success');
-          #console.log(json);
+          //console.log(json);
           renderRepoFileNames(json['fileNames']);
       },
 

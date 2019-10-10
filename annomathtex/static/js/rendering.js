@@ -15,6 +15,7 @@ function setAnnotatedColor(uIDs) {
     /*
     Set the color of annotations tokens.
      */
+    console.log(uIDs);
     for (var i=0 in uIDs) {
         document.getElementById(uIDs[i]).style.color = annotationsColor;
     }

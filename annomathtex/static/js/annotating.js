@@ -42,14 +42,15 @@ function rejectHighlightingListener() {
 function addNoMatchToAnnotations(result) {
 
     //var tmp = JSON.parse(result)['qid'];
-    console.log(result);
+    //console.log(result);
 
     let qid = result['qid'];
     let name = result['name'];
 
 
     name = name.replace(new RegExp('\'', 'g'), '__APOSTROPH__');
-    var uIDs = getLinkedIDs(content);
+    var uIDs = getLinkedIDs(content); //+ [uniqueID];
+    uIDs.push(uniqueID);
 
     addToAnnotations(uniqueID, name, 'user', '-', qid, manualRecommendationsSubmitTime, manualSelectionTime, true, uIDs);
     addToMannualRecommendations(name, qid);
@@ -58,7 +59,12 @@ function addNoMatchToAnnotations(result) {
     if (local) {
         setAnnotatedColor([uniqueID]);
     } else {
+        console.log('set annotated color for');
+        console.log(uIDs);
+        console.log(uniqueID);
+        console.log(content);
         setAnnotatedColor(uIDs);
+
     }
 
     handlePopupTable();
