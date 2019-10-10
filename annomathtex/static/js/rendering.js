@@ -445,7 +445,8 @@ function renderAnnotationsTable() {
     The table at the top of the document, that is constantly being updated with the latest annotations is generated in
     this function.
      */
-    function createRow(token, name, local, uIDs) {
+    function createRow(token, name, local, uIDs, type) {
+        var bold = true ? type=='Identifier' : false;
         var args = [
                 token,
                 local,
@@ -454,24 +455,37 @@ function renderAnnotationsTable() {
         var type = local ? 'Local' : 'Global';
         var argsString = args.join('----');
         argsString = argsString.split('\\').join('\\\\');
-        var tr ="<tr><td>" + token + "</td><td>" + name.replace(new RegExp('__APOSTROPH__', 'g'), '\'') + "</td><td>" + type + "</td>";
+
+        var tr = "<tr><td>";
+        if (bold){
+            tr += "<b><strong>" + token + "</b></strong>";
+        } else {
+            tr += token;
+        }
+        tr += "</td><td>" + name.replace(new RegExp('__APOSTROPH__', 'g'), '\'') + "</td><td>" + type + "</td>";
+
+        //var tr ="<tr><td>" + token + "</td><td>" + name.replace(new RegExp('__APOSTROPH__', 'g'), '\'') + "</td><td>" + type + "</td>";
         tr += "<td onclick='deleteFromAnnotations(\"" + argsString + "\")'>x</td></tr>";
         return tr;
     }
 
-    var annotationsTable = "</br><table><tr><td>Identifier/Formula</td><td>Annotated with</td><td>Type</td><td>Delete</td></tr>";
+    var annotationsTable = "</br><table><tr><td><b>Identifier</b>/Formula</td><td>Annotated with</td><td>Type</td><td>Delete</td></tr>";
+
+
+
+    console.log(annotations);
 
     var l = annotations['local'];
     for (var token in l) {
         for (var uID in l[token]){
-            tr = createRow(token, l[token][uID]['name'], true, [uID]);
+            tr = createRow(token, l[token][uID]['name'], true, [uID], l[token][uID]['type']);
             annotationsTable += tr;
         }
     }
 
     var g = annotations['global'];
     for (var token in g) {
-        tr = createRow(token, g[token]['name'], false, g[token]['uniqueIDs']);
+        tr = createRow(token, g[token]['name'], false, g[token]['uniqueIDs'], g[token]['type']);
         annotationsTable += tr;
     }
 
