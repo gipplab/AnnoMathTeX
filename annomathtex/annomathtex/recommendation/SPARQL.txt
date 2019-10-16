@@ -196,12 +196,11 @@ SELECT DISTINCT ?item ?itemLabel ?itemDescription WHERE {
   {?item wdt:P31 wd:Q11348}
       UNION
   {?item wdt:P361 wd:Q11348}
+        UNION
+  {?item wdt:P31 wd:Q37547}
+      UNION
+  {?item wdt:P361 wd:Q18366}
   .
   SERVICE wikibase:label { bd:serviceParam wikibase:language "en" .}
 }
-
-
-
-
-
 

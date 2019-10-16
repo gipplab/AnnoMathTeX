@@ -5,7 +5,7 @@ import re
 import logging
 urllib3.disable_warnings()
 from github import Github, GithubException
-#from .formula_concept_handler import FormulaConceptHandler
+from .formula_concept_handler import FormulaConceptHandler
 
 logging.basicConfig(level=logging.INFO)
 data_repo_handler_logger = logging.getLogger(__name__)
