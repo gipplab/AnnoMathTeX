@@ -199,8 +199,109 @@ SELECT DISTINCT ?item ?itemLabel ?itemDescription WHERE {
         UNION
   {?item wdt:P31 wd:Q37547}
       UNION
+  {?item wdt:P361 wd:Q37547}
+    UNION
+  {?item wdt:P31 wd:Q18366}
+      UNION
   {?item wdt:P361 wd:Q18366}
+  ###########################
+    UNION
+  {?item wdt:P31 wd:Q17444909}
+    UNION
+  {?item wdt:P279 wd:Q6999}
+      UNION
+  {?item wdt:P279 wd:Q1027098}
+      UNION
+  {?item wdt:P361 wd:Q595871}
+  ##########################
+      UNION
+  {?item wdt:P279 wd:Q719375}
+      UNION
+  {?item wdt:P279 wd:Q50701}
+      UNION
+  {?item wdt:P279 wd:Q107715}
+      UNION
+  {?item wdt:P279 wd:Q544736}
+      UNION
+  {?item wdt:P279 wd:Q151885}
+      UNION
+  {?item wdt:P279 wd:Q6999}
+      UNION
+  {?item wdt:P361 wd:Q40056}
+      UNION
+  {?item wdt:P361 wd:Q80006}
+      UNION
+  {?item wdt:P279 wd:Q577714}
+    UNION
+  {?item wdt:P31 wd:Q7211}
+        UNION
+  {?item wdt:P31 wd:Q427626}
+        UNION
+  {?item wdt:P361 wd:Q5868144}
+        UNION
+  {?item wdt:P279 wd:Q970767}
+        UNION
+  {?item wdt:P1269 wd:Q190524}
+        UNION
+  {?item wdt:P31 wd:Q24034552}
+        UNION
+  {?item wdt:P279 wd:Q11348}
+          UNION
+  {?item wdt:P31 wd:Q7882311}
+          UNION
+  {?item wdt:P31 wd:Q1691962}
+            UNION
+  {?item wdt:P31 wd:Q15720608}
+            UNION
+  {?item wdt:P279 wd:Q133250}
+            UNION
+  {?item wdt:P31 wd:Q1293220}
+    UNION
+  {?item wdt:P279 wd:Q1293220}
+    UNION
+  {?item wdt:P2579 wd:Q121416}
+    UNION
+  {?item wdt:P2579 wd:Q12482}
+    UNION
+  {?item wdt:P31 wd:Q47460393}
+    UNION
+  {?item wdt:P279 wd:Q11567}
+    UNION
+  {?item wdt:P361 wd:Q26851380}
+    UNION
+  {?item wdt:P279 wd:Q11563}
+    UNION
+  {?item wdt:P279 wd:Q54640195}
+    UNION
+  {?item wdt:P31 wd:Q43260}
+      UNION
+  {?item wdt:P31 wd:Q214070}
+      UNION
+  {?item wdt:P279 wd:Q643669}
+        UNION
+  {?item wdt:P279 wd:Q324669}
+        UNION
+  {?item wdt:P279 wd:Q41217}
+        UNION
+  {?item wdt:P279 wd:Q550791}
+        UNION
+  {?item wdt:P279 wd:Q2331395}
+        UNION
+  {?item wdt:P279 wd:Q2264756}
+        UNION
+  {?item wdt:P279 wd:Q232431}
+        UNION
+  {?item wdt:P279 wd:Q1111}
+        UNION
+  {?item wdt:P279 wd:Q73792}
+        UNION
+  {?item wdt:P279 wd:Q428813}
+        UNION
+  {?item wdt:P279 wd:Q131030}
+        UNION
+  {?item wdt:P279 wd:Q1206110}
+        UNION
+  {?item wdt:P279 wd:Q577835}
   .
   SERVICE wikibase:label { bd:serviceParam wikibase:language "en" .}
 }
-

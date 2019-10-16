@@ -102,7 +102,7 @@ function addToMannualRecommendations(name, qid) {
 }
 
 
-function addToAnnotations(uID, name, source, rowNum, qid, selectionTime, manualSelectionTime=-1000, noMatch=false, uIDs = null) {
+function addToAnnotations(uID, name, source, rowNum, qid, selectionTime, manualSelectionTime=-1, noMatch=false, uIDs = null) {
     /*
     manualSelectionTime: the time from when the token was clicked until MANUAL INSERTION was selected
     (only for manual annotation)
