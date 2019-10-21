@@ -47,6 +47,8 @@ function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
         return;
     }
 
+
+
     document.getElementById("noMatchInput").value = "";
 
     var tokenContent = JSON.parse(jsonContent)['content'];
@@ -56,6 +58,8 @@ function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
     //tokenContent = contentTmp;
     uniqueID = tokenUniqueId;
     mathEnv = mathEnvContent;
+
+    //console.log(tokenContent);
 
 
     //Display the selected token in the element "highlightedText".

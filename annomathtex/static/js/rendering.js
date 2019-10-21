@@ -15,7 +15,7 @@ function setAnnotatedColor(uIDs) {
     /*
     Set the color of annotations tokens.
      */
-    console.log(uIDs);
+    //console.log(uIDs);
     for (var i=0 in uIDs) {
         document.getElementById(uIDs[i]).style.color = annotationsColor;
     }
@@ -298,6 +298,7 @@ function populateTableIdentifier(random=true) {
       }
     };
 }
+2
 
 function createCell(item, source, rowNum) {
     /*
@@ -350,6 +351,7 @@ function createCell(item, source, rowNum) {
     }
 
 
+
     //not possible to pass multiple arguments, that's why they are concatenated to one argument string
     var argsString = args.join('---');
 
@@ -357,8 +359,11 @@ function createCell(item, source, rowNum) {
     td += " style='background-color:" + backgroundColor + "'";
     td += "onclick='selected(\"" + argsString + "\")' >";
     if (name) {
+        //console.log(name);
+        //console.log()
         td += name.replace(new RegExp('__APOSTROPH__', 'g'), '\'') + ' (' + qid + ')';
     }
+    //td += name + ' (' + qid + ')';
     td += "</td>";
 
     //console.log(annotations);
@@ -372,6 +377,7 @@ function selected(argsString){
     retrieved wikidata results).
      */
 
+    console.log(argsString);
 
     var recommendationSelectedTime = Date.now() - window.tokenClickedTime;
 
