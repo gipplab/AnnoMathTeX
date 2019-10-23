@@ -1,7 +1,7 @@
 import logging
 
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 formula_concept_handler_logger = logging.getLogger(__name__)
 
 class FormulaConceptHandler:

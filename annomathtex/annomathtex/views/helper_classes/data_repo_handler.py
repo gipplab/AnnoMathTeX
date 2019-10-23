@@ -125,6 +125,13 @@ class DataRepoHandler:
 
     def commit_annotations(self, annotations_file_name, annotations):
         path = 'annotation/{}'.format(annotations_file_name)
+        #try:
+        #    self.delete_file(path)
+        #    data_repo_handler_logger.info('Deleting annotation file')
+        #except Exception as e:
+        #    data_repo_handler_logger.info('No previous annotation file')
+        #data_repo_handler_logger.info('annotations: ')
+        #data_repo_handler_logger.info(annotations)
         self.commit_file(path, annotations)
         return
 
