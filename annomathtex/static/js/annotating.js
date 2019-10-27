@@ -19,10 +19,21 @@ function rejectHighlightingListener() {
     var qid = 'N/A';
     var uIDs = getLinkedIDs(content);
 
+    console.log(annotations);
+    console.log(manualRecommendations);
+
     if (!checkIfAnnotationExists(name)) {
         addToAnnotations(uniqueID, name, 'user', '-', qid, false, false, true, uIDs);
+        //addToMannualRecommendations(name, qid);
+
+    }
+
+    if (! name in manualRecommendations) {
         addToMannualRecommendations(name, qid);
     }
+
+    console.log(annotations);
+    console.log(manualRecommendations);
 
     var local = document.getElementById('localSwitch').checked;
 
@@ -231,12 +242,8 @@ function handleExistingAnnotations(existing_annotations) {
 
 
 function checkIfAnnotationExists(name) {
-    console.log(name);
-    //console.log(annotations['global'][content]['name']);
-    console.log(annotations['global']);
-    console.log(content);
 
-    var exists;
+    var exists = false;
 
 
 
@@ -255,6 +262,11 @@ function checkIfAnnotationExists(name) {
     } else {
         exists = false;
     }
+
+    //for (var c in annotations['global']) {
+    //    console.log(c);
+    //}
+    //console.log(annotations['global'][content]['name']);
     return exists;
 
 }

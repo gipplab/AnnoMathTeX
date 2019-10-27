@@ -221,6 +221,9 @@ function populateTableIdentifier(random=false) {
     }
 
 
+    console.log(existingManual);
+
+
     var resultList = [[arXivEvaluationItems, 'ArXiv'],
                       [wikipediaEvaluationItems, 'Wikipedia'],
                       [wikidataResults, 'Wikidata'],
