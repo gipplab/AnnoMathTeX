@@ -227,18 +227,20 @@ class ManualRecommendationsCleaner:
         cleaned_manual_recommendations = []
 
 
-        #data_repo_handler_logger.info(self.manual_recommendations)
+        data_repo_handler_logger.info(self.manual_recommendations)
 
         for id_or_f in self.manual_recommendations:
-                for num in self.manual_recommendations[id_or_f]:
+                for d in self.manual_recommendations[id_or_f]:
+                    data_repo_handler_logger.info(self.manual_recommendations[id_or_f])
                     try:
-                        name = self.manual_recommendations[id_or_f][num]['name']
+                        name = d['name']
                         id_or_f = id_or_f.replace('__EQUALS__', '=')
                         cleaned_manual_recommendations.append((id_or_f, name))
                     except Exception as e:
                         #item = self.manual_recommendations[id_or_f][num]
-                        msg = 'could not add to manual recommendations ' + num
+                        msg = 'could not add to manual recommendations '# + num
                         data_repo_handler_logger.info(msg)
+                        data_repo_handler_logger.info(self.manual_recommendations[id_or_f])
 
         return cleaned_manual_recommendations
 

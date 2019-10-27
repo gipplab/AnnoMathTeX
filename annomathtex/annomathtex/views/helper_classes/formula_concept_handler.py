@@ -88,7 +88,7 @@ class FormulaConceptHandler:
 
         for formula_string in formulae:
 
-            formula_concept_handler_logger.info(formulae[formula_string])
+            #formula_concept_handler_logger.info(formulae[formula_string])
             name = formulae[formula_string]['name']
             identifiers = []
             if 'identifiers' in formulae[formula_string]:
