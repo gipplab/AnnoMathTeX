@@ -7,7 +7,7 @@ urllib3.disable_warnings()
 from github import Github, GithubException
 from .formula_concept_handler import FormulaConceptHandler
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.WARNING)
 data_repo_handler_logger = logging.getLogger(__name__)
 
 class DataRepoHandler:
@@ -41,12 +41,14 @@ class DataRepoHandler:
         try:
             self.repo.create_file(file_name, "commiting file {}".format(file_name), file_content)
         except GithubException as e:
-            data_repo_handler_logger.info(e)
+            #data_repo_handler_logger.info(e)
             contents = self.repo.get_contents(file_name)
             self.repo.update_file(file_name, "updating file {}".format(file_name), file_content, contents.sha)
-            data_repo_handler_logger.info("updating file {}".format(file_name))
+            #data_repo_handler_logger.info("updating file {}".format(file_name))
         except AttributeError as e:
-            data_repo_handler_logger.info(e)
+            pass
+            #data_repo_handler_logger.info(e)
+
         return
 
     def delete_file(self, file_name):
@@ -224,11 +226,19 @@ class ManualRecommendationsCleaner:
     def get_recommendations(self):
         cleaned_manual_recommendations = []
 
+
+        #data_repo_handler_logger.info(self.manual_recommendations)
+
         for id_or_f in self.manual_recommendations:
                 for num in self.manual_recommendations[id_or_f]:
-                    name = self.manual_recommendations[id_or_f][num]['name']
-                    id_or_f = id_or_f.replace('__EQUALS__', '=')
-                    cleaned_manual_recommendations.append((id_or_f, name))
+                    try:
+                        name = self.manual_recommendations[id_or_f][num]['name']
+                        id_or_f = id_or_f.replace('__EQUALS__', '=')
+                        cleaned_manual_recommendations.append((id_or_f, name))
+                    except Exception as e:
+                        #item = self.manual_recommendations[id_or_f][num]
+                        msg = 'could not add to manual recommendations ' + num
+                        data_repo_handler_logger.info(msg)
 
         return cleaned_manual_recommendations
 
@@ -335,7 +345,7 @@ if __name__ == '__main__':
     #a = d.get_wikipedia_article('Angular velocity')
     #decode_wikipedia_article(a)
     #d.delete_file('files/Sphere.txt')
-    d.delete_file('sources/math_wikidata_items.json')
+    d.delete_file('evaluation/Mass–energy_equivalence.csv')
     #wikidata_identifiers_by_name(d)
 
     #commit_all_wikidata_items()

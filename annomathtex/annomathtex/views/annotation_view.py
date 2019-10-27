@@ -50,7 +50,10 @@ class AnnotationView(View):
                  applicable).
         """
         items = {k: jquery_unparam(v) for (k, v) in request.POST.items()}
-        action = list(items['action'].keys())[0]
+        if 'action' in items:
+            action = list(items['action'].keys())[0]
+        else:
+            action = 'saveSession'
         annotation_view_logger.info('POST, action: {}'.format(action))
         #annotation_view_logger.info(items)
         #annotation_view_logger.info(request.POST)
@@ -69,10 +72,10 @@ class AnnotationView(View):
             return response
 
         elif action == 'saveSession':
-            annotation_view_logger.info(items)
-            #annotation_view_logger.info(items['annotations']['global'][' E __EQUALS__ m c^2'])
-            #annotation_view_logger.info(items['annotations']['global']['energy'])
-            return SessionSavedHandler(request, items).save()
+            import json
+            items_request_body = json.loads(request.body)
+
+            return SessionSavedHandler(request, items_request_body).save()
 
         elif action == 'getRenderedWikipediaArticle':
             return WikipediaArticleNameHandler(request, items).handle_name()

@@ -1,7 +1,7 @@
 import logging
 
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.WARNING)
 formula_concept_handler_logger = logging.getLogger(__name__)
 
 class FormulaConceptHandler:
@@ -19,7 +19,7 @@ class FormulaConceptHandler:
             g = self.annotations['global']
             for key in g:
                 instance = g[key]
-                formula_concept_handler_logger.info('INSTANCE: {}'.format(instance))
+                #formula_concept_handler_logger.info('INSTANCE: {}'.format(instance))
                 try:
                     if instance['type'] == 'Formula':
                         formulae[key.replace('__EQUALS__', '=')] = {
@@ -28,7 +28,8 @@ class FormulaConceptHandler:
                             #'sourcesWithNums': instance['sourcesWithNums']
                         }
                 except:
-                    formula_concept_handler_logger.info(instance)
+                    #formula_concept_handler_logger.info(instance)
+                    continue
 
         if 'local' in self.annotations:
             l = self.annotations['local']
@@ -47,12 +48,12 @@ class FormulaConceptHandler:
     #todo: simplify
     def add_identifiers(self):
         formulae = self.extract_formulae()
-        formula_concept_handler_logger.info(formulae)
+        #formula_concept_handler_logger.info(formulae)
         if 'global' in self.annotations:
             g = self.annotations['global']
             for key in g:
                 instance = g[key]
-                formula_concept_handler_logger.info(instance)
+                #formula_concept_handler_logger.info(instance)
                 m = instance['mathEnv']
                 is_identifier = True if instance['type'] == 'Identifier' else False
                 if m in formulae and is_identifier:
@@ -86,8 +87,12 @@ class FormulaConceptHandler:
         reversed_formulae = {}
 
         for formula_string in formulae:
+
+            formula_concept_handler_logger.info(formulae[formula_string])
             name = formulae[formula_string]['name']
-            identifiers = formulae[formula_string]['identifiers']
+            identifiers = []
+            if 'identifiers' in formulae[formula_string]:
+                identifiers = formulae[formula_string]['identifiers']
             qid = formulae[formula_string]['qid']
             reversed_formulae[name] = {'TeXStrings': [formula_string],
                                        'Identifiers': identifiers,

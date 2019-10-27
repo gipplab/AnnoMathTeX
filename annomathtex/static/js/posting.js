@@ -11,38 +11,76 @@ $(document).ready(function () {
 
 
     // AJAX for posting
-    var fileNameDict = {'f': fileName};
-    function create_post() {
+  var fileNameDict = {'f': fileName};
+  /*function create_post() {
 
-      console.log(annotations);
-      let data_dict = { the_post : $('#post-text').val(),
-                        //'csrfmiddlewaretoken': '{{ csrf_token }}',
-                        'csrfmiddlewaretoken': getCookie("csrftoken"),
-                        'action': 'saveSession',
-                        'annotations': $.param(replaceAllEqualsPlusAnn(annotations)),
-                        'fileName': $.param(fileNameDict),
-                        //'manualRecommendations': $.param(manualRecommendations)
-                        'manualRecommendations': $.param(replaceAllEqualsPlusManualRecommendations(manualRecommendations))
-                        };
+  console.log(annotations);
+  let data_dict = { the_post : $('#post-text').val(),
+                    //'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    'csrfmiddlewaretoken': getCookie("csrftoken"),
+                    'action': 'saveSession',
+                    'annotations': $.param(replaceAllEqualsPlusAnn(annotations)),
+                    'fileName': $.param(fileNameDict),
+                    //'manualRecommendations': $.param(manualRecommendations)
+                    'manualRecommendations': $.param(replaceAllEqualsPlusManualRecommendations(manualRecommendations))
+                    };
+
+  $.ajax({
+      url : "file_upload/", // the endpoint
+      type : "POST", // http method
+      data : data_dict, // data sent with the post request
+
+      //successful response
+      success : function(json) {
+          $('#post-text').val(''); // remove the value from the input
+      },
+
+      //non-successful response
+      error : function(xhr,errmsg,err) {
+          $('#results').html("<div class='alert-box alert radius' data-alert>error: "+errmsg+
+              " <a href='#' class='close'>&times;</a></div>");
+          console.log(xhr.status + ": " + xhr.responseText);
+      }
+  });
+    }*/
+
+
+  function create_post() {
+
+
+      let data_dict = {
+                    'action': 'saveSession',
+                    'annotations': $.param(replaceAllEqualsPlusAnn(annotations)),
+                    'fileName': $.param(fileNameDict),
+                    'manualRecommendations': $.param(replaceAllEqualsPlusManualRecommendations(manualRecommendations))
+                    };
+
 
       $.ajax({
-          url : "file_upload/", // the endpoint
-          type : "POST", // http method
-          data : data_dict, // data sent with the post request
+        headers: {
+            'Content-Type':'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        url: 'file_upload/',
+        type: 'POST',
+        action: 'test',
+        //data: JSON.stringify(data_dict),
+        //data: JSON.stringify({'test': annotations, 'test2': manualRecommendations, 'test3': fileNameDict, 'test4': 'saveSession'}),
+        data: JSON.stringify({
+                    'action': 'saveSession',
+                    'annotations': annotations,
+                    'fileName': fileNameDict,
+                    'manualRecommendations': manualRecommendations
+                    }),
+        success: function(data) {
+            alert('success!')
+        },
+        error: function(){
+            alert('fail')
+        }
 
-          //successful response
-          success : function(json) {
-              $('#post-text').val(''); // remove the value from the input
-          },
-
-          //non-successful response
-          error : function(xhr,errmsg,err) {
-              $('#results').html("<div class='alert-box alert radius' data-alert>error: "+errmsg+
-                  " <a href='#' class='close'>&times;</a></div>");
-              console.log(xhr.status + ": " + xhr.responseText);
-          }
-      });
-    }
+    });
+  }
 
 });
 
@@ -149,5 +187,6 @@ function checkManualRecommendationQID(name) {
       }
     });
 }
+
 
 

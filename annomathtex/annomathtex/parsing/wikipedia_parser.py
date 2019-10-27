@@ -7,6 +7,7 @@ warnings.filterwarnings("ignore")
 logging.basicConfig(level=logging.INFO)
 wikipedia_parser_logger = logging.getLogger(__name__)
 
+
 class WikipediaParser(Parser):
     """
     This class is a subclass of the abstract base class Parser. It is used to parse and process wikitext.
@@ -35,12 +36,15 @@ class WikipediaParser(Parser):
         ignore = [r'\n', '', r'\s']
         soup = BeautifulSoup(self.file)
 
+
+
         def remove_special_chars(math_env):
             math_env = math_env.replace('amp;', '')
             return math_env
 
         math_envs = [remove_special_chars(str(tag)) for tag in list(soup.find_all('math'))]
-        wikipedia_parser_logger.debug(math_envs)
+        #wikipedia_parser_logger.info(len(math_envs))
+        #wikipedia_parser_logger.info(math_envs)
         return math_envs
 
     def extract_tags_to_remove(self):

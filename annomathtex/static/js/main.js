@@ -59,7 +59,8 @@ function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
     uniqueID = tokenUniqueId;
     mathEnv = mathEnvContent;
 
-    //console.log(tokenContent);
+    console.log(mathEnvContent);
+    console.log(jsonMathEnv);
 
 
     //Display the selected token in the element "highlightedText".
@@ -118,4 +119,23 @@ function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
           console.log(xhr.status + ": " + xhr.responseText);
       }
     });
+    /*$.ajax({
+        headers: {
+            'Content-Type':'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        url: 'file_upload/',
+        type: 'POST',
+        action: 'test',
+        data: JSON.stringify({'searchString': content}),
+        success: function(data) {
+            alert('success!')
+        },
+        error: function(){
+            alert('fail')
+        }
+
+    });*/
+
+
 }

@@ -131,7 +131,7 @@ class CustomMathEnvParser:
             pos = i.start()
             _len = len(id)
 
-            custom_math_env_parser_logger.info(id)
+            #custom_math_env_parser_logger.info(id)
 
             if _len == 2 and id not in self.ignore_list:
                 id_pos_len.append((id[0], pos, 1))

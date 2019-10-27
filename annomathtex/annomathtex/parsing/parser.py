@@ -29,7 +29,7 @@ class Parser(object, metaclass=ABCMeta):
         :param file_type: The type of the file (tex, txt, html).
         """
         self.tagger = NLTK_NER()
-        self.file = self.decode(request_file)
+        self.file = self.decode(request_file)#.replace('\\begin{align}', '')
         self.file_name = file_name
         self.file_type = file_name.split('.')[-1]
         self.math_envs = self.extract_math_envs()
@@ -56,13 +56,6 @@ class Parser(object, metaclass=ABCMeta):
         """
         raise NotImplementedError('Function extract_math_envs() must be implemented')
 
-    def remove_special_chars(self):
-        """
-        remove things like <href ....>
-        #Not necessary atm.
-        :return:
-        """
-        pass
 
     def read_annotation_file(self):
         """
@@ -90,7 +83,7 @@ class Parser(object, metaclass=ABCMeta):
         """
         for i, m in enumerate(self.math_envs):
             math_env = m
-            parser_logger.debug(' in remove_math_envs() current math_env: {}'.format(m))
+            #parser_logger.info(' in remove_math_envs() current math_env: {}'.format(m))
             try:
                 self.file = self.file.replace(math_env, ' __MATH_ENV__ ', 1)
             except Exception as e:
@@ -188,6 +181,13 @@ class Parser(object, metaclass=ABCMeta):
         tagged_words = self.tagger.tag(line)
         return tagged_words
 
+    def remove_special_chars(self, math_env):
+        remove = ['amp;', '$', '\\begin{align}', '\\end{align}', '\n', '&']
+        for char in remove:
+            math_env = math_env.replace(char, '')
+        return math_env
+
+
     def process_math_env(self, math_env, line_num):
         """
         This method extracts the identifiers that are contained in a math environment.
@@ -197,7 +197,10 @@ class Parser(object, metaclass=ABCMeta):
         """
 
         #todo: for all math environemnt markers
-        math_env = math_env.replace('$', '')
+        #all special characters have to be removed here
+        #math_env = math_env.replace('$', '')
+        #math_env = math_env.replace('\\begin{align}', '')
+        math_env = self.remove_special_chars(math_env)
 
         #Select the class that should process (extract the identifiers and split) the math environment.
         #identifiers, split_math_env = FormulaSplitter(math_env).get_split_math_env()
@@ -207,6 +210,26 @@ class Parser(object, metaclass=ABCMeta):
         #str_math_env = str(math_env).replace('<math>', '')
         str_math_env = re.sub('<math.*?>', '', str(math_env))
         str_math_env = str_math_env.replace('</math>', '')
+
+
+        #begin align removed from math_env, but still in rendered file...why?
+        #####################################################################################
+        #####################################################################################
+        ####################### str_math_env != split_math_env ##############################
+        #####################################################################################
+        #####################################################################################
+
+
+        if '^2 c^2 &= m_0^2 c^4 ' in str_math_env:
+            #print('\\begin{align}' in str_math_env)
+            #str_math_env = str_math_env.replace('\\begin{align}', '')
+            #print(str_math_env)
+            #print(split_math_env)
+            pass
+
+
+        #str_math_env = str_math_env.replace('\\begin{align}', '')
+        #str_math_env = str_math_env.replace('\\end{align}', '')
 
         processed_maths_env = []
         for symbol in split_math_env:
@@ -294,6 +317,8 @@ class Parser(object, metaclass=ABCMeta):
             for w in line:
                 if re.search(r'__MATH_ENV__', w.content):
                     math_env = self.math_envs[0]
+                    parser_logger.info(math_env)
+                    #parser_logger.info('in process. math env: {}'.format(math_env))
                     self.math_envs.pop(0)
                     processed_math_env = self.process_math_env(math_env, line_num)
                     processed_line += processed_math_env

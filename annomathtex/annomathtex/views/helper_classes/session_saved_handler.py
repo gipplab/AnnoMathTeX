@@ -51,7 +51,7 @@ class SessionSavedHandler:
     def post_process_annotations(self, annotations):
 
         def apostroph(item):
-            return item['name'].replace('__APOSTROPH__', '\'')
+            return item['name'].replace('__APOSTROPH__', '\'').replace('&', '')
         if 'global' in annotations:
             for symbol in annotations['global']:
                 item = annotations['global'][symbol]
@@ -71,7 +71,7 @@ class SessionSavedHandler:
 
 
 
-        session_saved_handler_logger.info(self.items['annotations'])
+        #session_saved_handler_logger.info(self.items['annotations'])
 
         manual_recommendations = self.items['manualRecommendations']
 
