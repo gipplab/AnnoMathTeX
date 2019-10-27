@@ -76,9 +76,13 @@ class TokenClickedHandler:
         elif token_type == 'Formula':
             recommendations_dict['wikidata1Results'], recommendations_dict['wikidata2Results'] = StaticWikidataHandler().check_formulae(math_env, annotations)
             recommendations_dict['formulaConceptDB'] = FormulaConceptDBHandler().query_tex_string(math_env)
+            #token_clicked_handler_logger.info(recommendations_dict['formulaConceptDB'])
 
         else:
             token_clicked_handler_logger.info('Faulty token_type: {}'.format(token_type))
+
+
+
 
 
         recommendations_dict['wordWindow'] = self.get_word_window(unique_id)

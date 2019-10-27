@@ -74,7 +74,7 @@ function handlePopupTable() {
 
 
 //todo: simplify these 2 methods
-function populateTableFormula(random=true) {
+function populateTableFormula(random=false) {
     /*
     The entire table, containing the recommendations for a formula, that is shown to the user in the popup modal is
     created as html code in this function. The function createCell() is called upon, to create the individual cells in the table.
@@ -92,6 +92,8 @@ function populateTableFormula(random=true) {
     let wordWindow = recommendations['wordWindow'];
     let formulaConceptDB = recommendations['formulaConceptDB'];
     var existingManual = [...new Set(recommendations['manual'])];
+
+    console.log(formulaConceptDB);
 
 
     if (mathEnv in manualRecommendations) {
@@ -193,7 +195,7 @@ function populateTableFormula(random=true) {
 
 
 
-function populateTableIdentifier(random=true) {
+function populateTableIdentifier(random=false) {
     /*
     The entire table, containing the recommendations for an identifier, that is shown to the user in the popup modal is
     created as html code in this function. The function createCell() is called upon, to create the individual cells in the table.

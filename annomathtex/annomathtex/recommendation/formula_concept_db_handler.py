@@ -21,6 +21,8 @@ class FormulaConceptDBHandler(object):
             for tex_string_2 in tex_strings:
                 if fuzz.token_sort_ratio(tex_string_1, tex_string_2) >= threshold:
                     recommendations.append({'name': fc})
+                    break
+
 
         return recommendations[:10]
 
