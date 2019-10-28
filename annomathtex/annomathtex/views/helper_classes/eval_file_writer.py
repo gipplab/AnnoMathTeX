@@ -17,13 +17,13 @@ class EvalFileWriter:
 
     New Table:
 
-        Identifier | Name | ArXiV | Wikipedia | Wikidata1 | Wikidata2 | WordWindow | FormulaConceptDB | global/local
+        Identifier | Name | ArXiV | Wikipedia | Wikidata | Wikidata1 | Wikidata2 | WordWindow | FormulaConceptDB | global/local
 
-        S          | set  |   1   |     -     |     -     |      -    |      4     |        -         | global
+        S          | set  |   1   |     -     |    -     | -     |      -    |      4     |        -         | global
 
 
-    ArXiV and Wikipedia are exclusive to identifiers
-    Wikidata2 and FormulaConceptDB are exclusive to formulae
+    ArXiV and Wikipedia, Wikidata  are exclusive to identifiers
+    Wikidata1 Wikidata2 and FormulaConceptDB are exclusive to formulae
 
 
     In the above example, the identifier "S" was annotated with the concept "set". The concept "set" appeared in the
@@ -48,7 +48,7 @@ class EvalFileWriter:
         {'ArXiv': 1, 'Wikipedia': '-', 'Wikidata': '-',  'WordWindow': 4}
         """
         #sources = ['ArXiv', 'Wikipedia', 'Wikidata', 'WordWindow']
-        sources = ['ArXiv', 'Wikipedia', 'Wikidata1', 'Wikidata2', 'WordWindow', 'FormulaConceptDB']
+        sources = ['ArXiv', 'Wikipedia', 'Wikidata', 'Wikidata1', 'Wikidata2', 'WordWindow', 'FormulaConceptDB']
         completed_list = []
         for source in sources:
             if source in sources_with_nums:
@@ -142,7 +142,7 @@ class EvalFileWriter:
         #header = ['Identifier / Formula', 'Name', 'ArXiV', 'Wikipedia', 'Wikidata', 'WordWindow', 'type']
         header = ['Identifier / Formula',
                   'Name',
-                  'ArXiV', 'Wikipedia', 'Wikidata1', 'Wikidata2',  'WordWindow', 'FormulaConceptDB',
+                  'ArXiV', 'Wikipedia', 'Wikidata', 'Wikidata1', 'Wikidata2',  'WordWindow', 'FormulaConceptDB',
                   'type',
                   'time', 'manualSelectionTime']
         csv.writer(f).writerows([header] + all_rows)

@@ -65,6 +65,7 @@ class StaticWikidataHandler:
         """
         #identifier_file = self.read_identifier_file()
         identifers = self.get_identifiers_from_repo()
+        #static_wikidata_handler_logger.info(identifers)
         if symbol in identifers:
             return self.toLowerCase(identifers[symbol][:recommendations_limit])
         return []
