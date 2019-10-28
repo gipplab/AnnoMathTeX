@@ -131,7 +131,19 @@ def selection_rankging_sources_identifiers(eval_file):
 
 
 def local_vs_global(eval_file):
-    pass
+    """
+    Number of global and local annotations
+    :param eval_file:
+    :return:
+    """
+    old = 8
+    new = 9
+
+    g = len(list(filter(lambda x: x[old] == 'global', eval_file[1:])))
+    l = len(eval_file[1:]) - g
+
+    return {'global':g, 'local':l}
+
 
 def average_selection_time(eval_file):
     pass
@@ -156,7 +168,10 @@ if __name__ == '__main__':
     #commit_one_eval_file()
     eval_file = get_one_evaluation_file()
     formulae, identifiers = split_formulae_identifiers(eval_file)
-    #selection_ranking_sources(formulae, 'f')
+
     #si = selection_rankging_sources_identifiers(identifiers)
-    sf = selection_ranking_sources_formulae(formulae)
+    #sf = selection_ranking_sources_formulae(formulae)
+
+    lvgi = local_vs_global(identifiers)
+    lvgf = local_vs_global(formulae)
 
