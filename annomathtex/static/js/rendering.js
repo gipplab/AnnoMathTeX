@@ -457,7 +457,7 @@ function renderAnnotationsTable() {
     The table at the top of the document, that is constantly being updated with the latest annotations is generated in
     this function.
      */
-    function createRow(token, name, local, uIDs, type) {
+    function createRow(token, name, local, uIDs, type, qid) {
         var bold = true ? type=='Identifier' : false;
         var args = [
                 token,
@@ -474,7 +474,7 @@ function renderAnnotationsTable() {
         } else {
             tr += token;
         }
-        tr += "</td><td>" + name.replace(new RegExp('__APOSTROPH__', 'g'), '\'') + "</td><td>" + type + "</td>";
+        tr += "</td><td>" + name.replace(new RegExp('__APOSTROPH__', 'g'), '\'') + ' (' + qid + ')' + "</td><td>" + type + "</td>";
 
         //var tr ="<tr><td>" + token + "</td><td>" + name.replace(new RegExp('__APOSTROPH__', 'g'), '\'') + "</td><td>" + type + "</td>";
         tr += "<td onclick='deleteFromAnnotations(\"" + argsString + "\")'>x</td></tr>";
@@ -490,14 +490,14 @@ function renderAnnotationsTable() {
     var l = annotations['local'];
     for (var token in l) {
         for (var uID in l[token]){
-            tr = createRow(token, l[token][uID]['name'], true, [uID], l[token][uID]['type']);
+            tr = createRow(token, l[token][uID]['name'], true, [uID], l[token][uID]['type'], l[token][uID]['qid']);
             annotationsTable += tr;
         }
     }
 
     var g = annotations['global'];
     for (var token in g) {
-        tr = createRow(token, g[token]['name'], false, g[token]['uniqueIDs'], g[token]['type']);
+        tr = createRow(token, g[token]['name'], false, g[token]['uniqueIDs'], g[token]['type'], g[token]['qid']);
         annotationsTable += tr;
     }
 
