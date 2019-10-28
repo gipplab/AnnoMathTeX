@@ -68,41 +68,48 @@ def split_formulae_identifiers(eval_file):
     return header + formulae, header + identifiers
 
 
+def get_rank(num, eval_file):
 
-def selection_ranking_sources(eval_file, type):
-
-    arxiv = []
-    wikipedia = []
-    wikidata_i = []
-    wikidataf1 = []
-    wikidataf2 = []
-    word_window = []
-    fcdb = []
-    manual = []
+    def f(r):
+        if r[num] != '-':
+            return r[num]
+    return list(filter(lambda x: x ,map(f, eval_file[1:])))
 
 
-    for row in eval_file:
-        sources = row[2:8]
+def selection_ranking_sources_formulae(eval_file):
+
+    wikidata1 = get_rank(5, eval_file)
+    wikidata2 = get_rank(6, eval_file)
+    word_window = get_rank(7, eval_file)
+    fcdb = get_rank(8, eval_file)
+    #manual = []
 
 
-    print(eval_file[0])
+    def create_csv_file():
+        header = ['source', 'total', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+        def count(source, num):
+            return len(list(filter(lambda x: x==str(num), source)))
+        wikidata1_row = ['Wikidata1', len(wikidata1)] + [count(wikidata1, num) for num in range(1,11)]
+        wikidata2_row = ['Wikidata2', len(wikidata2)] + [count(wikidata2, num) for num in range(1,11)]
+        word_window_row = ['WordWindow', len(word_window)] + [count(word_window, num) for num in range(1, 11)]
+        fcdb_row = ['FCDB', len(fcdb)] + [count(fcdb, num) for num in range(1,11)]
 
-    pass
+
+        all = [header] + [wikidata1_row] + [wikidata2_row] + [word_window_row] + [fcdb_row]
+        csv_string = list_to_csv(all)
+        return csv_string
+
+    return create_csv_file()
 
 
 def selection_rankging_sources_identifiers(eval_file):
 
-    def get_rank(num):
 
-        def f(r):
-            if r[num] != '-':
-                return r[num]
-        return list(filter(lambda x: x ,map(f, eval_file[1:])))
 
-    arxiv = get_rank(2)
-    wikipedia = get_rank(3)
-    wikidata = get_rank(4)
-    word_window = get_rank(6)
+    arxiv = get_rank(2, eval_file)
+    wikipedia = get_rank(3, eval_file)
+    wikidata = get_rank(4, eval_file)
+    word_window = get_rank(7, eval_file)
     #manual = []
 
 
@@ -150,5 +157,6 @@ if __name__ == '__main__':
     eval_file = get_one_evaluation_file()
     formulae, identifiers = split_formulae_identifiers(eval_file)
     #selection_ranking_sources(formulae, 'f')
-    s = selection_rankging_sources_identifiers(identifiers)
+    #si = selection_rankging_sources_identifiers(identifiers)
+    sf = selection_ranking_sources_formulae(formulae)
 
