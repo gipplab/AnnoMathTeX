@@ -1,6 +1,7 @@
 from evaluation_dr_handler import EvaluationDRHandler
 from io import StringIO
 import csv
+import string
 
 
 
@@ -36,12 +37,25 @@ def commit_one_eval_file():
 
 
 def get_one_evaluation_file():
-    return EvaluationDRHandler().get_file('evaluation/one_eval_file.csv')
+    eval_file_string = EvaluationDRHandler().get_file('evaluation/one_eval_file.csv')
+    eval_file_list = eval_file_string.split('\r\n')
+    eval_file = [r.split(',') for r in eval_file_list]
+    eval_file = list(filter(lambda r: len(r[0])>0, eval_file))
+    return eval_file
 
 
 def split_formulae_identifiers(eval_file):
-    #return formulae_rows, identifier_rows
-    pass
+    formulae = []
+    identifiers = []
+
+    for row in eval_file[1:]:
+        overlap = list(set(row[0]) & set(string.punctuation))
+        if overlap:
+            formulae.append(row)
+        else:
+            identifiers.append(row)
+
+    return formulae, identifiers
 
 def selection_ranking_sources(eval_file):
     pass
@@ -65,5 +79,5 @@ def time_saved_through_global(annotation_file):
 
 if __name__ == '__main__':
     #commit_one_eval_file()
-
-    print(get_one_evaluation_file())
+    eval_file = get_one_evaluation_file()
+    formulae, identifiers = split_formulae_identifiers(eval_file)
