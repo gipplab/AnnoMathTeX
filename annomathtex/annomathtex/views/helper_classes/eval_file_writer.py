@@ -2,6 +2,11 @@ import csv
 import os
 from io import StringIO
 from ...config import evaluation_annotations_path, create_evaluation_file_path, create_evaluation_file_name
+import logging
+
+
+logging.basicConfig(level=logging.WARNING)
+eval_file_writer_logger = logging.getLogger(__name__)
 
 
 class EvalFileWriter:
@@ -56,6 +61,9 @@ class EvalFileWriter:
             else:
                 completed_list.append('-')
 
+
+        #eval_file_writer_logger.info(sources_with_nums)
+
         return completed_list
 
 
@@ -68,10 +76,20 @@ class EvalFileWriter:
         for token_content in self.loc:
             for id in self.loc[token_content]:
                 sources_with_nums = self.fill_remaining(self.loc[token_content][id]['sourcesWithNums'])
-                row = [token_content, self.loc[token_content][id]['name']] + \
+
+                name = self.loc[token_content][id]['name']
+                qid = self.loc[token_content][id]['qid']
+                name_qid = '{} ({})'.format(name, qid)
+
+                row = [token_content, name_qid] + \
                       sources_with_nums + \
                       ['local'] + \
                       [self.loc[token_content][id]['time'],  self.loc[token_content][id]['time']]
+
+                #row = [token_content, self.loc[token_content][id]['name']] + \
+                #      sources_with_nums + \
+                #      ['local'] + \
+                #      [self.loc[token_content][id]['time'],  self.loc[token_content][id]['time']]
                 rows.append(row)
 
         return rows
@@ -90,9 +108,18 @@ class EvalFileWriter:
             except Exception:
                 sources_with_nums = self.fill_remaining({})
 
-            row = [token_content, self.glob[token_content]['name']] + \
+
+            name = self.glob[token_content]['name']
+            qid = self.glob[token_content]['qid']
+            name_qid = '{} ({})'.format(name, qid)
+
+            row = [token_content, name_qid] + \
                   sources_with_nums + ['global'] + \
                   [self.glob[token_content]['time'], self.glob[token_content]['manualSelectionTime']]
+
+            #row = [token_content, self.glob[token_content]['name']] + \
+            #      sources_with_nums + ['global'] + \
+            #      [self.glob[token_content]['time'], self.glob[token_content]['manualSelectionTime']]
             rows.append(row)
 
 

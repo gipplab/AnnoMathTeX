@@ -1,4 +1,5 @@
 from evaluation_dr_handler import EvaluationDRHandler
+from functools import reduce
 from io import StringIO
 import csv
 import string
@@ -146,10 +147,19 @@ def local_vs_global(eval_file):
 
 
 def average_selection_time(eval_file):
-    pass
+    #column_num = -2
+    selection_times = [int(r[-2]) for r in eval_file[1:] if int(r[-1]) == -1]
+    avg_selection_time = sum(selection_times) / len(selection_times)
+
+    return round(avg_selection_time)
+
 
 def average_manual_time(eval_file):
-    pass
+    selection_times = [int(r[-1]) for r in eval_file[1:] if int(r[-1]) > -1]
+    avg_selection_time = sum(selection_times) / len(selection_times)
+
+    return round(avg_selection_time)
+
 
 def proportion_qid_available(eval_file):
     pass
@@ -157,10 +167,6 @@ def proportion_qid_available(eval_file):
 def time_saved_through_global(annotation_file):
     pass
 
-
-def average_number_of_recommendations():
-    #per source per token
-    pass
 
 
 
@@ -172,6 +178,14 @@ if __name__ == '__main__':
     #si = selection_rankging_sources_identifiers(identifiers)
     #sf = selection_ranking_sources_formulae(formulae)
 
-    lvgi = local_vs_global(identifiers)
-    lvgf = local_vs_global(formulae)
+    #lvgi = local_vs_global(identifiers)
+    #lvgf = local_vs_global(formulae)
+
+    #avg_selection_time_i = average_selection_time(identifiers)
+    #avg_selection_time_f = average_selection_time(formulae)
+
+    #avg_manual_selection_time_i = average_manual_time(identifiers)
+    #avg_manual_selection_time_f = average_manual_time(formulae)
+
+
 
