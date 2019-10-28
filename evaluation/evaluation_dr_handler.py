@@ -74,6 +74,18 @@ class EvaluationDRHandler:
         return all_eval_files
 
 
+    def get_all_annotation_files(self, ignorelist=[]):
+        annotation_file_names = self.list_directory('annotation')
+        all_eval_files = []
+        for file_name in annotation_file_names:
+            if file_name not in ignorelist:
+                str_content = self.get_file('annotation/{}'.format(file_name))
+                annotation_dict = json.loads(str_content)
+                all_eval_files.append(annotation_dict)
+
+        return all_eval_files
+
+
 
 if __name__ == '__main__':
     EvaluationDRHandler().get_all_evaluation_files()

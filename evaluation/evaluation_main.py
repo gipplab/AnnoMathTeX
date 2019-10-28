@@ -3,6 +3,7 @@ from functools import reduce
 from io import StringIO
 import csv
 import string
+import re
 
 
 
@@ -162,10 +163,34 @@ def average_manual_time(eval_file):
 
 
 def proportion_qid_available(eval_file):
-    pass
 
-def time_saved_through_global(annotation_file):
-    pass
+    names = [r[1] for r in eval_file[1:]]
+    have_qid = list(filter(lambda x: re.search(r'(?<=\()Q[0-9]+(?=\))', x), names))
+    qid_num = len(have_qid)
+    no_qid_num = len(names) - qid_num
+
+    return {'have qid': qid_num, 'no qid': no_qid_num}
+
+
+
+def time_saved_through_global():
+    annotation_files = EvaluationDRHandler().get_all_annotation_files(['tmp.txt'])
+
+    i = []
+    f = []
+
+    for file in annotation_files:
+        for name in file['global']:
+            item = file['global'][name]
+            num_ids = len(item['uniqueIDs'])
+            type = item['type']
+            if type == 'Identifier':
+                i.append(num_ids)
+            else:
+                f.append(num_ids)
+
+    return {'identifiers': i, 'formulae': f}
+
 
 
 
@@ -186,6 +211,12 @@ if __name__ == '__main__':
 
     #avg_manual_selection_time_i = average_manual_time(identifiers)
     #avg_manual_selection_time_f = average_manual_time(formulae)
+
+    #qid_available_i = proportion_qid_available(identifiers)
+    #qid_available_f = proportion_qid_available(formulae)
+
+    multiple_occurrences = time_saved_through_global()
+    print(multiple_occurrences)
 
 
 
