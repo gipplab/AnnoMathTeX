@@ -41,6 +41,7 @@
     </button>
     </button>
 </form>
+<h3 id="documentName" style="left: 50%;"></h3>
 
 <div id="annotationsHolder"></div></br>
 
@@ -130,6 +131,9 @@
 
 
 <script>
+
+    document.getElementById('documentName').innerHTML = fileName;
+
     var existingAnnotations = "{{ File.existing_annotations|escapejs }}";
     handleExistingAnnotations(existingAnnotations);
 
