@@ -138,10 +138,8 @@ def local_vs_global(eval_file):
     :param eval_file:
     :return:
     """
-    old = 8
-    new = 9
 
-    g = len(list(filter(lambda x: x[old] == 'global', eval_file[1:])))
+    g = len(list(filter(lambda x: x[9] == 'global', eval_file[1:])))
     l = len(eval_file[1:]) - g
 
     return {'global':g, 'local':l}
@@ -159,7 +157,7 @@ def average_manual_time(eval_file):
     selection_times = [int(r[-1]) for r in eval_file[1:] if int(r[-1]) > -1]
     avg_selection_time = sum(selection_times) / len(selection_times)
 
-    return round(avg_selection_time)
+    return {'avg': round(avg_selection_time), 'total num': len(selection_times)}
 
 
 def proportion_qid_available(eval_file):
@@ -200,22 +198,43 @@ if __name__ == '__main__':
     eval_file = get_one_evaluation_file()
     formulae, identifiers = split_formulae_identifiers(eval_file)
 
-    #si = selection_rankging_sources_identifiers(identifiers)
-    #sf = selection_ranking_sources_formulae(formulae)
+    si = selection_rankging_sources_identifiers(identifiers)
+    sf = selection_ranking_sources_formulae(formulae)
+    print('Selection Ranking: ')
+    print('Identifiers: {}'.format(si))
+    print('Formulae: {}'.format(sf))
+    print()
 
-    #lvgi = local_vs_global(identifiers)
-    #lvgf = local_vs_global(formulae)
+    lvgi = local_vs_global(identifiers)
+    lvgf = local_vs_global(formulae)
+    print('Local vs Global: ')
+    print('Identifiers: {}'.format(lvgi))
+    print('Formulae: {}'.format(lvgf))
+    print()
 
-    #avg_selection_time_i = average_selection_time(identifiers)
-    #avg_selection_time_f = average_selection_time(formulae)
+    avg_selection_time_i = average_selection_time(identifiers)
+    avg_selection_time_f = average_selection_time(formulae)
+    print('Avg selection time: ')
+    print('Identifiers: {}'.format(avg_selection_time_i))
+    print('Formulae: {}'.format(avg_selection_time_f))
+    print()
 
-    #avg_manual_selection_time_i = average_manual_time(identifiers)
-    #avg_manual_selection_time_f = average_manual_time(formulae)
+    avg_manual_selection_time_i = average_manual_time(identifiers)
+    avg_manual_selection_time_f = average_manual_time(formulae)
+    print('Avg manual seclection time: ')
+    print('Identifiers: {}'.format(avg_manual_selection_time_i))
+    print('Formulae: {}'.format(avg_manual_selection_time_f))
+    print()
 
-    #qid_available_i = proportion_qid_available(identifiers)
-    #qid_available_f = proportion_qid_available(formulae)
+    qid_available_i = proportion_qid_available(identifiers)
+    qid_available_f = proportion_qid_available(formulae)
+    print('QID available: ')
+    print('Identifiers: {}'.format(qid_available_i))
+    print('Formulae: {}'.format(qid_available_f))
+    print()
 
     multiple_occurrences = time_saved_through_global()
+    print('Time saved through global (multiple occurrences): ')
     print(multiple_occurrences)
 
 
