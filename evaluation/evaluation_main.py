@@ -190,11 +190,36 @@ def time_saved_through_global():
     return {'identifiers': i, 'formulae': f}
 
 
+def multiple_occurences_total_count(l):
+    count = {}
+    for num in l:
+        if num in count:
+            count[num] += 1
+        else:
+            count[num] = 1
+
+    sorted_list = []
+    for k in sorted(count.keys()):
+        sorted_list.append([k, count[k]])
+    csv_string = list_to_csv(sorted_list)
+    total_count = sum([l[0]*l[1] for l in sorted_list])
+    return (total_count, csv_string)
+
+
+
+test = {'identifiers': [2, 1, 1, 1, 1, 1, 2, 3, 5, 8, 8, 9, 12, 14, 36, 22, 35, 34, 17, 36, 9, 27, 3, 3, 4, 2, 6, 1, 4, 5, 2, 2, 3, 2, 3, 1, 3, 7, 3, 1, 3, 4, 3, 6, 1, 6, 19, 7, 18, 3, 5, 4, 5, 4, 3, 1, 3, 4, 4, 1, 2, 4, 1, 1, 5, 2, 28, 5, 2, 23, 13, 14, 29, 6, 18, 22, 6, 7, 21, 1], 'formulae': [2, 2, 2, 2, 2, 2, 4, 2, 3, 2, 2, 2, 3, 3, 3, 3, 2, 2, 2, 3, 3, 3, 3, 3, 2, 3, 2, 3, 3, 3, 2, 3, 3, 3, 3, 3, 3, 3, 3, 2, 3, 3, 3, 3, 5, 2, 3, 5, 3, 3, 3, 3, 3, 3]}
+
+
 
 
 
 if __name__ == '__main__':
-    #commit_one_eval_file()
+
+
+    print(multiple_occurences_total_count(test['identifiers']))
+    print(multiple_occurences_total_count(test['formulae']))
+
+    """commit_one_eval_file()
     eval_file = get_one_evaluation_file()
     formulae, identifiers = split_formulae_identifiers(eval_file)
 
@@ -235,7 +260,7 @@ if __name__ == '__main__':
 
     multiple_occurrences = time_saved_through_global()
     print('Time saved through global (multiple occurrences): ')
-    print(multiple_occurrences)
+    print(multiple_occurrences)"""
 
 
 
