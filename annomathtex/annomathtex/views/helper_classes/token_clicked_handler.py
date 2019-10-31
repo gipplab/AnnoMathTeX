@@ -86,6 +86,7 @@ class TokenClickedHandler:
 
 
         recommendations_dict['wordWindow'] = self.get_word_window(unique_id)
+
         recommendations_dict['manual'] = ManualRecommendationsHandler(
                                                 all_manual_recommendations).check_identifier_or_formula(search_string)
 
