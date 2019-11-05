@@ -23,6 +23,8 @@
     var linkedWords = JSON.parse("{{ File.linked_words|escapejs }}")['linkedWords'];
     var linkedMathSymbols = JSON.parse("{{ File.linked_math_symbols|escapejs }}")['linkedMathSymbols'];
     var fileName = "{{ File.file_name|escapejs }}";
+    var identifierCount = "{{ File.identifier_count|escapejs }}";
+    var formulaCount = "{{ File.formula_count|escapejs }}";
     var tokenUniqueId;
     var preservedResultList;
     var sourceWithNums = {};
@@ -61,6 +63,8 @@
     <p id="highlightedText"></p>
     <button id="rejectHighlightingButton" onclick="rejectHighlightingListener()">placeholder</button>
     <br>
+    <div id="annotatedIdentifiers"></div>
+    <div id="annotatedFormulae"></div>
     <div id="tableholder"></div>
   </div>
 </div>

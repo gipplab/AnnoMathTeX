@@ -3,7 +3,8 @@ import json
 
 class File(models.Model):
 
-    def __init__(self, processed_lines, __linked_words__, __linked_math_symbols__, file_name, existing_annotations=None):
+    def __init__(self, processed_lines, __linked_words__, __linked_math_symbols__, file_name, identifier_count,
+                 formula_count, existing_annotations=None):
         """
 
         :param processed_lines: Each processed line consists of one or mulitple chunks. A chunk
@@ -23,6 +24,8 @@ class File(models.Model):
         self.linked_words = json.dumps({'linkedWords': linked_words})
         self.linked_math_symbols = json.dumps({'linkedMathSymbols': linked_math_symbols})
         self.file_name = file_name
+        self.identifier_count = identifier_count
+        self.formula_count = formula_count
         self.existing_annotations = json.dumps({'existingAnnotations': existing_annotations})
 
 

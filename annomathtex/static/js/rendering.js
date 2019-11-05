@@ -65,6 +65,18 @@ function handlePopupTable() {
     is called.
      */
 
+    let counts = ratioRemaining();
+    let annotatedIdentifiers = counts[0];
+    let annotatedFormulae = counts[1];
+
+    document.getElementById("annotatedIdentifiers").innerHTML = 'Annotated Identifiers: ' + annotatedIdentifiers + '/' + identifierCount;
+    document.getElementById("annotatedFormulae").innerHTML = 'Annotated Formulae: ' + annotatedFormulae + '/' + formulaCount;
+
+    console.log(annotatedIdentifiers);
+    console.log(identifierCount);
+    console.log(annotatedFormulae);
+    console.log(formulaCount);
+
     if (isFormula) {
         populateTableFormula();
     } else {

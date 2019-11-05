@@ -43,6 +43,7 @@ function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
     //moved to rendering (when window is open, to be consistent with manual recommendation)
     //window.tokenClickedTime = Date.now();
 
+
     if (tokenType == 'Word') {
         return;
     }

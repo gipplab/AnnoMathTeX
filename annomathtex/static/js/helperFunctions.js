@@ -153,3 +153,34 @@ function getLinkedIDs(contentSymbol) {
     }
     return uIDs;
 }
+
+
+function ratioRemaining() {
+    /*
+    get the ratio of the remaining identifiers/formulae to be annotated
+     */
+
+    var annotatedFormulae = 0;
+    var annotatedIdentifiers = 0;
+
+    for (var ann in annotations['global']){
+        let count = annotations['global'][ann]['uniqueIDs'].length;
+        if (annotations['global'][ann]['type'] == 'Formula') {
+            annotatedFormulae += count;
+        } else {
+            annotatedIdentifiers += count;
+        }
+    }
+
+    for (var ann in annotations['local']) {
+        for (var uid in annotations['local'][ann]) {
+            if (annotations['local'][ann][uid]['type'] == 'Formula') {
+                annotatedFormulae += 1;
+            } else {
+                annotatedIdentifiers += 1;
+            }
+        }
+    }
+
+    return [annotatedIdentifiers, annotatedFormulae];
+}

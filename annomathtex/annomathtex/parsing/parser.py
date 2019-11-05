@@ -38,6 +38,8 @@ class Parser(object, metaclass=ABCMeta):
         #dictionary identifier ids and the line they're on
         #needed for word window in file_upload_view
         self.identifier_line_dict = {}
+        self.identifier_count = 0
+        self.formula_count = len(self.math_envs)
 
     @abstractmethod
     def decode(self, request_file):
@@ -207,6 +209,8 @@ class Parser(object, metaclass=ABCMeta):
         identifiers, split_math_env = CustomMathEnvParser(math_env).get_split_math_env()
         #self.__LOGGER__.debug(' process_math_env, split_math_env: {} '.format(split_math_env))
 
+        self.identifier_count += len(identifiers)
+
         #str_math_env = str(math_env).replace('<math>', '')
         str_math_env = re.sub('<math.*?>', '', str(math_env))
         str_math_env = str_math_env.replace('</math>', '')
@@ -334,6 +338,8 @@ class Parser(object, metaclass=ABCMeta):
                                linked_words,
                                linked_math_symbols,
                                self.file_name,
+                               self.identifier_count,
+                               self.formula_count,
                                existing_annotations)
 
 
