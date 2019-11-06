@@ -62,6 +62,8 @@ def split_formulae_identifiers(eval_file):
     header = [eval_file[0]]
 
     for row in eval_file[1:]:
+        if re.match(r'^N/A', row[1]):
+            continue
         overlap = list(set(row[0]) & set(string.punctuation))
         if overlap:
             formulae.append(row)
@@ -207,21 +209,15 @@ def multiple_occurences_total_count(l):
 
 
 
-test = {'identifiers': [2, 1, 1, 1, 1, 1, 2, 3, 5, 8, 8, 9, 12, 14, 36, 22, 35, 34, 17, 36, 9, 27, 3, 3, 4, 2, 6, 1, 4, 5, 2, 2, 3, 2, 3, 1, 3, 7, 3, 1, 3, 4, 3, 6, 1, 6, 19, 7, 18, 3, 5, 4, 5, 4, 3, 1, 3, 4, 4, 1, 2, 4, 1, 1, 5, 2, 28, 5, 2, 23, 13, 14, 29, 6, 18, 22, 6, 7, 21, 1], 'formulae': [2, 2, 2, 2, 2, 2, 4, 2, 3, 2, 2, 2, 3, 3, 3, 3, 2, 2, 2, 3, 3, 3, 3, 3, 2, 3, 2, 3, 3, 3, 2, 3, 3, 3, 3, 3, 3, 3, 3, 2, 3, 3, 3, 3, 5, 2, 3, 5, 3, 3, 3, 3, 3, 3]}
-
-
-
-
 
 if __name__ == '__main__':
 
 
-    print(multiple_occurences_total_count(test['identifiers']))
-    print(multiple_occurences_total_count(test['formulae']))
-
     commit_one_eval_file()
     eval_file = get_one_evaluation_file()
     formulae, identifiers = split_formulae_identifiers(eval_file)
+
+
 
     si = selection_rankging_sources_identifiers(identifiers)
     sf = selection_ranking_sources_formulae(formulae)
@@ -261,6 +257,9 @@ if __name__ == '__main__':
     multiple_occurrences = time_saved_through_global()
     print('Time saved through global (multiple occurrences): ')
     print(multiple_occurrences)
+
+    #print(multiple_occurences_total_count(test['identifiers']))
+    #print(multiple_occurences_total_count(test['formulae']))
 
 
 
