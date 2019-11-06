@@ -32,7 +32,7 @@ class DataRepoHandler:
 
 
         self.g = Github(self.token)
-        self.repo = self.g.get_repo("ag-gipp/dataAnnoMathTex")
+        self.repo = self.g.get_repo("ag-gipp/dataAnnoMathTeX")
         self.user = self.g.get_user()
         self.evaluation_folder = 'evaluation'
 

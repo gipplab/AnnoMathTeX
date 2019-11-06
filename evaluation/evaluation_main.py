@@ -219,7 +219,7 @@ if __name__ == '__main__':
     print(multiple_occurences_total_count(test['identifiers']))
     print(multiple_occurences_total_count(test['formulae']))
 
-    """commit_one_eval_file()
+    commit_one_eval_file()
     eval_file = get_one_evaluation_file()
     formulae, identifiers = split_formulae_identifiers(eval_file)
 
@@ -260,7 +260,7 @@ if __name__ == '__main__':
 
     multiple_occurrences = time_saved_through_global()
     print('Time saved through global (multiple occurrences): ')
-    print(multiple_occurrences)"""
+    print(multiple_occurrences)
 
 
 

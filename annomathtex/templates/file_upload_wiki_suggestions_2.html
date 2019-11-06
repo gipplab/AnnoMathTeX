@@ -45,7 +45,13 @@
             <form id="wikipediaForm" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
 
-              <input type="text" id="wikipediaInput" placeholder="Search Wikipedia" value required size="20" minlength="3" maxlength="60">
+              <!--<div>
+                <button type="submit" name="file_submit">Select local file</button>
+              </div>-->
+
+
+
+              <input type="text file" id="wikipediaInput" placeholder="Search Wikipedia" value required size="20" minlength="3" maxlength="60">
 
                 <!--<button id="wikipediaSubmit" name="wikipediaSubmit">
                   <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 512 512"><path d="M414 354q-18-18-41-11l-32-32q43-53 43-119 0-80-56-136T192 0 56 56 0 192t56 136 136 56q70 0 119-43l32 32q-6 24 11 41l85 85q13 13 30 13 18 0 30-13 13-13 13-30t-13-30zm-222-13q-62 0-105.5-43.5T43 192 86.5 86.5 192 43t105.5 43.5T341 192t-43.5 105.5T192 341z" fill="#626262"/></svg>
@@ -63,6 +69,16 @@
               <button id="showFiles" name="showFiles">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="27px" height="27px" viewBox="-0.5 -0.5 27 27" content="&lt;mxfile modified=&quot;2019-09-15T11:28:47.795Z&quot; host=&quot;www.draw.io&quot; agent=&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36&quot; etag=&quot;Zj7R6GI_Pr_m_hNJz5F5&quot; version=&quot;11.2.8&quot; type=&quot;device&quot; pages=&quot;1&quot;&gt;&lt;diagram id=&quot;4-oyBVOH-g0G9dCA5E1E&quot; name=&quot;Page-1&quot;&gt;jZNRb5swEMc/DY9EGJKSPiYsaSdtU6VumtY3BxuwanzIXBqyT78zmABqK40H7Pvd2Xc+/x0kWd09WN5U30FIHcSR6ILkSxDH6XpLfweuA0hSD0qrxIDYBJ7VX+lh5OlZCdkuAhFAo2qWMAdjZI4Lxq2FyzKsAL3M2vBSvgPPOdfv6W8lsBrodhNN/FGqshozs8h7aj4Ge9BWXMBlhpJDkGQWAIdZ3WVSu96NfRnWHT/x3gqz0uD/LPha/2xe8O7AwiT7sT/l6qn7E7J02OaN67M/sa8Wr2MLqPDGTVXd92pfYa3JZDR9kxYVNWunVWmIITQz+o2fpH6CVqEC5z0BItQUoJ1jz/PX0sLZiAw02D5XUvQfhfTJdm0z3GlEhI9GoTopxhCyK0Qnhp07enzMhYlXiuRQKCOkXeWUMT4KjpwGx1sa27wiEYVSnHPuigsT17iUGnj8ZVChliJkIduELN6uGlNSthYtvMpZqev1/aZvwuAZ1bEhUiitPzpUAQY/2sHfAbVNdp/eLrtpht6ahFqivVKIXxDfe5n5d5beefsyqZYOM7BqrtgRcv9Sytvek5ho4vU0mpNue9/s8SeHfw==&lt;/diagram&gt;&lt;/mxfile&gt;" style="background-color: rgb(255, 255, 255);"><defs/><g><image x="-0.09999999999999998" y="-0.09999999999999998" width="25.6" height="25.6" xlink:href="https://cdn2.iconfinder.com/data/icons/school-education-32/70/Untitled-1-15-128.png" preserveAspectRatio="none" pointer-events="none"/></g></svg>
               </button>
+
+              <!--<button id="localFiles" name="localFiles">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="27px" height="27px" viewBox="-0.5 -0.5 27 27" content="&lt;mxfile host=&quot;www.draw.io&quot; modified=&quot;2019-11-05T14:51:00.800Z&quot; agent=&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36&quot; etag=&quot;_AmrsET8akIMnxvAA3n3&quot; version=&quot;12.2.0&quot; type=&quot;device&quot; pages=&quot;1&quot;&gt;&lt;diagram id=&quot;KL-zkp6bQgWuxI5RCZy7&quot; name=&quot;Page-1&quot;&gt;jZNdT4MwFIZ/DZcuQMemlw6nxo9Eo8kuTbceoa7lkNJtzF/vQQ4wNCbekPY5b9vz8RKI1NY3Tpb5IyowQRyqOhBXQRzPxZS+DTi2QMxECzKnVYuiAbzoT2AYMt1pBdVI6BGN1+UYbrAoYONHTDqHh7HsHc341VJm8Au8bKT5TVda+byl50k48FvQWd69HIUcsbITM6hyqfBwgsQyEKlD9O3K1imYpnddX9pz139E+8QcFP4/B+6iZHebfmSvz/NXubxY2fvV8xnfspdmxwVzsv7YdaDPOwzEQskqB8Wb3FtDy4iWlXe4hRQNOiIFFnR48a6N6VAQi+n0IvkWG7kG84SV9hoLim2oAiDRYg/Oa+r9ww/BGr1HeyK4NDprAh5LopJ3/T2480YXlE7niSZbqqNsSrJ11jh1sgeQdmKQrntTutqShJtBj0D9Z5ejfnbkeUAL3h1JwgfiKY/72PmY94fBPcl8wm3OT6yTzCbn7Fv2bNbfPoyVFjzZbjs46Dt28huK5Rc=&lt;/diagram&gt;&lt;/mxfile&gt;" style="background-color: rgb(255, 255, 255);"><defs/><g><path d="M 12.74 25.56 C 12.22 25.56 11.33 25.29 11.33 24.11 L 11.33 13.96 L 18.61 13.96 L 20.71 12.33 L 24.61 12.33 C 25.53 12.32 25.74 12.82 25.74 13.31 L 25.74 25.56 L 12.74 25.56 Z" fill="#f7941d" stroke="none" pointer-events="all"/><rect x="0" y="0" width="0" height="0" fill="none" stroke="none" pointer-events="all"/><path d="M 9.69 9.93 C 8.6 9.93 7.53 9.33 7.53 8.33 C 7.53 7.54 8.48 6.81 9.71 6.81 C 11.06 6.81 11.92 7.59 11.92 8.35 C 11.92 9.2 10.98 9.93 9.69 9.93 Z M 10.43 16.23 L 2.4 16.23 C 1.47 16.23 0.67 16.54 0.03 17.04 L 0.03 2.65 C 0.03 1.73 1.12 0 2.91 0 L 16.54 0 C 17.71 0 19.3 1.01 19.3 2.8 L 19.3 12.21 L 18.26 13.08 L 12.41 13.08 C 15.17 12.05 16.28 9.96 16.28 8.31 C 16.28 5.37 13.26 3.05 9.66 3.05 C 6.14 3.05 3.17 5.46 3.17 8.23 C 3.17 11.56 6.75 13.85 10.43 13.51 L 10.43 16.23 Z M 10.43 22.96 L 2.93 22.96 C 1.59 22.96 0 21.83 0 20.02 C 0 18.33 1.3 17.48 2.42 17.48 L 10.43 17.48 L 10.43 22.96 Z" fill="#4495d1" stroke="none" pointer-events="all"/><path d="M 2.92 21.75 C 2.47 21.75 1.45 21.37 1.45 20.13 C 1.45 19.47 2.14 18.75 2.97 18.75 C 3.93 18.75 4.45 19.6 4.45 20.23 C 4.45 21.08 3.75 21.75 2.92 21.75 Z" fill="#ffffff" stroke="none" pointer-events="all"/></g></svg>
+              </button><input type="file" id="localFileInput">
+
+              </br>-->
+
+
+
+              <!--<div style="position: relative"><a href="#" id="select_logo"><button>TEST</button></a> <input type="file" id="logo"></div>-->
 
             </form>
           </br>
@@ -91,6 +107,22 @@
 
 
   <script>
+
+    /*$("#localFileInput").css('opacity','0');
+
+
+    $("#localFiles").click(function (e) {
+      e.preventDefault();
+      $("#localFileInput").trigger('click');
+
+    });
+
+
+    $("#localFileInput").change(function (e) {
+      console.log(e);
+
+    });*/
+
 
 
     tippy('#wikipediaSubmit', {

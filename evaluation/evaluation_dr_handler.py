@@ -11,7 +11,7 @@ class EvaluationDRHandler:
         from key import local_token
         self.token = local_token
         self.g = Github(self.token)
-        self.repo = self.g.get_repo("ag-gipp/dataAnnoMathTex")
+        self.repo = self.g.get_repo("ag-gipp/dataAnnoMathTeX")
         self.user = self.g.get_user()
 
 

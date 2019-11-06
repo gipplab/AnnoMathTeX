@@ -43,6 +43,7 @@ class StartScreenView(View):
         action = list(items['action'].keys())[0]
 
         start_screen_view_logger.info('POST, action: {}'.format(action))
+        start_screen_view_logger.info(items)
 
         if action == 'getRepoContent':
             return RepoContentHandler(items).get_repo_content()
