@@ -175,18 +175,25 @@ class DataRepoHandler:
     def list_directory(self, dirname='files'):
         dir_contents = self.repo.get_dir_contents(dirname)
         def clean_name(content_file):
-            regex = r'(?<={}/).*?(?=\.txt)'.format(dirname)
+            #regex = r'(?<={}/).*?(?=\.(txt|tex))'.format(dirname)
+            regex = r'(?<={}/).*?\.(txt|tex)'.format(dirname)
             file_name = re.search(regex, str(content_file))
             file_name = file_name.group()
             file_name = file_name.replace('_', ' ')
+            if ('.txt' in file_name):
+                file_name = file_name.replace('.txt', ' (Wikitext)')
+            else:
+                file_name = file_name.replace('.tex', ' (LaTeX)')
             return file_name
 
         file_names = list(map(clean_name, dir_contents))
         return file_names
 
     def get_wikipedia_article(self, article_name):
+        article_name = article_name.replace(' (Wikitext)', '.txt')
+        article_name = article_name.replace(' (LaTeX)', '.tex')
         article_name = article_name.replace(' ', '_')
-        path = 'files/{}.txt'.format(article_name)
+        path = 'files/{}'.format(article_name)
         encoded_content = self.repo.get_file_contents(path)
         decoded_content = encoded_content.decoded_content
         return decoded_content
@@ -196,10 +203,18 @@ class DataRepoHandler:
 
         #if article_name + ' annotation ' in self.list_directory(dirname='annotation'):
         if article_name in self.list_directory(dirname='annotation'):
-            annotation_file_name = article_name.replace(' ', '_')
+            article_name = article_name.replace(' (Wikitext)', '.txt')
+            article_name = article_name.replace(' (LaTeX)', '.tex')
+            article_name = article_name.replace(' ', '_')
+
+
+            #annotation_file_name = article_name.replace(' ', '_')
             #annotation_file_name = '{}_annotation_.txt'.format(annotation_file_name)
-            annotation_file_name = '{}.txt'.format(annotation_file_name)
-            path = 'annotation/{}'.format(annotation_file_name)
+            #annotation_file_name = '{}.txt'.format(article_name)
+            path = 'annotation/{}'.format(article_name)
+
+            data_repo_handler_logger.info(path)
+
             encoded_content = self.repo.get_file_contents(path)
             decoded_content = encoded_content.decoded_content
             decoded_content_str = decoded_content.decode()

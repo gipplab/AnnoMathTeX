@@ -1,7 +1,11 @@
 import os
 import pickle
+import logging
 
 from ...config import *
+
+logging.basicConfig(level=logging.INFO)
+cache_handler_logger = logging.getLogger(__name__)
 
 class CacheHandler:
 
@@ -16,6 +20,7 @@ class CacheHandler:
 
 
     def write_file_name_cache(self, file_name):
+        cache_handler_logger.info(file_name)
         if os.path.isfile(file_name_cache_path):
             with open(file_name_cache_path, 'w') as outfile:
                 outfile.truncate(0)

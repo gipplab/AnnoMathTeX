@@ -1,1 +1,1 @@
-Astronomical spectroscopy
+emc2 test (LaTeX)

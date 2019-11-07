@@ -10,6 +10,7 @@ from ...views.helper_classes.data_repo_handler import DataRepoHandler
 from ...parsing.txt_parser import TXTParser
 from ...parsing.tex_parser import TEXParser
 from ...parsing.wikipedia_parser import WikipediaParser
+from ...parsing.tex_parser import TEXParser
 
 
 logging.basicConfig(level=logging.INFO)
@@ -39,9 +40,14 @@ class FileHandler:
         self.save_annotation_form = {'form': SaveAnnotationForm()}
 
 
-    def get_processed_wikipedia_article(self, article_name):
+    def get_processed_repo_article(self, article_name):
+
+
         wikipedia_article = DataRepoHandler().get_wikipedia_article(article_name)
-        line_dict, identifier_line_dict, processed_file = WikipediaParser(wikipedia_article, article_name).process()
+        if ('Wikitext' in article_name):
+            line_dict, identifier_line_dict, processed_file = WikipediaParser(wikipedia_article, article_name).process()
+        else:
+            line_dict, identifier_line_dict, processed_file = TEXParser(wikipedia_article, article_name).process()
         dicts = {'identifiers': identifier_line_dict, 'lines': line_dict}
 
         CacheHandler().dicts_to_cache(dicts)

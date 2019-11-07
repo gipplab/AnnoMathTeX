@@ -69,6 +69,12 @@ class SessionSavedHandler:
         annotations = self.post_process_annotations(self.items['annotations'])
         file_name = self.items['fileName']['f']
 
+        file_name = file_name.replace(' (Wikitext)', '.txt')
+        file_name = file_name.replace(' (LaTeX)', '.tex')
+
+
+        session_saved_handler_logger.info(file_name)
+
 
 
         #session_saved_handler_logger.info(self.items['annotations'])
@@ -85,6 +91,9 @@ class SessionSavedHandler:
 
         #self.formula_concept_db_initial_commit(annotations)
         #self.save_files_locally(file_name, cleaned_annotations)
+
+
+
         self.save_files_to_repo(file_name, cleaned_annotations, cleaned_manual_recommendations)
 
         return HttpResponse(

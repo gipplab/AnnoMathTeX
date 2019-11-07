@@ -3,6 +3,12 @@ from jquery_unparam import jquery_unparam
 
 from ...views.helper_classes.cache_handler import CacheHandler
 
+
+import logging
+
+logging.basicConfig(level=logging.INFO)
+wikipedia_article_name_handler_logger = logging.getLogger(__name__)
+
 class WikipediaArticleNameHandler:
 
     def __init__(self, request, items):

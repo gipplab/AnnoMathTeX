@@ -3,7 +3,12 @@ from TexSoup import TexSoup
 import logging
 import re
 import warnings
+import logging
 warnings.filterwarnings("ignore")
+
+
+logging.basicConfig(level=logging.INFO)
+tex_parser_logger = logging.getLogger(__name__)
 
 class TEXParser(Parser):
     """
@@ -16,9 +21,12 @@ class TEXParser(Parser):
         :param request_file: The file that the user selected.
         :return: The decoded file as a string.
         """
-        bytes = request_file.read()
+
+        #tex_parser_logger.info(request_file)
+
+
+        bytes = request_file#.read()
         string = bytes.decode('utf-8')
-        self.__LOGGER__.debug('TYPE OF VARIABLE STRING IS {}'.format(type(string)))
         return string
 
     def extract_math_envs(self):
@@ -42,8 +50,6 @@ class TEXParser(Parser):
                 found_char = re.search(r'(?<=_)(\w|\d)', math_env).group()[0]
                 found_char_with_brackets = '{' + found_char + '}'
                 math_env_new = math_env.replace(found_char, found_char_with_brackets)
-                self.__LOGGER__.debug(' found special CHARS: {}'.format(found_char))
-                self.__LOGGER__.debug(' contains special CHAR --- math_env_old: {} ---- math_env_new: {}'.format(math_env, math_env_new))
                 return (math_env, math_env_new)
             return (math_env, math_env)
 
@@ -53,5 +59,4 @@ class TEXParser(Parser):
         dollar = list(tex_soup.find_all('$'))
         math_envs = equation + align + dollar
         math_envs = list(map(lambda m: str(m), math_envs))
-        self.__LOGGER__.info(' extracted math_envs: {}'.format(math_envs))
         return math_envs

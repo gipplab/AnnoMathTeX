@@ -321,7 +321,7 @@ class Parser(object, metaclass=ABCMeta):
             for w in line:
                 if re.search(r'__MATH_ENV__', w.content):
                     math_env = self.math_envs[0]
-                    parser_logger.info(math_env)
+                    #parser_logger.info(math_env)
                     #parser_logger.info('in process. math env: {}'.format(math_env))
                     self.math_envs.pop(0)
                     processed_math_env = self.process_math_env(math_env, line_num)

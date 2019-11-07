@@ -34,7 +34,10 @@ class AnnotationView(View):
         :return: The rendered response containing the template name and the necessary form.
         """
         article_name = CacheHandler().read_file_name_cache()
-        processed_file = FileHandler(request).get_processed_wikipedia_article(article_name)
+
+        annotation_view_logger.info(article_name)
+
+        processed_file = FileHandler(request).get_processed_repo_article(article_name)
         annotation_view_logger.info('GET, filename: {}'.format(article_name))
         return render(request, self.template_name, {'File': processed_file, 'test': 3})
 
