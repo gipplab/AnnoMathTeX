@@ -69,8 +69,7 @@ function handlePopupTable() {
     let annotatedIdentifiers = counts[0];
     let annotatedFormulae = counts[1];
 
-    document.getElementById("annotatedIdentifiers").innerHTML = 'Annotated Identifiers: ' + annotatedIdentifiers + '/' + identifierCount;
-    document.getElementById("annotatedFormulae").innerHTML = 'Annotated Formulae: ' + annotatedFormulae + '/' + formulaCount;
+    var annotationsCountTable = document.getElementById("annotationsCountTable");
 
     console.log(annotatedIdentifiers);
     console.log(identifierCount);
@@ -78,8 +77,10 @@ function handlePopupTable() {
     console.log(formulaCount);
 
     if (isFormula) {
+        annotationsCountTable.innerHTML = 'Annotated Formulae: ' + annotatedFormulae + '/' + formulaCount;
         populateTableFormula();
     } else {
+        annotationsCountTable.innerHTML = 'Annotated Identifiers: ' + annotatedIdentifiers + '/' + identifierCount;
         populateTableIdentifier();
     }
 }
@@ -469,6 +470,16 @@ function renderAnnotationsTable() {
     The table at the top of the document, that is constantly being updated with the latest annotations is generated in
     this function.
      */
+
+    let counts = ratioRemaining();
+    let annotatedIdentifiers = counts[0];
+    let annotatedFormulae = counts[1];
+
+
+    document.getElementById("identifierAnnotationsCount").innerHTML = 'Annotated Identifiers: ' + annotatedIdentifiers + '/' + identifierCount;
+    document.getElementById("formulaAnnotationsCount").innerHTML = 'Annotated Formulae: ' + annotatedFormulae + '/' + formulaCount;
+
+
     function createRow(token, name, local, uIDs, type, qid) {
         var bold = true ? type=='Identifier' : false;
         var args = [

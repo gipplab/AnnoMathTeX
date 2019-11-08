@@ -310,6 +310,9 @@ class Parser(object, metaclass=ABCMeta):
         """
 
         self.remove_math_envs()
+
+        parser_logger.info('num math envs:')
+        parser_logger.info(len(self.math_envs))
         #necessary?
         lines = [p for p in self.file.split('\n')]
         word_lines = [self.extract_words(s, i) for i, s in enumerate(lines)]

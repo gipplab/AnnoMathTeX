@@ -182,5 +182,5 @@ function ratioRemaining() {
         }
     }
 
-    return [annotatedIdentifiers, annotatedFormulae];
+    return [annotatedIdentifiers, annotatedFormulae/2];
 }
