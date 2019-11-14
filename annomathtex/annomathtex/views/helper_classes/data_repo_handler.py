@@ -348,6 +348,21 @@ def commit_wikidata_math_items(d):
 
 
 
+def merge_math_files(d):
+    math_wikidata_items = d.get_math_wikidata_items()
+    wikidata_identifiers = d.get_wikidata_identifiers()
+
+
+    for value in wikidata_identifiers.values():
+        for item in value:
+            qid = item['qid']
+            if qid not in math_wikidata_items.values():
+                name = item['name']
+                math_wikidata_items[name] = qid
+
+
+    d.delete_file('sources/math_wikidata_items.json')
+    d.commit_file('sources/math_wikidata_items.json', json.dumps(math_wikidata_items))
 
 
 
@@ -362,8 +377,9 @@ if __name__ == '__main__':
     #a = d.get_wikipedia_article('Angular velocity')
     #decode_wikipedia_article(a)
     #d.delete_file('files/Sphere.txt')
-    d.delete_file('evaluation/Mass–energy_equivalence.csv')
+    #d.delete_file('evaluation/Astronomical_spectroscopy.txt.csv')
     #wikidata_identifiers_by_name(d)
 
     #commit_all_wikidata_items()
-    commit_wikidata_math_items(d)
+    #commit_wikidata_math_items(d)
+    merge_math_files(d)

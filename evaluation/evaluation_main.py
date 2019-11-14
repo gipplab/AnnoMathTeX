@@ -257,9 +257,15 @@ if __name__ == '__main__':
     multiple_occurrences = time_saved_through_global()
     print('Time saved through global (multiple occurrences): ')
     print(multiple_occurrences)
+    print()
 
-    #print(multiple_occurences_total_count(test['identifiers']))
-    #print(multiple_occurences_total_count(test['formulae']))
+
+    total_count_id, csv_string_id = multiple_occurences_total_count(multiple_occurrences['identifiers'])
+    total_count_f, csv_string_f = multiple_occurences_total_count(multiple_occurrences['formulae'])
+    print('Total count identifers: {}'.format(total_count_id))
+    print('csv_string_id: {}'.format(csv_string_id))
+    print('total count formulae: {}'.format(total_count_f))
+    print('csv_string_f: {}'.format(csv_string_f))
 
 
 

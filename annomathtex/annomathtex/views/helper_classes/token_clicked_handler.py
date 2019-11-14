@@ -128,22 +128,11 @@ class TokenClickedHandler:
                     r['qid'] = all_wikidata_formulae[name]['qid']
                 else:
                     r['qid'] = 'N/A'
-                #token_clicked_handler_logger.info(r)
                 return r
 
             def add_qid_all_math(r):
 
-                #token_clicked_handler_logger.info(r)
 
-                """if 'Wien' in r['name']:
-                    token_clicked_handler_logger.info('LOGLLOG: ')
-                    token_clicked_handler_logger.info(r)
-                    r['name'].replace('\'', '__APOSTROPH__')
-                    token_clicked_handler_logger.info(r)
-                    r['name'] = r['name'].replace('\'', '__APOSTROPH__')
-                    token_clicked_handler_logger.info(r)
-                    r = {'name': r['name'].replace('\'', '__APOSTROPH__')}
-                    token_clicked_handler_logger.info(r)"""
 
                 if source not in ['wikidata1Results', 'wikidata2Results']:
 
@@ -152,18 +141,10 @@ class TokenClickedHandler:
                         r['qid'] = all_math_items[name]
                     else:
                         r['qid'] = 'N/A'
-                #token_clicked_handler_logger.info(r)
                 r['name'] = r['name'].replace("\'", '__APOSTROPH__')
-                #token_clicked_handler_logger.info(r)
                 return r
 
 
-            #if source not in ['wikidata1Results', 'wikidata2Results']:
-            #    if token_type == 'Identifier':
-            #        dict_list = list(map(add_qid_identifier, dict_list))
-            #    else:
-            #        dict_list = list(map(add_qid_formula, dict_list))
-            #if source not in ['wikidata1Results', 'wikidata2Results']:
             dict_list = list(map(add_qid_all_math, dict_list))
 
 

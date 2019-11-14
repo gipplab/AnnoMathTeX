@@ -69,8 +69,11 @@ class SessionSavedHandler:
         annotations = self.post_process_annotations(self.items['annotations'])
         file_name = self.items['fileName']['f']
 
-        file_name = file_name.replace(' (Wikitext)', '.txt')
-        file_name = file_name.replace(' (LaTeX)', '.tex')
+        #file_name = file_name.replace(' (Wikitext)', '.txt')
+        #file_name = file_name.replace(' (LaTeX)', '.tex')
+
+        file_name = file_name.replace(' (Wikitext)', '')
+        file_name = file_name.replace(' (LaTeX)', '')
 
 
         session_saved_handler_logger.info(file_name)
