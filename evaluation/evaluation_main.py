@@ -43,7 +43,10 @@ def commit_one_eval_file():
 
     dr_handler = EvaluationDRHandler()
     file_name = 'evaluation/one_eval_file.csv'
-    dr_handler.delete_file(file_name)
+    try:
+        dr_handler.delete_file(file_name)
+    except Exception as e:
+        print()
     dr_handler.commit_file(file_name, csv_string)
 
 
@@ -206,6 +209,7 @@ def multiple_occurences_total_count(l):
     csv_string = list_to_csv(sorted_list)
     total_count = sum([l[0]*l[1] for l in sorted_list])
     return (total_count, csv_string)
+
 
 
 

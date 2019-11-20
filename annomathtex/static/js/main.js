@@ -21,7 +21,6 @@ function handleLinkedTokens(func, dicToCheck) {
      */
 
     if (content in dicToCheck) {
-        console.log(content +  ' in linkedMathSymbols');
         var word = dicToCheck[content];
         for (i in word) {
             var id = word[i];
@@ -60,8 +59,6 @@ function clickToken(jsonContent, jsonMathEnv, tokenUniqueId, tokenType) {
     uniqueID = tokenUniqueId;
     mathEnv = mathEnvContent;
 
-    console.log(mathEnvContent);
-    console.log(jsonMathEnv);
 
 
     //Display the selected token in the element "highlightedText".

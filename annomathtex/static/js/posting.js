@@ -144,7 +144,7 @@ function getWikipediaArticle(name) {
           //console.log('in success');
           //return json;
           console.log(json);
-          renderWikipediaArticle(json);
+          //renderWikipediaArticle(json);
       },
 
       //non-successful response

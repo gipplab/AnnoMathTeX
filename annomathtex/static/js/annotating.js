@@ -6,7 +6,6 @@ function noMatchInputListener() {
     window.manualRecommendationStartTime = Date.now();
     window.manualSelectionTime = Date.now() - window.tokenClickedTime;
     //var manualRecommendationStartTime = Date.now();
-    //console.log(manualRecommendationStartTime);
 }
 
 
@@ -19,8 +18,6 @@ function rejectHighlightingListener() {
     var qid = 'N/A';
     var uIDs = getLinkedIDs(content);
 
-    console.log(annotations);
-    console.log(manualRecommendations);
 
     if (!checkIfAnnotationExists(name)) {
         addToAnnotations(uniqueID, name, 'user', '-', qid, false, false, true, uIDs);
@@ -32,8 +29,6 @@ function rejectHighlightingListener() {
         addToMannualRecommendations(name, qid);
     }
 
-    console.log(annotations);
-    console.log(manualRecommendations);
 
     var local = document.getElementById('localSwitch').checked;
 
@@ -52,8 +47,6 @@ function rejectHighlightingListener() {
 
 function addNoMatchToAnnotations(result) {
 
-    //var tmp = JSON.parse(result)['qid'];
-    //console.log(result);
 
     let qid = result['qid'];
     let name = result['name'];
@@ -70,10 +63,6 @@ function addNoMatchToAnnotations(result) {
     if (local) {
         setAnnotatedColor([uniqueID]);
     } else {
-        console.log('set annotated color for');
-        console.log(uIDs);
-        console.log(uniqueID);
-        console.log(content);
         setAnnotatedColor(uIDs);
 
     }
@@ -150,7 +139,6 @@ function addToAnnotations(uID, name, source, rowNum, qid, selectionTime, manualS
         }
     } else {
 
-        //console.log(content);
 
         //todo: unify with function localDict()
         annotations['global'][content] = {
@@ -181,7 +169,6 @@ function deleteGlobalAnnotation(token) {
 function deleteFromAnnotations(argsString) {
 
     var argsArray = argsString.split('----');
-    console.log(argsArray);
 
     var token = argsArray[0];
     var local = (argsArray[1] == 'true');
@@ -263,10 +250,7 @@ function checkIfAnnotationExists(name) {
         exists = false;
     }
 
-    //for (var c in annotations['global']) {
-    //    console.log(c);
-    //}
-    //console.log(annotations['global'][content]['name']);
+
     return exists;
 
 }

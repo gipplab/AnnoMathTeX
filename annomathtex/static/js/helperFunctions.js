@@ -68,7 +68,6 @@ function replaceAllEqualsPlusAnn(ann) {
     var newLocal = {};
 
     function replaceAll(str) {
-        //console.log(str, typeof str);
         var noEquals = str.replace(new RegExp('=', 'g'), '__EQUALS__');
         //var newStr = noEquals.replace(new RegExp('/\+/', 'g'), '__PLUS__');
         return noEquals;
@@ -162,6 +161,8 @@ function ratioRemaining() {
 
     var annotatedFormulae = 0;
     var annotatedIdentifiers = 0;
+
+    console.log(annotations['global']);
 
     for (var ann in annotations['global']){
         let count = annotations['global'][ann]['uniqueIDs'].length;

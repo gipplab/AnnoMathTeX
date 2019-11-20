@@ -15,7 +15,6 @@ function setAnnotatedColor(uIDs) {
     /*
     Set the color of annotations tokens.
      */
-    //console.log(uIDs);
     for (var i=0 in uIDs) {
         document.getElementById(uIDs[i]).style.color = annotationsColor;
     }
@@ -71,10 +70,6 @@ function handlePopupTable() {
 
     var annotationsCountTable = document.getElementById("annotationsCountTable");
 
-    console.log(annotatedIdentifiers);
-    console.log(identifierCount);
-    console.log(annotatedFormulae);
-    console.log(formulaCount);
 
     if (isFormula) {
         annotationsCountTable.innerHTML = 'Annotated Formulae: ' + annotatedFormulae + '/' + formulaCount;
@@ -106,7 +101,6 @@ function populateTableFormula(random=true) {
     let formulaConceptDB = recommendations['formulaConceptDB'];
     var existingManual = [...new Set(recommendations['manual'])];
 
-    console.log(formulaConceptDB);
 
 
     if (mathEnv in manualRecommendations) {
@@ -125,8 +119,6 @@ function populateTableFormula(random=true) {
                       [formulaConceptDB, 'FormulaConceptDB'],
                       [existingManual, 'Manual']];
 
-
-    console.log(resultList);
 
 
     tmpResultList = resultList[4][0];
@@ -152,7 +144,6 @@ function populateTableFormula(random=true) {
         var table= "<table><tr><td>Wikidata1</td><td>Wikidata2</td><td>WordWindow</td><td>FormulaConceptDB</td><td>Manual</td></tr>";
     }
 
-    //console.log(resultList);
 
     let source0 = resultList[0][0];
     let source1 = resultList[1][0];
@@ -234,7 +225,6 @@ function populateTableIdentifier(random=true) {
     }
 
 
-    console.log(existingManual);
 
 
     var resultList = [[arXivEvaluationItems, 'ArXiv'],
@@ -259,7 +249,6 @@ function populateTableIdentifier(random=true) {
                                     [wordWindow, 'WordWindow'],
                                     [existingManual, 'Manual']]);
         preservedResultList = resultList;
-        //console.log(preservedResultList);
     } else {
         table= "<table><tr><td>arXiv</td><td>Wikipedia</td><td>Wikidata</td><td>WordWindow</td><td>Manual</td></tr>";
     }
@@ -377,14 +366,11 @@ function createCell(item, source, rowNum) {
     td += " style='background-color:" + backgroundColor + "'";
     td += "onclick='selected(\"" + argsString + "\")' >";
     if (name) {
-        //console.log(name);
-        //console.log()
         td += name.replace(new RegExp('__APOSTROPH__', 'g'), '\'') + ' (' + qid + ')';
     }
     //td += name + ' (' + qid + ')';
     td += "</td>";
 
-    //console.log(annotations);
 
     return td;
 }
@@ -394,8 +380,6 @@ function selected(argsString){
     This function is called when the user annotates a token with an element from the created table (e.g. from the
     retrieved wikidata results).
      */
-
-    console.log(argsString);
 
     var recommendationSelectedTime = Date.now() - window.tokenClickedTime;
 
@@ -410,8 +394,6 @@ function selected(argsString){
     var rowNum = argsArray[6];
 
     var local = document.getElementById('localSwitch').checked;
-
-    console.log(name);
 
 
     if (local) {
@@ -436,7 +418,6 @@ function selected(argsString){
         switch (backgroundColor) {
             case cellColorBasic:
                 setCellColorSelectedGlobal(cellID);
-                console.log('cellColorBasic');
                 //tokenAssignedItemGlobal[content] = name;
                 if (content in annotations['global']) {
                     deleteGlobalAnnotation(content);
@@ -475,6 +456,10 @@ function renderAnnotationsTable() {
     let annotatedIdentifiers = counts[0];
     let annotatedFormulae = counts[1];
 
+    console.log('Annotated Identifiers: ' + annotatedIdentifiers + '/' + identifierCount);
+    console.log('Annotated Formulae: ' + annotatedFormulae + '/' + formulaCount);
+
+
 
     document.getElementById("identifierAnnotationsCount").innerHTML = 'Annotated Identifiers: ' + annotatedIdentifiers + '/' + identifierCount;
     document.getElementById("formulaAnnotationsCount").innerHTML = 'Annotated Formulae: ' + annotatedFormulae + '/' + formulaCount;
@@ -507,9 +492,6 @@ function renderAnnotationsTable() {
     var annotationsTable = "</br><table><tr><td><b>Identifier</b>/Formula</td><td>Annotated with</td><td>Type</td><td>Delete</td></tr>";
 
 
-
-    console.log(annotations);
-
     var l = annotations['local'];
     for (var token in l) {
         for (var uID in l[token]){
@@ -530,7 +512,6 @@ function renderAnnotationsTable() {
 
 function renderWikipediaResultsTable(wikipediaResults) {
 
-    console.log(wikipediaResults);
 
     var annotationsTable = "<table><tr><td><strong><b>Available Wikipedia Articles</b></strong></td></tr>";
     for (var r in wikipediaResults) {
@@ -561,14 +542,9 @@ function renderWikipediaResultsTable(wikipediaResults) {
 
 
 function selectedWikipediaResult(name){
-    console.log(name);
     document.getElementById('wikipediaInput').value = name;
     var modal = document.getElementById("popupWikipedia");
     modal.style.display = "none";
     //getWikipediaArticle(name);
 }
 
-function renderWikipediaArticle(wikipediaArticle){
-    console.log('IN renderWikipediaArticle');
-    console.log(wikipediaArticle);
-}

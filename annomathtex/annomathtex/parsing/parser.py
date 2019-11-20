@@ -110,6 +110,7 @@ class Parser(object, metaclass=ABCMeta):
         words = {}
         math_symbols = {}
 
+
         def word_links(word):
             if word.named_entity and word.content:
                 if word.content in words:
@@ -140,6 +141,9 @@ class Parser(object, metaclass=ABCMeta):
                     identifier_links(token)
                 elif token.type == 'Formula':
                     formula_links(token)
+
+
+        parser_logger.info(math_symbols['v'])
 
 
         return words, math_symbols

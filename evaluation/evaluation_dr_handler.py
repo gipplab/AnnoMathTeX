@@ -31,6 +31,7 @@ class EvaluationDRHandler:
         return
 
     def delete_file(self, file_name):
+        print(file_name)
         contents = self.repo.get_contents(file_name)
         self.repo.delete_file(file_name, "Deleting file {}".format(file_name), contents.sha)
         return

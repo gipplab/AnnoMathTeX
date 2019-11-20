@@ -5,7 +5,7 @@ import re
 import logging
 urllib3.disable_warnings()
 from github import Github, GithubException
-from .formula_concept_handler import FormulaConceptHandler
+#from .formula_concept_handler import FormulaConceptHandler
 
 logging.basicConfig(level=logging.WARNING)
 data_repo_handler_logger = logging.getLogger(__name__)
@@ -366,6 +366,10 @@ def merge_math_files(d):
 
 
 
+def count_fcdb(d):
+    fcdb = d.get_formula_concepts()
+    print(fcdb)
+
 
 
 if __name__ == '__main__':
@@ -382,4 +386,6 @@ if __name__ == '__main__':
 
     #commit_all_wikidata_items()
     #commit_wikidata_math_items(d)
-    merge_math_files(d)
+    #merge_math_files(d)
+
+    count_fcdb(d)
