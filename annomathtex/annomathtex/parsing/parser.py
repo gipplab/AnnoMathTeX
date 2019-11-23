@@ -143,7 +143,7 @@ class Parser(object, metaclass=ABCMeta):
                     formula_links(token)
 
 
-        parser_logger.info(math_symbols['v'])
+        #parser_logger.info(math_symbols['v'])
 
 
         return words, math_symbols

@@ -14,13 +14,19 @@ evaluation_annotations_path = os.path.join(os.path.abspath(os.path.join(PROJECT_
 #evaluation_annotations_path = os.path.join(project_root, ['evaluation', 'annotations'])
 
 def create_annotation_file_name(file_name):
-    #annotation_file_name = re.sub(r'\..*', '.txt', file_name)
-    #file_name = file_name.replace('.txt', '')
-    #file_name = file_name.replace('.tex', '')
-    #file_name = file_name.replace('.html', '')
+    file_name = file_name.replace(' (Wikitext)', '')
+    file_name = file_name.replace(' (LaTeX)', '')
     annotation_file_name = re.sub(r'\s', '_', file_name) + '.txt'
     return annotation_file_name
 
+
+def create_file_name(file_name):
+    extension = '.txt' if '(Wikitext)' in file_name else '.tex'
+    file_name = file_name.replace(' (Wikitext)', '')
+    file_name = file_name.replace(' (LaTeX)', '')
+    file_name = re.sub(r'\s', '_', file_name) #+ extension
+    file_name_with_extension = re.sub(r'\s', '_', file_name) + extension
+    return file_name, file_name_with_extension
 
 def create_annotation_file_path(file_name):
     return os.path.join(evaluation_annotations_path, create_annotation_file_name(file_name))

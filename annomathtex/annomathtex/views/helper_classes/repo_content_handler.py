@@ -28,13 +28,13 @@ class RepoContentHandler:
 
     def move_file_to_archive(self):
         file_name = list(self.items['fileName'].keys())[0]
-        file_name = create_annotation_file_name(file_name) #file_name.replace('\s', '_') + '.txt'
-        annotation_file_name = file_name
+        file_name, file_name_with_extension = create_file_name(file_name) #file_name.replace('\s', '_') + '.txt'
+        annotation_file_name = create_annotation_file_name(file_name)
         evaluation_file_name = create_evaluation_file_name(file_name)
 
         repo_content_handler_logger.info(file_name)
         #move to archive folder
-        self.data_repo_handler.rename_file('files/{}'.format(file_name), 'archive/files/{}'.format(file_name))
+        self.data_repo_handler.rename_file('files/{}'.format(file_name_with_extension), 'archive/files/{}'.format(file_name_with_extension))
         try:
             self.data_repo_handler.rename_file('annotation/{}'.format(annotation_file_name),
                                                'archive/annotation/{}'.format(annotation_file_name))

@@ -5,7 +5,7 @@ import re
 import logging
 urllib3.disable_warnings()
 from github import Github, GithubException
-#from .formula_concept_handler import FormulaConceptHandler
+from .formula_concept_handler import FormulaConceptHandler
 
 logging.basicConfig(level=logging.WARNING)
 data_repo_handler_logger = logging.getLogger(__name__)
@@ -57,6 +57,8 @@ class DataRepoHandler:
         return
 
     def rename_file(self, old_file_name, new_file_name):
+        #data_repo_handler_logger.info(old_file_name)
+        #data_repo_handler_logger.info(new_file_name)
         encoded_content = self.repo.get_file_contents(old_file_name)
         decoded_content = encoded_content.decoded_content
         self.delete_file(old_file_name)
@@ -371,6 +373,11 @@ def count_fcdb(d):
     print(fcdb)
 
 
+def move_back_from_repo(d):
+    d.rename_file('archive/files/astro-ph0001197.tex', 'files/astro-ph0001197.tex')
+
+
+
 
 if __name__ == '__main__':
     #For testing purposes
@@ -388,4 +395,6 @@ if __name__ == '__main__':
     #commit_wikidata_math_items(d)
     #merge_math_files(d)
 
-    count_fcdb(d)
+    #count_fcdb(d)
+
+    move_back_from_repo(d)
