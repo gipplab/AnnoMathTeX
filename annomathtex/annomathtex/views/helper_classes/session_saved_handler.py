@@ -28,7 +28,6 @@ class SessionSavedHandler:
     #NOTE: in earlier version, annotations was used instead of cleaned_annotations, I think this was a mistake
     #      but haven't tested yet
 
-
     def __init__(self, request, items):
         self.request = request
         self.items = items
