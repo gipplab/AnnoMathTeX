@@ -5,7 +5,7 @@ from ..config import recommendations_limit
 from ..settings.common import PROJECT_ROOT
 from ..parsing.mathhandling.custom_math_env_parser import CustomMathEnvParser
 from ..views.helper_classes.data_repo_handler import DataRepoHandler
-from rapidfuzz import fuzz
+from fuzzywuzzy import fuzz
 from operator import itemgetter
 
 
