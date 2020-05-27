@@ -1,5 +1,5 @@
 from ..views.helper_classes.data_repo_handler import DataRepoHandler
-from fuzzywuzzy import fuzz
+from rapidfuzz import fuzz
 
 
 class FormulaConceptDBHandler(object):
