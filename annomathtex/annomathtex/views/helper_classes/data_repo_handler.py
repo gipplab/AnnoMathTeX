@@ -275,10 +275,10 @@ def decode_wikipedia_article(wikipedia_article):
     print(type(wikipedia_article))
     print(wikipedia_article)
 
-
+local_token = "e6ee16a38812411821c0a134b9ca11b08d8b0b9a"
 
 def move_files_to_file_folder():
-    from key import local_token
+    #from key import local_token
     drh = DataRepoHandler(local_token)
     dir = drh.list_directory()
     annotation_files = filter(lambda f: 'annotation' not in f, dir)
