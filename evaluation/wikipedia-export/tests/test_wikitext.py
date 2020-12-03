@@ -38,7 +38,4 @@ class TestWikitextReplacer(unittest.TestCase):
         self.assertTrue(replacer.allow_bots('any'))
 
 
-
-
 logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
-

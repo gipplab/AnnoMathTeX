@@ -48,13 +48,10 @@ class WikitextReplacer:
         self.replacements = repl
 
     def replace_math_tags(self):
-        nowikiloc = []
         done = []
-        for nowiki in re.finditer(self.nowikipatterns, self.text):
-            nowikiloc.append([nowiki.start(), nowiki.end()])
         for math in sorted(re.finditer(self.mathregex, self.text), reverse=True, key=lambda
                 x: x.start()):  # get all math tags in reverse order such that the math.start() and math.end() positions can be used
-            if self.is_nowikiloc(math, nowikiloc):
+            if self.is_nowikiloc(math):
                 continue
             tag_content = math.group(2)
             attribs = math.group(1)
@@ -80,10 +77,16 @@ class WikitextReplacer:
                 logging.debug(f'Replacing "{math.group()}" with "{new_tag}"')
                 self.text = self.text[:math.start()] + new_tag + self.text[math.end():]
                 self.changed = True
+        for k in self.replacements.keys():
+            v = self.replacements.get(k)
+            if v not in done:
+                logging.warning(f'After processing the article: Q{v} not inserted in Formula "{k}"')
         return self.text
 
-    @staticmethod
-    def is_nowikiloc(math, nowikiloc):
+    def is_nowikiloc(self, math):
+        nowikiloc=[]
+        for nowiki in re.finditer(self.nowikipatterns, self.text):
+            nowikiloc.append([nowiki.start(), nowiki.end()])
         for nw in nowikiloc:
             if nw[0] < math.start() and math.end() < nw[1]:
                 return True  # complete math formula is inside nowiki

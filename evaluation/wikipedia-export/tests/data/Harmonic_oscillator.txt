@@ -44,7 +44,6 @@ Solving this [[differential equation]], we find that the motion is described by 
 
 <nowiki><math>a+b</math></nowiki>
 
-We use random <nowiki><math></nowiki> tags here
 
 where
 
