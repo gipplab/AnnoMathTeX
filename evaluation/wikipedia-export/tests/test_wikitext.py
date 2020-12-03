@@ -13,7 +13,7 @@ class TestWikitextReplacer(unittest.TestCase):
 
     def test_get_math_tags(self):
         replacer = WikitextReplacer(self.sample, self.replacements)
-        real = replacer.get_math_tags()
+        real = replacer.replace_math_tags()
         self.assertTrue(real.__contains__('math'))
 
     def test_get_bot(self):

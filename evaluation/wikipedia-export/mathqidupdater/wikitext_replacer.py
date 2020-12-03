@@ -45,7 +45,7 @@ class WikitextReplacer:
         self.text = wikitext
         self.replacements = repl
 
-    def get_math_tags(self):
+    def replace_math_tags(self):
         nowikiloc = []
         done = []
         for nowiki in re.finditer(self.nowikipatterns, self.text):
