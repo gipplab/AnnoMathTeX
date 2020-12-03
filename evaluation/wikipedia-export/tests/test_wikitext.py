@@ -16,6 +16,13 @@ class TestWikitextReplacer(unittest.TestCase):
         real = replacer.replace_math_tags()
         self.assertTrue(real.__contains__('math'))
 
+    def test_math_tags_idempotence(self):
+        replacer = WikitextReplacer(self.sample, self.replacements)
+        iteration1 = replacer.replace_math_tags()
+        replacer = WikitextReplacer(iteration1, self.replacements)
+        iteration2 = replacer.replace_math_tags()
+        self.assertEqual(iteration1, iteration2)
+
     def test_get_bot(self):
         replacer = WikitextReplacer('{{bots}}', self.replacements)
         self.assertTrue(replacer.allow_bots('ZentralBot'))

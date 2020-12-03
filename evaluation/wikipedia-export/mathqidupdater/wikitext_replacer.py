@@ -1,5 +1,7 @@
 import re
 import logging
+import shlex
+
 import mwparserfromhell
 from mwparserfromhell.wikicode import Wikicode
 
@@ -61,6 +63,13 @@ class WikitextReplacer:
                 logging.info(f'Found target for Q{qid}.')
                 if attribs.lower().__contains__('qid'):
                     logging.warning(f'Skipping Q{qid} as already contains qid in attributes: "{attribs}"')
+                    # https://stackoverflow.com/a/23228582
+                    attrib_dict = dict(x.split('=') for x in shlex.split(attribs))
+                    if 'qid' in attrib_dict:
+                        done_qid = attrib_dict['qid']
+                        done_qid_int = re.sub(r'[^\d]', '', done_qid)
+                        done.append(done_qid_int)
+                        logging.warning(f'Skipping Q{done_qid_int} as already contained in article.')
                     continue
                 if qid in done:
                     logging.warning(f'Skipping Q{qid} as already replaced above.')
