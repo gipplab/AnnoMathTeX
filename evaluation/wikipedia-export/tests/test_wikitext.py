@@ -16,7 +16,22 @@ class TestWikitextReplacer(unittest.TestCase):
         real = replacer.get_math_tags()
         self.assertTrue(real.__contains__('math'))
 
+    def test_get_bot(self):
+        replacer = WikitextReplacer('{{bots}}', self.replacements)
+        self.assertTrue(replacer.allow_bots('ZentralBot'))
+        replacer = WikitextReplacer('{{nobots}}', self.replacements)
+        self.assertFalse(replacer.allow_bots('ZentralBot'))
+        replacer = WikitextReplacer('{{bots|allow=all}}', self.replacements)
+        self.assertTrue(replacer.allow_bots('ZentralBot'))
+        replacer = WikitextReplacer('{{bots|deny=all}}', self.replacements)
+        self.assertFalse(replacer.allow_bots('ZentralBot'))
+        replacer = WikitextReplacer('{{bots|deny=ZentralBot}}', self.replacements)
+        self.assertFalse(replacer.allow_bots('ZentralBot'))
+        replacer = WikitextReplacer('{{not-specified}}', self.replacements)
+        self.assertTrue(replacer.allow_bots('any'))
+
+
+
 
 logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
-if __name__ == '__main__':
-    unittest.main()
+

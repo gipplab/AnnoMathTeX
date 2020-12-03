@@ -15,6 +15,7 @@ class WikitextReplacer:
     wt: Wikicode
     text: str
     replacements: dict
+    changed = False
 
     def allow_bots(self, user):
         user = user.lower().strip()
@@ -51,15 +52,8 @@ class WikitextReplacer:
             nowikiloc.append([nowiki.start(), nowiki.end()])
         for math in sorted(re.finditer(self.mathregex, self.text), reverse=True, key=lambda
                 x: x.start()):  # get all math tags in reverse order such that the math.start() and math.end() positions can be used
-            replace = True  # only replace if this flag stays == True
-            for nw in nowikiloc:
-                if nw[0] < math.start() and math.end() < nw[1]:
-                    replace = False  # complete math formula is inside nowiki
-                    break
-                elif nw[0] < math.start() < nw[1] or nw[0] < math.end() < nw[1]:
-                    replace = False  # one of the math tags is inside nowiki
-                    break
-            # lesezeichen
+            if self.is_nowikiloc(math, nowikiloc):
+                continue
             tag_content = math.group(2)
             attribs = math.group(1)
             if tag_content in self.replacements:
@@ -78,3 +72,12 @@ class WikitextReplacer:
                 self.text = self.text[:math.start()] + new_tag + self.text[math.end():]
                 self.changed = True
         return self.text
+
+    @staticmethod
+    def is_nowikiloc(math, nowikiloc):
+        for nw in nowikiloc:
+            if nw[0] < math.start() and math.end() < nw[1]:
+                return True  # complete math formula is inside nowiki
+            elif nw[0] < math.start() < nw[1] or nw[0] < math.end() < nw[1]:
+                return True  # one of the math tags is inside nowiki
+        return False
