@@ -1,4 +1,5 @@
 import pywikibot
+import logging
 import mathqidupdater.annotation_reader as reader
 
 def build_sandbox(name):
@@ -6,6 +7,9 @@ def build_sandbox(name):
     page = pywikibot.Page(site, name)
     text = page.text
     sandbox = pywikibot.Page(site, 'User:Physikerwelt/sandbox/'+name)
+    if sandbox.text == text:
+        logging.info(f'skipping {name} sandbox copy is already up to date')
+        return
     sandbox.text = text
     sandbox.save(f'Create sandbox copy of {name} page')
 
