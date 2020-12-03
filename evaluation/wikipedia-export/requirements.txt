@@ -1,0 +1,3 @@
+pywikibot
+requests-oauthlib
+mwparserfromhell

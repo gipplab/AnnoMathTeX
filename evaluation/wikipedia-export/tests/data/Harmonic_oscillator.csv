@@ -1,0 +1,11 @@
+Identifier / Formula,Name,ArXiV,Wikipedia,Wikidata,Wikidata1,Wikidata2,WordWindow,FormulaConceptDB,type,time,manualSelectionTime
+F,force (Q11402),-,9,2,-,-,3,-,global,2675,-1
+k,constant (Q188248),2,-,-,-,-,-,-,global,3422,-1
+x,displacement (Q190291),-,-,-,-,-,1,-,global,1583,-1
+" \vec F = -k \vec x, ",Hooke's law (Q170282),-,-,-,-,-,-,-,global,9453,3949
+m,mass (Q11423),1,3,2,-,-,6,-,global,1656,-1
+omega,angular velocity (Q161635),-,1,-,-,-,-,-,global,2062,-1
+varphi,phase (N/A),-,-,-,-,-,-,-,global,1712,-1
+F = m a = m \frac{\mathrm{d}^2x}{\mathrm{d}t^2} = m\ddot{x} = -k x. ,Hooke's law (Q170282),-,-,-,-,-,-,-,global,6041,7652
+" x(t) = A \cos(\omega t + \varphi), ",Spherical pendulum (Q3299367),-,-,-,1,-,-,-,global,2816,-1
+\omega = \sqrt{\frac k m}.,angular frequency (Q834020),-,-,-,-,-,-,2,global,3137,-1
