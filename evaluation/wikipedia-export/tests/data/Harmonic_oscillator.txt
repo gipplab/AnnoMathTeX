@@ -41,6 +41,7 @@ A simple harmonic oscillator is an oscillator that is neither driven nor [[Dampi
 Solving this [[differential equation]], we find that the motion is described by the function
 
 :<math qid=3> x(t) = A \cos(\omega t + \varphi), </math>
+:<math qid = 3> x(t) = A \cos(\omega t + \varphi), </math>
 
 <nowiki><math>a+b</math></nowiki>
 
