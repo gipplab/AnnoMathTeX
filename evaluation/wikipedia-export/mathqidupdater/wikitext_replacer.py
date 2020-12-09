@@ -49,9 +49,12 @@ class WikitextReplacer:
 
     def replace_math_tags(self):
         done = []
-        for math in sorted(re.finditer(self.mathregex, self.text), reverse=True, key=lambda
-                x: x.start()):  # get all math tags in reverse order such that the math.start() and math.end() positions can be used
-            if self.is_nowikiloc(math):
+        offset = 0
+        for math in re.finditer(self.mathregex, self.text):
+            math_start = math.start() - offset
+            math_end = math.end() - offset
+            if self.is_nowikiloc(math_start, math_end):
+                logging.info("Skipping math tags in nowiki environment.")
                 continue
             tag_content = math.group(2)
             attribs = math.group(1)
@@ -75,7 +78,8 @@ class WikitextReplacer:
                 attribs += f' qid=Q{qid}'
                 new_tag = f'<math{attribs}>{tag_content}</math>'
                 logging.debug(f'Replacing "{math.group()}" with "{new_tag}"')
-                self.text = self.text[:math.start()] + new_tag + self.text[math.end():]
+                self.text = self.text[:math_start] + new_tag + self.text[math_end:]
+                offset = (math.end()-math.start())-len(new_tag)
                 self.changed = True
         for k in self.replacements.keys():
             v = self.replacements.get(k)
@@ -83,13 +87,13 @@ class WikitextReplacer:
                 logging.warning(f'After processing the article: Q{v} not inserted in Formula "{k}"')
         return self.text
 
-    def is_nowikiloc(self, math):
+    def is_nowikiloc(self, start, end ):
         nowikiloc=[]
         for nowiki in re.finditer(self.nowikipatterns, self.text):
             nowikiloc.append([nowiki.start(), nowiki.end()])
         for nw in nowikiloc:
-            if nw[0] < math.start() and math.end() < nw[1]:
+            if nw[0] < start and end < nw[1]:
                 return True  # complete math formula is inside nowiki
-            elif nw[0] < math.start() < nw[1] or nw[0] < math.end() < nw[1]:
+            elif nw[0] < start < nw[1] or nw[0] < end < nw[1]:
                 return True  # one of the math tags is inside nowiki
         return False
