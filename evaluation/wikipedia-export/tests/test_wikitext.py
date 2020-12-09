@@ -11,10 +11,17 @@ class TestWikitextReplacer(unittest.TestCase):
                     'F = m a = m \\frac{\\mathrm{d}^2x}{\\mathrm{d}t^2} = m\\ddot{x} = -k x. ': '170282',
                     '\\omega = \\sqrt{\\frac k m}.': '834020'}
 
+    def test_full_replacement(self):
+        replacer = WikitextReplacer(self.sample, self.replacements)
+        expected = open('./data/Harmonic_expected.txt', 'r', encoding='utf-8').read()
+        real = replacer.replace_math_tags()
+        self.assertEqual(expected,real)
+
     def test_get_math_tags(self):
         replacer = WikitextReplacer(self.sample, self.replacements)
         real = replacer.replace_math_tags()
         self.assertTrue(real.__contains__('math'))
+        self.assertTrue(real.__contains__('Q170282'))
 
     def test_math_tags_idempotence(self):
         replacer = WikitextReplacer(self.sample, self.replacements)

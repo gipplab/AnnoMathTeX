@@ -79,7 +79,7 @@ class WikitextReplacer:
                 new_tag = f'<math{attribs}>{tag_content}</math>'
                 logging.debug(f'Replacing "{math.group()}" with "{new_tag}"')
                 self.text = self.text[:math_start] + new_tag + self.text[math_end:]
-                offset = (math.end()-math.start())-len(new_tag)
+                offset += (math.end()-math.start())-len(new_tag)
                 self.changed = True
         for k in self.replacements.keys():
             v = self.replacements.get(k)
