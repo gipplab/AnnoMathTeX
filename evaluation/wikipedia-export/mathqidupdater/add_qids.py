@@ -23,6 +23,7 @@ def process_page(name):
     newid = page.latestRevision()
     logging.info(f'Review the changes at https://en.wikipedia.org/w/index.php?type=revision&diff={newid}&oldid={oldid}')
 
+
 def add_qids():
     for name in get_final_pagelist():
         process_page(name[:-4])

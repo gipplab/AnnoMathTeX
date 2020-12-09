@@ -6,6 +6,7 @@ import mathqidupdater.annotation_reader as reader
 prefix = '../../../dataAnnoMathTex/evaluation/'
 skip_existing = True
 
+
 def build_sandbox(name):
     site = pywikibot.Site()
     page = pywikibot.Page(site, name)

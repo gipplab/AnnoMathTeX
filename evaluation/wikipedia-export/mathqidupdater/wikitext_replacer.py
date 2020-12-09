@@ -64,7 +64,7 @@ class WikitextReplacer:
                 if attribs.lower().__contains__('qid'):
                     logging.warning(f'Skipping Q{qid} as already contains qid in attributes: "{attribs}"')
                     # https://stackoverflow.com/a/23228582
-                    attrib_dict = dict(x.split('=') for x in shlex.split(re.sub('\\s*=\\s*','=',attribs)))
+                    attrib_dict = dict(x.split('=') for x in shlex.split(re.sub('\\s*=\\s*', '=', attribs)))
                     if 'qid' in attrib_dict:
                         done_qid = attrib_dict['qid']
                         done_qid_int = re.sub(r'[^\d]', '', done_qid)
@@ -79,7 +79,7 @@ class WikitextReplacer:
                 new_tag = f'<math{attribs}>{tag_content}</math>'
                 logging.debug(f'Replacing "{math.group()}" with "{new_tag}"')
                 self.text = self.text[:math_start] + new_tag + self.text[math_end:]
-                offset += (math.end()-math.start())-len(new_tag)
+                offset += (math.end() - math.start()) - len(new_tag)
                 self.changed = True
         for k in self.replacements.keys():
             v = self.replacements.get(k)
@@ -87,8 +87,8 @@ class WikitextReplacer:
                 logging.warning(f'After processing the article: Q{v} not inserted in Formula "{k}"')
         return self.text
 
-    def is_nowikiloc(self, start, end ):
-        nowikiloc=[]
+    def is_nowikiloc(self, start, end):
+        nowikiloc = []
         for nowiki in re.finditer(self.nowikipatterns, self.text):
             nowikiloc.append([nowiki.start(), nowiki.end()])
         for nw in nowikiloc:

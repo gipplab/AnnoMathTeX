@@ -15,7 +15,7 @@ class TestWikitextReplacer(unittest.TestCase):
         replacer = WikitextReplacer(self.sample, self.replacements)
         expected = open('./data/Harmonic_expected.txt', 'r', encoding='utf-8').read()
         real = replacer.replace_math_tags()
-        self.assertEqual(expected,real)
+        self.assertEqual(expected, real)
 
     def test_get_math_tags(self):
         replacer = WikitextReplacer(self.sample, self.replacements)

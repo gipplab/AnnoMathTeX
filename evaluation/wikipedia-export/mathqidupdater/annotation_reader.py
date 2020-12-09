@@ -14,5 +14,5 @@ def get_qids(filename):
             content = row['Identifier / Formula']
             m = pat_q.search(row['Name'])
             if m and content.__contains__('='):
-                result[content]=m.group(1)
+                result[content] = m.group(1)
         return result
