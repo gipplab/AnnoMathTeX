@@ -1,0 +1,67 @@
+Name; QID;contributed;Defining formula seeded;# FC vars;Has part or calculated from?
+acceleration;Q11376;-;\mathbf{a} = \frac{\mathrm{d} \mathbf{v}}{\mathrm{d} t};18;cf
+angular acceleration;Q186300;-;\boldsymbol{\alpha} = \frac{\mathrm{d} \boldsymbol{\omega}}{\mathrm{d} t};3;cf
+angular frequency;Q834020;-;\omega = 2 \pi f;4;cf
+angular momentum;Q161254;-;\mathbf{L} = \mathbf{r} \times \mathbf{p};4;cf
+angular velocity;Q161635;-;\boldsymbol{\omega} = \frac{\mathrm{d} \varphi}{\mathrm{d} t} \mathbf{u};8;cf
+center of mass;Q2945123;p;\sum_{i=1}^n m_i(\mathbf{r}_i - \mathbf{R}) = 0;2;hp
+centripetal acceleration;Q2248131;f/p;a_c = \frac {v^2} {r};1;hp
+centripetal force;Q172881;f/p;\vec{F} = - \frac{mv^2 \hat{r}}{r};2;hp
+circumference;Q843905;p;C=\pi\cdot{d}=2\pi\cdot{r};1;hp
+conservation of energy;Q11382;f/p;E_{tot,1} = E_{tot,2};2;hp
+conservation of momentum;Q2305665;f/p;p_{tot,1} = p_{tot,2};2;hp
+damping;Q1127660;f/p;\zeta = \frac{c}{2\sqrt{mk}};1;hp
+Dirac equation;Q272621;p;i\hbar\frac{\partial \Psi}{\partial t} = (c\hat \boldsymbol \alpha \cdot \hat \boldsymbol p + mc^2\hat \beta)\Psi;1;hp
+Dirac equation in curved spacetime;Q16853908;p;i\gamma^a e_a^\mu D_\mu \Psi - m \Psi = 0;1;hp
+elastic energy;Q891408;p;U = \frac{1}{2}k \Delta x^2;1;hp
+electromagnetic force;Q849919;f/p;\vec{F} = q(\vec{E} + \vec{v} \times \vec{B});2;hp
+electrostatic force;Q103438301;i/f/p;\vec{F}_e = \frac{q_1 q_2}{4 \pi \epsilon_{0} r^2} \hat{r};1;hp
+energy-momentum relation;Q103439852;i/f/p;E^2 = p^2c^2 + m^2c^4;2;hp
+escape velocity;Q166530;i/f/p;v_{\text{e}} = \sqrt{\frac{2GM}{r}} = \sqrt{2gr};1;hp
+Euler-Lagrange equation;Q875744;p;\frac{\mathrm{d}}{\mathrm{d} t}\left(\frac{\partial L}{\partial \dot{q}_{j}}\right)=\frac{\partial L}{\partial q_{j}};2;hp
+force;Q11402;-;\mathbf{F} = \frac{\mathrm{d} \mathbf{p}}{\mathrm{d} t};12;cf
+four-momentum;Q1068463;p;p^\mu=\begin{matrix}p_0 \\ p_1 \\ p_2 \\ p_3 \end{matrix} = \begin{matrix}E/c \\ p_x \\ p_y \\ p_z \end{matrix} = \begin{matrix}E/c \\ \vec p \end{matrix};1;hp
+four-velocity;Q1322540;f/p;\mathbf{U} \equiv \frac{d \mathbf{R}}{d \tau};1;hp
+free fall;Q140028;p;v(t)=-gt+v_{0};1;hp
+frequency;Q11652;-;f = \frac{1}{T};3;cf
+friction;Q82580;f/p;F_{\mathrm{kf}} = \mu_{\mathrm{kf}} F_\mathrm{N};1;hp
+Galilean transformation;Q219207;p;(t,\mathbf x) \mapsto (t+s,\mathsf R\mathbf x + \mathbf vt + \mathbf y);3;hp
+generalized momentum;Q6806305;-;p_i = \frac{\partial L}{\partial \dot{q}_i};1;cf
+gravitational acceleration;Q30006;f/p;\vec{g}=-\frac{Gm_\oplus}{{R_\oplus}^2} \hat{r};2;hp
+gravitational force;Q11412;f/p;\vec{F}_g = - \frac{G m_1 m_2}{r^2} \hat{r};2;hp
+gravitational potential;Q1544012;f/p; U=-\frac{GMm}{r};4;hp
+Hamiltonian operator;Q660488;f;\mathcal{H}\left(\mathbf{q},\mathbf{p},t\right) = \mathbf{p}\cdot\dot{\mathbf{q}} - \mathcal{L}\left(\mathbf{q},\dot{\mathbf{q}},t\right);2;hp
+Hamilton-Jacobi equation;Q1060137;-;\frac{\partial S}{\partial t}=-H;1;cf
+Hooke's law;Q170282;p;F= k X;3;hp
+jerk;Q497332;f/p;\vec \zeta(t) = \frac {\mathrm {d}}{\mathrm {d}t}\vec{\alpha}(t)=\dot{\vec\alpha}(t);1;hp
+kinetic energy;Q46276;-;T = \frac{1}{2} m v^2;4;cf
+Lagrangian operator;Q103687426;i/f/p;\mathcal{L}  = T-V;2;hp
+Lorentz factor;Q599404;f/p;\gamma = \frac{1}{\sqrt{1 - v^2/c^2}};5;hp
+Lorentz force;Q172137;p;\mathbf{F} = q(\mathbf{E} + \mathbf{v} \times \mathbf{B});1;hp
+Lorentz transformation;Q217255;f/p;t' = \gamma \left( t - \frac{v x}{c^2} \right)  x' = \gamma \left( x - v t \right);2;hp
+mass–energy equivalence;Q35875;-;E = m c^2;5;hp
+mechanical impedance;Q6421317;-;Z_{\mathrm{m}} = Z_{\mathrm{a}} A^2;1;cf
+moment of inertia;Q165618;-;J_{\mathrm{Q}} = \int r_{\mathrm{Q}}^{2} \mathrm{d} m;3;cf
+momentum;Q41273;-;\mathbf{p} = m \mathbf{v};8;cf
+Newton's second law of motion;Q2397319;-;\vec{F} = m \cdot \vec{a};11;hp
+Newton's third law of motion;Q3235565;f/p;\mathbf{F}_{12}=-\mathbf{F}_{21};1;hp
+oscillation;Q170475;f;z(t) = A \mathrm{e}^{-\zeta \omega_0 t} \sin \left( \sqrt{1 - \zeta^2} \omega_0 t + \varphi \right);1;(hp)
+pendulum;Q20702;f;\frac{d^2\theta}{dt^2} + \frac{g}{l}\sin\theta = 0;1;(hp)
+power;Q25342;-;P = \frac{\mathrm{d} E}{\mathrm{d} t};3;cf
+radial velocity;Q240105;f;\omega = \frac{d\phi}{dt} = \frac{v_\perp}{r};1;hp
+rest energy;Q11663629;-;E_0 = m_0 c_0^2;1;cf
+rest mass;Q96941619;f/p;(m_\mathrm{rest})c^2=\sqrt{E_\mathrm{total}^2-(|\mathbf{p}|c)^2};1;hp
+Rossby number;Q676622;-;\mathit{Ro} = \frac{v}{2 l \omega_{\mathrm{E}} \sin{\varphi}};1;cf
+speed;Q3711325;p;v = s / t;2;hp
+speed of light;Q2111;f/p;c=f\lambda;1;hp
+sphere;Q12507;-;x^2+y^2+z^2=r^2;1;hp
+spherical pendulum;Q3299367;p;\psi(x,t) = A \cos (k x - \omega t+\varphi);1;hp
+Stokes' law;Q824561;-;F_d = 6\pi\,\mu\,R\,V;1;hp
+stress;Q206175;f/p;\sigma = \frac{F}{A};1;hp
+tangential acceleration;Q2822927;f/p;\alpha = \frac{dv_{\perp}}{dt};1;hp
+tangential velocity;Q103715245;i/f/p;v = \omega r;2;hp
+torque;Q48103;-;T = \mathbf{M} \cdot \mathbf{e}_{\mathrm{Q}};9;cf
+uniform motion;Q376742;f/p;\mathbf{s} = \mathbf{v}t;1;hp
+velocity;Q11465;-;\mathbf{v} = \frac{\mathrm{d} \mathbf{r}}{\mathrm{d} t};17;cf
+wavenumber;Q192510;-;\sigma = 1/\lambda;1;cf
+work;Q42213;-;A = \int_{\Gamma} \mathbf{F} \cdot \mathrm{d} \mathbf{r};12;cf
