@@ -39,7 +39,7 @@ Lagrangian operator;Q103687426;i/f/p;\mathcal{L}  = T-V;2;hp
 Lorentz factor;Q599404;f/p;\gamma = \frac{1}{\sqrt{1 - v^2/c^2}};5;hp
 Lorentz force;Q172137;p;\mathbf{F} = q(\mathbf{E} + \mathbf{v} \times \mathbf{B});1;hp
 Lorentz transformation;Q217255;f/p;t' = \gamma \left( t - \frac{v x}{c^2} \right)  x' = \gamma \left( x - v t \right);2;hp
-mass–energy equivalence;Q35875;-;E = m c^2;5;hp
+massâ€“energy equivalence;Q35875;-;E = m c^2;5;hp
 mechanical impedance;Q6421317;-;Z_{\mathrm{m}} = Z_{\mathrm{a}} A^2;1;cf
 moment of inertia;Q165618;-;J_{\mathrm{Q}} = \int r_{\mathrm{Q}}^{2} \mathrm{d} m;3;cf
 momentum;Q41273;-;\mathbf{p} = m \mathbf{v};8;cf
