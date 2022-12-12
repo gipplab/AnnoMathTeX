@@ -12,7 +12,7 @@ data_repo_handler_logger = logging.getLogger(__name__)
 
 class DataRepoHandler:
     """
-    Handles everything that needs to access the data repo ag-gipp/dataAnnoMathTex.
+    Handles everything that needs to access the data repo gipplab/dataAnnoMathTex.
     """
 
     def __init__(self, token=os.getenv('apikey', False)):
@@ -32,7 +32,7 @@ class DataRepoHandler:
 
 
         self.g = Github(self.token)
-        self.repo = self.g.get_repo("ag-gipp/dataAnnoMathTeX")
+        self.repo = self.g.get_repo("gipplab/dataAnnoMathTeX")
         self.user = self.g.get_user()
         self.evaluation_folder = 'evaluation'
 
